@@ -65,11 +65,16 @@ public class Vision extends SubsystemBase {
             || robotPose.getY() < -VisionConstants.BORDER_MARGIN
             || robotPose.getY() > FieldConstants.fieldWidth + VisionConstants.BORDER_MARGIN
             || robotPose.getZ() < -VisionConstants.Z_MARGIN
-            || robotPose.getZ() > VisionConstants.Z_MARGIN) continue;
+            || robotPose.getZ() > VisionConstants.Z_MARGIN) 
+        continue;
 
         List<Pose3d> tagPoses = new ArrayList<>();
 
         // ADD TAGS TO CONSIDER
+        for (int tag : inputs[i].tags) {
+          VisionConstants.FIELD_LAYOUT.getTagPose(tag).ifPresent(tagPoses::add);
+        }
+
         if (tagPoses.isEmpty()) continue;
 
         // calculate average distance
