@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -24,6 +25,8 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
  * project.
  */
 public class Robot extends LoggedRobot {
+  private RobotContainer robotContainer;
+  
   public Robot() {
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
@@ -63,11 +66,29 @@ public class Robot extends LoggedRobot {
 
     // Start AdvantageKit logger
     Logger.start();
+
+    // Instantiate our RobotContainer. This will perform all our button bindings,
+    // and put our autonomous chooser on the dashboard.
+    robotContainer = new RobotContainer();
   }
 
   /** This function is called periodically during all modes. */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    // Optionally switch the thread to high priority to improve loop
+    // timing (see the template project documentation for details)
+    // Threads.setCurrentThreadPriority(true, 99);
+
+    // Runs the Scheduler. This is responsible for polling buttons, adding
+    // newly-scheduled commands, running already-scheduled commands, removing
+    // finished or interrupted commands, and running subsystem periodic() methods.
+    // This must be called from the robot's periodic block in order for anything in
+    // the Command-based framework to work.
+    CommandScheduler.getInstance().run();
+
+    // Return to non-RT thread priority (do not modify the first argument)
+    // Threads.setCurrentThreadPriority(false, 10);
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override
@@ -104,12 +125,12 @@ public class Robot extends LoggedRobot {
 
     if (gameData.length() > 0) {
       switch (gameData.charAt(0)) {
-        // Blue is inactive first
+          // Blue is inactive first
         case 'B':
           isActive = (ourAlliance != null && ourAlliance == Alliance.Red);
           break;
 
-        // Red is inactive first
+          // Red is inactive first
         case 'R':
           isActive = (ourAlliance != null && ourAlliance == Alliance.Blue);
           break;
@@ -120,32 +141,32 @@ public class Robot extends LoggedRobot {
     }
 
     // Transition Shift
-    if(timeLeftinMatch <= 140 && timeLeftinMatch > 130) {
+    if (timeLeftinMatch <= 140 && timeLeftinMatch > 130) {
       Logger.recordOutput("isActive?", true);
     }
 
     // Shift One
-    else if(timeLeftinMatch <= 130 && timeLeftinMatch > 105) {
+    else if (timeLeftinMatch <= 130 && timeLeftinMatch > 105) {
       Logger.recordOutput("isActive?", isActive);
     }
 
     // Shift Two
-    else if(timeLeftinMatch <= 105 && timeLeftinMatch > 80) {
+    else if (timeLeftinMatch <= 105 && timeLeftinMatch > 80) {
       Logger.recordOutput("isActive?", !isActive);
     }
 
     // Shift Three
-    else if(timeLeftinMatch <= 80 && timeLeftinMatch > 55) {
+    else if (timeLeftinMatch <= 80 && timeLeftinMatch > 55) {
       Logger.recordOutput("isActive?", isActive);
     }
 
     // Shift Four
-    else if(timeLeftinMatch <= 55 && timeLeftinMatch > 30) {
+    else if (timeLeftinMatch <= 55 && timeLeftinMatch > 30) {
       Logger.recordOutput("isActive?", !isActive);
     }
 
     // Endgame
-    else if(timeLeftinMatch <= 30) {
+    else if (timeLeftinMatch <= 30) {
       Logger.recordOutput("isActive?", true);
     }
   }
