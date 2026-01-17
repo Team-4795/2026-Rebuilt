@@ -11,12 +11,17 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
+import com.revrobotics.util.StatusLogger;
+
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+import org.littletonrobotics.urcl.URCL;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -64,8 +69,16 @@ public class Robot extends LoggedRobot {
         break;
     }
 
+    // Initialize URCL
+    Logger.registerURCL(URCL.startExternal());
+    StatusLogger.disableAutoLogging(); // Disable REVLib's built-in logging
+
     // Start AdvantageKit logger
     Logger.start();
+
+    // Instantiate our RobotContainer. This will perform all our button bindings,
+    // and put our autonomous chooser on the dashboard.
+    robotContainer = new RobotContainer();
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
@@ -75,6 +88,8 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during all modes. */
   @Override
   public void robotPeriodic() {
+    CommandScheduler.getInstance().run();
+  
     // Optionally switch the thread to high priority to improve loop
     // timing (see the template project documentation for details)
     // Threads.setCurrentThreadPriority(true, 99);
