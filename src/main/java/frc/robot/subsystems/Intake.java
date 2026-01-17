@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
@@ -24,8 +25,14 @@ public class Intake extends SubsystemBase {
     io.updateInputs(inputs);
   }
 
+  // doesn't return command
   public void setIntakeSpeed(double speed) {
     io.setSpeed(speed);
+  }
+
+  // returns a command to make things simpler
+  public Command setIntakeSpeedCommand(double speed) {
+    return runOnce(() -> setIntakeSpeed(speed));
   }
 
   @Override
@@ -33,6 +40,8 @@ public class Intake extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("Intake", inputs);
 
-    // TODO finish this later
+    Logger.recordOutput("Intake/Speed", io.getSpeed());
+    Logger.recordOutput("Intake/Voltage", io.getVoltage());
+    Logger.recordOutput("Intake/Current", io.getCurrent());
   }
 }

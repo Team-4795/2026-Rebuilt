@@ -18,5 +18,17 @@ public interface IntakeIO {
 
   public default void setSpeed(double speed) {}
 
+  public default double getSpeed() {
+    return 0;
+  }
+
+  public default double getVoltage() {
+    return 0;
+  }
+
+  public default double getCurrent() {
+    return 0;
+  }
+
   public default void updateInputs(IntakeIOInputs inputs) {}
 }

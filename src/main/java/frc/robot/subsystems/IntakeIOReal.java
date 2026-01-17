@@ -64,6 +64,22 @@ public class IntakeIOReal implements IntakeIO {
     intakeMotorB.set(speed);
   }
 
+  // the motors should be spinning at the same speed/voltage
+  @Override
+  public double getSpeed() {
+    return velocityA.getValueAsDouble() * 60; // rpm
+  }
+
+  @Override
+  public double getVoltage() {
+    return voltageA.getValueAsDouble();
+  }
+
+  @Override
+  public double getCurrent() {
+    return currentA.getValueAsDouble();
+  }
+
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
     BaseStatusSignal.refreshAll(velocityA, voltageA, currentA);
