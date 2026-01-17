@@ -1,8 +1,11 @@
 package frc.robot.subsystems.vision;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.FieldConstants;
+import frc.robot.subsystems.drive.Drive;
 import java.util.ArrayList;
 import java.util.List;
 import org.littletonrobotics.junction.Logger;
@@ -65,8 +68,7 @@ public class Vision extends SubsystemBase {
             || robotPose.getY() < -VisionConstants.BORDER_MARGIN
             || robotPose.getY() > FieldConstants.fieldWidth + VisionConstants.BORDER_MARGIN
             || robotPose.getZ() < -VisionConstants.Z_MARGIN
-            || robotPose.getZ() > VisionConstants.Z_MARGIN) 
-        continue;
+            || robotPose.getZ() > VisionConstants.Z_MARGIN) continue;
 
         List<Pose3d> tagPoses = new ArrayList<>();
 
@@ -74,7 +76,6 @@ public class Vision extends SubsystemBase {
         for (int tag : inputs[i].tags) {
           VisionConstants.FIELD_LAYOUT.getTagPose(tag).ifPresent(tagPoses::add);
         }
-
         if (tagPoses.isEmpty()) continue;
 
         // calculate average distance
@@ -90,16 +91,16 @@ public class Vision extends SubsystemBase {
                     ? VisionConstants.XY_SINGLE_STDEV
                     : VisionConstants.XY_MULTIPLE_STDEV)
                 * Math.pow(distance, 2);
-        // var stddevs = VecBuilder.fill(xyStdDev, xyStdDev, Units.degreesToRadians(100));
+        var stddevs = VecBuilder.fill(xyStdDev, xyStdDev, Units.degreesToRadians(100));
 
         Logger.recordOutput("Vision/" + VisionConstants.CAM_NAMES[i] + "/Avg distance", distance);
         Logger.recordOutput("Vision/" + VisionConstants.CAM_NAMES[i] + "/xy std dev", xyStdDev);
         Logger.recordOutput("Vision/" + VisionConstants.CAM_NAMES[i] + "/Robot Pose", robotPose);
 
-        // change when swerve exists
-        /*if(inputs[i].poseAmbiguity < 0.1 && shouldUpdate[i]) {
-          Swerve.getInstance().addVisionMeasurement(robotPose.toPose2d(), inputs[i].timestamp[p], stddevs);
-        }*/
+        if (inputs[i].poseAmbiguity < 0.1 && shouldUpdate[i]) {
+          Drive.getInstance()
+              .addVisionMeasurement(robotPose.toPose2d(), inputs[i].timestamp[p], stddevs);
+        }
       }
     }
   }
