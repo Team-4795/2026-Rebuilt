@@ -5,36 +5,28 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
-import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 
 public class ShooterIOSim implements ShooterIO {
-   TalonFX topMotor = new TalonFX(ShooterConstants.TOP_CAN_ID);
+  TalonFX topMotor = new TalonFX(ShooterConstants.TOP_CAN_ID);
   TalonFX bottomMotor = new TalonFX(ShooterConstants.BOTTOM_CAN_ID);
-  ShooterIOReal real = new ShooterIOReal(); 
+  ShooterIOReal real = new ShooterIOReal();
   TalonFXConfiguration topConfig = new TalonFXConfiguration();
   TalonFXConfiguration bottomConfig = new TalonFXConfiguration();
-  TalonFXSimState simTopMotor; 
+  TalonFXSimState simTopMotor;
   TalonFXSimState simBottomMotor;
-  double topVoltage = 0; 
-  double bottomVoltage = 0; 
+  double topVoltage = 0;
+  double bottomVoltage = 0;
 
   private final StatusSignal<AngularVelocity> topRPM = topMotor.getVelocity();
   private final StatusSignal<AngularVelocity> bottomRPM = bottomMotor.getVelocity();
   private final StatusSignal<Current> topCurrent = topMotor.getTorqueCurrent();
   private final StatusSignal<Current> bottomCurrent = bottomMotor.getTorqueCurrent();
 
-
   public ShooterIOSim() {
-    var topConfig = real.config(ShooterConstants.kV, ShooterConstants.kS, ShooterConstants.kP, ShooterConstants.kI, ShooterConstants.kD);
-    var bottomConfig = real.config(ShooterConstants.kV, ShooterConstants.kS, ShooterConstants.kP, ShooterConstants.kI, ShooterConstants.kD);
-
+    var topConfig = real.config(ShooterConstants.kV);
+    var bottomConfig = real.config(ShooterConstants.kV);
 
     BaseStatusSignal.setUpdateFrequencyForAll(50, topRPM, bottomRPM, topCurrent, bottomCurrent);
 
@@ -47,9 +39,8 @@ public class ShooterIOSim implements ShooterIO {
     topMotor.getConfigurator().apply(topConfig);
     bottomMotor.getConfigurator().apply(bottomConfig);
 
-  simTopMotor = topMotor.getSimState();
-  simBottomMotor = bottomMotor.getSimState();
-
+    simTopMotor = topMotor.getSimState();
+    simBottomMotor = bottomMotor.getSimState();
   }
 
   @Override
@@ -62,33 +53,6 @@ public class ShooterIOSim implements ShooterIO {
     simBottomMotor.setSupplyVoltage(voltage);
   }
 
-  @Override 
-  public void updateInputs(ShooterIOInputs inputs) {
-    
-  }
-
+  @Override
+  public void updateInputs(ShooterIOInputs inputs) {}
 }
-
-
-
-
-
-
-
-
-//   {
-//     DCMotorSim topMotor =
-//         new DCMotorSim(
-//             LinearSystemId.createDCMotorSystem(
-//                 DCMotor.getKrakenX60(1), 0.001, ShooterConstants.GEARING),
-//             DCMotor.getKrakenX60(1),
-//             0.001);
-//     // DCMotorSim bottomMotor = new DCMotorSim(DCMotor.getKrakenX60(1), 1,  )
-//     DCMotorSim bottomMotor = new DCMotorSim(null, null, null);
-
-//     SimpleMotorFeedforward ffd = new SimpleMotorFeedforward(0, ShooterConstants.kV / 0);
-//     PIDController controller = new PIDController(ShooterConstants.kP / 0, 0, 0);
-
-//     final double topSpeed = 0.0;
-//     final double bottomSpeed = 0.0;
-//   }
