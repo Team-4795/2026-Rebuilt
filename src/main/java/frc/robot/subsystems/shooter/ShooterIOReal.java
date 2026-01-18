@@ -22,14 +22,14 @@ public class ShooterIOReal implements ShooterIO {
 
   // public VelocityVoltage controller = new VelocityVoltage();
 
-  private TalonFXConfiguration config(double kV) {
+  public TalonFXConfiguration config(double kV, double kS, double kP, double kI, double kD) {
     var talonFXConfig = new TalonFXConfiguration();
 
-    talonFXConfig.Slot0.kP = ShooterConstants.kP;
-    talonFXConfig.Slot0.kI = ShooterConstants.kI;
-    talonFXConfig.Slot0.kD = ShooterConstants.kD;
-    talonFXConfig.Slot0.kS = ShooterConstants.kS;
-    talonFXConfig.Slot0.kV = ShooterConstants.kV;
+    talonFXConfig.Slot0.kP = kP;
+    talonFXConfig.Slot0.kI = kI;
+    talonFXConfig.Slot0.kD = kD;
+    talonFXConfig.Slot0.kS = kS;
+    talonFXConfig.Slot0.kV = kV;
 
     talonFXConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     talonFXConfig.CurrentLimits.StatorCurrentLimit = ShooterConstants.CURRENT_LIMIT;
@@ -42,8 +42,8 @@ public class ShooterIOReal implements ShooterIO {
   }
 
   public ShooterIOReal() {
-    var topConfig = config(ShooterConstants.kV);
-    var bottomConfig = config(ShooterConstants.kV);
+    var topConfig = config(ShooterConstants.kV, ShooterConstants.kS, ShooterConstants.kP, ShooterConstants.kI, ShooterConstants.kD);
+    var bottomConfig = config(ShooterConstants.kV, ShooterConstants.kS, ShooterConstants.kP, ShooterConstants.kI, ShooterConstants.kD);
 
     BaseStatusSignal.setUpdateFrequencyForAll(50, topRPM, bottomRPM, topCurrent, bottomCurrent);
 
