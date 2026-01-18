@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
@@ -25,14 +26,35 @@ public class Intake extends SubsystemBase {
     io.updateInputs(inputs);
   }
 
-  // doesn't return command
+  // Method to set speed of both motors
   public void setIntakeSpeed(double speed) {
     io.setSpeed(speed);
   }
 
-  // returns a command to make things simpler
+  // Command to set speed of both motors
   public Command setIntakeSpeedCommand(double speed) {
     return runOnce(() -> setIntakeSpeed(speed));
+  }
+
+  // Spin motors max speed
+  public Command intake() {
+    return Commands.startEnd(
+        () -> setIntakeSpeed(1),
+        () -> setIntakeSpeed(0),
+      this);
+  }
+
+  // Spin motors max speed opposite direction
+  public Command reverseIntake() {
+    return Commands.startEnd(
+        () -> setIntakeSpeed(-1),
+        () -> setIntakeSpeed(0),
+      this);
+  }
+
+  // Stop motors from spinning
+  public Command stop() {
+    return setIntakeSpeedCommand(0);
   }
 
   @Override

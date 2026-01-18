@@ -28,14 +28,29 @@ public class IntakeIOReal implements IntakeIO {
   private final StatusSignal<AngularVelocity> velocityB = intakeMotorA.getVelocity();
 
   public IntakeIOReal() {
+    // Current limits
     motorAConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     motorAConfig.CurrentLimits.StatorCurrentLimit = IntakeConstants.CURRENT_LIMIT;
+
     motorAConfig.Audio.BeepOnBoot = true;
+
     motorAConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
     // same configs, but inverted
     motorBConfig = motorAConfig.clone();
     motorBConfig.MotorOutput.withInverted(InvertedValue.Clockwise_Positive);
+
+    intakeMotorA.clearStickyFaults();
+    intakeMotorB.clearStickyFaults();
+
+    // Use if needed
+    // BaseStatusSignal
+    //   .setUpdateFrequencyForAll(50, 
+    //     currentA, voltageA, velocityA, 
+    //     currentB, voltageB, velocityB);
+    //
+    // intakeMotorA.optimizeBusUtilization(1.0);
+    // intakeMotorB.optimizeBusUtilization(1.0);
 
     // apply configs and check response
     StatusCode responseA = intakeMotorA.getConfigurator().apply(motorAConfig);

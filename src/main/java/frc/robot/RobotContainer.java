@@ -23,8 +23,7 @@ public class RobotContainer {
 
   // Controllers
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
-  private final CommandXboxController m_operatorController =
-      Constants.OIConstants.operatorController;
+  private final CommandXboxController m_operatorController = Constants.OIConstants.operatorController;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -57,9 +56,9 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_operatorController
-        .leftBumper()
-        .whileTrue(intake.setIntakeSpeedCommand(1)); // max speed i think
+    // Not finalized button bindings
+    m_operatorController.leftBumper().whileTrue(intake.intake());
+    m_operatorController.rightBumper().whileTrue(intake.reverseIntake());
   }
 
   /**
