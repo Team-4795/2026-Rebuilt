@@ -44,12 +44,8 @@ public class ShooterIOSim implements ShooterIO {
   }
 
   @Override
-  public void setVoltageTop(double voltage) {
+  public void setVoltage(double voltage) {
     simTopMotor.setSupplyVoltage(voltage);
-  }
-
-  @Override
-  public void setVoltageBottom(double voltage) {
     simBottomMotor.setSupplyVoltage(voltage);
   }
 
