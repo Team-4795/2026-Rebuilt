@@ -59,5 +59,10 @@ public class TurretIOReal implements TurretIO{
       turretMotor.setControl(control.withPosition(goal));
     }
 
+    @Override 
+    public void setVoltage(double voltage) {
+      turretMotor.setVoltage(voltage); 
+    }
+
  
 }
