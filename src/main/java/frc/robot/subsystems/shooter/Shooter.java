@@ -30,8 +30,8 @@ public class Shooter extends SubsystemBase {
     io.setVoltage(volts);
   }
 
-  public Command setVelocityRPMCommand(double velocityRPM) {
-    return runOnce(() -> io.setVelocityRPM(velocityRPM));
+  public Command setVelocityRPSCommand(double velocityRPS) {
+    return runOnce(() -> io.setVelocityRPS(velocityRPS));
   }
 
   @Override

@@ -7,16 +7,16 @@ public final class ShooterConstants {
 
   public static final int CURRENT_LIMIT = 0;
 
-  public static final int kP = 0;
-  public static final int kI = 0;
-  public static final int kD = 0;
-  public static final int kS = 0;
-  public static final int kV = 0;
-  public static final int kA = 0;
+  public static final double kP = 1;
+  public static final double kI = 0;
+  public static final double kD = 0;
+  public static final double kS = 0.2;
+  public static final double kV = 0.4;
+  public static final double kA = 0.1;
 
   public static final int GEARING = 0;
 
   // motion magic constants
-  public static final int MM_ACCELERATION = 0;
-  public static final int MM_JERK = 0;
+  public static final double MM_ACCELERATION = 0;
+  public static final double MM_JERK = 0;
 }

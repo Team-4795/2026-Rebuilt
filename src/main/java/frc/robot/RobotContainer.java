@@ -7,6 +7,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterIO;
+import frc.robot.subsystems.shooter.ShooterIOReal;
+import frc.robot.subsystems.shooter.ShooterIOSim;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -16,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private Shooter shooter;
 
   // Controllers
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
@@ -24,6 +29,19 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    switch (Constants.currentMode) {
+      case REAL:
+        shooter = Shooter.initialize(new ShooterIOReal());
+        break;
+
+      case SIM:
+        shooter = Shooter.initialize(new ShooterIOSim());
+        break;
+
+      default:
+        shooter = Shooter.initialize(new ShooterIO() {});
+        break;
+    }
 
     // Configure the trigger bindings
     configureBindings();
@@ -38,7 +56,11 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {}
+  private void configureBindings() {
+    // Test bindings
+    m_operatorController.leftBumper().whileTrue(shooter.setVelocityRPSCommand(100));
+    m_operatorController.leftBumper().onFalse(shooter.setVelocityRPSCommand(0));
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
