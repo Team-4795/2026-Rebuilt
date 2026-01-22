@@ -38,18 +38,12 @@ public class Intake extends SubsystemBase {
 
   // Spin motors max speed
   public Command intake() {
-    return Commands.startEnd(
-        () -> setIntakeSpeed(1),
-        () -> setIntakeSpeed(0),
-      this);
+    return Commands.startEnd(() -> setIntakeSpeed(1), () -> setIntakeSpeed(0), this);
   }
 
   // Spin motors max speed opposite direction
   public Command reverseIntake() {
-    return Commands.startEnd(
-        () -> setIntakeSpeed(-1),
-        () -> setIntakeSpeed(0),
-      this);
+    return Commands.startEnd(() -> setIntakeSpeed(-1), () -> setIntakeSpeed(0), this);
   }
 
   // Stop motors from spinning

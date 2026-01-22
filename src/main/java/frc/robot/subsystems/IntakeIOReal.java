@@ -45,8 +45,8 @@ public class IntakeIOReal implements IntakeIO {
 
     // Use if needed
     // BaseStatusSignal
-    //   .setUpdateFrequencyForAll(50, 
-    //     currentA, voltageA, velocityA, 
+    //   .setUpdateFrequencyForAll(50,
+    //     currentA, voltageA, velocityA,
     //     currentB, voltageB, velocityB);
     //
     // intakeMotorA.optimizeBusUtilization(1.0);
@@ -72,6 +72,9 @@ public class IntakeIOReal implements IntakeIO {
               + responseB.toString());
     }
   }
+
+  @Override
+  public void deploy() {}
 
   @Override
   public void setSpeed(double speed) {
