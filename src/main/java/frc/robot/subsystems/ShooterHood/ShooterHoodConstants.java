@@ -15,7 +15,7 @@ public final class ShooterHoodConstants {
 
   public static final int GEARING = 0;
 
-  public static final double maxAcceleration = 0;
   public static final double maxVelocity = 0;
+  public static final double maxAcceleration = 0;
   public static final double maxJerk = 0;
 }

@@ -1,5 +1,7 @@
 package frc.robot.subsystems.ShooterHood;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
@@ -25,8 +27,8 @@ public class ShooterHood extends SubsystemBase {
     io.updateInputs(inputs);
   }
 
-  public void setGoal(double goal) {
-    io.setGoal(goal);
+  public Command setGoal(double goal) {
+    return Commands.runOnce(() -> io.setGoal(goal), this);
   }
 
   @Override
