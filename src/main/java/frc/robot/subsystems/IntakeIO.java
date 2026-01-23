@@ -14,9 +14,12 @@ public interface IntakeIO {
     public double angularPositionRotB = 0.0;
     public double angularVelocityRPMB = 0.0;
     public double currentAmpsB = 0.0;
+
+    public double voltageDeploy = 0.0;
+    public double currentAmpsDeploy = 0.0;
   }
 
-  public default void deploy() {}
+  public default void setDeploySpeed(double speed) {}
 
   public default void setSpeed(double speed) {}
 
@@ -29,6 +32,18 @@ public interface IntakeIO {
   }
 
   public default double getCurrent() {
+    return 0;
+  }
+
+  public default double getDeployPos() {
+    return 0;
+  }
+
+  public default double getDeployVoltage() {
+    return 0;
+  }
+
+  public default double getDeployCurrent() {
     return 0;
   }
 
