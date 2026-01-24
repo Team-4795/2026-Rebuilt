@@ -10,6 +10,7 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
+import frc.robot.util.LoggedTunableNumber;
 
 public class TurretIOReal implements TurretIO {
   private final TalonFX turretMotor = new TalonFX(TurretConstants.CAN_ID);
@@ -20,7 +21,14 @@ public class TurretIOReal implements TurretIO {
   private final StatusSignal<Current> current = turretMotor.getStatorCurrent();
   private final StatusSignal<Voltage> voltage = turretMotor.getMotorVoltage();
   private final StatusSignal<AngularVelocity> velocity = turretMotor.getVelocity();
-  private double targetGoal = 0; 
+
+  LoggedTunableNumber KP = new LoggedTunableNumber("Turret/KP", TurretConstants.kP);
+  LoggedTunableNumber KI = new LoggedTunableNumber("Turret/KI", TurretConstants.kI);
+  LoggedTunableNumber KD = new LoggedTunableNumber("Turret/KD", TurretConstants.kD);
+
+  LoggedTunableNumber KS = new LoggedTunableNumber("Turret/KS", TurretConstants.kS);
+  LoggedTunableNumber KV = new LoggedTunableNumber("Turret/KV", TurretConstants.kV);
+  LoggedTunableNumber KA = new LoggedTunableNumber("Turret/KA", TurretConstants.kA);
 
   private MotionMagicVoltage control = new MotionMagicVoltage(0);
   private MotionMagicConfigs controlConfig = new MotionMagicConfigs();
@@ -34,20 +42,20 @@ public class TurretIOReal implements TurretIO {
     turretConfig.Slot0.kP = TurretConstants.kP;
     turretConfig.Slot0.kI = TurretConstants.kI;
     turretConfig.Slot0.kD = TurretConstants.kD;
-    
-      turretConfig.CurrentLimits.StatorCurrentLimit = 60; 
-      turretConfig.CurrentLimits.StatorCurrentLimitEnable = true; 
-      turretConfig.CurrentLimits.SupplyCurrentLimit = 60;
-      turretConfig.CurrentLimits.SupplyCurrentLimitEnable = true; 
-      turretConfig.Feedback.SensorToMechanismRatio = TurretConstants.gearing; 
 
-      turretConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true; 
-      turretConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true; 
+    turretConfig.CurrentLimits.StatorCurrentLimit = 60;
+    turretConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+    turretConfig.CurrentLimits.SupplyCurrentLimit = 60;
+    turretConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+    turretConfig.Feedback.SensorToMechanismRatio = TurretConstants.gearing;
 
-      turretConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = TurretConstants.maxAngle/360.0;
-      turretConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = TurretConstants.minAngle/360.0; 
+    turretConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+    turretConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
 
-      turretMotor.getConfigurator().apply(turretConfig);
+    turretConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = TurretConstants.maxAngle / 360.0;
+    turretConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = TurretConstants.minAngle / 360.0;
+
+    turretMotor.getConfigurator().apply(turretConfig);
 
     turretConfig.CurrentLimits.StatorCurrentLimit = 60;
     turretConfig.CurrentLimits.StatorCurrentLimitEnable = true;

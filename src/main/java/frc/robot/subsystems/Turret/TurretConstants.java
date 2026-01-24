@@ -12,10 +12,10 @@ public class TurretConstants {
   public static final double kA = 0;
   public static final double kS = 0;
 
-    public static final double maxVelocity = 0.5; 
-    public static final double maxAcceleration = 1; 
-    public static final double maxJerk = 0; 
-    public static final int CAN_ID = 0; 
+  public static final double maxVelocity = 0.5;
+  public static final double maxAcceleration = 1;
+  public static final double maxJerk = 0;
+  public static final int CAN_ID = 0;
 
-    public static final double gearing = 60; 
+  public static final double gearing = 60;
 }

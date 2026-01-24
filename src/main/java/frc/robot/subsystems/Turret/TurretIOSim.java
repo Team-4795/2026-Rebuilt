@@ -44,18 +44,16 @@ public class TurretIOSim implements TurretIO {
 
     simMotor = turretMotor.getSimState();
 
-  // Idk how to do this
-  // @Override
-  // public double getPosition() {
-  //     return simMotor.
-  // }
+    // Idk how to do this
+    // @Override
+    // public double getPosition() {
+    //     return simMotor.
+    // }
 
-
-}
+  }
 
   @Override
   public void setGoal(double position) {
     simMotor.setRawRotorPosition(position);
   }
-  
 }
