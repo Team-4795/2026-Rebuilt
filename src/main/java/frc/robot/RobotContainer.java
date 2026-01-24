@@ -114,6 +114,10 @@ public class RobotContainer {
 
     m_driverController.a().onTrue(turret.setGoal(0.7));
     m_driverController.b().onTrue(turret.setGoal(0.2));
+    m_driverController.leftBumper().whileTrue(Commands.startEnd(() -> turret.setVoltage(3), () -> turret.setVoltage(0), turret));
+    m_driverController.leftBumper().onTrue(Commands.startEnd(() -> turret.setVoltage(-3), () -> turret.setVoltage(0), turret));
+
+
 
     // Reset gyro to 0°
     m_driverController
@@ -125,6 +129,8 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
                     drive)
                 .ignoringDisable(true));
+
+
   }
 
   /**
