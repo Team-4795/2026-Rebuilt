@@ -17,5 +17,5 @@ public class TurretConstants {
     public static final double maxJerk = 0; 
     public static final int CAN_ID = 0; 
 
-    public static final double gearing = 0; 
+    public static final double gearing = 60; 
 }
