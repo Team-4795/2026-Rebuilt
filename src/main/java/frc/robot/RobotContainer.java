@@ -11,9 +11,13 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DriveCommands;
+import frc.robot.subsystems.Turret.Turret;
+import frc.robot.subsystems.Turret.TurretIO;
+import frc.robot.subsystems.Turret.TurretIOReal;
+import frc.robot.subsystems.Turret.TurretIOSim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
-import frc.robot.subsystems.drive.GyroIOPigeon2;
+import frc.robot.subsystems.drive.GyroIORedux;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
@@ -27,6 +31,7 @@ import frc.robot.subsystems.drive.ModuleIOSpark;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
+  private final Turret turret;
 
   // Controllers
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
@@ -39,11 +44,12 @@ public class RobotContainer {
         // Real robot, instantiate hardware IO implementations
         drive =
             new Drive(
-                new GyroIOPigeon2(),
+                new GyroIORedux(),
                 new ModuleIOSpark(0),
                 new ModuleIOSpark(1),
                 new ModuleIOSpark(2),
                 new ModuleIOSpark(3));
+        turret = Turret.initialize(new TurretIOReal());
         break;
 
       case SIM:
@@ -55,6 +61,7 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim());
+        turret = Turret.initialize(new TurretIOSim());
         break;
 
       default:
@@ -66,6 +73,7 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
+        turret = Turret.initialize(new TurretIO() {});
         break;
     }
 

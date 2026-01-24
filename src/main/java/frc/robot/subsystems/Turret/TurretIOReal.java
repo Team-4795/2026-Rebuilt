@@ -1,21 +1,22 @@
 package frc.robot.subsystems.Turret;
 
+import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 
-public class TurretIOReal implements TurretIO{
+public class TurretIOReal implements TurretIO {
   private final TalonFX turretMotor = new TalonFX(TurretConstants.CAN_ID);
 
   private TalonFXConfiguration turretConfig = new TalonFXConfiguration();
 
+  private final StatusSignal<Angle> position = turretMotor.getPosition();
   private final StatusSignal<Current> current = turretMotor.getStatorCurrent();
   private final StatusSignal<Voltage> voltage = turretMotor.getMotorVoltage();
   private final StatusSignal<AngularVelocity> velocity = turretMotor.getVelocity();
@@ -23,46 +24,52 @@ public class TurretIOReal implements TurretIO{
   private MotionMagicVoltage control = new MotionMagicVoltage(0);
   private MotionMagicConfigs controlConfig = new MotionMagicConfigs();
 
-    public TurretIOReal() {
-      turretConfig.Slot0.kA = TurretConstants.kA;
-      turretConfig.Slot0.kV = TurretConstants.kV;
-      turretConfig.Slot0.kS = TurretConstants.kS;
-      turretConfig.Slot0.kP = TurretConstants.kP;
-      turretConfig.Slot0.kI = TurretConstants.kI;
-      turretConfig.Slot0.kD = TurretConstants.kD;
+  private double goal = 0;
 
-      turretConfig.CurrentLimits.StatorCurrentLimit = 60; 
-      turretConfig.CurrentLimits.StatorCurrentLimitEnable = true; 
-      
-      turretMotor.getConfigurator().apply(turretConfig);
+  public TurretIOReal() {
+    turretConfig.Slot0.kA = TurretConstants.kA;
+    turretConfig.Slot0.kV = TurretConstants.kV;
+    turretConfig.Slot0.kS = TurretConstants.kS;
+    turretConfig.Slot0.kP = TurretConstants.kP;
+    turretConfig.Slot0.kI = TurretConstants.kI;
+    turretConfig.Slot0.kD = TurretConstants.kD;
 
-      controlConfig.MotionMagicAcceleration = TurretConstants.maxAcceleration;
-      controlConfig.MotionMagicCruiseVelocity= TurretConstants.maxVelocity;
-      controlConfig.MotionMagicJerk = TurretConstants.maxJerk; 
+    turretConfig.CurrentLimits.StatorCurrentLimit = 60;
+    turretConfig.CurrentLimits.StatorCurrentLimitEnable = true;
 
-      turretMotor.getConfigurator().apply(controlConfig);
-      
-    }
+    turretMotor.getConfigurator().apply(turretConfig);
 
-    @Override 
-    public double getPosition() {
-        return turretMotor.getPosition().getValueAsDouble();
-    }
+    controlConfig.MotionMagicAcceleration = TurretConstants.maxAcceleration;
+    controlConfig.MotionMagicCruiseVelocity = TurretConstants.maxVelocity;
+    controlConfig.MotionMagicJerk = TurretConstants.maxJerk;
 
-    @Override 
-    public void updateMotionProfile() {
-        
-    }
+    turretMotor.getConfigurator().apply(controlConfig);
+  }
 
-    @Override 
-    public void setGoal(double goal) {
-      turretMotor.setControl(control.withPosition(goal));
-    }
+  @Override
+  public double getPosition() {
+    return turretMotor.getPosition().getValueAsDouble();
+  }
 
-    @Override 
-    public void setVoltage(double voltage) {
-      turretMotor.setVoltage(voltage); 
-    }
+  @Override
+  public void setVoltage(double voltage) {
+    turretMotor.setVoltage(voltage);
+  }
 
- 
+  @Override
+  public void setGoal(double goal) {
+    this.goal = goal;
+    turretMotor.setControl(control.withPosition(goal));
+  }
+
+  @Override
+  public void updateInputs(TurretIOInputs inputs) {
+    BaseStatusSignal.refreshAll(current, voltage, velocity);
+
+    inputs.goal = this.goal;
+    inputs.position = position.getValueAsDouble();
+    inputs.current = current.getValueAsDouble();
+    inputs.volts = voltage.getValueAsDouble();
+    inputs.velocity = velocity.getValueAsDouble();
+  }
 }
