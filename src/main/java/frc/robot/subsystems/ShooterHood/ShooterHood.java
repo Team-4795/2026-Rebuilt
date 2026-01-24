@@ -22,8 +22,8 @@ public class ShooterHood extends SubsystemBase {
     return instance;
   }
 
-  private ShooterHood(ShooterHoodIO shooterIO) {
-    io = shooterIO;
+  private ShooterHood(ShooterHoodIO shooterHoodIO) {
+    io = shooterHoodIO;
     io.updateInputs(inputs);
   }
 
@@ -34,6 +34,6 @@ public class ShooterHood extends SubsystemBase {
   @Override
   public void periodic() {
     io.updateInputs(inputs);
-    Logger.processInputs("Shooter", inputs);
+    Logger.processInputs("Shooter Hood", inputs);
   }
 }

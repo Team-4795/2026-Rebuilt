@@ -13,7 +13,9 @@ public interface ShooterHoodIO {
 
   public default void updateInputs(ShooterHoodIOInputs inputs) {}
 
-  public default double getPosition() { return 0.0; }
+  public default double getPosition() {
+    return 0.0;
+  }
 
   public default void setGoal(double goal) {}
 }
