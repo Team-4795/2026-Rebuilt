@@ -1,5 +1,7 @@
 package frc.robot.subsystems.Turret;
 
+import edu.wpi.first.math.geometry.Translation2d;
+
 public class TurretConstants {
   public static final double margin = 10;
   public static final double minAngle = 0 + margin;
@@ -18,4 +20,5 @@ public class TurretConstants {
   public static final int CAN_ID = 0;
 
   public static final double gearing = 60;
+  public static final Translation2d OFFSET = null;
 }

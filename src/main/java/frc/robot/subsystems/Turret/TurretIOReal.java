@@ -6,6 +6,7 @@ import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
@@ -33,7 +34,7 @@ public class TurretIOReal implements TurretIO {
   private MotionMagicVoltage control = new MotionMagicVoltage(0);
   private MotionMagicConfigs controlConfig = new MotionMagicConfigs();
 
-  private double goal = 0;
+  private double goal = 0.2;
 
   public TurretIOReal() {
     turretConfig.Slot0.kA = TurretConstants.kA;
@@ -80,8 +81,14 @@ public class TurretIOReal implements TurretIO {
   }
 
   @Override
+  public void zero() {
+    turretMotor.setPosition(0);
+  }
+
+  @Override
   public void setGoal(double goal) {
     this.goal = goal;
+    MathUtil.clamp(goal, TurretConstants.minAngle / 360.0, TurretConstants.maxAngle / 360.0);
     turretMotor.setControl(control.withPosition(goal));
   }
 

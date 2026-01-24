@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -38,4 +39,6 @@ public final class Constants {
     public static final double KAxisDeadband = 0.1;
     public static final double OperatorLAxisDeadband = 0.3;
   }
+
+  public static Translation2d hub;
 }
