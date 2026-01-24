@@ -5,7 +5,7 @@ public class TurretConstants {
   public static final double minAngle = 0 + margin;
   public static final double maxAngle = 360 - margin;
 
-  public static final double kP = 0;
+  public static final double kP = 1;
   public static final double kI = 0;
   public static final double kD = 0;
   public static final double kV = 0;

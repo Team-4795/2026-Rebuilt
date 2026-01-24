@@ -112,6 +112,9 @@ public class RobotContainer {
     // Switch to X pattern
     m_driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
+    m_driverController.a().onTrue(turret.setGoal(0.7));
+    m_driverController.b().onTrue(turret.setGoal(0.2));
+
     // Reset gyro to 0°
     m_driverController
         .b()
