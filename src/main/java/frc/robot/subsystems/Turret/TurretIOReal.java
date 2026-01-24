@@ -20,6 +20,7 @@ public class TurretIOReal implements TurretIO {
   private final StatusSignal<Current> current = turretMotor.getStatorCurrent();
   private final StatusSignal<Voltage> voltage = turretMotor.getMotorVoltage();
   private final StatusSignal<AngularVelocity> velocity = turretMotor.getVelocity();
+  private double targetGoal = 0; 
 
   private MotionMagicVoltage control = new MotionMagicVoltage(0);
   private MotionMagicConfigs controlConfig = new MotionMagicConfigs();
@@ -33,6 +34,20 @@ public class TurretIOReal implements TurretIO {
     turretConfig.Slot0.kP = TurretConstants.kP;
     turretConfig.Slot0.kI = TurretConstants.kI;
     turretConfig.Slot0.kD = TurretConstants.kD;
+    
+      turretConfig.CurrentLimits.StatorCurrentLimit = 60; 
+      turretConfig.CurrentLimits.StatorCurrentLimitEnable = true; 
+      turretConfig.CurrentLimits.SupplyCurrentLimit = 60;
+      turretConfig.CurrentLimits.SupplyCurrentLimitEnable = true; 
+      turretConfig.Feedback.SensorToMechanismRatio = TurretConstants.gearing; 
+
+      turretConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true; 
+      turretConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true; 
+
+      turretConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = TurretConstants.maxAngle/360.0;
+      turretConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = TurretConstants.minAngle/360.0; 
+
+      turretMotor.getConfigurator().apply(turretConfig);
 
     turretConfig.CurrentLimits.StatorCurrentLimit = 60;
     turretConfig.CurrentLimits.StatorCurrentLimitEnable = true;

@@ -43,7 +43,6 @@ public class TurretIOSim implements TurretIO {
     turretMotor.getConfigurator().apply(controlConfig);
 
     simMotor = turretMotor.getSimState();
-  }
 
   // Idk how to do this
   // @Override
@@ -51,8 +50,12 @@ public class TurretIOSim implements TurretIO {
   //     return simMotor.
   // }
 
+
+}
+
   @Override
   public void setGoal(double position) {
     simMotor.setRawRotorPosition(position);
   }
+  
 }

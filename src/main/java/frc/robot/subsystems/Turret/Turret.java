@@ -31,6 +31,10 @@ public class Turret extends SubsystemBase {
     return Commands.runOnce(() -> io.setGoal(goal), this);
   }
 
+  public void setVoltage(double voltage) {
+    io.setVoltage(voltage);
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);
