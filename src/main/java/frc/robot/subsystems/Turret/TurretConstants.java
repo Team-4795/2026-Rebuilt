@@ -14,6 +14,9 @@ public class TurretConstants {
   public static final double kA = 0;
   public static final double kS = 0;
 
+  public static final double simkP = 6.5;
+  public static final double simkV = 0;
+
   public static final double maxVelocity = 2;
   public static final double maxAcceleration = 4;
   public static final double maxJerk = 0;

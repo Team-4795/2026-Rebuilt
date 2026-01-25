@@ -34,8 +34,6 @@ public class TurretIOReal implements TurretIO {
   private MotionMagicVoltage control = new MotionMagicVoltage(0);
   private MotionMagicConfigs controlConfig = new MotionMagicConfigs();
 
-  private double goal = 0.2;
-
   public TurretIOReal() {
     turretConfig.Slot0.kA = TurretConstants.kA;
     turretConfig.Slot0.kV = TurretConstants.kV;
@@ -44,10 +42,11 @@ public class TurretIOReal implements TurretIO {
     turretConfig.Slot0.kI = TurretConstants.kI;
     turretConfig.Slot0.kD = TurretConstants.kD;
 
-    turretConfig.CurrentLimits.StatorCurrentLimit = 60;
     turretConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-    turretConfig.CurrentLimits.SupplyCurrentLimit = 60;
+    turretConfig.CurrentLimits.StatorCurrentLimit = 60;
     turretConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+    turretConfig.CurrentLimits.SupplyCurrentLimit = 60;
+
     turretConfig.Feedback.SensorToMechanismRatio = TurretConstants.gearing;
 
     turretConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
@@ -55,11 +54,6 @@ public class TurretIOReal implements TurretIO {
 
     turretConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = TurretConstants.maxAngle / 360.0;
     turretConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = TurretConstants.minAngle / 360.0;
-
-    turretMotor.getConfigurator().apply(turretConfig);
-
-    turretConfig.CurrentLimits.StatorCurrentLimit = 60;
-    turretConfig.CurrentLimits.StatorCurrentLimitEnable = true;
 
     turretMotor.getConfigurator().apply(turretConfig);
 
@@ -87,16 +81,15 @@ public class TurretIOReal implements TurretIO {
 
   @Override
   public void setGoal(double goal) {
-    this.goal = goal;
-    MathUtil.clamp(goal, TurretConstants.minAngle / 360.0, TurretConstants.maxAngle / 360.0);
+    goal = MathUtil.clamp(goal, TurretConstants.minAngle / 360.0, TurretConstants.maxAngle / 360.0);
     turretMotor.setControl(control.withPosition(goal));
   }
 
   @Override
   public void updateInputs(TurretIOInputs inputs) {
-    BaseStatusSignal.refreshAll(current, voltage, velocity);
+    BaseStatusSignal.refreshAll(position, current, voltage, velocity);
 
-    inputs.goal = this.goal;
+    inputs.goal = turretMotor.getClosedLoopReference().getValueAsDouble();
     inputs.position = position.getValueAsDouble();
     inputs.current = current.getValueAsDouble();
     inputs.volts = voltage.getValueAsDouble();

@@ -23,12 +23,12 @@ public class Turret extends SubsystemBase {
   }
 
   private Turret(TurretIO turretIO) {
-    io = turretIO;
+    this.io = turretIO;
     io.updateInputs(inputs);
   }
 
   public Command setGoal(double goal) {
-    return Commands.runOnce(() -> io.setGoal(goal), this);
+    return Commands.run(() -> io.setGoal(goal), this);
   }
 
   public void setVoltage(double voltage) {
