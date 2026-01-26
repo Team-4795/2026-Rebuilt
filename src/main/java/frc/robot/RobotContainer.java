@@ -56,7 +56,7 @@ public class RobotContainer {
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
         drive =
-            new Drive(
+            Drive.initialize(
                 new GyroIO() {},
                 new ModuleIOSim(),
                 new ModuleIOSim(),
@@ -68,7 +68,7 @@ public class RobotContainer {
       default:
         // Replayed robot, disable IO implementations
         drive =
-            new Drive(
+            Drive.initialize(
                 new GyroIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {},
