@@ -21,7 +21,7 @@ public class Turret extends SubsystemBase {
   }
 
   private Turret(TurretIO turretIO) {
-    io = turretIO;
+    this.io = turretIO;
     io.updateInputs(inputs);
   }
 
