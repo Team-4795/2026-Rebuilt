@@ -87,14 +87,14 @@ public class TurretIOReal implements TurretIO {
 
   @Override
   public void setGoal(double goal) {
-    this.goal = goal;
-    MathUtil.clamp(goal, TurretConstants.minAngle / 360.0, TurretConstants.maxAngle / 360.0);
-    turretMotor.setControl(control.withPosition(goal));
+    this.goal =
+        MathUtil.clamp(goal, TurretConstants.minAngle / 360.0, TurretConstants.maxAngle / 360.0);
+    turretMotor.setControl(control.withPosition(this.goal));
   }
 
   @Override
   public void updateInputs(TurretIOInputs inputs) {
-    BaseStatusSignal.refreshAll(current, voltage, velocity);
+    BaseStatusSignal.refreshAll(position, current, voltage, velocity);
 
     inputs.goal = this.goal;
     inputs.position = position.getValueAsDouble();

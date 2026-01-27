@@ -1,7 +1,5 @@
 package frc.robot.subsystems.Turret;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
@@ -27,8 +25,8 @@ public class Turret extends SubsystemBase {
     io.updateInputs(inputs);
   }
 
-  public Command setGoal(double goal) {
-    return Commands.runOnce(() -> io.setGoal(goal), this);
+  public void setGoal(double goal) {
+    io.setGoal(goal);
   }
 
   public void setVoltage(double voltage) {

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AimAtHub;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretIO;
@@ -17,10 +18,8 @@ import frc.robot.subsystems.Turret.TurretIOReal;
 import frc.robot.subsystems.Turret.TurretIOSim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
-import frc.robot.subsystems.drive.GyroIORedux;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
-import frc.robot.subsystems.drive.ModuleIOSpark;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -45,11 +44,11 @@ public class RobotContainer {
         // Real robot, instantiate hardware IO implementations
         drive =
             new Drive(
-                new GyroIORedux(),
-                new ModuleIOSpark(0),
-                new ModuleIOSpark(1),
-                new ModuleIOSpark(2),
-                new ModuleIOSpark(3));
+                new GyroIO() {},
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim());
         turret = Turret.initialize(new TurretIOReal());
         break;
 
@@ -113,15 +112,16 @@ public class RobotContainer {
     // Switch to X pattern
     m_driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
-    m_driverController.a().onTrue(turret.setGoal(0.7));
-    m_driverController.b().onTrue(turret.setGoal(0.2));
-    m_driverController
-        .leftBumper()
-        .whileTrue(
-            Commands.startEnd(() -> turret.setVoltage(3), () -> turret.setVoltage(0), turret));
-    m_driverController
-        .leftBumper()
-        .onTrue(Commands.startEnd(() -> turret.setVoltage(-3), () -> turret.setVoltage(0), turret));
+    m_driverController.a().onTrue(Commands.runOnce(() -> turret.setGoal(0.7)));
+    m_driverController.b().onTrue(Commands.runOnce(() -> turret.setGoal(0.2)));
+    // m_driverController
+    //     .leftBumper()
+    //     .whileTrue(
+    //         Commands.startEnd(() -> turret.setVoltage(3), () -> turret.setVoltage(0), turret));
+    // m_driverController
+    //     .leftBumper()
+    //     .onTrue(Commands.startEnd(() -> turret.setVoltage(-3), () -> turret.setVoltage(0),
+    // turret));
 
     // Reset gyro to 0°
     m_driverController
@@ -133,6 +133,8 @@ public class RobotContainer {
                             new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
                     drive)
                 .ignoringDisable(true));
+
+    m_driverController.leftBumper().whileTrue(new AimAtHub(drive, turret));
   }
 
   /**
