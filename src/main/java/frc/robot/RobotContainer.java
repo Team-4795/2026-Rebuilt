@@ -58,8 +58,8 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Test bindings
-    m_operatorController.leftBumper().whileTrue(shooter.setVelocityRPSCommand(100));
-    m_operatorController.leftBumper().onFalse(shooter.setVelocityRPSCommand(0));
+    m_driverController.leftBumper().whileTrue(shooter.setVelocityRPSCommand(100));
+    m_driverController.leftBumper().onFalse(shooter.setVelocityRPSCommand(0));
   }
 
   /**

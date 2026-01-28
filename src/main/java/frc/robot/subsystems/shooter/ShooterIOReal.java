@@ -20,7 +20,8 @@ public class ShooterIOReal implements ShooterIO {
   private final StatusSignal<Current> topCurrent = topShooterMotor.getTorqueCurrent();
   private final StatusSignal<Current> bottomCurrent = bottomShooterMotor.getTorqueCurrent();
 
-  private final MotionMagicVelocityTorqueCurrentFOC m_request = new MotionMagicVelocityTorqueCurrentFOC(0);
+  private final MotionMagicVelocityTorqueCurrentFOC m_request =
+      new MotionMagicVelocityTorqueCurrentFOC(0);
 
   private double volts = 0.0;
   private double goalVelocityRPS = 0.0;
@@ -41,7 +42,8 @@ public class ShooterIOReal implements ShooterIO {
     bottomShooterMotor.getConfigurator().apply(bottomConfig);
 
     // Bottom motor follows top motor. Spin in opposite directions
-    bottomShooterMotor.setControl(new Follower(topShooterMotor.getDeviceID(), MotorAlignmentValue.Opposed));
+    bottomShooterMotor.setControl(
+        new Follower(topShooterMotor.getDeviceID(), MotorAlignmentValue.Opposed));
   }
 
   @Override
@@ -74,6 +76,8 @@ public class ShooterIOReal implements ShooterIO {
   public TalonFXConfiguration config(double kV) {
     var talonFXConfig = new TalonFXConfiguration();
 
+    talonFXConfig.Audio.BeepOnBoot = true;
+
     // PID + FF settings
     talonFXConfig.Slot0.kS = ShooterConstants.kS;
     talonFXConfig.Slot0.kV = kV;
@@ -84,10 +88,12 @@ public class ShooterIOReal implements ShooterIO {
 
     talonFXConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     talonFXConfig.CurrentLimits.StatorCurrentLimit = ShooterConstants.CURRENT_LIMIT;
+    talonFXConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+    talonFXConfig.CurrentLimits.SupplyCurrentLimit = ShooterConstants.CURRENT_LIMIT;
+
+    talonFXConfig.Feedback.SensorToMechanismRatio = ShooterConstants.GEARING;
 
     talonFXConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-
-    talonFXConfig.Audio.BeepOnBoot = true;
 
     // Motion Magic settings
     var motionMagicConfig = talonFXConfig.MotionMagic;
