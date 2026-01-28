@@ -45,7 +45,7 @@ public class RobotContainer {
       case REAL:
         // Real robot, instantiate hardware IO implementations
         drive =
-            new Drive(
+            Drive.initialize(
                 new GyroIORedux(),
                 new ModuleIOSpark(0),
                 new ModuleIOSpark(1),
@@ -57,7 +57,7 @@ public class RobotContainer {
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
         drive =
-            new Drive(
+            Drive.initialize(
                 new GyroIO() {},
                 new ModuleIOSim(),
                 new ModuleIOSim(),
@@ -69,7 +69,7 @@ public class RobotContainer {
       default:
         // Replayed robot, disable IO implementations
         drive =
-            new Drive(
+            Drive.initialize(
                 new GyroIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {},
@@ -114,8 +114,8 @@ public class RobotContainer {
     // Switch to X pattern
     m_driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
-    m_driverController.a().onTrue(Commands.runOnce(() -> turret.setGoal(0.7)));
-    m_driverController.b().onTrue(Commands.runOnce(() -> turret.setGoal(0.2)));
+    m_driverController.rightTrigger().onTrue(Commands.runOnce(() -> turret.setGoal(0.7)));
+    m_driverController.leftTrigger().onTrue(Commands.runOnce(() -> turret.setGoal(0.2)));
     // m_driverController
     //     .leftBumper()
     //     .whileTrue(

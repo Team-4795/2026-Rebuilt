@@ -1,78 +1,70 @@
 package frc.robot.subsystems.Turret;
 
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.controls.VoltageOut;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.sim.TalonFXSimState;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 
 public class TurretIOSim implements TurretIO {
-  private final TalonFX turretMotor = new TalonFX(TurretConstants.CAN_ID);
-  private TalonFXSimState simMotor;
-
-  private TalonFXConfiguration turretConfig = new TalonFXConfiguration();
-  private MotionMagicVoltage control = new MotionMagicVoltage(0);
-  private MotionMagicConfigs controlConfig = new MotionMagicConfigs();
-
-  private final DCMotorSim m_motorSimModel =
+  private final DCMotorSim turretSimMotor =
       new DCMotorSim(
-          LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX44(1), 0.02, 60),
+          LinearSystemId.createDCMotorSystem(
+              DCMotor.getKrakenX44(1), 0.02, TurretConstants.gearing),
           DCMotor.getKrakenX44(1));
 
-  public TurretIOSim() {
-    turretConfig.Slot0.kA = TurretConstants.kA;
-    turretConfig.Slot0.kV = TurretConstants.simkV;
-    turretConfig.Slot0.kS = TurretConstants.kS;
-    turretConfig.Slot0.kP = TurretConstants.simkP;
-    turretConfig.Slot0.kI = TurretConstants.kI;
-    turretConfig.Slot0.kD = TurretConstants.kD;
+  private ArmFeedforward ffmodel = new ArmFeedforward(0, 0, 0.88);
+  private PIDController controller = new PIDController(1, 0, 0);
 
-    turretConfig.CurrentLimits.StatorCurrentLimit = 60;
-    turretConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+  private TrapezoidProfile.Constraints constraints =
+      new TrapezoidProfile.Constraints(
+          TurretConstants.maxVelocity, TurretConstants.maxAcceleration);
+  private TrapezoidProfile profile = new TrapezoidProfile(constraints);
 
-    turretConfig.Feedback.SensorToMechanismRatio = TurretConstants.gearing;
+  private TrapezoidProfile.State goal = new TrapezoidProfile.State(0, 0);
+  private TrapezoidProfile.State setpoint = new TrapezoidProfile.State(0, 0);
 
-    turretMotor.getConfigurator().apply(turretConfig);
-
-    controlConfig.MotionMagicAcceleration = TurretConstants.maxAcceleration;
-    controlConfig.MotionMagicCruiseVelocity = TurretConstants.maxVelocity;
-    controlConfig.MotionMagicJerk = TurretConstants.maxJerk;
-
-    turretMotor.getConfigurator().apply(controlConfig);
-  }
+  private double voltage = 0;
 
   @Override
-  public void setGoal(double goal) {
-    turretMotor.setControl(control.withPosition(goal));
+  public void setGoal(double angle) {
+    if (angle != goal.position) {
+      setpoint =
+          new TrapezoidProfile.State(
+              turretSimMotor.getAngularPositionRad(), turretSimMotor.getAngularVelocityRadPerSec());
+      double angleRotations =
+          MathUtil.clamp(angle, TurretConstants.minAngle / 360.0, TurretConstants.maxAngle / 360.0);
+      goal = new TrapezoidProfile.State(Units.rotationsToRadians(angleRotations), 0);
+    }
   }
 
   @Override
   public void setVoltage(double volts) {
-    turretMotor.setControl(new VoltageOut(volts));
+    turretSimMotor.setInputVoltage(MathUtil.clamp(volts, -12, 12));
+    this.voltage = volts;
+  }
+
+  @Override
+  public double getPosition() {
+    return turretSimMotor.getAngularPositionRotations();
   }
 
   @Override
   public void updateInputs(TurretIOInputs inputs) {
-    simMotor = turretMotor.getSimState();
-    simMotor.setSupplyVoltage(12.0);
+    inputs.goal = Units.radiansToRotations(goal.position);
+    inputs.volts = this.voltage;
+    inputs.position = turretSimMotor.getAngularPositionRotations();
+    inputs.velocity = turretSimMotor.getAngularVelocityRPM() / 60.0;
+    inputs.current = turretSimMotor.getCurrentDrawAmps();
 
-    m_motorSimModel.setInputVoltage(simMotor.getMotorVoltage());
-    m_motorSimModel.update(0.020);
+    setpoint = profile.calculate(0.02, setpoint, goal);
+    setVoltage(
+        ffmodel.calculate(turretSimMotor.getAngularPositionRad(), setpoint.velocity)
+            + controller.calculate(turretSimMotor.getAngularPositionRad(), setpoint.position));
 
-    double rotorPos = m_motorSimModel.getAngularPositionRotations() * TurretConstants.gearing;
-    double rotorVelRPS = m_motorSimModel.getAngularVelocityRPM() * TurretConstants.gearing / 60.0;
-
-    simMotor.setRawRotorPosition(rotorPos);
-    simMotor.setRotorVelocity(rotorVelRPS);
-
-    inputs.goal = turretMotor.getClosedLoopReference().getValueAsDouble();
-    inputs.position = m_motorSimModel.getAngularPositionRotations();
-    inputs.velocity = m_motorSimModel.getAngularVelocityRPM() / 60.0;
-    inputs.current = m_motorSimModel.getCurrentDrawAmps();
-    inputs.volts = m_motorSimModel.getInputVoltage();
+    turretSimMotor.update(0.02);
   }
 }
