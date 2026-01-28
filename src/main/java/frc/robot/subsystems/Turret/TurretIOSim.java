@@ -1,8 +1,8 @@
 package frc.robot.subsystems.Turret;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -16,12 +16,10 @@ public class TurretIOSim implements TurretIO {
               DCMotor.getKrakenX44(1), 0.02, TurretConstants.gearing),
           DCMotor.getKrakenX44(1));
 
-  private ArmFeedforward ffmodel = new ArmFeedforward(0, 0, 0.88);
+  private SimpleMotorFeedforward ffmodel = new SimpleMotorFeedforward(0, 0.86);
   private PIDController controller = new PIDController(1, 0, 0);
 
-  private TrapezoidProfile.Constraints constraints =
-      new TrapezoidProfile.Constraints(
-          TurretConstants.maxVelocity, TurretConstants.maxAcceleration);
+  private TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(12, 12);
   private TrapezoidProfile profile = new TrapezoidProfile(constraints);
 
   private TrapezoidProfile.State goal = new TrapezoidProfile.State(0, 0);
@@ -62,7 +60,7 @@ public class TurretIOSim implements TurretIO {
 
     setpoint = profile.calculate(0.02, setpoint, goal);
     setVoltage(
-        ffmodel.calculate(turretSimMotor.getAngularPositionRad(), setpoint.velocity)
+        ffmodel.calculate(setpoint.velocity)
             + controller.calculate(turretSimMotor.getAngularPositionRad(), setpoint.position));
 
     turretSimMotor.update(0.02);

@@ -114,8 +114,9 @@ public class RobotContainer {
     // Switch to X pattern
     m_driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
-    m_driverController.rightTrigger().onTrue(Commands.runOnce(() -> turret.setGoal(0.7)));
-    m_driverController.leftTrigger().onTrue(Commands.runOnce(() -> turret.setGoal(0.2)));
+    m_driverController.rightTrigger().onTrue(Commands.runOnce(() -> turret.setGoal(0.75)));
+    m_driverController.leftTrigger().onTrue(Commands.runOnce(() -> turret.setGoal(0.25)));
+
     // m_driverController
     //     .leftBumper()
     //     .whileTrue(

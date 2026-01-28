@@ -45,6 +45,7 @@ public class AimAtHub extends Command {
 
     turretAngle =
         (Math.atan2(deltaY, deltaX) - robotPose.getRotation().getRadians()) / (2 * Math.PI);
+    turretAngle = -turretAngle - TurretConstants.angleOffset;
     desiredRot = (((turretAngle % 1.0) + 1.0) % 1.0);
     turret.setGoal(desiredRot);
     System.err.println("angle is" + desiredRot);

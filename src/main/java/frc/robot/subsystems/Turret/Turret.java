@@ -38,11 +38,11 @@ public class Turret extends SubsystemBase {
     io.setVoltage(voltage);
   }
 
-  public double getAngle() {
+  public double getTurretAngle() {
     return io.getPosition();
   }
 
-  // See direction turret aims IRL in ascope
+  // Visualize the direction the turret aims in ascope
   public Pose2d visualizeTurret() {
     Translation2d turretOffsetPose = TurretConstants.OFFSET;
     Pose2d robotPose = Drive.getInstance().getPose();
@@ -55,7 +55,8 @@ public class Turret extends SubsystemBase {
             turretTranslation.getX(),
             turretTranslation.getY(),
             new Rotation2d(
-                Units.rotationsToRadians(getAngle()) + robotPose.getRotation().getRadians()));
+                -(Units.rotationsToRadians(getTurretAngle() + TurretConstants.angleOffset)
+                    - robotPose.getRotation().getRadians())));
 
     return turretPose;
   }
