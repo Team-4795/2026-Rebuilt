@@ -13,9 +13,13 @@ public final class ShooterHoodConstants {
   public static final int kV = 0;
   public static final int kA = 0;
 
-  public static final int GEARING = 0;
+  public static final int GEARING = 30;
 
-  public static final double maxVelocity = 0;
-  public static final double maxAcceleration = 0;
+  // Rotations
+  public static final double maxAngle = 0.5;
+  public static final double minAngle = 0.0;
+
+  public static final double maxVelocity = 10;
+  public static final double maxAcceleration = 10;
   public static final double maxJerk = 0;
 }

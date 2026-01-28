@@ -24,7 +24,8 @@ public class RobotContainer {
 
   // Controllers
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
-  private final CommandXboxController m_operatorController = Constants.OIConstants.operatorController;
+  private final CommandXboxController m_operatorController =
+      Constants.OIConstants.operatorController;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -57,8 +58,8 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Random button bindings
-    m_operatorController.rightBumper().onTrue(shooterHood.setGoal(0));
-    m_operatorController.leftBumper().onTrue(shooterHood.setGoal(0.25));
+    m_driverController.rightBumper().onTrue(shooterHood.setGoal(0));
+    m_driverController.leftBumper().onTrue(shooterHood.setGoal(0.25));
   }
 
   /**

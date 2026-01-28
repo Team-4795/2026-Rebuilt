@@ -9,6 +9,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Voltage;
 
 public class ShooterHoodIOReal implements ShooterHoodIO {
   private TalonFX shooterHoodMotor = new TalonFX(ShooterHoodConstants.CAN_ID);
@@ -19,16 +20,27 @@ public class ShooterHoodIOReal implements ShooterHoodIO {
   private final StatusSignal<Angle> position = shooterHoodMotor.getPosition();
   private final StatusSignal<AngularVelocity> velocityRPS = shooterHoodMotor.getVelocity();
   private final StatusSignal<Current> current = shooterHoodMotor.getTorqueCurrent();
+  private final StatusSignal<Voltage> voltage = shooterHoodMotor.getMotorVoltage();
 
   private double goal = 0.0;
 
   public ShooterHoodIOReal() {
-    motorConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-    motorConfig.CurrentLimits.StatorCurrentLimit = ShooterHoodConstants.CURRENT_LIMIT;
-
     motorConfig.Audio.BeepOnBoot = true;
 
+    motorConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+    motorConfig.CurrentLimits.StatorCurrentLimit = ShooterHoodConstants.CURRENT_LIMIT;
+    motorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+    motorConfig.CurrentLimits.SupplyCurrentLimit = ShooterHoodConstants.CURRENT_LIMIT;
+
     motorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+
+    motorConfig.Feedback.SensorToMechanismRatio = ShooterHoodConstants.GEARING;
+
+    motorConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+    motorConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+
+    motorConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = ShooterHoodConstants.maxAngle;
+    motorConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = ShooterHoodConstants.minAngle;
 
     motorConfig.Slot0.kA = ShooterHoodConstants.kA;
     motorConfig.Slot0.kV = ShooterHoodConstants.kV;
@@ -50,6 +62,11 @@ public class ShooterHoodIOReal implements ShooterHoodIO {
   }
 
   @Override
+  public void setVoltage(double volts) {
+    shooterHoodMotor.setVoltage(volts);
+  }
+
+  @Override
   public void setGoal(double goal) {
     this.goal = goal;
     shooterHoodMotor.setControl(m_request.withPosition(goal));
@@ -57,11 +74,12 @@ public class ShooterHoodIOReal implements ShooterHoodIO {
 
   @Override
   public void updateInputs(ShooterHoodIOInputs inputs) {
-    BaseStatusSignal.refreshAll(position, velocityRPS, current);
+    BaseStatusSignal.refreshAll(position, velocityRPS, current, voltage);
 
     inputs.goalRotations = this.goal;
     inputs.position = position.getValueAsDouble();
     inputs.velocityRPS = velocityRPS.getValueAsDouble();
     inputs.current = current.getValueAsDouble();
+    inputs.voltage = voltage.getValueAsDouble();
   }
 }

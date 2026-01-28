@@ -9,6 +9,7 @@ public interface ShooterHoodIO {
     public double position = 0.0;
     public double velocityRPS = 0.0;
     public double current = 0.0;
+    public double voltage = 0.0;
   }
 
   public default void updateInputs(ShooterHoodIOInputs inputs) {}
@@ -16,6 +17,8 @@ public interface ShooterHoodIO {
   public default double getPosition() {
     return 0.0;
   }
+
+  public default void setVoltage(double volts) {}
 
   public default void setGoal(double goal) {}
 }
