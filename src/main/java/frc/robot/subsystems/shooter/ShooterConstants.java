@@ -14,7 +14,7 @@ public final class ShooterConstants {
   public static final double kV = 0.4;
   public static final double kA = 0.1;
 
-  public static final int GEARING = 1;
+  public static final double GEARING = 2 / 3;
 
   // motion magic constants
   public static final double MM_ACCELERATION = 0;
