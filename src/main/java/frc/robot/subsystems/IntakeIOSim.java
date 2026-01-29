@@ -20,7 +20,7 @@ public class IntakeIOSim implements IntakeIO {
   DCMotorSim motorDeploy =
       new DCMotorSim(
           LinearSystemId.createDCMotorSystem(
-              DCMotor.getKrakenX60(1), 0.001, IntakeConstants.GEARING),
+              DCMotor.getKrakenX60(1), 0.001, IntakeConstants.GEARING_DEPLOY),
           DCMotor.getKrakenX60(1));
 
   @Override
