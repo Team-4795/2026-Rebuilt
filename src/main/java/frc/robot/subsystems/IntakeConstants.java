@@ -7,4 +7,8 @@ public class IntakeConstants {
   public static final int CAN_ID_DEPLOY = 0;
 
   public static final int CURRENT_LIMIT = 0;
+
+  // fix later
+  public static final int GEARING = 1;
+  public static final int GEARING_DEPLOY = 1;
 }

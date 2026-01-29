@@ -27,28 +27,49 @@ public class Intake extends SubsystemBase {
   }
 
   // Method to set speed of both motors
-  public void setIntakeSpeed(double speed) {
-    io.setSpeed(speed);
+  public void setIntakeVoltage(double volts) {
+    io.setVoltage(volts);
+  }
+
+  // method to set speed of deploy motor
+  public void setDeployVoltage(double volts) {
+    io.setDeployVoltage(volts);
   }
 
   // Command to set speed of both motors
-  public Command setIntakeSpeedCommand(double speed) {
-    return runOnce(() -> setIntakeSpeed(speed));
+  public Command setIntakeVoltageCommand(double volts) {
+    return runOnce(() -> setIntakeVoltage(volts));
   }
 
   // Spin motors max speed
   public Command intake() {
-    return Commands.startEnd(() -> setIntakeSpeed(1), () -> setIntakeSpeed(0), this);
+    return Commands.startEnd(() -> setIntakeVoltage(6), () -> setIntakeVoltage(0), this);
   }
 
   // Spin motors max speed opposite direction
   public Command reverseIntake() {
-    return Commands.startEnd(() -> setIntakeSpeed(-1), () -> setIntakeSpeed(0), this);
+    return Commands.startEnd(() -> setIntakeVoltage(-6), () -> setIntakeVoltage(0), this);
   }
 
   // Stop motors from spinning
   public Command stop() {
-    return setIntakeSpeedCommand(0);
+    return setIntakeVoltageCommand(0);
+  }
+
+  // deploy intake by running the deploy motor
+  public Command deployIntake() {
+    return Commands.sequence(
+        Commands.runOnce(() -> setDeployVoltage(6)),
+        Commands.waitSeconds(0.5),
+        Commands.runOnce(() -> setDeployVoltage(0)));
+  }
+
+  // retract intake
+  public Command retractIntake() {
+    return Commands.sequence(
+        Commands.runOnce(() -> setDeployVoltage(-6)),
+        Commands.waitSeconds(0.5),
+        Commands.runOnce(() -> setDeployVoltage(0)));
   }
 
   @Override

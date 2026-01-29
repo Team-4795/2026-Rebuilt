@@ -18,9 +18,9 @@ public class IntakeIOReal implements IntakeIO {
   // one motor to extend intake
   private final TalonFX intakeDeployMotor = new TalonFX(IntakeConstants.CAN_ID_DEPLOY);
 
-  private TalonFXConfiguration motorAConfig = config();
-  private TalonFXConfiguration motorBConfig = config();
-  private TalonFXConfiguration deployMotorConfig = config();
+  private TalonFXConfiguration motorAConfig = config(0);
+  private TalonFXConfiguration motorBConfig = config(0);
+  private TalonFXConfiguration deployMotorConfig = config(1);
 
   private final StatusSignal<Current> currentA = intakeMotorA.getStatorCurrent();
   private final StatusSignal<Voltage> voltageA = intakeMotorA.getMotorVoltage();
@@ -30,7 +30,6 @@ public class IntakeIOReal implements IntakeIO {
   private final StatusSignal<Voltage> voltageB = intakeMotorA.getMotorVoltage();
   private final StatusSignal<AngularVelocity> velocityB = intakeMotorA.getVelocity();
 
-  // do we need an encoder?
   private final StatusSignal<Current> currentDeploy = intakeDeployMotor.getStatorCurrent();
   private final StatusSignal<Voltage> voltageDeploy = intakeDeployMotor.getMotorVoltage();
 
@@ -82,14 +81,14 @@ public class IntakeIOReal implements IntakeIO {
   }
 
   @Override
-  public void setDeploySpeed(double speed) {
-    intakeDeployMotor.set(speed);
+  public void setDeployVoltage(double v) {
+    intakeDeployMotor.setVoltage(v);
   }
 
   @Override
-  public void setSpeed(double speed) {
-    intakeMotorA.set(speed);
-    intakeMotorB.set(speed);
+  public void setVoltage(double v) {
+    intakeMotorA.setVoltage(v);
+    intakeMotorB.setVoltage(v);
   }
 
   // the motors should be spinning at the same speed/voltage
@@ -109,24 +108,22 @@ public class IntakeIOReal implements IntakeIO {
   }
 
   @Override
-  public double getDeployPos() {
-    return 0;
-  }
-
-  @Override
   public double getDeployVoltage() {
-    return 0;
+    return voltageDeploy.getValueAsDouble();
   }
 
   @Override
   public double getDeployCurrent() {
-    return 0;
+    return currentDeploy.getValueAsDouble();
   }
 
-  private TalonFXConfiguration config() {
+  // type 0 is regular intake, type 1 is deploy motor
+  private TalonFXConfiguration config(int type) {
     TalonFXConfiguration config = new TalonFXConfiguration();
     config.CurrentLimits.StatorCurrentLimitEnable = true;
     config.CurrentLimits.StatorCurrentLimit = IntakeConstants.CURRENT_LIMIT;
+    if (type == 0) config.Feedback.SensorToMechanismRatio = IntakeConstants.GEARING;
+    else config.Feedback.SensorToMechanismRatio = IntakeConstants.GEARING_DEPLOY;
 
     config.Audio.BeepOnBoot = true;
 

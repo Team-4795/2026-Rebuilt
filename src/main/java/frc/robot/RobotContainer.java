@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeIO;
 import frc.robot.subsystems.IntakeIOReal;
+import frc.robot.subsystems.IntakeIOSim;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -34,8 +35,7 @@ public class RobotContainer {
         break;
 
       case SIM:
-        // add intake when sim is done
-
+        intake = Intake.initialize(new IntakeIOSim());
         break;
 
       default:
@@ -60,6 +60,9 @@ public class RobotContainer {
     // Not finalized button bindings
     m_operatorController.leftBumper().whileTrue(intake.intake());
     m_operatorController.rightBumper().whileTrue(intake.reverseIntake());
+
+    m_operatorController.povUp().onTrue(intake.deployIntake());
+    m_operatorController.povDown().onTrue(intake.retractIntake());
   }
 
   /**

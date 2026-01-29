@@ -19,9 +19,9 @@ public interface IntakeIO {
     public double currentAmpsDeploy = 0.0;
   }
 
-  public default void setDeploySpeed(double speed) {}
+  public default void setDeployVoltage(double volts) {}
 
-  public default void setSpeed(double speed) {}
+  public default void setVoltage(double volts) {}
 
   public default double getSpeed() {
     return 0;
