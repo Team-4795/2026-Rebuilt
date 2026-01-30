@@ -4,19 +4,18 @@
 
 package frc.robot;
 
-import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
-
 import com.pathplanner.lib.auto.AutoBuilder;
-
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.drive.GyroIO;
+import frc.robot.subsystems.drive.GyroIOPigeon2;
+import frc.robot.subsystems.drive.ModuleIO;
+import frc.robot.subsystems.drive.ModuleIOSim;
+import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.util.NamedCommandManager;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -26,20 +25,16 @@ import frc.robot.util.NamedCommandManager;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private final Drive drive;
 
   // Controllers
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
-  private final CommandXboxController m_operatorController = Constants.OIConstants.operatorController;
-  private final SendableChooser<Command> autoChooser; // put in 
-
-
-  private LoggedDashboardChooser<Command> autoChooser;
-
+  private final CommandXboxController m_operatorController =
+      Constants.OIConstants.operatorController;
 
   private LoggedDashboardChooser<Command> autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
-
   public RobotContainer() {
     switch (Constants.currentMode) {
       case REAL:
@@ -82,10 +77,6 @@ public class RobotContainer {
 
     // Configure the trigger bindings
     configureBindings();
-    autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Chooser" , autoChooser);
-
-
   }
 
   /**
@@ -108,5 +99,4 @@ public class RobotContainer {
     // An example command will be run in autonomous
     return autoChooser.get();
   }
-  
 }
