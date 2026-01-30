@@ -26,9 +26,9 @@ public class IntakeIOReal implements IntakeIO {
   private final StatusSignal<Voltage> voltageA = intakeMotorA.getMotorVoltage();
   private final StatusSignal<AngularVelocity> velocityA = intakeMotorA.getVelocity();
 
-  private final StatusSignal<Current> currentB = intakeMotorA.getStatorCurrent();
-  private final StatusSignal<Voltage> voltageB = intakeMotorA.getMotorVoltage();
-  private final StatusSignal<AngularVelocity> velocityB = intakeMotorA.getVelocity();
+  private final StatusSignal<Current> currentB = intakeMotorB.getStatorCurrent();
+  private final StatusSignal<Voltage> voltageB = intakeMotorB.getMotorVoltage();
+  private final StatusSignal<AngularVelocity> velocityB = intakeMotorB.getVelocity();
 
   private final StatusSignal<Current> currentDeploy = intakeDeployMotor.getStatorCurrent();
   private final StatusSignal<Voltage> voltageDeploy = intakeDeployMotor.getMotorVoltage();
@@ -91,10 +91,11 @@ public class IntakeIOReal implements IntakeIO {
     intakeMotorB.setVoltage(v);
   }
 
-  // the motors should be spinning at the same speed/voltage
+  // the motors should be spinning at the same speed/voltage 
+  //  why all getters, we don't really need these but its also okay to keep
   @Override
   public double getSpeed() {
-    return velocityA.getValueAsDouble() * 60; // rpm
+    return velocityA.getValueAsDouble();
   }
 
   @Override
@@ -117,7 +118,8 @@ public class IntakeIOReal implements IntakeIO {
     return currentDeploy.getValueAsDouble();
   }
 
-  // type 0 is regular intake, type 1 is deploy motor
+  // type 0 is regular intake, type 1 is deploy motor 
+  //can you just pass in config values rather than worrying about if statements here
   private TalonFXConfiguration config(int type) {
     TalonFXConfiguration config = new TalonFXConfiguration();
     config.CurrentLimits.StatorCurrentLimitEnable = true;
@@ -138,12 +140,12 @@ public class IntakeIOReal implements IntakeIO {
     BaseStatusSignal.refreshAll(velocityB, voltageB, currentB);
     BaseStatusSignal.refreshAll(voltageDeploy, currentDeploy);
 
-    inputs.angularVelocityRPMA = velocityA.getValueAsDouble() * 60;
+    inputs.angularVelocityRPSA = velocityA.getValueAsDouble();
     inputs.angularPositionRotA = intakeMotorA.getPosition().getValueAsDouble();
     inputs.currentAmpsA = currentA.getValueAsDouble();
     inputs.voltageA = voltageA.getValueAsDouble();
 
-    inputs.angularVelocityRPMB = velocityB.getValueAsDouble() * 60;
+    inputs.angularVelocityRPSB = velocityB.getValueAsDouble();
     inputs.angularPositionRotB = intakeMotorB.getPosition().getValueAsDouble();
     inputs.currentAmpsB = currentB.getValueAsDouble();
     inputs.voltageB = voltageB.getValueAsDouble();
