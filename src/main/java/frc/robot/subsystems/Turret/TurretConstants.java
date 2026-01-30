@@ -4,7 +4,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 
 public class TurretConstants {
   // Angle (in rotations) between turret's zero position and the front of the robot. Change later
-  public static final double angleOffset = 0.5;
+  public static final double angleOffset = 0;
 
   public static final double margin = 10;
   public static final double minAngle = 0 + margin;
@@ -26,5 +26,5 @@ public class TurretConstants {
   public static final int CAN_ID = 20;
 
   public static final double gearing = 60;
-  public static final Translation2d OFFSET = new Translation2d(0.25, 0.25);
+  public static final Translation2d OFFSET = new Translation2d(-0.25, -0.25);
 }
