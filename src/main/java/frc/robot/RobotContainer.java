@@ -58,7 +58,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Random button bindings
-    m_driverController.rightBumper().onTrue(shooterHood.setGoal(0));
+    m_driverController.rightBumper().onTrue(shooterHood.setGoal(0.1));
     m_driverController.leftBumper().onTrue(shooterHood.setGoal(0.25));
   }
 
