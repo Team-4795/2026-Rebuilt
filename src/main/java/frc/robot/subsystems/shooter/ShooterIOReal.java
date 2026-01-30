@@ -8,6 +8,9 @@ import com.ctre.phoenix6.controls.MotionMagicVelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import edu.wpi.first.math.MathSharedStore;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 
@@ -48,8 +51,9 @@ public class ShooterIOReal implements ShooterIO {
 
   @Override
   public void setVelocityRPS(double velocityRPS) {
-    this.goalVelocityRPS = velocityRPS;
+    velocityRPS = MathUtil.clamp(velocityRPS, ShooterConstants.minVel, ShooterConstants.maxVel);
     topShooterMotor.setControl(m_request.withVelocity(velocityRPS));
+    this.goalVelocityRPS = velocityRPS;
   }
 
   @Override
