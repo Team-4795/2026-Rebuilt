@@ -35,6 +35,16 @@ public class GyroIORedux implements GyroIO {
   }
 
   @Override
+  public double getTemperature() {
+    return navX.getTemperature();
+  }
+
+  @Override
+  public double getRotation() {
+    return navX.getYaw();
+  }
+
+  @Override
   public void updateInputs(GyroIOInputs inputs) {
     inputs.connected = navX.isConnected();
     inputs.yawPosition = Rotation2d.fromRadians(-navX.getYaw() * 2 * Math.PI);

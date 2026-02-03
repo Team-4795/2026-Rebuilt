@@ -23,4 +23,6 @@ public interface TurretIO {
   public default void updateInputs(TurretIOInputs inputs) {}
 
   public default void zero() {}
+
+  public default void resetTurret() {}
 }

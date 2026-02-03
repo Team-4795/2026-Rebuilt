@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -114,8 +115,9 @@ public class RobotContainer {
     // Switch to X pattern
     m_driverController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
 
-    m_driverController.a().onTrue(Commands.runOnce(() -> turret.setGoal(0.7)));
-    m_driverController.b().onTrue(Commands.runOnce(() -> turret.setGoal(0.2)));
+    // m_driverController.b().onTrue(Commands.runOnce(() -> turret.setGoal(0.7)));
+    m_driverController.y().onTrue(Commands.runOnce(() -> turret.setGoal(0.2)));
+    m_driverController.rightBumper().onTrue(Commands.runOnce(() -> turret.resetTurret()));
     // m_driverController
     //     .leftBumper()
     //     .whileTrue(
@@ -130,9 +132,7 @@ public class RobotContainer {
         .b()
         .onTrue(
             Commands.runOnce(
-                    () ->
-                        drive.setPose(
-                            new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
+                    () -> drive.setPose(new Pose2d(new Translation2d(0, 0), Rotation2d.kZero)),
                     drive)
                 .ignoringDisable(true));
 

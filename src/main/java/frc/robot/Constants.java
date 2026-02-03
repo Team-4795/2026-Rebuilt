@@ -40,5 +40,5 @@ public final class Constants {
     public static final double OperatorLAxisDeadband = 0.3;
   }
 
-  public static Translation2d hub = new Translation2d(5, 5); // placeholder here
+  public static Translation2d hub = new Translation2d(2, 2); // placeholder here
 }

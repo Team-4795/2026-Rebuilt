@@ -1,6 +1,7 @@
 package frc.robot.subsystems.Turret;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import org.littletonrobotics.junction.Logger;
 
 public class Turret extends SubsystemBase {
@@ -29,6 +30,10 @@ public class Turret extends SubsystemBase {
     io.setGoal(goal);
   }
 
+  public void resetTurret() {
+    io.resetTurret();
+  }
+
   public void setVoltage(double voltage) {
     io.setVoltage(voltage);
   }
@@ -37,5 +42,6 @@ public class Turret extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Turret", inputs);
+    Logger.recordOutput("hub", Constants.hub);
   }
 }

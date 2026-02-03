@@ -3,7 +3,7 @@ package frc.robot.subsystems.Turret;
 import edu.wpi.first.math.geometry.Translation2d;
 
 public class TurretConstants {
-  public static final double margin = 10;
+  public static final double margin = 3;
   public static final double minAngle = 0 + margin;
   public static final double maxAngle = 360 - margin;
 

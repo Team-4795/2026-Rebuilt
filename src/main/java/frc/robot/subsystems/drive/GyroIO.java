@@ -29,4 +29,12 @@ public interface GyroIO {
   public default void zeroHeading() {}
 
   public default void updateInputs(GyroIOInputs inputs) {}
+
+  public default double getTemperature() {
+    return 0;
+  }
+
+  public default double getRotation() {
+    return 0;
+  }
 }

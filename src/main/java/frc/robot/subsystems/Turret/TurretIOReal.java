@@ -34,7 +34,7 @@ public class TurretIOReal implements TurretIO {
   private MotionMagicVoltage control = new MotionMagicVoltage(0);
   private MotionMagicConfigs controlConfig = new MotionMagicConfigs();
 
-  public double goal; 
+  public double goal;
 
   public TurretIOReal() {
     turretConfig.Slot0.kA = TurretConstants.kA;
@@ -83,8 +83,14 @@ public class TurretIOReal implements TurretIO {
 
   @Override
   public void setGoal(double goal) {
-    this.goal = MathUtil.clamp(goal, TurretConstants.minAngle / 360.0, TurretConstants.maxAngle / 360.0);
+    this.goal =
+        MathUtil.clamp(goal, TurretConstants.minAngle / 360.0, TurretConstants.maxAngle / 360.0);
     turretMotor.setControl(control.withPosition(this.goal));
+  }
+
+  @Override
+  public void resetTurret() {
+    turretMotor.setPosition(0);
   }
 
   @Override
