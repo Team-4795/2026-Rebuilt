@@ -5,7 +5,7 @@ import org.littletonrobotics.junction.AutoLog;
 public interface TurretIO {
   @AutoLog
   public static class TurretIOInputs {
-    public double goal = 1;
+    public double goal = 0;
     public double position = 0;
     public double current = 0;
     public double volts = 0;

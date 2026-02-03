@@ -1,7 +1,12 @@
 package frc.robot.subsystems.Turret;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.subsystems.drive.Drive;
 import org.littletonrobotics.junction.Logger;
 
 public class Turret extends SubsystemBase {
@@ -38,10 +43,32 @@ public class Turret extends SubsystemBase {
     io.setVoltage(voltage);
   }
 
+  public double getTurretAngle() {
+    return io.getPosition();
+  }
+
+  // Visualize the direction the turret aims in ascope
+  public Pose2d visualizeTurret() {
+    Translation2d turretOffsetPose = TurretConstants.OFFSET;
+    Pose2d robotPose = Drive.getInstance().getPose();
+
+    Translation2d turretTranslation =
+        robotPose.getTranslation().plus(turretOffsetPose.rotateBy(robotPose.getRotation()));
+
+    Pose2d turretPose =
+        new Pose2d(
+            turretTranslation.getX(),
+            turretTranslation.getY(),
+            new Rotation2d(
+                (Units.rotationsToRadians(getTurretAngle() - TurretConstants.angleOffset)
+                    + robotPose.getRotation().getRadians())));
+
+    return turretPose;
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Turret", inputs);
-    Logger.recordOutput("hub", Constants.hub);
   }
 }

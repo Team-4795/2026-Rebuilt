@@ -23,5 +23,6 @@ public class TurretConstants {
   public static final int CAN_ID = 20;
 
   public static final double gearing = 60;
-  public static final Translation2d OFFSET = new Translation2d(0.25, 0.25);
+  public static final Translation2d OFFSET = new Translation2d(-0.25, -0.25);
+  public static final double angleOffset = 0;
 }
