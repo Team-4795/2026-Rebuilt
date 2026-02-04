@@ -40,12 +40,12 @@ public class IntakeIOSim implements IntakeIO {
     motorB.update(0.02);
     motorDeploy.update(0.02);
 
-    inputs.angularVelocityRPSA = motorA.getAngularVelocityRPM()/60.0;
+    inputs.angularVelocityRPSA = motorA.getAngularVelocityRPM() / 60.0;
     inputs.angularPositionRotA = motorA.getAngularPositionRotations();
     inputs.currentAmpsA = motorA.getCurrentDrawAmps();
     inputs.voltageA = motorA.getInputVoltage();
 
-    inputs.angularVelocityRPSB = motorB.getAngularVelocityRPM()/60.0;
+    inputs.angularVelocityRPSB = motorB.getAngularVelocityRPM() / 60.0;
     inputs.angularPositionRotB = motorB.getAngularPositionRotations();
     inputs.currentAmpsB = motorB.getCurrentDrawAmps();
     inputs.voltageB = motorB.getInputVoltage();

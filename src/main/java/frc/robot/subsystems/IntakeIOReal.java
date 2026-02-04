@@ -18,9 +18,9 @@ public class IntakeIOReal implements IntakeIO {
   // one motor to extend intake
   private final TalonFX intakeDeployMotor = new TalonFX(IntakeConstants.CAN_ID_DEPLOY);
 
-  private TalonFXConfiguration motorAConfig = config(0);
-  private TalonFXConfiguration motorBConfig = config(0);
-  private TalonFXConfiguration deployMotorConfig = config(1);
+  private TalonFXConfiguration motorAConfig = config(IntakeConstants.GEARING);
+  private TalonFXConfiguration motorBConfig = config(IntakeConstants.GEARING);
+  private TalonFXConfiguration deployMotorConfig = config(IntakeConstants.GEARING_DEPLOY);
 
   private final StatusSignal<Current> currentA = intakeMotorA.getStatorCurrent();
   private final StatusSignal<Voltage> voltageA = intakeMotorA.getMotorVoltage();
@@ -91,7 +91,7 @@ public class IntakeIOReal implements IntakeIO {
     intakeMotorB.setVoltage(v);
   }
 
-  // the motors should be spinning at the same speed/voltage 
+  // the motors should be spinning at the same speed/voltage
   //  why all getters, we don't really need these but its also okay to keep
   @Override
   public double getSpeed() {
@@ -118,14 +118,12 @@ public class IntakeIOReal implements IntakeIO {
     return currentDeploy.getValueAsDouble();
   }
 
-  // type 0 is regular intake, type 1 is deploy motor 
-  //can you just pass in config values rather than worrying about if statements here
-  private TalonFXConfiguration config(int type) {
+  // type 0 is regular intake, type 1 is deploy motor
+  private TalonFXConfiguration config(int gearing) {
     TalonFXConfiguration config = new TalonFXConfiguration();
     config.CurrentLimits.StatorCurrentLimitEnable = true;
     config.CurrentLimits.StatorCurrentLimit = IntakeConstants.CURRENT_LIMIT;
-    if (type == 0) config.Feedback.SensorToMechanismRatio = IntakeConstants.GEARING;
-    else config.Feedback.SensorToMechanismRatio = IntakeConstants.GEARING_DEPLOY;
+    config.Feedback.SensorToMechanismRatio = gearing;
 
     config.Audio.BeepOnBoot = true;
 
