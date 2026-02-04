@@ -8,8 +8,6 @@ import com.ctre.phoenix6.controls.MotionMagicVelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-
-import edu.wpi.first.math.MathSharedStore;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
@@ -41,12 +39,12 @@ public class ShooterIOReal implements ShooterIO {
     bottomShooterMotor.clearStickyFaults();
     topShooterMotor.clearStickyFaults();
 
-    topShooterMotor.getConfigurator().apply(topConfig);
-    bottomShooterMotor.getConfigurator().apply(bottomConfig);
-
     // Bottom motor follows top motor. Spin in opposite directions
     bottomShooterMotor.setControl(
         new Follower(topShooterMotor.getDeviceID(), MotorAlignmentValue.Opposed));
+
+    topShooterMotor.getConfigurator().apply(topConfig);
+    bottomShooterMotor.getConfigurator().apply(bottomConfig);
   }
 
   @Override

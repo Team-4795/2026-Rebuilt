@@ -4,27 +4,11 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.AimAtHub;
-import frc.robot.commands.DriveCommands;
-import frc.robot.subsystems.Turret.Turret;
-import frc.robot.subsystems.Turret.TurretIO;
-import frc.robot.subsystems.Turret.TurretIOReal;
-import frc.robot.subsystems.Turret.TurretIOSim;
-import frc.robot.subsystems.drive.Drive;
-import frc.robot.subsystems.drive.GyroIO;
-import frc.robot.subsystems.drive.GyroIORedux;
-import frc.robot.subsystems.drive.ModuleIO;
-import frc.robot.subsystems.drive.ModuleIOSim;
-import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.shooter.ShooterIO;
 import frc.robot.subsystems.shooter.ShooterIOReal;
 import frc.robot.subsystems.shooter.ShooterIOSim;
 
@@ -36,6 +20,7 @@ import frc.robot.subsystems.shooter.ShooterIOSim;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private Shooter shooter;
 
   // Controllers
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
@@ -44,6 +29,20 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    switch (Constants.currentMode) {
+      case REAL:
+        shooter = Shooter.initialize(new ShooterIOReal());
+        break;
+
+      case SIM:
+        shooter = Shooter.initialize(new ShooterIOSim());
+        break;
+
+      default:
+        shooter = Shooter.initialize(new ShooterIOReal());
+        break;
+    }
+
     // Configure the trigger bindings
     configureBindings();
   }
@@ -58,11 +57,21 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_operatorController 
+    /*m_operatorController
     .a()
     .whileTrue(
       Commands.runOnce()
-    );
+    );*/
+
+    m_operatorController.rightBumper().onTrue(shooter.setVelocityRPSCommand(10));
+    m_operatorController.rightBumper().onFalse(shooter.setVelocityRPSCommand(0));
+
+    m_operatorController
+        .leftBumper()
+        .onTrue(Commands.runOnce(() -> shooter.setVoltage(6), shooter));
+    m_operatorController
+        .leftBumper()
+        .onFalse(Commands.runOnce(() -> shooter.setVoltage(0), shooter));
   }
 
   /**

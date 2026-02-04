@@ -10,12 +10,12 @@ public final class ShooterConstants {
   public static final double minVel = 0.0;
   public static final double maxVel = 100.0;
 
-  public static final double kP = 1;
+  public static final double kP = 0;
   public static final double kI = 0;
   public static final double kD = 0;
-  public static final double kS = 0.2;
-  public static final double kV = 0.4;
-  public static final double kA = 0.1;
+  public static final double kS = 0.5;
+  public static final double kV = 0.05;
+  public static final double kA = 0;
 
   public static final double GEARING = 2.0 / 3.0;
 
