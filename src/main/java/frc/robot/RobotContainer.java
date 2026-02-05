@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.Indexer.Indexer;
+import frc.robot.subsystems.Indexer.IndexerIO;
+import frc.robot.subsystems.Indexer.IndexerIOReal;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIOReal;
 import frc.robot.subsystems.shooter.ShooterIOSim;
@@ -21,6 +24,7 @@ import frc.robot.subsystems.shooter.ShooterIOSim;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private Shooter shooter;
+  private Indexer indexer; 
 
   // Controllers
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
@@ -32,6 +36,7 @@ public class RobotContainer {
     switch (Constants.currentMode) {
       case REAL:
         shooter = Shooter.initialize(new ShooterIOReal());
+        indexer = Indexer.initialize(new IndexerIOReal());
         break;
 
       case SIM:
@@ -72,6 +77,8 @@ public class RobotContainer {
     m_operatorController
         .leftBumper()
         .onFalse(Commands.runOnce(() -> shooter.setVoltage(0), shooter));
+
+    m_operatorController.povUp().whileTrue(Commands.startEnd(() -> indexer.setVoltage(0.5), () -> indexer.setVoltage(0), indexer));
   }
 
   /**
