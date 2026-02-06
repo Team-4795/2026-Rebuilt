@@ -9,8 +9,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Indexer.Indexer;
-import frc.robot.subsystems.Indexer.IndexerIO;
 import frc.robot.subsystems.Indexer.IndexerIOReal;
+import frc.robot.subsystems.Turret.Turret;
+import frc.robot.subsystems.Turret.TurretIOReal;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterIOReal;
 import frc.robot.subsystems.shooter.ShooterIOSim;
@@ -24,7 +25,8 @@ import frc.robot.subsystems.shooter.ShooterIOSim;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private Shooter shooter;
-  private Indexer indexer; 
+  private Indexer indexer;
+  private Turret turret;
 
   // Controllers
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
@@ -37,6 +39,7 @@ public class RobotContainer {
       case REAL:
         shooter = Shooter.initialize(new ShooterIOReal());
         indexer = Indexer.initialize(new IndexerIOReal());
+        turret = Turret.initialize(new TurretIOReal());
         break;
 
       case SIM:
@@ -68,7 +71,7 @@ public class RobotContainer {
       Commands.runOnce()
     );*/
 
-    m_operatorController.rightBumper().onTrue(shooter.setVelocityRPSCommand(10));
+    m_operatorController.rightBumper().onTrue(shooter.setVelocityRPSCommand(100));
     m_operatorController.rightBumper().onFalse(shooter.setVelocityRPSCommand(0));
 
     m_operatorController
@@ -78,11 +81,17 @@ public class RobotContainer {
         .leftBumper()
         .onFalse(Commands.runOnce(() -> shooter.setVoltage(0), shooter));
 
-    m_operatorController.povUp().whileTrue(Commands.startEnd(() -> indexer.setVoltage(0.5), () -> indexer.setVoltage(0), indexer));
+    m_operatorController.povUp().onTrue(Commands.runOnce(() -> turret.setGoal(0.5)));
+    m_operatorController.povDown().onTrue(Commands.runOnce(() -> turret.setGoal(0.1)));
+
+    m_operatorController
+        .povUp()
+        .whileTrue(
+            Commands.startEnd(() -> indexer.setVoltage(6), () -> indexer.setVoltage(0), indexer));
   }
 
   /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
+   * Use this to pass the autonomous command to the main {@link Robot} class.x`
    *
    * @return the command to run in autonomous
    */

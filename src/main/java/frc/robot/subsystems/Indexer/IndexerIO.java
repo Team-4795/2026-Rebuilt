@@ -2,20 +2,17 @@ package frc.robot.subsystems.Indexer;
 
 import org.littletonrobotics.junction.AutoLog;
 
-import com.revrobotics.spark.SparkAbsoluteEncoder;
-
 public interface IndexerIO {
-     @AutoLog
-    public static class IndexerIOInputs {
-        public double voltage = 0.0;
-        public double angularPositionRot = 0.0;
-        public double angularVelocityRPM = 0.0;
-        public double currentAmps = 0.0;
-        public boolean hasGamepiece = false;
-    }
-    public default void updateInputs(IndexerIOInputs inputs) {
-    }
+  @AutoLog
+  public static class IndexerIOInputs {
+    public double voltage = 0.0;
+    public double angularPositionRot = 0.0;
+    public double angularVelocityRPM = 0.0;
+    public double currentAmps = 0.0;
+    public boolean hasGamepiece = false;
+  }
 
-    public default void setVoltage(double voltage) {
-    }
+  public default void updateInputs(IndexerIOInputs inputs) {}
+
+  public default void setVoltage(double voltage) {}
 }
