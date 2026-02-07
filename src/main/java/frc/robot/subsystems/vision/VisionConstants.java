@@ -23,9 +23,11 @@ public class VisionConstants {
         // Front cam
         new Transform3d(
             new Translation3d(
-                Units.inchesToMeters(12.5), Units.inchesToMeters(-14.5), Units.inchesToMeters(4)),
+                Units.inchesToMeters(-16.25),
+                Units.inchesToMeters(5.75),
+                Units.inchesToMeters(11.5)),
             new Rotation3d(
-                Units.degreesToRadians(0), Units.degreesToRadians(-15), Units.degreesToRadians(0))),
+                Units.degreesToRadians(0), Units.degreesToRadians(0), Units.degreesToRadians(180))),
 
         // Side left cam
         new Transform3d(

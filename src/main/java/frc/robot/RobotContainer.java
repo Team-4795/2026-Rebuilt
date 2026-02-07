@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.DriveCommands;
+import frc.robot.commands.AimAtHub;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerIO;
 import frc.robot.subsystems.Indexer.IndexerIOReal;
@@ -121,9 +121,9 @@ public class RobotContainer {
     m_operatorController
         .rightBumper()
         .whileTrue(
-          Commands.startEnd(
-            () -> shooter.setVelocityRPS(ShooterIOReal.RPM.get()), 
-            () -> shooter.setVelocityRPS(0)));
+            Commands.startEnd(
+                () -> shooter.setVelocityRPS(ShooterIOReal.RPM.get()),
+                () -> shooter.setVelocityRPS(0)));
 
     // m_operatorController
     //     .leftBumper()
@@ -134,12 +134,12 @@ public class RobotContainer {
     m_operatorController
         .leftBumper()
         .whileTrue(
-            Commands.startEnd(
-                () -> shooter.setRPSDynamic(), 
-                () -> shooter.setVelocityRPS(0)));
+            Commands.startEnd(() -> shooter.setRPSDynamic(), () -> shooter.setVelocityRPS(0)));
 
-    m_operatorController.povUp().onTrue(Commands.runOnce(() -> turret.setGoal(0.5)));
-    m_operatorController.povDown().onTrue(Commands.runOnce(() -> turret.setGoal(0.1)));
+    m_operatorController.povLeft().onTrue(Commands.runOnce(() -> turret.setGoal(0.5)));
+    m_operatorController.povRight().onTrue(Commands.runOnce(() -> turret.setGoal(0.1)));
+    m_operatorController.povDown().whileTrue(new AimAtHub(drive, turret));
+    m_driverController.x().onTrue(Commands.runOnce(() -> turret.resetTurret()));
 
     m_operatorController
         .povUp()

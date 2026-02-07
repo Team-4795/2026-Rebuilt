@@ -49,7 +49,7 @@ public class TurretIOReal implements TurretIO {
     turretConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     turretConfig.CurrentLimits.SupplyCurrentLimit = 60;
 
-    turretConfig.Feedback.SensorToMechanismRatio = TurretConstants.gearing;
+    turretConfig.Feedback.SensorToMechanismRatio = TurretConstants.gearing * (0.5 / 0.44);
 
     turretConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
     turretConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;

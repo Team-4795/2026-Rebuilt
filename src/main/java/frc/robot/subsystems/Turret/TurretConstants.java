@@ -10,19 +10,19 @@ public class TurretConstants {
   public static final double kP = 5;
   public static final double kI = 0;
   public static final double kD = 0;
-  public static final double kV = 5.8;
+  public static final double kV = 5.3;
   public static final double kA = 0.12;
   public static final double kS = 0;
 
   public static final double simkP = 6.5;
   public static final double simkV = 0;
 
-  public static final double maxVelocity = 2;
-  public static final double maxAcceleration = 1;
+  public static final double maxVelocity = 0.66;
+  public static final double maxAcceleration = 0.5;
   public static final double maxJerk = 0;
   public static final int CAN_ID = 20;
 
-  public static final double gearing = 60;
-  public static final Translation2d OFFSET = new Translation2d(-0.25, -0.25);
+  public static final double gearing = 48;
+  public static final Translation2d OFFSET = new Translation2d(0.152, -0.165);
   public static final double angleOffset = 0;
 }
