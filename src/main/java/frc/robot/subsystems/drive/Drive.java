@@ -84,7 +84,7 @@ public class Drive extends SubsystemBase {
     return instance;
   }
 
-  private Drive(
+  public Drive(
       GyroIO gyroIO,
       ModuleIO flModuleIO,
       ModuleIO frModuleIO,

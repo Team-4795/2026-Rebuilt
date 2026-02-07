@@ -1,5 +1,7 @@
 package frc.robot.subsystems.Shooter;
 
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+
 public final class ShooterConstants {
   // Change later
   public static final int TOP_CAN_ID = 17;
@@ -22,4 +24,15 @@ public final class ShooterConstants {
   // motion magic constants
   public static final double MM_ACCELERATION = 75;
   public static final double MM_JERK = 150;
+
+  public static final InterpolatingDoubleTreeMap shooterMap = new InterpolatingDoubleTreeMap();
+
+  static {
+    shooterMap.put(0.0,0.0);
+    shooterMap.put(1.0, 20.0);
+    shooterMap.put(2.0, 30.0);
+  }
+
+  
+
 }

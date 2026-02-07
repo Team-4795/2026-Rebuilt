@@ -8,11 +8,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.drive.GyroIO;
+import frc.robot.subsystems.drive.GyroIORedux;
+import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerIO;
 import frc.robot.subsystems.Indexer.IndexerIOReal;
 import frc.robot.subsystems.Indexer.IndexerIOSim;
 import frc.robot.subsystems.Shooter.Shooter;
+import frc.robot.subsystems.Shooter.ShooterConstants;
 import frc.robot.subsystems.Shooter.ShooterIO;
 import frc.robot.subsystems.Shooter.ShooterIOReal;
 import frc.robot.subsystems.Shooter.ShooterIOSim;
@@ -20,6 +25,8 @@ import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretIO;
 import frc.robot.subsystems.Turret.TurretIOReal;
 import frc.robot.subsystems.Turret.TurretIOSim;
+import frc.robot.subsystems.drive.GyroIOPigeon2;
+import frc.robot.subsystems.drive.ModuleIOSpark;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -32,6 +39,7 @@ public class RobotContainer {
   private Shooter shooter;
   private Indexer indexer;
   private Turret turret;
+  private Drive drive; 
 
   // Controllers
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
@@ -45,18 +53,39 @@ public class RobotContainer {
         shooter = Shooter.initialize(new ShooterIOReal());
         indexer = Indexer.initialize(new IndexerIOReal());
         turret = Turret.initialize(new TurretIOReal());
+        drive =
+            new Drive(
+                new GyroIORedux(),
+                new ModuleIOSpark(0),
+                new ModuleIOSpark(1),
+                new ModuleIOSpark(2),
+                new ModuleIOSpark(3));
         break;
 
       case SIM:
         shooter = Shooter.initialize(new ShooterIOSim());
         indexer = Indexer.initialize(new IndexerIOSim());
         turret = Turret.initialize(new TurretIOSim());
+        drive =
+            new Drive(
+                new GyroIO() {},
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim());
         break;
 
       default:
         shooter = Shooter.initialize(new ShooterIO() {});
         indexer = Indexer.initialize(new IndexerIO() {});
         turret = Turret.initialize(new TurretIO() {});
+        drive =
+            new Drive(
+                new GyroIO() {},
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim());
         break;
     }
 
@@ -81,6 +110,7 @@ public class RobotContainer {
         .leftBumper()
         .whileTrue(
             Commands.startEnd(() -> shooter.setVoltage(6), () -> shooter.setVoltage(0), shooter));
+    m_operatorController.leftBumper().whileTrue(Commands.startEnd(() -> shooter.setVelocityRPSCommand(ShooterConstants.shooterMap.get(0.0)), () -> shooter.setVelocityRPSCommand(0)));
 
     m_operatorController.povUp().onTrue(Commands.runOnce(() -> turret.setGoal(0.5)));
     m_operatorController.povDown().onTrue(Commands.runOnce(() -> turret.setGoal(0.1)));
