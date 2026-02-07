@@ -20,7 +20,7 @@ public class VisionIOSim implements VisionIO {
   private PhotonCameraSim cameraSimThree;
 
   public VisionIOSim() {
-    if(Constants.isVisionSim) {
+    if (Constants.isVisionSim) {
       visionSim = new VisionSystemSim("main");
       visionSim.addAprilTags(VisionConstants.FIELD_LAYOUT);
 
@@ -51,8 +51,8 @@ public class VisionIOSim implements VisionIO {
   }
 
   @Override
-  public void updateInputs(VisionIOInputs inputs) { 
-    if(Constants.isVisionSim) {
+  public void updateInputs(VisionIOInputs inputs) {
+    if (Constants.isVisionSim) {
       visionSim.update(Drive.getInstance().getPose());
       visionSim.getDebugField();
 

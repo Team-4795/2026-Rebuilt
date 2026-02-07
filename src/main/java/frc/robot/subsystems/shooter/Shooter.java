@@ -2,6 +2,7 @@ package frc.robot.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.drive.Drive;
 import org.littletonrobotics.junction.Logger;
 
 public class Shooter extends SubsystemBase {
@@ -30,8 +31,16 @@ public class Shooter extends SubsystemBase {
     io.setVoltage(volts);
   }
 
-  public Command setVelocityRPSCommand(double velocityRPS) {
-    return runOnce(() -> io.setVelocityRPS(velocityRPS));
+  public void setVelocityRPS(double velocityRPS) {
+    io.setVelocityRPS(velocityRPS);
+  }
+
+  public void setRPSDynamic() {
+    double distance = Drive.getInstance().getDistanceToHub();
+    double goalRPS = ShooterConstants.shooterMap.get(distance);
+    Logger.recordOutput("distance", distance);
+    Logger.recordOutput("goalRPS", goalRPS);
+    setVelocityRPS(goalRPS);
   }
 
   @Override
