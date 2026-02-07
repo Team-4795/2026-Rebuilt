@@ -110,6 +110,8 @@ public class RobotContainer {
         .leftBumper()
         .whileTrue(
             Commands.startEnd(() -> shooter.setVoltage(6), () -> shooter.setVoltage(0), shooter));
+            
+            //replace the 0.0 in .get() with the data from vision on distance from hub. 
     m_operatorController.leftBumper().whileTrue(Commands.startEnd(() -> shooter.setVelocityRPSCommand(ShooterConstants.shooterMap.get(0.0)), () -> shooter.setVelocityRPSCommand(0)));
 
     m_operatorController.povUp().onTrue(Commands.runOnce(() -> turret.setGoal(0.5)));
