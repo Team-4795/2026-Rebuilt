@@ -7,32 +7,32 @@ import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
-import frc.robot.subsystems.Indexer.IndexerIO.IndexerIOInputs;
 
 public class IndexerIOReal implements IndexerIO {
-  private final SparkFlex indexerMotor =
-      new SparkFlex(IndexerConstants.canID, MotorType.kBrushless);
-  private final RelativeEncoder encoder = indexerMotor.getEncoder();
+  private final SparkFlex towerMotor = new SparkFlex(IndexerConstants.canID, MotorType.kBrushless);
+  private final RelativeEncoder encoder = towerMotor.getEncoder();
 
   private SparkFlexConfig config = new SparkFlexConfig();
+  private double volts = 0.0;
 
   public IndexerIOReal() {
-    indexerMotor.clearFaults();
+    towerMotor.clearFaults();
     config.smartCurrentLimit(IndexerConstants.currentLimit);
     config.idleMode(IdleMode.kCoast);
-    indexerMotor.setCANTimeout(20);
-    indexerMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    towerMotor.setCANTimeout(20);
+    towerMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   public void updateInputs(IndexerIOInputs inputs) {
-    inputs.angularVelocityRPM = encoder.getVelocity();
+    inputs.voltage = this.volts;
+    inputs.angularVelocityRPS = encoder.getVelocity() / 60.0;
     inputs.angularPositionRot = encoder.getPosition();
-    inputs.currentAmps = indexerMotor.getOutputCurrent();
-    inputs.voltage = indexerMotor.getBusVoltage();
+    inputs.currentAmps = towerMotor.getOutputCurrent();
   }
 
   @Override
   public void setVoltage(double voltage) {
-    indexerMotor.setVoltage(voltage);
+    this.volts = voltage;
+    towerMotor.setVoltage(voltage);
   }
 }

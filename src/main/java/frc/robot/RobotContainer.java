@@ -9,12 +9,17 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Indexer.Indexer;
+import frc.robot.subsystems.Indexer.IndexerIO;
 import frc.robot.subsystems.Indexer.IndexerIOReal;
+import frc.robot.subsystems.Indexer.IndexerIOSim;
+import frc.robot.subsystems.Shooter.Shooter;
+import frc.robot.subsystems.Shooter.ShooterIO;
+import frc.robot.subsystems.Shooter.ShooterIOReal;
+import frc.robot.subsystems.Shooter.ShooterIOSim;
 import frc.robot.subsystems.Turret.Turret;
+import frc.robot.subsystems.Turret.TurretIO;
 import frc.robot.subsystems.Turret.TurretIOReal;
-import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.shooter.ShooterIOReal;
-import frc.robot.subsystems.shooter.ShooterIOSim;
+import frc.robot.subsystems.Turret.TurretIOSim;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -44,10 +49,14 @@ public class RobotContainer {
 
       case SIM:
         shooter = Shooter.initialize(new ShooterIOSim());
+        indexer = Indexer.initialize(new IndexerIOSim());
+        turret = Turret.initialize(new TurretIOSim());
         break;
 
       default:
-        shooter = Shooter.initialize(new ShooterIOReal());
+        shooter = Shooter.initialize(new ShooterIO() {});
+        indexer = Indexer.initialize(new IndexerIO() {});
+        turret = Turret.initialize(new TurretIO() {});
         break;
     }
 
@@ -65,21 +74,13 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    /*m_operatorController
-    .a()
-    .whileTrue(
-      Commands.runOnce()
-    );*/
-
     m_operatorController.rightBumper().onTrue(shooter.setVelocityRPSCommand(100));
     m_operatorController.rightBumper().onFalse(shooter.setVelocityRPSCommand(0));
 
     m_operatorController
         .leftBumper()
-        .onTrue(Commands.runOnce(() -> shooter.setVoltage(6), shooter));
-    m_operatorController
-        .leftBumper()
-        .onFalse(Commands.runOnce(() -> shooter.setVoltage(0), shooter));
+        .whileTrue(
+            Commands.startEnd(() -> shooter.setVoltage(6), () -> shooter.setVoltage(0), shooter));
 
     m_operatorController.povUp().onTrue(Commands.runOnce(() -> turret.setGoal(0.5)));
     m_operatorController.povDown().onTrue(Commands.runOnce(() -> turret.setGoal(0.1)));
