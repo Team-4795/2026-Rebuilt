@@ -11,6 +11,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
+import frc.robot.util.LoggedTunableNumber;
 
 public class ShooterIOReal implements ShooterIO {
   private TalonFX topShooterMotor = new TalonFX(ShooterConstants.TOP_CAN_ID);
@@ -20,6 +21,14 @@ public class ShooterIOReal implements ShooterIO {
   private final StatusSignal<AngularVelocity> bottomRPS = bottomShooterMotor.getVelocity();
   private final StatusSignal<Current> topCurrent = topShooterMotor.getTorqueCurrent();
   private final StatusSignal<Current> bottomCurrent = bottomShooterMotor.getTorqueCurrent();
+
+  LoggedTunableNumber KP = new LoggedTunableNumber("Shooter/KP", ShooterConstants.kP);
+  LoggedTunableNumber KI = new LoggedTunableNumber("Shooter/KI", ShooterConstants.kI);
+  LoggedTunableNumber KD = new LoggedTunableNumber("Shooter/KD", ShooterConstants.kD);
+
+  LoggedTunableNumber KS = new LoggedTunableNumber("Shooter/KS", ShooterConstants.kS);
+  LoggedTunableNumber KV = new LoggedTunableNumber("Shooter/KV", ShooterConstants.kV);
+  LoggedTunableNumber KA = new LoggedTunableNumber("Shooter/KA", ShooterConstants.kA);
 
   private final MotionMagicVelocityTorqueCurrentFOC m_request =
       new MotionMagicVelocityTorqueCurrentFOC(0);
