@@ -30,7 +30,8 @@ public class ShooterIOReal implements ShooterIO {
   LoggedTunableNumber KV = new LoggedTunableNumber("Shooter/KV", ShooterConstants.kV);
   LoggedTunableNumber KA = new LoggedTunableNumber("Shooter/KA", ShooterConstants.kA);
 
-  public static LoggedTunableNumber RPM = new LoggedTunableNumber("Shooter/RPM", ShooterConstants.RPM);
+  public static LoggedTunableNumber RPM =
+      new LoggedTunableNumber("Shooter/RPM", ShooterConstants.RPM);
 
   private final MotionMagicVelocityTorqueCurrentFOC m_request =
       new MotionMagicVelocityTorqueCurrentFOC(0);

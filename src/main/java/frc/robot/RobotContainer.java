@@ -8,10 +8,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.drive.Drive;
-import frc.robot.subsystems.drive.GyroIO;
-import frc.robot.subsystems.drive.GyroIORedux;
-import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerIO;
 import frc.robot.subsystems.Indexer.IndexerIOReal;
@@ -25,7 +21,10 @@ import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretIO;
 import frc.robot.subsystems.Turret.TurretIOReal;
 import frc.robot.subsystems.Turret.TurretIOSim;
-import frc.robot.subsystems.drive.GyroIOPigeon2;
+import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.drive.GyroIO;
+import frc.robot.subsystems.drive.GyroIORedux;
+import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
 
 /**
@@ -39,7 +38,7 @@ public class RobotContainer {
   private Shooter shooter;
   private Indexer indexer;
   private Turret turret;
-  private Drive drive; 
+  private Drive drive;
 
   // Controllers
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
@@ -103,16 +102,24 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_operatorController.rightBumper().onTrue(shooter.setVelocityRPSCommand(ShooterIOReal.RPM.get()));
+    m_operatorController
+        .rightBumper()
+        .onTrue(shooter.setVelocityRPSCommand(ShooterIOReal.RPM.get()));
+        
     m_operatorController.rightBumper().onFalse(shooter.setVelocityRPSCommand(0));
 
+    // m_operatorController
+    //     .leftBumper()
+    //     .whileTrue(
+    //         Commands.startEnd(() -> shooter.setVoltage(6), () -> shooter.setVoltage(0), shooter));
+
+    // replace the 0.0 in .get() with the data from vision on distance from hub.
     m_operatorController
         .leftBumper()
         .whileTrue(
-            Commands.startEnd(() -> shooter.setVoltage(6), () -> shooter.setVoltage(0), shooter));
-            
-            //replace the 0.0 in .get() with the data from vision on distance from hub. 
-    m_operatorController.leftBumper().whileTrue(Commands.startEnd(() -> shooter.setVelocityRPSCommand(ShooterConstants.shooterMap.get(0.0)), () -> shooter.setVelocityRPSCommand(0)));
+            Commands.startEnd(
+                () -> shooter.setVelocityRPSCommand(ShooterConstants.shooterMap.get(0.0)),
+                () -> shooter.setVelocityRPSCommand(0)));
 
     m_operatorController.povUp().onTrue(Commands.runOnce(() -> turret.setGoal(0.5)));
     m_operatorController.povDown().onTrue(Commands.runOnce(() -> turret.setGoal(0.1)));
