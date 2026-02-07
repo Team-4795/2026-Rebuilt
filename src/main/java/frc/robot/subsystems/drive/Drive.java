@@ -68,10 +68,24 @@ public class Drive extends SubsystemBase {
         new SwerveModulePosition(),
         new SwerveModulePosition()
       };
+
+  private static Drive instance;
+
   private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
 
   private static Drive instance;
+
+  public static Drive getInstance() {
+    return instance;
+  }
+
+  public static Drive initialize(GyroIO gyro, ModuleIO fl, ModuleIO fr, ModuleIO bl, ModuleIO br) {
+    if (instance == null) {
+      instance = new Drive(gyro, fl, fr, bl, br);
+    }
+    return instance;
+  }
 
   public static Drive getInstance() {
     return instance;

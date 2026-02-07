@@ -26,6 +26,10 @@ import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIORedux;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
+import frc.robot.subsystems.vision.Vision;
+import frc.robot.subsystems.vision.VisionIO;
+import frc.robot.subsystems.vision.VisionIOReal;
+import frc.robot.subsystems.vision.VisionIOSim;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -39,6 +43,7 @@ public class RobotContainer {
   private Indexer indexer;
   private Turret turret;
   private Drive drive;
+  private final Vision vision;
 
   // Controllers
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
@@ -59,6 +64,7 @@ public class RobotContainer {
                 new ModuleIOSpark(1),
                 new ModuleIOSpark(2),
                 new ModuleIOSpark(3));
+        vision = Vision.initialize(new VisionIOReal(0), new VisionIOReal(1), new VisionIOReal(2));
         break;
 
       case SIM:
@@ -66,12 +72,13 @@ public class RobotContainer {
         indexer = Indexer.initialize(new IndexerIOSim());
         turret = Turret.initialize(new TurretIOSim());
         drive =
-            new Drive(
+            Drive.initialize(
                 new GyroIO() {},
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim());
+        vision = Vision.initialize(new VisionIOSim());
         break;
 
       default:
@@ -79,7 +86,7 @@ public class RobotContainer {
         indexer = Indexer.initialize(new IndexerIO() {});
         turret = Turret.initialize(new TurretIO() {});
         drive =
-            new Drive(
+            Drive.initialize(
                 new GyroIO() {},
                 new ModuleIOSim(),
                 new ModuleIOSim(),

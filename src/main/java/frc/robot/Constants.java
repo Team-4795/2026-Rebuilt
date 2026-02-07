@@ -21,6 +21,7 @@ public final class Constants {
   public static final boolean tuningMode = true;
 
   public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
+  public static final boolean isVisionSim = true;
 
   public static enum Mode {
     /** Running on a real robot. */
@@ -41,4 +42,9 @@ public final class Constants {
   }
 
   public static Translation2d hub = new Translation2d(2, 2); // placeholder here
+
+  public static final class FieldConstants {
+    public static final double fieldLength = 0;
+    public static final double fieldWidth = 0;
+  }
 }
