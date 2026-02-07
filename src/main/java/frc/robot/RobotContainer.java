@@ -103,7 +103,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_operatorController.rightBumper().onTrue(shooter.setVelocityRPSCommand(100));
+    m_operatorController.rightBumper().onTrue(shooter.setVelocityRPSCommand(ShooterIOReal.RPM.get()));
     m_operatorController.rightBumper().onFalse(shooter.setVelocityRPSCommand(0));
 
     m_operatorController
