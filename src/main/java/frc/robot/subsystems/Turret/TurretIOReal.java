@@ -64,6 +64,7 @@ public class TurretIOReal implements TurretIO {
     controlConfig.MotionMagicJerk = TurretConstants.maxJerk;
 
     turretMotor.getConfigurator().apply(controlConfig);
+    zero();
   }
 
   @Override

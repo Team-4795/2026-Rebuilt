@@ -3,7 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.FieldConstants;
+import frc.robot.Constants;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretConstants;
 import frc.robot.subsystems.drive.Drive;
@@ -13,7 +13,7 @@ public class AimAtHub extends Command {
   private final Turret turret;
   private final Drive drive;
   Pose2d robotPose;
-  Translation2d hub = FieldConstants.Hub.innerCenterPoint.toTranslation2d();
+  Translation2d hub = Constants.FieldConstants.redHub;
   Translation2d turretOffsetPose = TurretConstants.OFFSET;
   Translation2d turretPose;
   double deltaX = 0;

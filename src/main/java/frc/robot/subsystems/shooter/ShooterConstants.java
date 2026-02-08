@@ -18,7 +18,7 @@ public final class ShooterConstants {
   public static final double kS = 0;
   public static final double kV = 0.07;
   public static final double kA = 0;
-  public static final double RPM = 50;
+  public static final double RPM = 58;
 
   public static final double GEARING = 2.0 / 3.0;
 
@@ -30,8 +30,7 @@ public final class ShooterConstants {
 
   // Distance, RPM
   static {
-    shooterMap.put(0.0, 0.0);
-    shooterMap.put(1.0, 20.0);
-    shooterMap.put(2.0, 30.0);
+    shooterMap.put(3.82, 55.0);
+    shooterMap.put(4.857, 61.0);
   }
 }

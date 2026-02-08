@@ -45,7 +45,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
-import frc.robot.FieldConstants;
 import frc.robot.util.LocalADStarAK;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -141,6 +140,7 @@ public class Drive extends SubsystemBase {
 
   @Override
   public void periodic() {
+    Logger.recordOutput("Distance to Hub", getDistanceToHub());
     odometryLock.lock(); // Prevents odometry updates while reading data
     gyroIO.updateInputs(gyroInputs);
     Logger.processInputs("Drive/Gyro", gyroInputs);
@@ -345,7 +345,7 @@ public class Drive extends SubsystemBase {
 
   public double getDistanceToHub() {
     Translation2d robotPose = getPose().getTranslation();
-    Translation2d hubPose = FieldConstants.Hub.innerCenterPoint.toTranslation2d();
+    Translation2d hubPose = Constants.FieldConstants.redHub;
     double distance = robotPose.getDistance(hubPose);
     return distance;
   }
