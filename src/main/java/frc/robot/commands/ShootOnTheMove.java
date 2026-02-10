@@ -1,7 +1,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Turret.Turret;
@@ -9,7 +11,7 @@ import frc.robot.subsystems.Turret.TurretConstants;
 import frc.robot.subsystems.drive.Drive;
 import org.littletonrobotics.junction.Logger;
 
-public class AimAtHub extends Command {
+public class ShootOnTheMove extends Command {
   private final Turret turret;
   private final Drive drive;
   Pose2d robotPose;
@@ -18,10 +20,19 @@ public class AimAtHub extends Command {
   Translation2d turretPose;
   double deltaX = 0;
   double deltaY = 0;
-  double desiredRot;
-  double turretAngle;
+  double velocityXOffset = 0; 
+  double velocityYOffset = 0; 
+  double velocityOmega = 0; //needs to be in rotations
+  double omegaXOffset = 0; 
+  double omegaYOffset = 0;
+  double desiredRot = 0;
+  double turretAngle = 0;
+  Translation2d velocityVector; 
+  double rotationOffset = TurretConstants.angleOffset;  //zeroing offset
+  double t; //calculate this with utility class or interpolating tree
+  ChassisSpeeds fieldRelative; 
 
-  public AimAtHub(Drive drive, Turret turret) {
+  public ShootOnTheMove(Drive drive, Turret turret) {
     this.drive = drive;
     this.turret = turret;
     addRequirements(turret);
@@ -36,10 +47,14 @@ public class AimAtHub extends Command {
     turretPose =
         robotPose.getTranslation().plus(turretOffsetPose.rotateBy(robotPose.getRotation()));
 
-      
+    fieldRelative = ChassisSpeeds.fromRobotRelativeSpeeds(drive.getChassisSpeeds(), robotPose.getRotation());
 
-    deltaX = hub.getX() - turretPose.getX();
-    deltaY = hub.getY() - turretPose.getY();
+    velocityXOffset = fieldRelative.vxMetersPerSecond * t; 
+    velocityYOffset = fieldRelative.vyMetersPerSecond * t; 
+    velocityOmega = (fieldRelative.omegaRadiansPerSecond * t)/(2 * Math.PI);
+
+    deltaX = hub.getX() - turretPose.getX() - velocityXOffset;
+    deltaY = hub.getY() - turretPose.getY() - velocityYOffset;
 
     turretAngle =
         (Math.atan2(deltaY, deltaX) - robotPose.getRotation().getRadians()) / (2 * Math.PI);
