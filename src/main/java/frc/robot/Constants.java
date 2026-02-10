@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -17,7 +18,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
  */
 public final class Constants {
   public static final Mode simMode = Mode.SIM;
+  public static final boolean tuningMode = true;
+
   public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
+  public static final boolean isVisionSim = false;
 
   public static enum Mode {
     /** Running on a real robot. */
@@ -35,5 +39,9 @@ public final class Constants {
     public static final CommandXboxController operatorController = new CommandXboxController(1);
     public static final double KAxisDeadband = 0.1;
     public static final double OperatorLAxisDeadband = 0.3;
+  }
+
+  public static class FieldConstants {
+    public static Translation2d redHub = new Translation2d(11.910, 4.060);
   }
 }

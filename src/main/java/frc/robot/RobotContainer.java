@@ -8,14 +8,24 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AimAtHub;
+import frc.robot.subsystems.Indexer.Indexer;
+import frc.robot.subsystems.Indexer.IndexerIO;
+import frc.robot.subsystems.Indexer.IndexerIOReal;
+import frc.robot.subsystems.Indexer.IndexerIOSim;
+import frc.robot.subsystems.Shooter.Shooter;
+import frc.robot.subsystems.Shooter.ShooterIO;
+import frc.robot.subsystems.Shooter.ShooterIOReal;
+import frc.robot.subsystems.Shooter.ShooterIOSim;
+import frc.robot.subsystems.Turret.Turret;
+import frc.robot.subsystems.Turret.TurretIO;
+import frc.robot.subsystems.Turret.TurretIOReal;
+import frc.robot.subsystems.Turret.TurretIOSim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
-import frc.robot.subsystems.drive.GyroIOPigeon2;
-import frc.robot.subsystems.drive.ModuleIO;
+import frc.robot.subsystems.drive.GyroIORedux;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
-import frc.robot.util.NamedCommandManager;
-import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,7 +35,11 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Drive drive;
+  private Shooter shooter;
+  private Indexer indexer;
+  private Turret turret;
+  private Drive drive;
+  private final Vision vision;
 
   // Controllers
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
@@ -38,36 +52,45 @@ public class RobotContainer {
   public RobotContainer() {
     switch (Constants.currentMode) {
       case REAL:
-        // Real robot, instantiate hardware IO implementations
+        shooter = Shooter.initialize(new ShooterIOReal());
+        indexer = Indexer.initialize(new IndexerIOReal());
+        turret = Turret.initialize(new TurretIOReal());
         drive =
-            new Drive(
-                new GyroIOPigeon2(),
+            Drive.initialize(
+                new GyroIORedux(),
                 new ModuleIOSpark(0),
                 new ModuleIOSpark(1),
                 new ModuleIOSpark(2),
                 new ModuleIOSpark(3));
+        vision = Vision.initialize(new VisionIOReal(0));
         break;
 
       case SIM:
-        // Sim robot, instantiate physics sim IO implementations
+        shooter = Shooter.initialize(new ShooterIOSim());
+        indexer = Indexer.initialize(new IndexerIOSim());
+        turret = Turret.initialize(new TurretIOSim());
         drive =
-            new Drive(
+            Drive.initialize(
                 new GyroIO() {},
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim(),
                 new ModuleIOSim());
+        vision = Vision.initialize(new VisionIOSim());
         break;
 
       default:
-        // Replayed robot, disable IO implementations
+        shooter = Shooter.initialize(new ShooterIO() {});
+        indexer = Indexer.initialize(new IndexerIO() {});
+        turret = Turret.initialize(new TurretIO() {});
         drive =
-            new Drive(
+            Drive.initialize(
                 new GyroIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {},
-                new ModuleIO() {});
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim());
+        vision = Vision.initialize(new VisionIO[] {});
         break;
     }
 
@@ -88,10 +111,46 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {}
+  private void configureBindings() {
+    // For sim
+    // drive.setDefaultCommand(
+    //     DriveCommands.joystickDrive(
+    //         drive,
+    //         () -> -m_driverController.getLeftY(),
+    //         () -> -m_driverController.getLeftX(),
+    //         () -> -m_driverController.getRightX()));
+
+    m_operatorController
+        .rightBumper()
+        .whileTrue(
+            Commands.startEnd(
+                () -> shooter.setVelocityRPS(ShooterIOReal.RPM.get()),
+                () -> shooter.setVelocityRPS(0)));
+
+    // m_operatorController
+    //     .leftBumper()
+    //     .whileTrue(
+    //         Commands.startEnd(() -> shooter.setVoltage(6), () -> shooter.setVoltage(0),
+    // shooter));
+
+    m_operatorController
+        .leftBumper()
+        .whileTrue(
+            Commands.startEnd(() -> shooter.setRPSDynamic(), () -> shooter.setVelocityRPS(0)));
+
+    m_operatorController.povLeft().onTrue(Commands.runOnce(() -> turret.setGoal(0.5)));
+    m_operatorController.povRight().onTrue(Commands.runOnce(() -> turret.setGoal(0.1)));
+    m_operatorController.povDown().whileTrue(new AimAtHub(drive, turret));
+    m_driverController.x().onTrue(Commands.runOnce(() -> turret.resetTurret()));
+
+    m_operatorController
+        .povUp()
+        .whileTrue(
+            Commands.startEnd(() -> indexer.setVoltage(6), () -> indexer.setVoltage(0), indexer));
+  }
 
   /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
+   * Use this to pass the autonomous command to the main {@link Robot} class.x`
    *
    * @return the command to run in autonomous
    */
