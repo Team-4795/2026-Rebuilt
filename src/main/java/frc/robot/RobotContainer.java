@@ -34,6 +34,10 @@ import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOReal;
 import frc.robot.subsystems.vision.VisionIOSim;
 import frc.robot.util.NamedCommandManager;
+import frc.robot.subsystems.ShooterHood.ShooterHood;
+import frc.robot.subsystems.ShooterHood.ShooterHoodIO;
+import frc.robot.subsystems.ShooterHood.ShooterHoodIOReal;
+import frc.robot.subsystems.ShooterHood.ShooterHoodIOSim;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -48,6 +52,7 @@ public class RobotContainer {
   private Turret turret;
   private Drive drive;
   private final Vision vision;
+  private ShooterHood shooterHood;
 
   // Controllers
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
@@ -106,6 +111,18 @@ public class RobotContainer {
     NamedCommandManager.registerNamedCommands();
     autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
 
+        shooterHood = ShooterHood.initialize(new ShooterHoodIOReal());
+        break;
+
+      case SIM:
+        shooterHood = ShooterHood.initialize(new ShooterHoodIOSim());
+        break;
+
+      default:
+        shooterHood = ShooterHood.initialize(new ShooterHoodIO() {});
+        break;
+    }
+
     // Configure the trigger bindings
     configureBindings();
   }
@@ -155,6 +172,9 @@ public class RobotContainer {
         .povUp()
         .whileTrue(
             Commands.startEnd(() -> indexer.setVoltage(6), () -> indexer.setVoltage(0), indexer));
+    // Random button bindings
+    m_driverController.rightBumper().onTrue(shooterHood.setGoal(0.1));
+    m_driverController.leftBumper().onTrue(shooterHood.setGoal(0.25));
   }
 
   /**
