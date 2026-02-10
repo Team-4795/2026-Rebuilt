@@ -51,6 +51,16 @@ public class TurretIOSim implements TurretIO {
   }
 
   @Override
+  public double getGoal() {
+    return goal.position;
+  }
+
+  @Override
+  public boolean readyToShoot() {
+    return Math.abs(getPosition() - getGoal()) < TurretConstants.marginOfError;
+  }
+
+  @Override
   public void updateInputs(TurretIOInputs inputs) {
     inputs.goal = Units.radiansToRotations(goal.position);
     inputs.volts = this.voltage;

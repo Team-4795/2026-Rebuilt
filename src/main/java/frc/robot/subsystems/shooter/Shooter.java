@@ -37,9 +37,13 @@ public class Shooter extends SubsystemBase {
   public void setRPSDynamic() {
     double distance = Drive.getInstance().getDistanceToHub();
     double goalRPS = ShooterConstants.shooterMap.get(distance);
-    Logger.recordOutput("distance", distance);
-    Logger.recordOutput("goalRPS", goalRPS);
+    // Logger.recordOutput("distance", distance);
+    // Logger.recordOutput("goalRPS", goalRPS);
     setVelocityRPS(goalRPS);
+  }
+
+  public boolean readyToShoot() {
+    return io.readyToShoot();
   }
 
   @Override

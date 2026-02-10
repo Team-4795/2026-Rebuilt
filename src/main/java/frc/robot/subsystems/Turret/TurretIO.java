@@ -16,6 +16,10 @@ public interface TurretIO {
     return 0;
   }
 
+  public default double getGoal() {
+    return 0;
+  }
+
   public default void setVoltage(double voltage) {}
 
   public default void setGoal(double goal) {}
@@ -24,5 +28,7 @@ public interface TurretIO {
 
   public default void zero() {}
 
-  public default void resetTurret() {}
+  public default boolean readyToShoot() {
+    return false;
+  }
 }

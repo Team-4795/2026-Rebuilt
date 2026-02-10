@@ -34,16 +34,20 @@ public class Turret extends SubsystemBase {
     io.setGoal(goal);
   }
 
-  public void resetTurret() {
-    io.resetTurret();
-  }
-
   public void setVoltage(double voltage) {
     io.setVoltage(voltage);
   }
 
   public double getTurretAngle() {
     return io.getPosition();
+  }
+
+  public void zero() {
+    io.zero();
+  }
+
+  public boolean readyToShoot() {
+    return io.readyToShoot();
   }
 
   // Visualize the direction the turret aims in ascope

@@ -20,6 +20,9 @@ public final class ShooterHoodConstants {
   public static final double maxAngle = 0.5 - margin;
   public static final double minAngle = 0.0 + margin;
 
+  // Margin for ready to shoot command
+  public static final double marginOfError = 0.01;
+
   public static final double maxVelocity = 10;
   public static final double maxAcceleration = 10;
   public static final double maxJerk = 0;

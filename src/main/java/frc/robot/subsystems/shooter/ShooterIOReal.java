@@ -60,6 +60,21 @@ public class ShooterIOReal implements ShooterIO {
   }
 
   @Override
+  public double getTopRPS() {
+    return topRPS.getValueAsDouble();
+  }
+
+  @Override
+  public double getBottomRPS() {
+    return bottomRPS.getValueAsDouble();
+  }
+
+  @Override
+  public double getGoal() {
+    return this.goalVelocityRPS;
+  }
+
+  @Override
   public void setVelocityRPS(double velocityRPS) {
     velocityRPS = MathUtil.clamp(velocityRPS, ShooterConstants.minVel, ShooterConstants.maxVel);
     topShooterMotor.setControl(m_request.withVelocity(velocityRPS));
@@ -70,6 +85,12 @@ public class ShooterIOReal implements ShooterIO {
   public void setVoltage(double volts) {
     this.volts = volts;
     topShooterMotor.setVoltage(volts);
+  }
+
+  @Override
+  public boolean readyToShoot() {
+    return (Math.abs(getTopRPS() - getGoal()) < ShooterConstants.marginOfError) 
+      && (Math.abs(getBottomRPS() - getGoal()) < ShooterConstants.marginOfError);
   }
 
   @Override

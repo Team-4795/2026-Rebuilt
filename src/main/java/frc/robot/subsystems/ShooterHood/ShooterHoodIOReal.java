@@ -62,6 +62,11 @@ public class ShooterHoodIOReal implements ShooterHoodIO {
   public double getPosition() {
     return shooterHoodMotor.getPosition().getValueAsDouble();
   }
+  
+  @Override
+  public double getGoal() {
+    return this.goal;
+  }
 
   @Override
   public void setVoltage(double volts) {
@@ -70,9 +75,13 @@ public class ShooterHoodIOReal implements ShooterHoodIO {
 
   @Override
   public void setGoal(double goal) {
-    goal = MathUtil.clamp(goal, ShooterHoodConstants.minAngle, ShooterHoodConstants.maxAngle);
-    shooterHoodMotor.setControl(m_request.withPosition(goal));
-    this.goal = goal;
+    this.goal = MathUtil.clamp(goal, ShooterHoodConstants.minAngle, ShooterHoodConstants.maxAngle);
+    shooterHoodMotor.setControl(m_request.withPosition(this.goal));
+  }
+
+  @Override
+  public boolean readyToShoot() {
+    return Math.abs(getPosition() - getGoal()) < ShooterHoodConstants.marginOfError;
   }
 
   @Override

@@ -73,13 +73,13 @@ public class TurretIOReal implements TurretIO {
   }
 
   @Override
-  public void setVoltage(double voltage) {
-    turretMotor.setVoltage(voltage);
+  public double getGoal() {
+    return this.goal;
   }
 
   @Override
-  public void zero() {
-    turretMotor.setPosition(0);
+  public void setVoltage(double voltage) {
+    turretMotor.setVoltage(voltage);
   }
 
   @Override
@@ -90,15 +90,20 @@ public class TurretIOReal implements TurretIO {
   }
 
   @Override
-  public void resetTurret() {
+  public void zero() {
     turretMotor.setPosition(0);
+  }
+
+  @Override
+  public boolean readyToShoot() {
+    return Math.abs(getPosition() - getGoal()) < TurretConstants.marginOfError;
   }
 
   @Override
   public void updateInputs(TurretIOInputs inputs) {
     BaseStatusSignal.refreshAll(position, current, voltage, velocity);
 
-    inputs.goal = turretMotor.getClosedLoopReference().getValueAsDouble();
+    inputs.goal = this.goal;
     inputs.position = position.getValueAsDouble();
     inputs.current = current.getValueAsDouble();
     inputs.volts = voltage.getValueAsDouble();

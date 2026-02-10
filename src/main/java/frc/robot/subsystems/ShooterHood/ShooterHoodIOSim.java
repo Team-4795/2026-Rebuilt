@@ -53,6 +53,11 @@ public class ShooterHoodIOSim implements ShooterHoodIO {
   }
 
   @Override
+  public boolean readyToShoot() {
+    return Math.abs(getPosition() - getGoal()) < ShooterHoodConstants.marginOfError;
+  }
+
+  @Override
   public void updateInputs(ShooterHoodIOInputs inputs) {
     inputs.goalRotations = Units.radiansToRotations(goal.position);
     inputs.voltage = this.voltage;

@@ -18,7 +18,15 @@ public interface ShooterHoodIO {
     return 0.0;
   }
 
+  public default double getGoal() {
+    return 0.0;
+  }
+
   public default void setVoltage(double volts) {}
 
   public default void setGoal(double goal) {}
+
+  public default boolean readyToShoot() {
+    return false;
+  }
 }

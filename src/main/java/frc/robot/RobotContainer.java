@@ -156,7 +156,7 @@ public class RobotContainer {
     m_operatorController.povLeft().onTrue(Commands.runOnce(() -> turret.setGoal(0.5)));
     m_operatorController.povRight().onTrue(Commands.runOnce(() -> turret.setGoal(0.1)));
     m_operatorController.povDown().whileTrue(new AimAtHub(drive, turret));
-    m_driverController.x().onTrue(Commands.runOnce(() -> turret.resetTurret()));
+    m_driverController.x().onTrue(Commands.runOnce(() -> turret.zero()));
 
     m_operatorController
         .povUp()

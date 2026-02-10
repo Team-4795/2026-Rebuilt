@@ -19,7 +19,24 @@ public interface ShooterIO {
 
   public default void updateInputs(ShooterIOInputs inputs) {}
 
+  public default double getTopRPS() {
+    return 0.0;
+  }
+
+  public default double getBottomRPS() {
+    return 0.0;
+  }
+  
+  public default double getGoal() {
+    return 0.0;
+  }
+
   public default void setVelocityRPS(double velocityRPS) {}
 
   public default void setVoltage(double volts) {}
+
+  public default boolean readyToShoot() {
+    return false;
+  }
+
 }

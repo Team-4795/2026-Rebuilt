@@ -31,6 +31,10 @@ public class ShooterHood extends SubsystemBase {
     return Commands.runOnce(() -> io.setGoal(goal), this);
   }
 
+  public boolean readyToShoot() {
+    return io.readyToShoot();
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);
