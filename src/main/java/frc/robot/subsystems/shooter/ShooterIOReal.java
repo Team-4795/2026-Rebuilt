@@ -5,6 +5,7 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVelocityTorqueCurrentFOC;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -84,13 +85,13 @@ public class ShooterIOReal implements ShooterIO {
   @Override
   public void setVoltage(double volts) {
     this.volts = volts;
-    topShooterMotor.setVoltage(volts);
+    topShooterMotor.setControl(new VoltageOut(volts));
   }
 
   @Override
   public boolean readyToShoot() {
-    return (Math.abs(getTopRPS() - getGoal()) < ShooterConstants.marginOfError) 
-      && (Math.abs(getBottomRPS() - getGoal()) < ShooterConstants.marginOfError);
+    return (Math.abs(getTopRPS() - getGoal()) < ShooterConstants.marginOfError)
+        && (Math.abs(getBottomRPS() - getGoal()) < ShooterConstants.marginOfError);
   }
 
   @Override

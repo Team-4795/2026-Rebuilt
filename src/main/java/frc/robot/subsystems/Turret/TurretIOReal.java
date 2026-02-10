@@ -5,6 +5,7 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.Angle;
@@ -79,7 +80,7 @@ public class TurretIOReal implements TurretIO {
 
   @Override
   public void setVoltage(double voltage) {
-    turretMotor.setVoltage(voltage);
+    turretMotor.setControl(new VoltageOut(voltage));
   }
 
   @Override

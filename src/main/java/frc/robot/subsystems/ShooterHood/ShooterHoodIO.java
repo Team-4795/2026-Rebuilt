@@ -26,6 +26,8 @@ public interface ShooterHoodIO {
 
   public default void setGoal(double goal) {}
 
+  public default void zero() {}
+
   public default boolean readyToShoot() {
     return false;
   }

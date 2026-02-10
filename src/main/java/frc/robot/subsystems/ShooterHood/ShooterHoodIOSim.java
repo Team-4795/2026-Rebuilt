@@ -53,6 +53,11 @@ public class ShooterHoodIOSim implements ShooterHoodIO {
   }
 
   @Override
+  public void zero() {
+    shooterHoodSim.setAngle(0);
+  }
+
+  @Override
   public boolean readyToShoot() {
     return Math.abs(getPosition() - getGoal()) < ShooterHoodConstants.marginOfError;
   }

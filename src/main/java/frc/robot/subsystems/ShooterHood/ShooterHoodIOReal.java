@@ -62,7 +62,7 @@ public class ShooterHoodIOReal implements ShooterHoodIO {
   public double getPosition() {
     return shooterHoodMotor.getPosition().getValueAsDouble();
   }
-  
+
   @Override
   public double getGoal() {
     return this.goal;
@@ -77,6 +77,11 @@ public class ShooterHoodIOReal implements ShooterHoodIO {
   public void setGoal(double goal) {
     this.goal = MathUtil.clamp(goal, ShooterHoodConstants.minAngle, ShooterHoodConstants.maxAngle);
     shooterHoodMotor.setControl(m_request.withPosition(this.goal));
+  }
+
+  @Override
+  public void zero() {
+    shooterHoodMotor.setPosition(0);
   }
 
   @Override

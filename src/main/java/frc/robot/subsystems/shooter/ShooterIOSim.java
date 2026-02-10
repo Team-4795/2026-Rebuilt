@@ -53,8 +53,8 @@ public class ShooterIOSim implements ShooterIO {
 
   @Override
   public boolean readyToShoot() {
-    return (Math.abs(getTopRPS() - getGoal()) < ShooterConstants.marginOfError) 
-      && (Math.abs(getBottomRPS() - getGoal()) < ShooterConstants.marginOfError);
+    return (Math.abs(getTopRPS() - getGoal()) < ShooterConstants.marginOfError)
+        && (Math.abs(getBottomRPS() - getGoal()) < ShooterConstants.marginOfError);
   }
 
   @Override

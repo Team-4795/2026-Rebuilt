@@ -26,7 +26,7 @@ public interface ShooterIO {
   public default double getBottomRPS() {
     return 0.0;
   }
-  
+
   public default double getGoal() {
     return 0.0;
   }
@@ -38,5 +38,4 @@ public interface ShooterIO {
   public default boolean readyToShoot() {
     return false;
   }
-
 }

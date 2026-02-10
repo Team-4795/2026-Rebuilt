@@ -31,8 +31,16 @@ public class ShooterHood extends SubsystemBase {
     return Commands.runOnce(() -> io.setGoal(goal), this);
   }
 
+  public void zero() {
+    io.zero();
+  }
+
   public boolean readyToShoot() {
     return io.readyToShoot();
+  }
+
+  public void setVoltage(double voltage) {
+    io.setVoltage(voltage);
   }
 
   @Override

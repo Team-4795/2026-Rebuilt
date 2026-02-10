@@ -162,6 +162,9 @@ public class RobotContainer {
         .povUp()
         .whileTrue(
             Commands.startEnd(() -> indexer.setVoltage(6), () -> indexer.setVoltage(0), indexer));
+
+    m_operatorController.a().whileTrue(Commands.run(() -> turret.setVoltage(-5)));
+
     // Random button bindings
     m_driverController.rightBumper().onTrue(shooterHood.setGoal(0.1));
     m_driverController.leftBumper().onTrue(shooterHood.setGoal(0.25));
