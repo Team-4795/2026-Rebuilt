@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -20,6 +18,10 @@ import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterIO;
 import frc.robot.subsystems.Shooter.ShooterIOReal;
 import frc.robot.subsystems.Shooter.ShooterIOSim;
+import frc.robot.subsystems.ShooterHood.ShooterHood;
+import frc.robot.subsystems.ShooterHood.ShooterHoodIO;
+import frc.robot.subsystems.ShooterHood.ShooterHoodIOReal;
+import frc.robot.subsystems.ShooterHood.ShooterHoodIOSim;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretIO;
 import frc.robot.subsystems.Turret.TurretIOReal;
@@ -34,10 +36,7 @@ import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOReal;
 import frc.robot.subsystems.vision.VisionIOSim;
 import frc.robot.util.NamedCommandManager;
-import frc.robot.subsystems.ShooterHood.ShooterHood;
-import frc.robot.subsystems.ShooterHood.ShooterHoodIO;
-import frc.robot.subsystems.ShooterHood.ShooterHoodIOReal;
-import frc.robot.subsystems.ShooterHood.ShooterHoodIOSim;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -68,6 +67,7 @@ public class RobotContainer {
         shooter = Shooter.initialize(new ShooterIOReal());
         indexer = Indexer.initialize(new IndexerIOReal());
         turret = Turret.initialize(new TurretIOReal());
+        shooterHood = ShooterHood.initialize(new ShooterHoodIOReal());
         drive =
             Drive.initialize(
                 new GyroIORedux(),
@@ -82,6 +82,7 @@ public class RobotContainer {
         shooter = Shooter.initialize(new ShooterIOSim());
         indexer = Indexer.initialize(new IndexerIOSim());
         turret = Turret.initialize(new TurretIOSim());
+        shooterHood = ShooterHood.initialize(new ShooterHoodIOSim());
         drive =
             Drive.initialize(
                 new GyroIO() {},
@@ -96,6 +97,7 @@ public class RobotContainer {
         shooter = Shooter.initialize(new ShooterIO() {});
         indexer = Indexer.initialize(new IndexerIO() {});
         turret = Turret.initialize(new TurretIO() {});
+        shooterHood = ShooterHood.initialize(new ShooterHoodIO() {});
         drive =
             Drive.initialize(
                 new GyroIO() {},
@@ -110,18 +112,6 @@ public class RobotContainer {
     // Register named commands
     NamedCommandManager.registerNamedCommands();
     autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
-
-        shooterHood = ShooterHood.initialize(new ShooterHoodIOReal());
-        break;
-
-      case SIM:
-        shooterHood = ShooterHood.initialize(new ShooterHoodIOSim());
-        break;
-
-      default:
-        shooterHood = ShooterHood.initialize(new ShooterHoodIO() {});
-        break;
-    }
 
     // Configure the trigger bindings
     configureBindings();

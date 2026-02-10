@@ -36,8 +36,6 @@ public class AimAtHub extends Command {
     turretPose =
         robotPose.getTranslation().plus(turretOffsetPose.rotateBy(robotPose.getRotation()));
 
-      
-
     deltaX = hub.getX() - turretPose.getX();
     deltaY = hub.getY() - turretPose.getY();
 
