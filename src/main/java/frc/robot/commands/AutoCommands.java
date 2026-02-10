@@ -36,4 +36,14 @@ public class AutoCommands {
             Commands.runOnce(() -> hood.zero(), hood),
             Commands.runOnce(() -> hood.setVoltage(0), hood)));
   }
+
+  // Rev shooter wheels based on interpolation tree
+  public static Command setShooterVelocityDynamic() {
+    return Commands.startEnd(() -> shooter.setRPSDynamic(), () -> shooter.setVelocityRPS(0));
+  }
+
+  // Nitya you can do this one. Look at shooter dynamic method for reference
+  public static Command setShooterHoodDynamic() {
+    return Commands.none();
+  }
 }

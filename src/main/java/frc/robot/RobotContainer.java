@@ -149,10 +149,7 @@ public class RobotContainer {
     //         Commands.startEnd(() -> shooter.setVoltage(6), () -> shooter.setVoltage(0),
     // shooter));
 
-    m_operatorController
-        .leftBumper()
-        .whileTrue(
-            Commands.startEnd(() -> shooter.setRPSDynamic(), () -> shooter.setVelocityRPS(0)));
+    m_operatorController.leftBumper().whileTrue(AutoCommands.setShooterVelocityDynamic());
 
     m_operatorController.povLeft().onTrue(Commands.runOnce(() -> turret.setGoal(0.5)));
     m_operatorController.povRight().onTrue(Commands.runOnce(() -> turret.setGoal(0.1)));
@@ -163,7 +160,7 @@ public class RobotContainer {
         .povUp()
         .whileTrue(
             Commands.startEnd(() -> indexer.setVoltage(6), () -> indexer.setVoltage(0), indexer));
-    
+
     // Needs to be tested
     m_operatorController.a().whileTrue(AutoCommands.zeroSequence());
 

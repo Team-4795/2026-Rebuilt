@@ -25,6 +25,7 @@ public class ShooterHood extends SubsystemBase {
   private ShooterHood(ShooterHoodIO shooterHoodIO) {
     io = shooterHoodIO;
     io.updateInputs(inputs);
+    setDefaultCommand(setGoal(0));
   }
 
   public Command setGoal(double goal) {
