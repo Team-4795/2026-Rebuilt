@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AimAtHub;
+import frc.robot.commands.AutoCommands;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerIO;
 import frc.robot.subsystems.Indexer.IndexerIOReal;
@@ -162,8 +163,9 @@ public class RobotContainer {
         .povUp()
         .whileTrue(
             Commands.startEnd(() -> indexer.setVoltage(6), () -> indexer.setVoltage(0), indexer));
-
-    m_operatorController.a().whileTrue(Commands.run(() -> turret.setVoltage(-5)));
+    
+    // Needs to be tested
+    m_operatorController.a().whileTrue(AutoCommands.zeroSequence());
 
     // Random button bindings
     m_driverController.rightBumper().onTrue(shooterHood.setGoal(0.1));
