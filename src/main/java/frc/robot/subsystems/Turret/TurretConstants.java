@@ -20,8 +20,8 @@ public class TurretConstants {
   public static final double simkP = 6.5;
   public static final double simkV = 0;
 
-  public static final double maxVelocity = 0.66;
-  public static final double maxAcceleration = 0.5;
+  public static final double maxVelocity = 6;
+  public static final double maxAcceleration = 10;
   public static final double maxJerk = 0;
   public static final int CAN_ID = 20;
 

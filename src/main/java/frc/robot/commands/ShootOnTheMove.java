@@ -28,7 +28,8 @@ public class ShootOnTheMove extends Command {
   double turretAngle = 0;
   Translation2d velocityVector;
   double rotationOffset = TurretConstants.angleOffset; // zeroing offset
-  double t; // calculate this with utility class or interpolating tree
+  double tAir; // calculate this with utility class or interpolating tree
+  double tLat; //time for indexer to actually shoot out a ball (latency)
   ChassisSpeeds fieldRelative;
 
   public ShootOnTheMove(Drive drive, Turret turret) {
@@ -49,9 +50,9 @@ public class ShootOnTheMove extends Command {
     fieldRelative =
         ChassisSpeeds.fromRobotRelativeSpeeds(drive.getChassisSpeeds(), robotPose.getRotation());
 
-    velocityXOffset = fieldRelative.vxMetersPerSecond * t;
-    velocityYOffset = fieldRelative.vyMetersPerSecond * t;
-    velocityOmega = (fieldRelative.omegaRadiansPerSecond * t) / (2 * Math.PI);
+    velocityXOffset = fieldRelative.vxMetersPerSecond * tAir;
+    velocityYOffset = fieldRelative.vyMetersPerSecond * tAir;
+    velocityOmega = (fieldRelative.omegaRadiansPerSecond * tAir) / (2 * Math.PI);
 
     deltaX = hub.getX() - turretPose.getX() - velocityXOffset;
     deltaY = hub.getY() - turretPose.getY() - velocityYOffset;
