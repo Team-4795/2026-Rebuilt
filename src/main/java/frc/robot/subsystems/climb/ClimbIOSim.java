@@ -1,5 +1,6 @@
 package frc.robot.subsystems.climb;
 
-public class ClimbIOSim implements ClimbIO{
-    
+import edu.wpi.first.math.system.plant.DCMotor;
+
+public class ClimbIOSim implements ClimbIO {
 }

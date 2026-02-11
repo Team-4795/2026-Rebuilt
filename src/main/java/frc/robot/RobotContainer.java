@@ -30,7 +30,8 @@ public class RobotContainer {
 
   // Controllers
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
-  private final CommandXboxController m_operatorController = Constants.OIConstants.operatorController;
+  private final CommandXboxController m_operatorController =
+      Constants.OIConstants.operatorController;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
