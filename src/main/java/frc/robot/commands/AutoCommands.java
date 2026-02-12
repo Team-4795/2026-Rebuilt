@@ -29,9 +29,10 @@ public class AutoCommands {
 
   public static Command autoScore() {
     return Commands.parallel(
-        aimAtHub(), 
-        Commands.run(() -> hood.setGoal(0)), 
-        setShooterVelocityDynamic());
+        aimAtHub(),
+        Commands.run(() -> hood.setGoal(0)),
+        setShooterVelocityDynamic(),
+        Commands.run(() -> drive.stopWithX()));
 
     // wheel rpm
 

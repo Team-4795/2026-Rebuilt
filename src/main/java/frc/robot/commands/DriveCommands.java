@@ -98,6 +98,38 @@ public class DriveCommands {
   }
 
   /**
+   * Robot relative drive command using two joysticks (controlling linear and angular velocities).
+   */
+  public static Command joystickRobotRelativeDrive(
+      Drive drive,
+      DoubleSupplier xSupplier,
+      DoubleSupplier ySupplier,
+      DoubleSupplier omegaSupplier) {
+    return Commands.run(
+        () -> {
+          // Get linear velocity
+          Translation2d linearVelocity =
+              getLinearVelocityFromJoysticks(xSupplier.getAsDouble(), ySupplier.getAsDouble());
+
+          // Apply rotation deadband
+          double omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
+
+          // Square rotation value for more precise control
+          omega = Math.copySign(omega * omega, omega);
+
+          // Convert to field relative speeds & send command
+          ChassisSpeeds speeds =
+              new ChassisSpeeds(
+                  linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
+                  linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
+                  omega * drive.getMaxAngularSpeedRadPerSec());
+
+          drive.runVelocity(speeds);
+        },
+        drive);
+  }
+
+  /**
    * Field relative drive command using joystick for linear control and PID for angular control.
    * Possible use cases include snapping to an angle, aiming at a vision target, or controlling
    * absolute rotation with a joystick.
