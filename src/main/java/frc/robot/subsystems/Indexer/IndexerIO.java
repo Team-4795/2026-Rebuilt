@@ -5,13 +5,18 @@ import org.littletonrobotics.junction.AutoLog;
 public interface IndexerIO {
   @AutoLog
   public static class IndexerIOInputs {
-    public double voltage = 0.0;
-    public double angularPositionRot = 0.0;
-    public double angularVelocityRPS = 0.0;
-    public double currentAmps = 0.0;
+    public double towerVolts = 0.0;
+    public double towerAngularVelocityRPS = 0.0;
+    public double towerCurrentAmps = 0.0;
+
+    public double indexerVolts = 0.0;
+    public double indexerAngularVelocityRPS = 0.0;
+    public double indexerCurrentAmps = 0.0;
   }
 
   public default void updateInputs(IndexerIOInputs inputs) {}
 
-  public default void setVoltage(double voltage) {}
+  public default void setVoltageTower(double voltage) {}
+
+  public default void setVoltageIndexer(double voltage) {}
 }

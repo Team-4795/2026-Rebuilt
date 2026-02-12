@@ -7,23 +7,37 @@ import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 public class IndexerIOSim implements IndexerIO {
   DCMotorSim towerMotor =
       new DCMotorSim(
-          LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX44(1), 0.001, 30),
-          DCMotor.getKrakenX44(1));
+          LinearSystemId.createDCMotorSystem(DCMotor.getNeoVortex(1), 0.001, 30),
+          DCMotor.getNeoVortex(1));
 
-  private double volts = 0.0;
+  DCMotorSim indexerMotor =
+      new DCMotorSim(
+          LinearSystemId.createDCMotorSystem(DCMotor.getNeoVortex(1), 0.001, 30),
+          DCMotor.getNeoVortex(1));
+
+  private double towerVolts = 0.0;
+  private double indexerVolts = 0.0;
 
   @Override
   public void updateInputs(IndexerIOInputs inputs) {
     towerMotor.update(0.02);
 
-    inputs.voltage = this.volts;
-    inputs.angularVelocityRPS = towerMotor.getAngularVelocityRPM() / 60.0;
-    inputs.angularPositionRot = towerMotor.getAngularPositionRotations();
+    inputs.towerVolts = this.towerVolts;
+    inputs.towerAngularVelocityRPS = towerMotor.getAngularVelocityRPM() / 60.0;
+
+    inputs.indexerVolts = this.indexerVolts;
+    inputs.indexerAngularVelocityRPS = indexerMotor.getAngularVelocityRPM() / 60.0;
   }
 
   @Override
-  public void setVoltage(double voltage) {
+  public void setVoltageTower(double voltage) {
     towerMotor.setInputVoltage(voltage);
-    this.volts = voltage;
+    this.towerVolts = voltage;
+  }
+
+  @Override
+  public void setVoltageIndexer(double voltage) {
+    indexerMotor.setInputVoltage(voltage);
+    this.indexerVolts = voltage;
   }
 }

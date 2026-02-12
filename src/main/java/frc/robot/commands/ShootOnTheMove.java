@@ -29,7 +29,7 @@ public class ShootOnTheMove extends Command {
   Translation2d velocityVector;
   double rotationOffset = TurretConstants.angleOffset; // zeroing offset
   double tAir; // calculate this with utility class or interpolating tree
-  double tLat; //time for indexer to actually shoot out a ball (latency)
+  double tLat; // time for indexer to actually shoot out a ball (latency)
   ChassisSpeeds fieldRelative;
 
   public ShootOnTheMove(Drive drive, Turret turret) {

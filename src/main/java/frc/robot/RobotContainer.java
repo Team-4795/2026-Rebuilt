@@ -118,6 +118,10 @@ public class RobotContainer {
     configureBindings();
   }
 
+  public boolean readyToShoot() {
+    return shooter.readyToShoot() && shooterHood.readyToShoot() && turret.readyToShoot();
+  }
+
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
@@ -136,6 +140,7 @@ public class RobotContainer {
     //         () -> -m_driverController.getLeftX(),
     //         () -> -m_driverController.getRightX()));
 
+    // Shooter Bindings
     m_operatorController
         .rightBumper()
         .whileTrue(
@@ -143,28 +148,31 @@ public class RobotContainer {
                 () -> shooter.setVelocityRPS(ShooterIOReal.RPM.get()),
                 () -> shooter.setVelocityRPS(0)));
 
+    m_operatorController.leftBumper().whileTrue(AutoCommands.setShooterVelocityDynamic());
+
     // m_operatorController
     //     .leftBumper()
     //     .whileTrue(
     //         Commands.startEnd(() -> shooter.setVoltage(6), () -> shooter.setVoltage(0),
     // shooter));
 
-    m_operatorController.leftBumper().whileTrue(AutoCommands.setShooterVelocityDynamic());
-
+    // Turret Bindings
     m_operatorController.povLeft().onTrue(Commands.runOnce(() -> turret.setGoal(0.5)));
     m_operatorController.povRight().onTrue(Commands.runOnce(() -> turret.setGoal(0.1)));
     m_operatorController.povDown().whileTrue(new AimAtHub(drive, turret));
     m_driverController.x().onTrue(Commands.runOnce(() -> turret.zero()));
 
+    // Indexer Bindings
     m_operatorController
         .povUp()
         .whileTrue(
-            Commands.startEnd(() -> indexer.setVoltage(6), () -> indexer.setVoltage(0), indexer));
+            Commands.startEnd(
+                () -> indexer.setVoltageTower(6), () -> indexer.setVoltageTower(0), indexer));
 
     // Needs to be tested
     m_operatorController.a().whileTrue(AutoCommands.zeroSequence());
 
-    // Random button bindings
+    // Shooter Hood Bindings. Need to be tested.
     m_driverController.rightBumper().onTrue(shooterHood.setGoal(0.1));
     m_driverController.leftBumper().onTrue(shooterHood.setGoal(0.25));
   }

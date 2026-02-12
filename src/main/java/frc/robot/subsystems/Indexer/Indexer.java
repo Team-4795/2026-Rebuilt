@@ -1,6 +1,7 @@
 package frc.robot.subsystems.Indexer;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.littletonrobotics.junction.Logger;
 
 public class Indexer extends SubsystemBase {
   private IndexerIO io;
@@ -24,16 +25,17 @@ public class Indexer extends SubsystemBase {
     io.updateInputs(inputs);
   }
 
-  public double getPosition() {
-    return inputs.angularPositionRot;
+  public void setVoltageTower(double voltage) {
+    io.setVoltageTower(voltage);
   }
 
-  public void setVoltage(double voltage) {
-    io.setVoltage(voltage);
+  public void setVoltageIndexer(double voltage) {
+    io.setVoltageIndexer(voltage);
   }
 
   @Override
   public void periodic() {
     io.updateInputs(inputs);
+    Logger.processInputs("Indexer", inputs);
   }
 }
