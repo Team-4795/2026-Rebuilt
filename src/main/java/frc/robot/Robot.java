@@ -87,7 +87,16 @@ public class Robot extends LoggedRobot {
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    Logger.recordOutput("Field Elements/Red Hub", Constants.FieldConstants.redHub);
+    Logger.recordOutput("Field Elements/Red Left Trench", Constants.FieldConstants.redLeftTrench);
+    Logger.recordOutput("Field Elements/Red Right Trench", Constants.FieldConstants.redRightTrench);
+
+    Logger.recordOutput("Field Elements/Blue Hub", Constants.FieldConstants.blueHub);
+    Logger.recordOutput("Field Elements/Blue Left Trench", Constants.FieldConstants.blueLeftTrench);
+    Logger.recordOutput(
+        "Field Elements/Blue Right Trench", Constants.FieldConstants.blueRightTrench);
+  }
 
   /** This function is called periodically when disabled. */
   @Override

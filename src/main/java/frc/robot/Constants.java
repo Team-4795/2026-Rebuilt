@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.vision.VisionConstants;
 
 /**
  * This class defines the runtime mode used by AdvantageKit. The mode is always "real" when running
@@ -42,6 +43,19 @@ public final class Constants {
   }
 
   public static class FieldConstants {
+    public static double fieldLength = VisionConstants.FIELD_LAYOUT.getFieldLength();
+    public static double fieldlWidth = VisionConstants.FIELD_LAYOUT.getFieldWidth();
+
     public static Translation2d redHub = new Translation2d(11.910, 4.060);
+    public static Translation2d redLeftTrench =
+        VisionConstants.FIELD_LAYOUT.getTagPose(7).get().getTranslation().toTranslation2d();
+    public static Translation2d redRightTrench =
+        VisionConstants.FIELD_LAYOUT.getTagPose(12).get().getTranslation().toTranslation2d();
+
+    public static Translation2d blueHub = new Translation2d(fieldLength - 11.910, 4.060);
+    public static Translation2d blueLeftTrench =
+        VisionConstants.FIELD_LAYOUT.getTagPose(23).get().getTranslation().toTranslation2d();
+    public static Translation2d blueRightTrench =
+        VisionConstants.FIELD_LAYOUT.getTagPose(28).get().getTranslation().toTranslation2d();
   }
 }
