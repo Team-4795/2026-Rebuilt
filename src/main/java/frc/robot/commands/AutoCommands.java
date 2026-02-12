@@ -18,10 +18,14 @@ public class AutoCommands {
   private AutoCommands() {}
 
   public static Command shoot() {
-    return Commands.sequence(
-        // indexer
-        );
+    return Commands.parallel(
+      Commands.run(() -> indexer.setVoltageIndexer(1)), 
+      Commands.run(() -> indexer.setVoltageTower(1))  
+      );
   }
+  
+
+  
 
   public static Command zeroSequence() { // if it doesn't work check the motor limits
     return Commands.parallel(
