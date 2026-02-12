@@ -24,7 +24,7 @@ public class IntakeIOSim implements IntakeIO {
           DCMotor.getKrakenX60(1));
 
   @Override
-  public void setVoltage(double v) {
+  public void setIntakeVoltage(double v) {
     motorA.setInputVoltage(v);
     motorB.setInputVoltage(v);
   }
@@ -41,16 +41,13 @@ public class IntakeIOSim implements IntakeIO {
     motorDeploy.update(0.02);
 
     inputs.angularVelocityRPSA = motorA.getAngularVelocityRPM() / 60.0;
-    inputs.angularPositionRotA = motorA.getAngularPositionRotations();
     inputs.currentAmpsA = motorA.getCurrentDrawAmps();
     inputs.voltageA = motorA.getInputVoltage();
 
     inputs.angularVelocityRPSB = motorB.getAngularVelocityRPM() / 60.0;
-    inputs.angularPositionRotB = motorB.getAngularPositionRotations();
     inputs.currentAmpsB = motorB.getCurrentDrawAmps();
     inputs.voltageB = motorB.getInputVoltage();
 
-    inputs.currentAmpsDeploy = motorDeploy.getCurrentDrawAmps();
-    inputs.voltageDeploy = motorDeploy.getInputVoltage();
+    inputs.deployMotorVoltage = motorDeploy.getInputVoltage();
   }
 }

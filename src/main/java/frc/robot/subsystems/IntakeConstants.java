@@ -2,13 +2,29 @@ package frc.robot.subsystems;
 
 public class IntakeConstants {
   // placeholders
-  public static final int CAN_ID_A = 21;
-  public static final int CAN_ID_B = 22;
-  public static final int CAN_ID_DEPLOY = 23;
+  public static final int canIDIntakeA = 21;
+  public static final int canIDIntakeB = 22;
+  public static final int canIDDeployA = 23;
+  public static final int canIDDeployB = 24;
 
   public static final int CURRENT_LIMIT = 40;
 
   // fix later
   public static final int GEARING = 1; // change later with proper gearing
-  public static final int GEARING_DEPLOY = 1; // change with proper gearing
+  public static final int GEARING_DEPLOY = 50; // change with proper gearing
+
+  // PLACEHOLDERS
+  public static final double deployMaxAngle = 0.25;
+  public static final int deployMinAngle = 0;
+
+  public static final double MAX_VELOCITY = 5;
+  public static final double MAX_ACCELERATION = 5;
+
+  public static final double kP = 0.0;
+  public static final double kI = 0.0;
+  public static final double kD = 0.0;
+
+  public static final double kS = 0.0;
+  public static final double kG = 0.0;
+  public static final double kV = 0.0;
 }

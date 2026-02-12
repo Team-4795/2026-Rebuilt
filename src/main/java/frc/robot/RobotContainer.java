@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Intake;
@@ -57,12 +58,24 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Not finalized button bindings
-    m_operatorController.leftBumper().whileTrue(intake.intake());
-    m_operatorController.rightBumper().whileTrue(intake.reverseIntake());
+    // Intake
+    m_operatorController
+        .leftBumper()
+        .whileTrue(
+            Commands.startEnd(
+                () -> intake.setIntakeVoltage(5), () -> intake.setIntakeVoltage(0), intake));
+    // Reverse Intake
+    m_operatorController
+        .leftBumper()
+        .whileTrue(
+            Commands.startEnd(
+                () -> intake.setIntakeVoltage(-5), () -> intake.setIntakeVoltage(0), intake));
 
-    m_operatorController.povUp().onTrue(intake.deployIntake());
-    m_operatorController.povDown().onTrue(intake.retractIntake());
+    // Deploy Intake
+    m_operatorController.povUp().onTrue(Commands.runOnce(() -> intake.setDeployGoal(0.25)));
+
+    // Retract Intake
+    m_operatorController.povUp().onTrue(Commands.runOnce(() -> intake.setDeployGoal(0)));
   }
 
   /**

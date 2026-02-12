@@ -1,154 +1,137 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.BaseStatusSignal;
-import com.ctre.phoenix6.StatusCode;
-import com.ctre.phoenix6.StatusSignal;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-import edu.wpi.first.units.measure.AngularVelocity;
-import edu.wpi.first.units.measure.Current;
-import edu.wpi.first.units.measure.Voltage;
+import com.revrobotics.PersistMode;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkFlexConfig;
+import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 
 public class IntakeIOReal implements IntakeIO {
   // two motors on each side of the spinny bar thing
-  private final TalonFX intakeMotorA = new TalonFX(IntakeConstants.CAN_ID_A);
-  private final TalonFX intakeMotorB = new TalonFX(IntakeConstants.CAN_ID_B);
-  // one motor to extend intake
-  private final TalonFX intakeDeployMotor = new TalonFX(IntakeConstants.CAN_ID_DEPLOY);
+  private final SparkFlex intakeMotorA =
+      new SparkFlex(IntakeConstants.canIDIntakeA, MotorType.kBrushless);
+  private final SparkFlex intakeMotorB =
+      new SparkFlex(IntakeConstants.canIDIntakeB, MotorType.kBrushless);
 
-  private TalonFXConfiguration motorAConfig = config(IntakeConstants.GEARING);
-  private TalonFXConfiguration motorBConfig = config(IntakeConstants.GEARING);
-  private TalonFXConfiguration deployMotorConfig = config(IntakeConstants.GEARING_DEPLOY);
+  // two motors to extend intake
+  private final SparkFlex intakeDeployMotorA =
+      new SparkFlex(IntakeConstants.canIDDeployA, MotorType.kBrushless);
+  private final SparkFlex intakeDeployMotorB =
+      new SparkFlex(IntakeConstants.canIDDeployB, MotorType.kBrushless);
 
-  private final StatusSignal<Current> currentA = intakeMotorA.getStatorCurrent();
-  private final StatusSignal<Voltage> voltageA = intakeMotorA.getMotorVoltage();
-  private final StatusSignal<AngularVelocity> velocityA = intakeMotorA.getVelocity();
+  private SparkFlexConfig intakeConfig = new SparkFlexConfig();
+  private SparkFlexConfig deployConfig = new SparkFlexConfig();
+  private RelativeEncoder encoder = intakeDeployMotorA.getEncoder();
 
-  private final StatusSignal<Current> currentB = intakeMotorB.getStatorCurrent();
-  private final StatusSignal<Voltage> voltageB = intakeMotorB.getMotorVoltage();
-  private final StatusSignal<AngularVelocity> velocityB = intakeMotorB.getVelocity();
+  private ArmFeedforward ffmodel =
+      new ArmFeedforward(IntakeConstants.kS, IntakeConstants.kG, IntakeConstants.kV);
+  private PIDController controller =
+      new PIDController(IntakeConstants.kP, IntakeConstants.kI, IntakeConstants.kD);
 
-  private final StatusSignal<Current> currentDeploy = intakeDeployMotor.getStatorCurrent();
-  private final StatusSignal<Voltage> voltageDeploy = intakeDeployMotor.getMotorVoltage();
+  private final TrapezoidProfile.Constraints constraints =
+      new TrapezoidProfile.Constraints(
+          IntakeConstants.MAX_VELOCITY, IntakeConstants.MAX_ACCELERATION);
+  private final TrapezoidProfile profile = new TrapezoidProfile(constraints);
+
+  private TrapezoidProfile.State goal;
+  private TrapezoidProfile.State setpoint;
+
+  private double intakeVolts = 0;
+  private double deployVolts = 0;
 
   public IntakeIOReal() {
-    // same configs as other motors, but inverted
-    motorBConfig.MotorOutput.withInverted(InvertedValue.Clockwise_Positive);
+    // Deploy motor config
+    intakeDeployMotorA.clearFaults();
+    intakeDeployMotorB.clearFaults();
 
-    intakeMotorA.clearStickyFaults();
-    intakeMotorB.clearStickyFaults();
-    intakeDeployMotor.clearStickyFaults();
+    deployConfig.smartCurrentLimit(IntakeConstants.CURRENT_LIMIT);
+    deployConfig.idleMode(IdleMode.kBrake);
 
-    // Use if needed
-    // BaseStatusSignal
-    //   .setUpdateFrequencyForAll(50,
-    //     currentA, voltageA, velocityA,
-    //     currentB, voltageB, velocityB);
-    //
-    // intakeMotorA.optimizeBusUtilization(1.0);
-    // intakeMotorB.optimizeBusUtilization(1.0);
+    deployConfig.encoder.positionConversionFactor(IntakeConstants.GEARING_DEPLOY);
+    deployConfig.encoder.velocityConversionFactor(IntakeConstants.GEARING_DEPLOY / 60);
+    deployConfig.encoder.quadratureMeasurementPeriod(20);
 
-    // apply configs and check response
-    StatusCode responseA = intakeMotorA.getConfigurator().apply(motorAConfig);
-    StatusCode responseB = intakeMotorB.getConfigurator().apply(motorBConfig);
-    StatusCode responseDeploy = intakeDeployMotor.getConfigurator().apply(deployMotorConfig);
+    deployConfig.softLimit.forwardSoftLimitEnabled(true);
+    deployConfig.softLimit.reverseSoftLimitEnabled(false);
+    deployConfig.softLimit.forwardSoftLimit(IntakeConstants.deployMaxAngle);
+    deployConfig.softLimit.reverseSoftLimit(IntakeConstants.deployMinAngle);
 
-    if (!responseA.isOK()) {
-      System.out.println(
-          "Talon ID "
-              + intakeMotorA.getDeviceID()
-              + " failed config with error "
-              + responseA.toString());
+    deployConfig.voltageCompensation(12.0);
+    deployConfig.inverted(false);
+
+    intakeDeployMotorA.configure(
+        deployConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    intakeDeployMotorB.configure(
+        deployConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    // Intake motor config
+    intakeMotorA.clearFaults();
+    intakeMotorB.clearFaults();
+
+    intakeConfig.smartCurrentLimit(IntakeConstants.CURRENT_LIMIT);
+    intakeConfig.idleMode(IdleMode.kCoast);
+
+    intakeMotorA.setCANTimeout(20);
+    intakeMotorB.setCANTimeout(20);
+
+    intakeMotorA.configure(
+        intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    intakeMotorB.configure(
+        intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  }
+
+  @Override
+  public void setGoal(double angleRot) {
+    double angle = Units.rotationsToRadians(angleRot);
+    if (angle != goal.position) {
+      setpoint = new TrapezoidProfile.State(encoder.getPosition(), encoder.getVelocity());
+      goal = new TrapezoidProfile.State(angle, 0);
     }
+  }
 
-    if (!responseB.isOK()) {
-      System.out.println(
-          "Talon ID "
-              + intakeMotorB.getDeviceID()
-              + " failed config with error "
-              + responseB.toString());
-    }
+  @Override
+  public void updateMotionProfile() {
+    setpoint = profile.calculate(0.02, setpoint, goal);
+    double ffvolts = ffmodel.calculate(encoder.getPosition(), setpoint.velocity);
+    double pidvolts = controller.calculate(encoder.getPosition(), setpoint.position);
 
-    if (!responseDeploy.isOK()) {
-      System.out.println(
-          "Talon ID "
-              + intakeMotorB.getDeviceID()
-              + " failed config with error "
-              + responseB.toString());
-    }
+    setDeployVoltage(ffvolts + pidvolts);
   }
 
   @Override
   public void setDeployVoltage(double v) {
-    intakeDeployMotor.setVoltage(v);
+    intakeVolts = v;
+    intakeDeployMotorA.setVoltage(intakeVolts);
+    intakeDeployMotorB.setVoltage(intakeVolts);
   }
 
   @Override
-  public void setVoltage(double v) {
-    intakeMotorA.setVoltage(v);
-    intakeMotorB.setVoltage(v);
-  }
-
-  // the motors should be spinning at the same speed/voltage
-  //  why all getters, we don't really need these but its also okay to keep
-  @Override
-  public double getSpeed() {
-    return velocityA.getValueAsDouble();
-  }
-
-  @Override
-  public double getVoltage() {
-    return voltageA.getValueAsDouble();
-  }
-
-  @Override
-  public double getCurrent() {
-    return currentA.getValueAsDouble();
-  }
-
-  @Override
-  public double getDeployVoltage() {
-    return voltageDeploy.getValueAsDouble();
-  }
-
-  @Override
-  public double getDeployCurrent() {
-    return currentDeploy.getValueAsDouble();
-  }
-
-  // type 0 is regular intake, type 1 is deploy motor
-  private TalonFXConfiguration config(int gearing) {
-    TalonFXConfiguration config = new TalonFXConfiguration();
-    config.CurrentLimits.StatorCurrentLimitEnable = true;
-    config.CurrentLimits.StatorCurrentLimit = IntakeConstants.CURRENT_LIMIT;
-    config.Feedback.SensorToMechanismRatio = gearing;
-
-    config.Audio.BeepOnBoot = true;
-
-    config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-
-    return config;
+  public void setIntakeVoltage(double v) {
+    deployVolts = v;
+    intakeMotorA.setVoltage(deployVolts);
+    intakeMotorB.setVoltage(deployVolts);
   }
 
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
-    BaseStatusSignal.refreshAll(velocityA, voltageA, currentA);
-    BaseStatusSignal.refreshAll(velocityB, voltageB, currentB);
-    BaseStatusSignal.refreshAll(voltageDeploy, currentDeploy);
+    inputs.voltageA = intakeVolts;
+    inputs.angularVelocityRPSA = intakeMotorA.getEncoder().getVelocity();
+    inputs.currentAmpsA = intakeMotorA.getOutputCurrent();
 
-    inputs.angularVelocityRPSA = velocityA.getValueAsDouble();
-    inputs.angularPositionRotA = intakeMotorA.getPosition().getValueAsDouble();
-    inputs.currentAmpsA = currentA.getValueAsDouble();
-    inputs.voltageA = voltageA.getValueAsDouble();
+    inputs.voltageB = intakeVolts;
+    inputs.angularVelocityRPSB = intakeMotorB.getEncoder().getVelocity();
+    inputs.currentAmpsB = intakeMotorB.getOutputCurrent();
 
-    inputs.angularVelocityRPSB = velocityB.getValueAsDouble();
-    inputs.angularPositionRotB = intakeMotorB.getPosition().getValueAsDouble();
-    inputs.currentAmpsB = currentB.getValueAsDouble();
-    inputs.voltageB = voltageB.getValueAsDouble();
-
-    inputs.currentAmpsDeploy = currentDeploy.getValueAsDouble();
-    inputs.voltageDeploy = voltageDeploy.getValueAsDouble();
+    inputs.deployMotorVoltage = deployVolts;
+    inputs.deployMotorPosition = encoder.getPosition();
+    inputs.deployMotorVelocity = encoder.getVelocity();
+    inputs.deployMotorGoal = goal.position;
+    inputs.deployMotorSetpoint = setpoint.position;
   }
 }
