@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Shooter.Shooter;
-import frc.robot.subsystems.Shooter.ShooterConstants;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.drive.Drive;
@@ -20,28 +19,23 @@ public class AutoCommands {
 
   public static Command shoot() {
     return Commands.parallel(
-      Commands.run(() -> indexer.setVoltageIndexer(1)), 
-      Commands.run(() -> indexer.setVoltageTower(1))  
-      );
+        Commands.run(() -> indexer.setVoltageIndexer(1)),
+        Commands.run(() -> indexer.setVoltageTower(1)));
   }
 
-  public static Command aimAtHub(){
+  public static Command aimAtHub() {
     return new AimAtHub(drive, turret);
-
-
   }
 
-  public static Command autoScore(){
+  public static Command autoScore() {
     return Commands.parallel(
-      aimAtHub(), 
-      Commands.run(() -> hood.setGoal(0)), 
-      setShooterVelocityDynamic());
+        aimAtHub(), 
+        Commands.run(() -> hood.setGoal(0)), 
+        setShooterVelocityDynamic());
 
-      //wheel rpm 
+    // wheel rpm
 
   }
-
-
 
   public static Command zeroSequence() { // if it doesn't work check the motor limits
     return Commands.parallel(
