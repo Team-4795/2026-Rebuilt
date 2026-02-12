@@ -6,5 +6,6 @@ import frc.robot.commands.AutoCommands;
 public class NamedCommandManager {
   public static void registerNamedCommands() {
     NamedCommands.registerCommand("Shoot", AutoCommands.shoot());
-    
+    NamedCommands.registerCommand("Align Hub", AutoCommands.alignHub());
+    NamedCommands.registerCommand("Aim at Hub", AutoCommands.aimAtHub())
 }

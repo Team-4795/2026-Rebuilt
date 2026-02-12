@@ -159,7 +159,7 @@ public class RobotContainer {
     // Turret Bindings
     m_operatorController.povLeft().onTrue(Commands.runOnce(() -> turret.setGoal(0.5)));
     m_operatorController.povRight().onTrue(Commands.runOnce(() -> turret.setGoal(0.1)));
-    m_operatorController.povDown().whileTrue(new AimAtHub(drive, turret));
+    m_operatorController.povDown().whileTrue(AutoCommands.aimAtHub());
     m_driverController.x().onTrue(Commands.runOnce(() -> turret.zero()));
 
     // Indexer Bindings
