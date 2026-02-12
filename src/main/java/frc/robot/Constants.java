@@ -7,7 +7,10 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Inches;
+
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.vision.VisionConstants;
@@ -40,6 +43,16 @@ public final class Constants {
     public static final CommandXboxController operatorController = new CommandXboxController(1);
     public static final double KAxisDeadband = 0.1;
     public static final double OperatorLAxisDeadband = 0.3;
+  }
+
+  public static class Dimensions {
+    public static final Distance BUMPER_THICKNESS = Inches.of(3); // frame to edge of bumper
+    public static final Distance BUMPER_HEIGHT = Inches.of(7); // height from floor to top of bumper
+    public static final Distance FRAME_SIZE_Y = Inches.of(26.25); // left to right (y-axis)
+    public static final Distance FRAME_SIZE_X = Inches.of(28.75); // front to back (x-axis)
+
+    public static final Distance FULL_WIDTH = FRAME_SIZE_Y.plus(BUMPER_THICKNESS.times(2));
+    public static final Distance FULL_LENGTH = FRAME_SIZE_X.plus(BUMPER_THICKNESS.times(2));
   }
 
   public static class FieldConstants {

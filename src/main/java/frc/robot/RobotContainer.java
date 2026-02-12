@@ -4,11 +4,15 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Meters;
+
 import com.pathplanner.lib.auto.AutoBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.Dimensions;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.Indexer.Indexer;
@@ -36,6 +40,7 @@ import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOReal;
 import frc.robot.subsystems.vision.VisionIOSim;
+import frc.robot.util.FuelSim;
 import frc.robot.util.NamedCommandManager;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -53,6 +58,7 @@ public class RobotContainer {
   private Drive drive;
   private final Vision vision;
   private ShooterHood shooterHood;
+  public FuelSim fuelSim;
 
   // Controllers
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
@@ -80,6 +86,7 @@ public class RobotContainer {
         break;
 
       case SIM:
+        configureFuelSim();
         shooter = Shooter.initialize(new ShooterIOSim());
         indexer = Indexer.initialize(new IndexerIOSim());
         turret = Turret.initialize(new TurretIOSim());
@@ -92,6 +99,9 @@ public class RobotContainer {
                 new ModuleIOSim(),
                 new ModuleIOSim());
         vision = Vision.initialize(new VisionIOSim());
+
+        configureFuelSimRobot();
+
         break;
 
       default:
@@ -122,6 +132,30 @@ public class RobotContainer {
     return shooter.readyToShoot() && shooterHood.readyToShoot() && turret.readyToShoot();
   }
 
+  private void configureFuelSim() {
+    fuelSim = new FuelSim();
+    fuelSim.spawnStartingFuel();
+
+    fuelSim.start();
+    SmartDashboard.putData(
+        Commands.runOnce(
+                () -> {
+                  fuelSim.clearFuel();
+                  fuelSim.spawnStartingFuel();
+                })
+            .withName("Reset Fuel")
+            .ignoringDisable(true));
+  }
+
+  private void configureFuelSimRobot() {
+    fuelSim.registerRobot(
+        Dimensions.FULL_WIDTH.in(Meters),
+        Dimensions.FULL_LENGTH.in(Meters),
+        Dimensions.BUMPER_HEIGHT.in(Meters),
+        drive::getPose,
+        drive::getFieldSpeeds);
+  }
+
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
@@ -133,12 +167,12 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // For sim
-    // drive.setDefaultCommand(
-    //     DriveCommands.joystickDrive(
-    //         drive,
-    //         () -> -m_driverController.getLeftY(),
-    //         () -> -m_driverController.getLeftX(),
-    //         () -> -m_driverController.getRightX()));
+    drive.setDefaultCommand(
+        DriveCommands.joystickDrive(
+            drive,
+            () -> -m_driverController.getLeftY(),
+            () -> -m_driverController.getLeftX(),
+            () -> -m_driverController.getRightX()));
 
     // Shooter Bindings
     m_operatorController
