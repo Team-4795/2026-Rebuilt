@@ -30,8 +30,8 @@ public final class ShooterHoodConstants {
   public static final double maxJerk = 0;
 
   // change when testing
-  public static final double boxXMultiplier = 2;
-  public static final double boxYMultiplier = 1;
+  public static final double boxXMultiplier = 0.15;
+  public static final double boxYMultiplier = 0.05;
 
   public static final InterpolatingDoubleTreeMap shooterHoodMap = new InterpolatingDoubleTreeMap();
 

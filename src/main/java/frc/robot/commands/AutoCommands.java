@@ -30,12 +30,9 @@ public class AutoCommands {
   public static Command autoScore() {
     return Commands.parallel(
         aimAtHub(),
-        Commands.run(() -> hood.setGoal(0)),
+        setShooterHoodDynamic(),
         setShooterVelocityDynamic(),
         Commands.run(() -> drive.stopWithX()));
-
-    // wheel rpm
-
   }
 
   public static Command zeroSequence() { // if it doesn't work check the motor limits
