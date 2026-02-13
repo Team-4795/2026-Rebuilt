@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.AimAtHub;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.Indexer.Indexer;
@@ -162,7 +161,7 @@ public class RobotContainer {
     // Turret Bindings
     m_operatorController.povLeft().onTrue(Commands.runOnce(() -> turret.setGoal(0.5)));
     m_operatorController.povRight().onTrue(Commands.runOnce(() -> turret.setGoal(0.1)));
-    m_operatorController.povDown().whileTrue(new AimAtHub(drive, turret));
+    m_operatorController.povDown().whileTrue(AutoCommands.aimAtHub());
     m_driverController.x().onTrue(Commands.runOnce(() -> turret.zero()));
 
     // Indexer Bindings

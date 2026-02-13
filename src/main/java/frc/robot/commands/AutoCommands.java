@@ -23,6 +23,21 @@ public class AutoCommands {
         Commands.run(() -> indexer.setVoltageTower(1)));
   }
 
+  public static Command aimAtHub() {
+    return new AimAtHub(drive, turret);
+  }
+
+  public static Command autoScore() {
+    return Commands.parallel(
+        aimAtHub(),
+        Commands.run(() -> hood.setGoal(0)),
+        setShooterVelocityDynamic(),
+        Commands.run(() -> drive.stopWithX()));
+
+    // wheel rpm
+
+  }
+
   public static Command zeroSequence() { // if it doesn't work check the motor limits
     return Commands.parallel(
         Commands.sequence(
