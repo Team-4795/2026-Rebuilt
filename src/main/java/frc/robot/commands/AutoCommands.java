@@ -19,13 +19,9 @@ public class AutoCommands {
 
   public static Command shoot() {
     return Commands.parallel(
-      Commands.run(() -> indexer.setVoltageIndexer(1)), 
-      Commands.run(() -> indexer.setVoltageTower(1))  
-      );
+        Commands.run(() -> indexer.setVoltageIndexer(1)),
+        Commands.run(() -> indexer.setVoltageTower(1)));
   }
-  
-
-  
 
   public static Command zeroSequence() { // if it doesn't work check the motor limits
     return Commands.parallel(
@@ -48,6 +44,6 @@ public class AutoCommands {
 
   // Nitya you can do this one. Look at shooter dynamic method for reference
   public static Command setShooterHoodDynamic() {
-    return Commands.none();
+    return Commands.run(() -> hood.setGoalDynamic());
   }
 }

@@ -8,9 +8,11 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.vision.VisionConstants;
+import java.util.ArrayList;
 
 /**
  * This class defines the runtime mode used by AdvantageKit. The mode is always "real" when running
@@ -44,7 +46,9 @@ public final class Constants {
 
   public static class FieldConstants {
     public static double fieldLength = VisionConstants.FIELD_LAYOUT.getFieldLength();
-    public static double fieldlWidth = VisionConstants.FIELD_LAYOUT.getFieldWidth();
+    public static double fieldWidth = VisionConstants.FIELD_LAYOUT.getFieldWidth();
+
+    public static double trenchWidth = Units.inchesToMeters(50);
 
     public static Translation2d redHub = new Translation2d(11.910, 4.060);
     public static Translation2d redLeftTrench =
@@ -57,5 +61,15 @@ public final class Constants {
         VisionConstants.FIELD_LAYOUT.getTagPose(23).get().getTranslation().toTranslation2d();
     public static Translation2d blueRightTrench =
         VisionConstants.FIELD_LAYOUT.getTagPose(28).get().getTranslation().toTranslation2d();
+
+    public static ArrayList<Translation2d> trenchList = new ArrayList<Translation2d>();
+
+    public static void initConstants() {
+      // this is for anti-decapitation logic
+      trenchList.add(redLeftTrench);
+      trenchList.add(redRightTrench);
+      trenchList.add(blueLeftTrench);
+      trenchList.add(blueRightTrench);
+    }
   }
 }

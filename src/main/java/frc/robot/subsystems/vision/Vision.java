@@ -4,7 +4,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.FieldConstants;
+import frc.robot.Constants;
 import frc.robot.subsystems.drive.Drive;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,9 +64,11 @@ public class Vision extends SubsystemBase {
 
         // throw out bad data that's outside margins
         if (robotPose.getX() < -VisionConstants.BORDER_MARGIN
-            || robotPose.getX() > FieldConstants.fieldLength + VisionConstants.BORDER_MARGIN
+            || robotPose.getX()
+                > Constants.FieldConstants.fieldLength + VisionConstants.BORDER_MARGIN
             || robotPose.getY() < -VisionConstants.BORDER_MARGIN
-            || robotPose.getY() > FieldConstants.fieldWidth + VisionConstants.BORDER_MARGIN
+            || robotPose.getY()
+                > Constants.FieldConstants.fieldWidth + VisionConstants.BORDER_MARGIN
             || robotPose.getZ() < -VisionConstants.Z_MARGIN
             || robotPose.getZ() > VisionConstants.Z_MARGIN) continue;
 

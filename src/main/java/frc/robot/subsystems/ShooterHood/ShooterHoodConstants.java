@@ -1,5 +1,7 @@
 package frc.robot.subsystems.ShooterHood;
 
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+
 public final class ShooterHoodConstants {
   // Change later
   public static final int CAN_ID = 16;
@@ -26,4 +28,16 @@ public final class ShooterHoodConstants {
   public static final double maxVelocity = 10;
   public static final double maxAcceleration = 10;
   public static final double maxJerk = 0;
+
+  // change when testing
+  public static final double boxXMultiplier = 2;
+  public static final double boxYMultiplier = 1;
+
+  public static final InterpolatingDoubleTreeMap shooterHoodMap = new InterpolatingDoubleTreeMap();
+
+  // distance, rotations
+  static {
+    shooterHoodMap.put(1.0, 10.0);
+    shooterHoodMap.put(2.0, 0.5);
+  }
 }

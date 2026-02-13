@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AimAtHub;
 import frc.robot.commands.AutoCommands;
+import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerIO;
 import frc.robot.subsystems.Indexer.IndexerIOReal;
@@ -63,6 +64,8 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    // there's probably a better way to do this
+    Constants.FieldConstants.initConstants();
     switch (Constants.currentMode) {
       case REAL:
         shooter = Shooter.initialize(new ShooterIOReal());
@@ -133,12 +136,12 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // For sim
-    // drive.setDefaultCommand(
-    //     DriveCommands.joystickDrive(
-    //         drive,
-    //         () -> -m_driverController.getLeftY(),
-    //         () -> -m_driverController.getLeftX(),
-    //         () -> -m_driverController.getRightX()));
+    drive.setDefaultCommand(
+        DriveCommands.joystickDrive(
+            drive,
+            () -> -m_driverController.getLeftY(),
+            () -> -m_driverController.getLeftX(),
+            () -> -m_driverController.getRightX()));
 
     // Shooter Bindings
     m_operatorController
@@ -173,8 +176,14 @@ public class RobotContainer {
     m_operatorController.a().whileTrue(AutoCommands.zeroSequence());
 
     // Shooter Hood Bindings. Need to be tested.
-    m_driverController.rightBumper().onTrue(shooterHood.setGoal(0.1));
-    m_driverController.leftBumper().onTrue(shooterHood.setGoal(0.25));
+    m_driverController
+        .rightBumper()
+        .whileTrue(Commands.run(() -> shooterHood.setGoal(1), shooterHood));
+    m_driverController
+        .leftBumper()
+        .whileTrue(Commands.run(() -> shooterHood.setGoal(0.25), shooterHood));
+
+    m_driverController.leftTrigger().whileTrue(AutoCommands.setShooterHoodDynamic());
   }
 
   /**
