@@ -66,16 +66,13 @@ public class RobotContainer {
                 () -> intake.setIntakeVoltage(5), () -> intake.setIntakeVoltage(0), intake));
     // Reverse Intake
     m_operatorController
-        .leftBumper()
+        .rightBumper()
         .whileTrue(
             Commands.startEnd(
                 () -> intake.setIntakeVoltage(-5), () -> intake.setIntakeVoltage(0), intake));
 
-    // Deploy Intake
-    m_operatorController.povUp().onTrue(Commands.runOnce(() -> intake.setDeployGoal(0.25)));
-
     // Retract Intake
-    m_operatorController.povUp().onTrue(Commands.runOnce(() -> intake.setDeployGoal(0)));
+    m_operatorController.povUp().whileTrue(Commands.run(() -> intake.setDeployGoal(0), intake));
   }
 
   /**

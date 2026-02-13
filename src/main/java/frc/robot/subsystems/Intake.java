@@ -1,10 +1,7 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.OIConstants;
 import org.littletonrobotics.junction.Logger;
 
 public class Intake extends SubsystemBase {
@@ -26,21 +23,7 @@ public class Intake extends SubsystemBase {
   private Intake(IntakeIO io) {
     this.io = io;
     io.updateInputs(inputs);
-
-    setDefaultCommand(
-        Commands.run(
-            () -> {
-              double change =
-                  MathUtil.applyDeadband(
-                      -OIConstants.operatorController.getRightY(),
-                      OIConstants.OperatorLAxisDeadband);
-              change = .05 * Math.pow(change, 3);
-              if (DriverStation.isTeleopEnabled() && change != 0) {
-                io.setGoal(inputs.deployMotorGoal + change);
-              }
-              io.updateMotionProfile();
-            },
-            this));
+    setDefaultCommand(Commands.run(() -> io.setGoal(IntakeConstants.stowPosition), this));
   }
 
   // Method to set speed of both motors
@@ -59,6 +42,8 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
+    io.updateMotionProfile();
+
     io.updateInputs(inputs);
     Logger.processInputs("Intake", inputs);
   }

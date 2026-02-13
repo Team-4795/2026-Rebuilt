@@ -10,12 +10,14 @@ public class IntakeConstants {
   public static final int CURRENT_LIMIT = 40;
 
   // fix later
-  public static final double GEARING = 1; // change later with proper gearing
+  public static final double GEARING = 13.0 / 14.0; // change later with proper gearing
   public static final double GEARING_DEPLOY = 50; // change with proper gearing
 
   // PLACEHOLDERS
-  public static final double deployMaxAngle = 0.25;
-  public static final int deployMinAngle = 0;
+  public static final double deployMaxAngle = 0.4;
+  public static final double deployMinAngle = 0;
+  public static final double stowPosition = 0.2;
+  public static final double deployOffset = 0.2;
 
   public static final double MAX_VELOCITY = 5;
   public static final double MAX_ACCELERATION = 5;

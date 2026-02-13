@@ -16,8 +16,8 @@ public interface IntakeIO {
     public double deployMotorVoltage = 0.0;
     public double deployMotorPositionA = 0.0;
     public double deployMotorVelocityA = 0.0;
-    public double deployMotorVelocityB = 0.0; 
-    public double deployMotorPositionB = 0.0; 
+    public double deployMotorVelocityB = 0.0;
+    public double deployMotorPositionB = 0.0;
     public double deployMotorGoal = 0.0;
     public double deployMotorSetpoint = 0.0;
   }
