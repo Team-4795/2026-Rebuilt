@@ -10,8 +10,8 @@ public class IntakeConstants {
   public static final int CURRENT_LIMIT = 40;
 
   // fix later
-  public static final int GEARING = 1; // change later with proper gearing
-  public static final int GEARING_DEPLOY = 50; // change with proper gearing
+  public static final double GEARING = 1; // change later with proper gearing
+  public static final double GEARING_DEPLOY = 50; // change with proper gearing
 
   // PLACEHOLDERS
   public static final double deployMaxAngle = 0.25;

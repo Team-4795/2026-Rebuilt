@@ -10,7 +10,7 @@ import com.revrobotics.spark.config.SparkFlexConfig;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.math.util.Units; 
 
 public class IntakeIOReal implements IntakeIO {
   // two motors on each side of the spinny bar thing
@@ -27,7 +27,8 @@ public class IntakeIOReal implements IntakeIO {
 
   private SparkFlexConfig intakeConfig = new SparkFlexConfig();
   private SparkFlexConfig deployConfig = new SparkFlexConfig();
-  private RelativeEncoder encoder = intakeDeployMotorA.getEncoder();
+  private RelativeEncoder encoderA = intakeDeployMotorA.getEncoder(); 
+  private RelativeEncoder encoderB = intakeDeployMotorB.getEncoder();
 
   private ArmFeedforward ffmodel =
       new ArmFeedforward(IntakeConstants.kS, IntakeConstants.kG, IntakeConstants.kV);
@@ -54,17 +55,18 @@ public class IntakeIOReal implements IntakeIO {
     deployConfig.idleMode(IdleMode.kBrake);
 
     deployConfig.encoder.positionConversionFactor(IntakeConstants.GEARING_DEPLOY);
-    deployConfig.encoder.velocityConversionFactor(IntakeConstants.GEARING_DEPLOY / 60);
+    deployConfig.encoder.velocityConversionFactor(IntakeConstants.GEARING_DEPLOY / 60.0);
     deployConfig.encoder.quadratureMeasurementPeriod(20);
 
     deployConfig.softLimit.forwardSoftLimitEnabled(true);
-    deployConfig.softLimit.reverseSoftLimitEnabled(false);
+    deployConfig.softLimit.reverseSoftLimitEnabled(false); //not sure if this should be false
     deployConfig.softLimit.forwardSoftLimit(IntakeConstants.deployMaxAngle);
     deployConfig.softLimit.reverseSoftLimit(IntakeConstants.deployMinAngle);
 
     deployConfig.voltageCompensation(12.0);
-    deployConfig.inverted(false);
+    deployConfig.inverted(false); 
 
+    //should you invert 1 motor for the deploy? 
     intakeDeployMotorA.configure(
         deployConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     intakeDeployMotorB.configure(
@@ -90,7 +92,7 @@ public class IntakeIOReal implements IntakeIO {
   public void setGoal(double angleRot) {
     double angle = Units.rotationsToRadians(angleRot);
     if (angle != goal.position) {
-      setpoint = new TrapezoidProfile.State(encoder.getPosition(), encoder.getVelocity());
+      setpoint = new TrapezoidProfile.State(encoderA.getPosition(), encoderA.getVelocity());
       goal = new TrapezoidProfile.State(angle, 0);
     }
   }
@@ -98,8 +100,8 @@ public class IntakeIOReal implements IntakeIO {
   @Override
   public void updateMotionProfile() {
     setpoint = profile.calculate(0.02, setpoint, goal);
-    double ffvolts = ffmodel.calculate(encoder.getPosition(), setpoint.velocity);
-    double pidvolts = controller.calculate(encoder.getPosition(), setpoint.position);
+    double ffvolts = ffmodel.calculate(encoderA.getPosition(), setpoint.velocity);
+    double pidvolts = controller.calculate(encoderA.getPosition(), setpoint.position);
 
     setDeployVoltage(ffvolts + pidvolts);
   }
@@ -129,8 +131,10 @@ public class IntakeIOReal implements IntakeIO {
     inputs.currentAmpsB = intakeMotorB.getOutputCurrent();
 
     inputs.deployMotorVoltage = deployVolts;
-    inputs.deployMotorPosition = encoder.getPosition();
-    inputs.deployMotorVelocity = encoder.getVelocity();
+    inputs.deployMotorPositionA = encoderA.getPosition();
+    inputs.deployMotorVelocityA = encoderA.getVelocity();
+    inputs.deployMotorPositionA = encoderB.getPosition();
+    inputs.deployMotorVelocityA = encoderB.getVelocity();
     inputs.deployMotorGoal = goal.position;
     inputs.deployMotorSetpoint = setpoint.position;
   }
