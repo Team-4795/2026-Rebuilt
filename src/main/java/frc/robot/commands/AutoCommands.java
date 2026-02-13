@@ -54,7 +54,7 @@ public class AutoCommands {
     return Commands.startEnd(() -> shooter.setRPSDynamic(), () -> shooter.setVelocityRPS(0));
   }
 
-  // Nitya you can do this one. Look at shooter dynamic method for reference
+  // Angle shooter hood based on interpolation tree
   public static Command setShooterHoodDynamic() {
     return Commands.run(() -> hood.setGoalDynamic());
   }

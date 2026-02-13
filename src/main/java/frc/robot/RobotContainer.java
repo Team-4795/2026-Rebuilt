@@ -47,17 +47,24 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private Shooter shooter;
-  private Indexer indexer;
-  private Turret turret;
-  private Drive drive;
+  private final Shooter shooter;
+  private final Indexer indexer;
+  private final Turret turret;
+  private final Drive drive;
   private final Vision vision;
-  private ShooterHood shooterHood;
+  private final ShooterHood shooterHood;
 
   // Controllers
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
   private final CommandXboxController m_operatorController =
       Constants.OIConstants.operatorController;
+
+  // Bindings
+  private final Trigger robotRelativeDrive = m_driverController.rightBumper();
+  private final Trigger intake = m_driverController.leftTrigger();
+  private final Trigger autoScore = m_driverController.rightTrigger();
+  private final Trigger visionOff = m_driverController.x();
+  private final Trigger zeroDrivebase = m_driverController.y();
 
   private LoggedDashboardChooser<Command> autoChooser;
 
@@ -149,14 +156,8 @@ public class RobotContainer {
             Commands.startEnd(
                 () -> shooter.setVelocityRPS(ShooterIOReal.RPM.get()),
                 () -> shooter.setVelocityRPS(0)));
-
+    // Dynamic shooting
     m_operatorController.leftBumper().whileTrue(AutoCommands.setShooterVelocityDynamic());
-
-    // m_operatorController
-    //     .leftBumper()
-    //     .whileTrue(
-    //         Commands.startEnd(() -> shooter.setVoltage(6), () -> shooter.setVoltage(0),
-    // shooter));
 
     // Turret Bindings
     m_operatorController.povLeft().onTrue(Commands.runOnce(() -> turret.setGoal(0.5)));
@@ -181,7 +182,7 @@ public class RobotContainer {
     m_driverController
         .leftBumper()
         .whileTrue(Commands.run(() -> shooterHood.setGoal(0.25), shooterHood));
-
+    // Dynamic shooter hood
     m_driverController.leftTrigger().whileTrue(AutoCommands.setShooterHoodDynamic());
   }
 
