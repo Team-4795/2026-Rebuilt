@@ -23,6 +23,7 @@ import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.ShooterHood.ShooterHoodIO;
 import frc.robot.subsystems.ShooterHood.ShooterHoodIOReal;
 import frc.robot.subsystems.ShooterHood.ShooterHoodIOSim;
+import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretIO;
 import frc.robot.subsystems.Turret.TurretIOReal;
@@ -53,6 +54,7 @@ public class RobotContainer {
   private final Drive drive;
   private final Vision vision;
   private final ShooterHood shooterHood;
+  private final StateManager stateManager;
 
   // Controllers
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
@@ -118,6 +120,8 @@ public class RobotContainer {
         vision = Vision.initialize(new VisionIO[] {});
         break;
     }
+
+    stateManager = StateManager.initalize();
 
     // Register named commands
     NamedCommandManager.registerNamedCommands();

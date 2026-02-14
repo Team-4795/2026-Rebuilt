@@ -64,12 +64,19 @@ public final class Constants {
 
     public static ArrayList<Translation2d> trenchList = new ArrayList<Translation2d>();
 
+    public static Translation2d[] shuttleZone = new Translation2d[4];
+
     public static void initConstants() {
       // this is for anti-decapitation logic
       trenchList.add(redLeftTrench);
       trenchList.add(redRightTrench);
       trenchList.add(blueLeftTrench);
       trenchList.add(blueRightTrench);
+
+      shuttleZone[0] = new Translation2d(blueLeftTrench.getX(), fieldWidth);
+      shuttleZone[1] = new Translation2d(redRightTrench.getX(), fieldWidth);
+      shuttleZone[2] = new Translation2d(blueLeftTrench.getX(), 0);
+      shuttleZone[3] = new Translation2d(redRightTrench.getX(), 0);
     }
   }
 }
