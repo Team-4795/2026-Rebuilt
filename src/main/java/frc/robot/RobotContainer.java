@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.UnderTrench;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerIO;
 import frc.robot.subsystems.Indexer.IndexerIOReal;
@@ -197,20 +198,14 @@ public class RobotContainer {
     // Dynamic shooter hood
     m_driverController.leftTrigger().whileTrue(AutoCommands.setShooterHoodDynamic());
     // Intake
-    m_operatorController
-        .leftBumper()
-        .whileTrue(
-            Commands.startEnd(
-                () -> intake.setIntakeVoltage(5), () -> intake.setIntakeVoltage(0), intake));
+    m_operatorController.leftBumper().whileTrue(AutoCommands.intake());
     // Reverse Intake
-    m_operatorController
-        .rightBumper()
-        .whileTrue(
-            Commands.startEnd(
-                () -> intake.setIntakeVoltage(-5), () -> intake.setIntakeVoltage(0), intake));
+    m_operatorController.rightBumper().whileTrue(AutoCommands.reverseIntake());
 
     // Retract Intake
-    m_operatorController.povUp().whileTrue(Commands.run(() -> intake.setDeployGoal(0), intake));
+    m_operatorController.povUp().whileTrue(AutoCommands.retractIntake());
+
+    m_driverController.a().whileTrue(new UnderTrench());
   }
 
   /**
