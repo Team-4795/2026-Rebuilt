@@ -33,11 +33,11 @@ public class UnderTrench extends Command {
   private double targetY;
 
   private double distance;
-  private double mult;
+  private double mult = 1.0;
 
   public UnderTrench() {
     driverController = Constants.OIConstants.driverController;
-    rotationConstraints = new TrapezoidProfile.Constraints(drive.getMaxAngularSpeedRadPerSec(), 2);
+    rotationConstraints = new TrapezoidProfile.Constraints(drive.getMaxAngularSpeedRadPerSec(), 40);
     rotationController =
         new ProfiledPIDController(
             DriveConstants.turnKp, 0, DriveConstants.turnKd, rotationConstraints);
@@ -68,10 +68,8 @@ public class UnderTrench extends Command {
         MathUtil.angleModulus(currentPose.getRotation().getRadians()),
         drive.getChassisSpeeds().omegaRadiansPerSecond);
 
-    double velocity = mult * drive.getChassisSpeeds().vyMetersPerSecond;
-
     distance = Math.abs(targetY - robotY);
-    translationController.reset(distance, velocity);
+    translationController.reset(distance, 0);
   }
 
   @Override
@@ -88,9 +86,7 @@ public class UnderTrench extends Command {
 
     double scalar = scalar(distance);
     double drivePIDOutput = translationController.calculate(distance, 0);
-    double driveSpeed =
-        mult * scalar * translationController.getSetpoint().velocity + drivePIDOutput;
-
+    double driveVel = mult * scalar * (translationController.getSetpoint().velocity + drivePIDOutput);
     double rotationPIDOutput =
         rotationController.calculate(
             MathUtil.angleModulus(currentPose.getRotation().getRadians()), Math.PI / 2);
@@ -99,7 +95,7 @@ public class UnderTrench extends Command {
     ChassisSpeeds speeds =
         new ChassisSpeeds(
             -driverController.getLeftY() * drive.getMaxLinearSpeedMetersPerSec(),
-            driveSpeed * (currentPose.getY() - targetTranslation.getY()),
+            driveVel * (targetTranslation.getY() - currentPose.getY()),
             omega);
 
     boolean isFlipped =
@@ -110,9 +106,11 @@ public class UnderTrench extends Command {
         ChassisSpeeds.fromFieldRelativeSpeeds(
             speeds,
             isFlipped ? drive.getRotation().plus(new Rotation2d(Math.PI)) : drive.getRotation()));
-
+    /*
     Logger.recordOutput("Velocity Setpoint", translationController.getSetpoint().velocity);
+    Logger.recordOutput("Position Setpoint", translationController.getSetpoint().position);
     Logger.recordOutput("PID Output", drivePIDOutput);
+    */
   }
 
   private double scalar(double distance) {
@@ -124,4 +122,7 @@ public class UnderTrench extends Command {
       return 0.0;
     }
   }
+
+  @Override
+  public void end(boolean interrupted) {}
 }
