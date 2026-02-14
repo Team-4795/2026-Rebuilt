@@ -15,6 +15,10 @@ import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerIO;
 import frc.robot.subsystems.Indexer.IndexerIOReal;
 import frc.robot.subsystems.Indexer.IndexerIOSim;
+import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.Intake.IntakeIO;
+import frc.robot.subsystems.Intake.IntakeIOReal;
+import frc.robot.subsystems.Intake.IntakeIOSim;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterIO;
 import frc.robot.subsystems.Shooter.ShooterIOReal;
@@ -39,10 +43,6 @@ import frc.robot.subsystems.vision.VisionIOReal;
 import frc.robot.subsystems.vision.VisionIOSim;
 import frc.robot.util.NamedCommandManager;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.IntakeIO;
-import frc.robot.subsystems.IntakeIOReal;
-import frc.robot.subsystems.IntakeIOSim;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a

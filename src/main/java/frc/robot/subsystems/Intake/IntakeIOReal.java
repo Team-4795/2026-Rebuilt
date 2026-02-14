@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.Intake;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;
@@ -102,9 +102,9 @@ public class IntakeIOReal implements IntakeIO {
   @Override
   public void updateMotionProfile() {
     setpoint = profile.calculate(0.02, setpoint, goal);
-    double ffvolts = 
+    double ffvolts =
         ffmodel.calculate(
-            Units.rotationsToRadians(encoderA.getPosition() - IntakeConstants.deployOffset), 
+            Units.rotationsToRadians(encoderA.getPosition() - IntakeConstants.deployOffset),
             Units.rotationsPerMinuteToRadiansPerSecond(setpoint.velocity * 60.0));
     double pidvolts = controller.calculate(encoderA.getPosition(), setpoint.position);
 
