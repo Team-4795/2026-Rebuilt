@@ -39,6 +39,10 @@ import frc.robot.subsystems.vision.VisionIOReal;
 import frc.robot.subsystems.vision.VisionIOSim;
 import frc.robot.util.NamedCommandManager;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeIO;
+import frc.robot.subsystems.IntakeIOReal;
+import frc.robot.subsystems.IntakeIOSim;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -55,6 +59,7 @@ public class RobotContainer {
   private final Vision vision;
   private final ShooterHood shooterHood;
   private final StateManager stateManager;
+  private final Intake intake;
 
   // Controllers
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
@@ -63,7 +68,7 @@ public class RobotContainer {
 
   // Bindings
   private final Trigger robotRelativeDrive = m_driverController.rightBumper();
-  private final Trigger intake = m_driverController.leftTrigger();
+  private final Trigger intakeButton = m_driverController.leftTrigger();
   private final Trigger autoScore = m_driverController.rightTrigger();
   private final Trigger visionOff = m_driverController.x();
   private final Trigger zeroDrivebase = m_driverController.y();
@@ -76,6 +81,7 @@ public class RobotContainer {
     Constants.FieldConstants.initConstants();
     switch (Constants.currentMode) {
       case REAL:
+        intake = Intake.initialize(new IntakeIOReal());
         shooter = Shooter.initialize(new ShooterIOReal());
         indexer = Indexer.initialize(new IndexerIOReal());
         turret = Turret.initialize(new TurretIOReal());
@@ -91,6 +97,7 @@ public class RobotContainer {
         break;
 
       case SIM:
+        intake = Intake.initialize(new IntakeIOSim());
         shooter = Shooter.initialize(new ShooterIOSim());
         indexer = Indexer.initialize(new IndexerIOSim());
         turret = Turret.initialize(new TurretIOSim());
@@ -106,6 +113,7 @@ public class RobotContainer {
         break;
 
       default:
+        intake = Intake.initialize(new IntakeIO() {});
         shooter = Shooter.initialize(new ShooterIO() {});
         indexer = Indexer.initialize(new IndexerIO() {});
         turret = Turret.initialize(new TurretIO() {});
@@ -188,6 +196,21 @@ public class RobotContainer {
         .whileTrue(Commands.run(() -> shooterHood.setGoal(0.25), shooterHood));
     // Dynamic shooter hood
     m_driverController.leftTrigger().whileTrue(AutoCommands.setShooterHoodDynamic());
+    // Intake
+    m_operatorController
+        .leftBumper()
+        .whileTrue(
+            Commands.startEnd(
+                () -> intake.setIntakeVoltage(5), () -> intake.setIntakeVoltage(0), intake));
+    // Reverse Intake
+    m_operatorController
+        .rightBumper()
+        .whileTrue(
+            Commands.startEnd(
+                () -> intake.setIntakeVoltage(-5), () -> intake.setIntakeVoltage(0), intake));
+
+    // Retract Intake
+    m_operatorController.povUp().whileTrue(Commands.run(() -> intake.setDeployGoal(0), intake));
   }
 
   /**
