@@ -15,7 +15,6 @@ import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveConstants;
-import org.littletonrobotics.junction.Logger;
 
 public class UnderTrench extends Command {
   private Drive drive = Drive.getInstance();
@@ -54,7 +53,7 @@ public class UnderTrench extends Command {
     DriverStation.getAlliance()
         .ifPresent(
             (alliance) -> {
-              mult = (alliance == Alliance.Red) ? -1.0 : 1.0;
+              mult = (alliance == Alliance.Red) ? 1.0 : -1.0;
             });
 
     currentPose = drive.getPose();
@@ -86,7 +85,8 @@ public class UnderTrench extends Command {
 
     double scalar = scalar(distance);
     double drivePIDOutput = translationController.calculate(distance, 0);
-    double driveVel = mult * scalar * (translationController.getSetpoint().velocity + drivePIDOutput);
+    double driveVel =
+        mult * scalar * (translationController.getSetpoint().velocity + drivePIDOutput);
     double rotationPIDOutput =
         rotationController.calculate(
             MathUtil.angleModulus(currentPose.getRotation().getRadians()), Math.PI / 2);
@@ -106,6 +106,7 @@ public class UnderTrench extends Command {
         ChassisSpeeds.fromFieldRelativeSpeeds(
             speeds,
             isFlipped ? drive.getRotation().plus(new Rotation2d(Math.PI)) : drive.getRotation()));
+
     /*
     Logger.recordOutput("Velocity Setpoint", translationController.getSetpoint().velocity);
     Logger.recordOutput("Position Setpoint", translationController.getSetpoint().position);
