@@ -11,6 +11,7 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import frc.robot.util.LoggedTunableNumber;
 
 public class IntakeDeployIOReal implements IntakeDeployIO {
   // two motors to extend intake
@@ -24,12 +25,20 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
   private RelativeEncoder encoderA = intakeDeployMotorA.getEncoder();
   private RelativeEncoder encoderB = intakeDeployMotorB.getEncoder();
 
+  LoggedTunableNumber KP = new LoggedTunableNumber("IntakeDeploy/KP", IntakeDeployConstants.kP);
+  LoggedTunableNumber KI = new LoggedTunableNumber("IntakeDeploy/KI", IntakeDeployConstants.kI);
+  LoggedTunableNumber KD = new LoggedTunableNumber("IntakeDeploy/KD", IntakeDeployConstants.kD);
+
+  LoggedTunableNumber KS = new LoggedTunableNumber("IntakeDeploy/KS", IntakeDeployConstants.kS);
+  LoggedTunableNumber KG = new LoggedTunableNumber("IntakeDeploy/KG", IntakeDeployConstants.kG);
+  LoggedTunableNumber KV = new LoggedTunableNumber("IntakeDeploy/KV", IntakeDeployConstants.kV);
+
   private ArmFeedforward ffmodel =
       new ArmFeedforward(
-          IntakeDeployConstants.kS, IntakeDeployConstants.kG, IntakeDeployConstants.kV);
+          KS.get(), KG.get(), KV.get());
   private PIDController controller =
       new PIDController(
-          IntakeDeployConstants.kP, IntakeDeployConstants.kI, IntakeDeployConstants.kD);
+          KP.get(), KI.get(), KD.get());
 
   private final TrapezoidProfile.Constraints constraints =
       new TrapezoidProfile.Constraints(

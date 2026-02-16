@@ -17,7 +17,7 @@ public class IntakeDeployConstants {
   public static final double MAX_VELOCITY = 5;
   public static final double MAX_ACCELERATION = 5;
 
-  public static final double kP = 2.0; // changed for sim purposes
+  public static final double kP = 0.0;
   public static final double kI = 0.0;
   public static final double kD = 0.0;
 
