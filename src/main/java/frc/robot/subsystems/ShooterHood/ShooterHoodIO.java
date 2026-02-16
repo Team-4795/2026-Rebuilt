@@ -31,7 +31,6 @@ public interface ShooterHoodIO {
   public default boolean readyToShoot() {
     return false;
   }
-  public default void configure() {
-    
-  }
+
+  public default void configure() {}
 }

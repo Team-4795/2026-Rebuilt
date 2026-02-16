@@ -39,7 +39,5 @@ public interface ShooterIO {
     return false;
   }
 
-  public default void configure() {
-
-  }
+  public default void configure() {}
 }

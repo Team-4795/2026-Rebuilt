@@ -41,7 +41,6 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIORedux;
 import frc.robot.subsystems.drive.ModuleIOSim;
-import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.drive.ModuleIOSparkFlex;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
@@ -80,7 +79,7 @@ public class RobotContainer {
   private final Trigger visionOff = m_driverController.x();
   private final Trigger zeroDrivebase = m_driverController.y();
 
-  private final Trigger configure = m_operatorController.povDown(); 
+  private final Trigger configure = m_operatorController.povDown();
 
   private LoggedDashboardChooser<Command> autoChooser;
 
@@ -218,11 +217,12 @@ public class RobotContainer {
 
     m_driverController.a().whileTrue(new UnderTrench());
 
-    configure.onTrue(Commands.sequence(
-      Commands.runOnce(() -> turret.configure()),
-      Commands.runOnce(() -> shooterHood.configure())
-      //add shooter here
-    ));
+    configure.onTrue(
+        Commands.sequence(
+            Commands.runOnce(() -> turret.configure()),
+            Commands.runOnce(() -> shooterHood.configure())
+            // add shooter here
+            ));
   }
 
   /**

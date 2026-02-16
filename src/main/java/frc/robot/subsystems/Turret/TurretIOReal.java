@@ -4,7 +4,6 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -33,8 +32,10 @@ public class TurretIOReal implements TurretIO {
   LoggedTunableNumber KV = new LoggedTunableNumber("Turret/KV", TurretConstants.kV);
   LoggedTunableNumber KA = new LoggedTunableNumber("Turret/KA", TurretConstants.kA);
 
-  LoggedTunableNumber maxA = new LoggedTunableNumber("Turret/acceleration", TurretConstants.maxAcceleration);
-  LoggedTunableNumber maxV = new LoggedTunableNumber("Turret/velocity", TurretConstants.maxVelocity);
+  LoggedTunableNumber maxA =
+      new LoggedTunableNumber("Turret/acceleration", TurretConstants.maxAcceleration);
+  LoggedTunableNumber maxV =
+      new LoggedTunableNumber("Turret/velocity", TurretConstants.maxVelocity);
   LoggedTunableNumber maxJerk = new LoggedTunableNumber("Turret/jerk", TurretConstants.maxJerk);
 
   private MotionMagicVoltage control = new MotionMagicVoltage(0);
@@ -109,9 +110,9 @@ public class TurretIOReal implements TurretIO {
     turretConfig.Slot0.kI = KI.get();
     turretConfig.Slot0.kD = KD.get();
 
-    controlConfig.MotionMagicAcceleration = maxA.get(); 
-    controlConfig.MotionMagicCruiseVelocity = maxV.get(); 
-    controlConfig.MotionMagicJerk = maxJerk.get(); 
+    controlConfig.MotionMagicAcceleration = maxA.get();
+    controlConfig.MotionMagicCruiseVelocity = maxV.get();
+    controlConfig.MotionMagicJerk = maxJerk.get();
 
     turretMotor.getConfigurator().apply(turretConfig);
     turretMotor.getConfigurator().apply(controlConfig);

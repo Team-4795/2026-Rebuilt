@@ -22,7 +22,7 @@ public class TurretConstants {
 
   public static final double maxVelocity = 6;
   public static final double maxAcceleration = 10;
-  public static final double expoA = 0; 
+  public static final double expoA = 0;
   public static final double expoV = 0;
   public static final double maxJerk = 0;
   public static final int CAN_ID = 20;
