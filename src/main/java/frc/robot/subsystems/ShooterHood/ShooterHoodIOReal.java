@@ -12,6 +12,9 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
+import frc.robot.subsystems.Turret.TurretConstants;
+import frc.robot.util.LoggedTunableNumber;
+
 
 public class ShooterHoodIOReal implements ShooterHoodIO {
   private TalonFX shooterHoodMotor = new TalonFX(ShooterHoodConstants.CAN_ID);
@@ -23,6 +26,18 @@ public class ShooterHoodIOReal implements ShooterHoodIO {
   private final StatusSignal<AngularVelocity> velocityRPS = shooterHoodMotor.getVelocity();
   private final StatusSignal<Current> current = shooterHoodMotor.getTorqueCurrent();
   private final StatusSignal<Voltage> voltage = shooterHoodMotor.getMotorVoltage();
+
+  LoggedTunableNumber KP = new LoggedTunableNumber("ShooterHood/KP", ShooterHoodConstants.kP);
+  LoggedTunableNumber KI = new LoggedTunableNumber("ShooterHood/KI", ShooterHoodConstants.kI);
+  LoggedTunableNumber KD = new LoggedTunableNumber("ShooterHood/KD", ShooterHoodConstants.kD);
+
+  LoggedTunableNumber KS = new LoggedTunableNumber("ShooterHood/KS", ShooterHoodConstants.kS);
+  LoggedTunableNumber KV = new LoggedTunableNumber("ShooterHood/KV", ShooterHoodConstants.kV);
+  LoggedTunableNumber KA = new LoggedTunableNumber("ShooterHood/KA", ShooterHoodConstants.kA);
+
+  LoggedTunableNumber maxA = new LoggedTunableNumber("ShooterHood/acceleration", ShooterHoodConstants.maxAcceleration);
+  LoggedTunableNumber maxV = new LoggedTunableNumber("ShooterHood/velocity", ShooterHoodConstants.maxVelocity);
+  LoggedTunableNumber maxJerk = new LoggedTunableNumber("ShooterHood/jerk", ShooterHoodConstants.maxJerk);
 
   private double goal = 0.0;
 
@@ -51,7 +66,7 @@ public class ShooterHoodIOReal implements ShooterHoodIO {
     motorConfig.Slot0.kI = ShooterHoodConstants.kI;
     motorConfig.Slot0.kD = ShooterHoodConstants.kD;
 
-    motorConfig.MotionMagic.MotionMagicAcceleration = ShooterHoodConstants.maxVelocity;
+    motorConfig.MotionMagic.MotionMagicCruiseVelocity = ShooterHoodConstants.maxVelocity;
     motorConfig.MotionMagic.MotionMagicAcceleration = ShooterHoodConstants.maxAcceleration;
     motorConfig.MotionMagic.MotionMagicJerk = ShooterHoodConstants.maxJerk;
 
@@ -87,6 +102,22 @@ public class ShooterHoodIOReal implements ShooterHoodIO {
   @Override
   public boolean readyToShoot() {
     return Math.abs(getPosition() - getGoal()) < ShooterHoodConstants.marginOfError;
+  }
+
+    @Override
+  public void configure() {
+    motorConfig.Slot0.kA = KA.get();
+    motorConfig.Slot0.kV = KV.get();
+    motorConfig.Slot0.kS = KS.get();
+    motorConfig.Slot0.kP = KP.get();
+    motorConfig.Slot0.kI = KI.get();
+    motorConfig.Slot0.kD = KD.get();
+
+    motorConfig.MotionMagic.MotionMagicAcceleration = maxA.get(); 
+    motorConfig.MotionMagic.MotionMagicCruiseVelocity = maxV.get(); 
+    motorConfig.MotionMagic.MotionMagicJerk = maxJerk.get(); 
+
+    shooterHoodMotor.getConfigurator().apply(motorConfig);
   }
 
   @Override

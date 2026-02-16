@@ -22,10 +22,12 @@ public class TurretConstants {
 
   public static final double maxVelocity = 6;
   public static final double maxAcceleration = 10;
+  public static final double expoA = 0; 
+  public static final double expoV = 0;
   public static final double maxJerk = 0;
   public static final int CAN_ID = 20;
 
-  public static final double gearing = 48;
+  public static final double gearing = 60;
   public static final Translation2d OFFSET = new Translation2d(0.152, -0.165);
   public static final double angleOffset = 0;
 }

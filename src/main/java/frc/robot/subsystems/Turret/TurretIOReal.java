@@ -4,6 +4,7 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -32,6 +33,10 @@ public class TurretIOReal implements TurretIO {
   LoggedTunableNumber KV = new LoggedTunableNumber("Turret/KV", TurretConstants.kV);
   LoggedTunableNumber KA = new LoggedTunableNumber("Turret/KA", TurretConstants.kA);
 
+  LoggedTunableNumber maxA = new LoggedTunableNumber("Turret/acceleration", TurretConstants.maxAcceleration);
+  LoggedTunableNumber maxV = new LoggedTunableNumber("Turret/velocity", TurretConstants.maxVelocity);
+  LoggedTunableNumber maxJerk = new LoggedTunableNumber("Turret/jerk", TurretConstants.maxJerk);
+
   private MotionMagicVoltage control = new MotionMagicVoltage(0);
   private MotionMagicConfigs controlConfig = new MotionMagicConfigs();
 
@@ -50,7 +55,7 @@ public class TurretIOReal implements TurretIO {
     turretConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     turretConfig.CurrentLimits.SupplyCurrentLimit = 60;
 
-    turretConfig.Feedback.SensorToMechanismRatio = TurretConstants.gearing * (0.5 / 0.44);
+    turretConfig.Feedback.SensorToMechanismRatio = TurretConstants.gearing;
 
     turretConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
     turretConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
@@ -60,8 +65,8 @@ public class TurretIOReal implements TurretIO {
 
     turretMotor.getConfigurator().apply(turretConfig);
 
-    controlConfig.MotionMagicAcceleration = TurretConstants.maxAcceleration;
-    controlConfig.MotionMagicCruiseVelocity = TurretConstants.maxVelocity;
+    controlConfig.MotionMagicExpo_kA = TurretConstants.maxAcceleration;
+    controlConfig.MotionMagicExpo_kV = TurretConstants.maxVelocity;
     controlConfig.MotionMagicJerk = TurretConstants.maxJerk;
 
     turretMotor.getConfigurator().apply(controlConfig);
@@ -93,6 +98,23 @@ public class TurretIOReal implements TurretIO {
   @Override
   public void zero() {
     turretMotor.setPosition(0);
+  }
+
+  @Override
+  public void configure() {
+    turretConfig.Slot0.kA = KA.get();
+    turretConfig.Slot0.kV = KV.get();
+    turretConfig.Slot0.kS = KS.get();
+    turretConfig.Slot0.kP = KP.get();
+    turretConfig.Slot0.kI = KI.get();
+    turretConfig.Slot0.kD = KD.get();
+
+    controlConfig.MotionMagicAcceleration = maxA.get(); 
+    controlConfig.MotionMagicCruiseVelocity = maxV.get(); 
+    controlConfig.MotionMagicJerk = maxJerk.get(); 
+
+    turretMotor.getConfigurator().apply(turretConfig);
+    turretMotor.getConfigurator().apply(controlConfig);
   }
 
   @Override

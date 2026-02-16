@@ -42,6 +42,7 @@ import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIORedux;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
+import frc.robot.subsystems.drive.ModuleIOSparkFlex;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOReal;
@@ -79,6 +80,8 @@ public class RobotContainer {
   private final Trigger visionOff = m_driverController.x();
   private final Trigger zeroDrivebase = m_driverController.y();
 
+  private final Trigger configure = m_operatorController.povDown(); 
+
   private LoggedDashboardChooser<Command> autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -96,10 +99,10 @@ public class RobotContainer {
         drive =
             Drive.initialize(
                 new GyroIORedux(),
-                new ModuleIOSpark(0),
-                new ModuleIOSpark(1),
-                new ModuleIOSpark(2),
-                new ModuleIOSpark(3));
+                new ModuleIOSparkFlex(0),
+                new ModuleIOSparkFlex(1),
+                new ModuleIOSparkFlex(2),
+                new ModuleIOSparkFlex(3));
         vision = Vision.initialize(new VisionIOReal(0));
         break;
 
@@ -214,6 +217,12 @@ public class RobotContainer {
     m_operatorController.povUp().whileTrue(AutoCommands.retractIntake());
 
     m_driverController.a().whileTrue(new UnderTrench());
+
+    configure.onTrue(Commands.sequence(
+      Commands.runOnce(() -> turret.configure()),
+      Commands.runOnce(() -> shooterHood.configure())
+      //add shooter here
+    ));
   }
 
   /**
