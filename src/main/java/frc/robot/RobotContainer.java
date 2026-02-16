@@ -20,6 +20,10 @@ import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakeIO;
 import frc.robot.subsystems.Intake.IntakeIOReal;
 import frc.robot.subsystems.Intake.IntakeIOSim;
+import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
+import frc.robot.subsystems.IntakeDeploy.IntakeDeployIO;
+import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOReal;
+import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOSim;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterIO;
 import frc.robot.subsystems.Shooter.ShooterIOReal;
@@ -61,6 +65,7 @@ public class RobotContainer {
   private final ShooterHood shooterHood;
   private final StateManager stateManager;
   private final Intake intake;
+  private final IntakeDeploy deploy;
 
   // Controllers
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
@@ -83,6 +88,7 @@ public class RobotContainer {
     switch (Constants.currentMode) {
       case REAL:
         intake = Intake.initialize(new IntakeIOReal());
+        deploy = IntakeDeploy.initialize(new IntakeDeployIOReal());
         shooter = Shooter.initialize(new ShooterIOReal());
         indexer = Indexer.initialize(new IndexerIOReal());
         turret = Turret.initialize(new TurretIOReal());
@@ -99,6 +105,7 @@ public class RobotContainer {
 
       case SIM:
         intake = Intake.initialize(new IntakeIOSim());
+        deploy = IntakeDeploy.initialize(new IntakeDeployIOSim());
         shooter = Shooter.initialize(new ShooterIOSim());
         indexer = Indexer.initialize(new IndexerIOSim());
         turret = Turret.initialize(new TurretIOSim());
@@ -115,6 +122,7 @@ public class RobotContainer {
 
       default:
         intake = Intake.initialize(new IntakeIO() {});
+        deploy = IntakeDeploy.initialize(new IntakeDeployIO() {});
         shooter = Shooter.initialize(new ShooterIO() {});
         indexer = Indexer.initialize(new IndexerIO() {});
         turret = Turret.initialize(new TurretIO() {});

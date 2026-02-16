@@ -23,27 +23,16 @@ public class Intake extends SubsystemBase {
   private Intake(IntakeIO io) {
     this.io = io;
     io.updateInputs(inputs);
-    setDefaultCommand(Commands.run(() -> io.setGoal(IntakeConstants.stowPosition), this));
+    setDefaultCommand(Commands.run(() -> setIntakeVoltage(0), this)); // auto deploy
   }
 
-  // Method to set speed of both motors
+  // Method to set speed of intake motors
   public void setIntakeVoltage(double volts) {
     io.setIntakeVoltage(volts);
   }
 
-  // method to set speed of deploy motor
-  public void setDeployVoltage(double volts) {
-    io.setDeployVoltage(volts);
-  }
-
-  public void setDeployGoal(double goal) {
-    io.setGoal(goal);
-  }
-
   @Override
   public void periodic() {
-    io.updateMotionProfile();
-
     io.updateInputs(inputs);
     Logger.processInputs("Intake", inputs);
   }

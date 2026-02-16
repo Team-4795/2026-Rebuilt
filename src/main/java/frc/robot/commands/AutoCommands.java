@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.Turret.Turret;
@@ -16,6 +17,7 @@ public class AutoCommands {
   private static Turret turret = Turret.getInstance();
   private static ShooterHood hood = ShooterHood.getInstance();
   private static Intake intake = Intake.getInstance();
+  private static IntakeDeploy deploy = IntakeDeploy.getInstance();
 
   private AutoCommands() {}
 
@@ -26,7 +28,7 @@ public class AutoCommands {
   }
 
   public static Command retractIntake() {
-    return Commands.run(() -> intake.setDeployGoal(0), intake);
+    return Commands.run(() -> deploy.setGoal(0), deploy);
   }
 
   public static Command intake() {
