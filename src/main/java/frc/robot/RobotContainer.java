@@ -38,6 +38,7 @@ import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIORedux;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
+import frc.robot.subsystems.drive.ModuleIOSparkFlex;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOReal;
@@ -90,10 +91,10 @@ public class RobotContainer {
         drive =
             Drive.initialize(
                 new GyroIORedux(),
-                new ModuleIOSpark(0),
-                new ModuleIOSpark(1),
-                new ModuleIOSpark(2),
-                new ModuleIOSpark(3));
+                new ModuleIOSparkFlex(0),
+                new ModuleIOSparkFlex(1),
+                new ModuleIOSparkFlex(2),
+                new ModuleIOSparkFlex(3));
         vision = Vision.initialize(new VisionIOReal(0));
         break;
 
