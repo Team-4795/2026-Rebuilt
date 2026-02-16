@@ -89,7 +89,7 @@ public class UnderTrench extends Command {
         mult * scalar * (translationController.getSetpoint().velocity + drivePIDOutput);
     double rotationPIDOutput =
         rotationController.calculate(
-            MathUtil.angleModulus(currentPose.getRotation().getRadians()), Math.PI / 2);
+            MathUtil.angleModulus(currentPose.getRotation().getRadians()), Math.PI / 2.0);
     double omega = rotationController.getSetpoint().velocity + rotationPIDOutput;
 
     ChassisSpeeds speeds =
@@ -118,7 +118,7 @@ public class UnderTrench extends Command {
     if (distance > 0.2) {
       return 1.0;
     } else if (0 < distance && distance < 0.2) {
-      return MathUtil.clamp((1 / (0.2 - 0)) * (distance - 0), 0, 1);
+      return MathUtil.clamp((1.0 / (0.2 - 0)) * (distance - 0), 0, 1);
     } else {
       return 0.0;
     }

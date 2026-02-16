@@ -75,6 +75,8 @@ public class RobotContainer {
   private final Trigger visionOff = m_driverController.x();
   private final Trigger zeroDrivebase = m_driverController.y();
 
+  private final Trigger configure = m_operatorController.povDown(); 
+
   private LoggedDashboardChooser<Command> autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -207,6 +209,12 @@ public class RobotContainer {
     m_operatorController.povUp().whileTrue(AutoCommands.retractIntake());
 
     m_driverController.a().whileTrue(new UnderTrench());
+
+    configure.onTrue(Commands.sequence(
+      Commands.runOnce(() -> turret.configure()),
+      Commands.runOnce(() -> shooterHood.configure())
+      //add shooter here
+    ));
   }
 
   /**

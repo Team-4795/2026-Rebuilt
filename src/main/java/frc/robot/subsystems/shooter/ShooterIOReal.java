@@ -80,6 +80,12 @@ public class ShooterIOReal implements ShooterIO {
     velocityRPS = MathUtil.clamp(velocityRPS, ShooterConstants.minVel, ShooterConstants.maxVel);
     topShooterMotor.setControl(m_request.withVelocity(velocityRPS));
     this.goalVelocityRPS = velocityRPS;
+    
+  }
+
+  @Override
+  public void configure() {
+    
   }
 
   @Override

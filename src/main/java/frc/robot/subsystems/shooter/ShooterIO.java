@@ -38,4 +38,8 @@ public interface ShooterIO {
   public default boolean readyToShoot() {
     return false;
   }
+
+  public default void configure() {
+
+  }
 }

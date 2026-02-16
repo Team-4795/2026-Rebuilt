@@ -69,6 +69,10 @@ public class Turret extends SubsystemBase {
     return turretPose;
   }
 
+  public void configure() {
+    io.configure();
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);

@@ -52,6 +52,10 @@ public class ShooterHood extends SubsystemBase {
     }
   }
 
+  public void configure() {
+    io.configure();
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);
