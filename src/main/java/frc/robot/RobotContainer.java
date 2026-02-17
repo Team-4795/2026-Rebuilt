@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
-import frc.robot.commands.UnderTrench;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerIO;
 import frc.robot.subsystems.Indexer.IndexerIOReal;
@@ -81,7 +80,7 @@ public class RobotContainer {
   // private final Trigger configure = m_driverController.povDown();
 
   // Testing Bindings
-  private final Trigger manualShooter = m_operatorController.povDown();
+  // private final Trigger manualShooter = m_operatorController.povDown();
 
   private final Trigger manualTurretOne = m_operatorController.povLeft();
   private final Trigger manualTurretTwo = m_operatorController.povRight();
@@ -184,11 +183,8 @@ public class RobotContainer {
             () -> -m_driverController.getRightX()));
 
     // Shooter Bindings
-    manualShooter.whileTrue(
-      Commands.startEnd(
-        () -> shooter.setVoltage(3), 
-        () -> shooter.setVoltage(0), 
-        shooter));
+    // manualShooter.whileTrue(
+    //     Commands.startEnd(() -> shooter.setVoltage(3), () -> shooter.setVoltage(0), shooter));
 
     // m_operatorController
     //     .rightBumper()
@@ -199,34 +195,24 @@ public class RobotContainer {
     // Dynamic shooting
     // m_operatorController.leftBumper().whileTrue(AutoCommands.setShooterVelocityDynamic());
 
-
     // Turret Bindings
-    manualTurretOne.whileTrue(
-      Commands.startEnd(
-        () -> turret.setVoltage(2), 
-        () -> turret.setVoltage(0), 
-        turret));
-    manualTurretTwo.whileTrue(
-      Commands.startEnd(
-        () -> turret.setVoltage(-2), 
-        () -> turret.setVoltage(0), 
-        turret));
-    zeroTurretTrigger.onTrue(Commands.runOnce(() -> turret.zero()));
+    // manualTurretOne.whileTrue(
+    //     Commands.startEnd(() -> turret.setVoltage(2), () -> turret.setVoltage(0), turret));
+    // manualTurretTwo.whileTrue(
+    //     Commands.startEnd(() -> turret.setVoltage(-2), () -> turret.setVoltage(0), turret));
+    // zeroTurretTrigger.onTrue(Commands.runOnce(() -> turret.zero()));
 
-    // m_operatorController.povLeft().onTrue(Commands.runOnce(() -> turret.setGoal(0.5)));
-    // m_operatorController.povRight().onTrue(Commands.runOnce(() -> turret.setGoal(0.1)));
-    // m_driverController.povDown().whileTrue(AutoCommands.aimAtTarget());
+    m_operatorController.povLeft().onTrue(Commands.runOnce(() -> turret.setGoal(0.5)));
+    m_operatorController.povRight().onTrue(Commands.runOnce(() -> turret.setGoal(0.1)));
+    m_driverController.povDown().whileTrue(AutoCommands.aimAtTarget());
 
     // Indexer Bindings
-    towerButton
-        .whileTrue(
-            Commands.startEnd(
-                () -> indexer.setVoltageTower(4), () -> indexer.setVoltageTower(0), indexer));
-    indexerButton
-        .whileTrue(
-            Commands.startEnd(
-                () -> indexer.setVoltageIndexer(4), () -> indexer.setVoltageIndexer(0), indexer));
-    
+    towerButton.whileTrue(
+        Commands.startEnd(
+            () -> indexer.setVoltageTower(4), () -> indexer.setVoltageTower(0), indexer));
+    indexerButton.whileTrue(
+        Commands.startEnd(
+            () -> indexer.setVoltageIndexer(4), () -> indexer.setVoltageIndexer(0), indexer));
 
     // Needs to be tested
     // m_operatorController.a().whileTrue(AutoCommands.zeroSequence());

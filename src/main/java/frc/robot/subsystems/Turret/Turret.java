@@ -63,7 +63,7 @@ public class Turret extends SubsystemBase {
             turretTranslation.getX(),
             turretTranslation.getY(),
             new Rotation2d(
-                (Units.rotationsToRadians(getTurretAngle() - TurretConstants.angleOffset)
+                (Units.rotationsToRadians(getTurretAngle() + TurretConstants.angleOffset)
                     + robotPose.getRotation().getRadians())));
 
     return turretPose;

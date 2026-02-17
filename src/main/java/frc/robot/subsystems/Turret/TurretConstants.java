@@ -3,7 +3,7 @@ package frc.robot.subsystems.Turret;
 import edu.wpi.first.math.geometry.Translation2d;
 
 public class TurretConstants {
-  public static final double margin = 3;
+  public static final double margin = 10;
   public static final double minAngle = 0 + margin;
   public static final double maxAngle = 360 - margin;
 
@@ -28,6 +28,6 @@ public class TurretConstants {
   public static final int CAN_ID = 14;
 
   public static final double gearing = 60;
-  public static final Translation2d OFFSET = new Translation2d(0.152, -0.165);
-  public static final double angleOffset = 0;
+  public static final Translation2d OFFSET = new Translation2d(-0.152, -0.165);
+  public static final double angleOffset = 0.05;
 }
