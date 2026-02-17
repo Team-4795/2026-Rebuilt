@@ -148,8 +148,8 @@ public class ShooterIOReal implements ShooterIO {
     talonFXConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
     // Motion Magic settings
-    talonFXConfig.MotionMagic.MotionMagicAcceleration = ShooterConstants.MM_ACCELERATION;
-    talonFXConfig.MotionMagic.MotionMagicJerk = ShooterConstants.MM_JERK;
+    talonFXConfig.MotionMagic.MotionMagicAcceleration = MM_ACCELERATION.get();
+    talonFXConfig.MotionMagic.MotionMagicJerk = MM_JERK.get();
 
     return talonFXConfig;
   }
