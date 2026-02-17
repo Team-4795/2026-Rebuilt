@@ -3,8 +3,7 @@ package frc.robot.subsystems.ShooterHood;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 
 public final class ShooterHoodConstants {
-  // Change later
-  public static final int CAN_ID = 16;
+  public static final int CAN_ID = 17;
 
   public static final int CURRENT_LIMIT = 40;
 

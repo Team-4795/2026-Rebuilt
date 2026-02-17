@@ -1,8 +1,8 @@
 package frc.robot.subsystems.IntakeDeploy;
 
 public class IntakeDeployConstants {
-  public static final int canIDDeployA = 23;
-  public static final int canIDDeployB = 24;
+  public static final int canIDDeployA = 19;
+  public static final int canIDDeployB = 21;
 
   public static final double GEARING_DEPLOY = 50; // change with proper gearing
 
