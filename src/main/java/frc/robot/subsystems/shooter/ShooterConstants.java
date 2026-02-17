@@ -3,9 +3,8 @@ package frc.robot.subsystems.Shooter;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 
 public final class ShooterConstants {
-  // Change later
-  public static final int TOP_CAN_ID = 17;
-  public static final int BOTTOM_CAN_ID = 19;
+  public static final int TOP_CAN_ID = 15;
+  public static final int BOTTOM_CAN_ID = 16;
 
   public static final int CURRENT_LIMIT = 40;
 
