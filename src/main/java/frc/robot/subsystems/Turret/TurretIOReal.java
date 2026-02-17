@@ -7,6 +7,8 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -55,6 +57,8 @@ public class TurretIOReal implements TurretIO {
     turretConfig.CurrentLimits.StatorCurrentLimit = 60;
     turretConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     turretConfig.CurrentLimits.SupplyCurrentLimit = 60;
+
+    turretConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
     turretConfig.Feedback.SensorToMechanismRatio = TurretConstants.gearing;
 

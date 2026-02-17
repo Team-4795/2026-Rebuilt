@@ -51,11 +51,11 @@ public class IntakeIOReal implements IntakeIO {
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
     inputs.voltageA = intakeVolts;
-    inputs.angularVelocityRPSA = intakeMotorA.getEncoder().getVelocity();
+    inputs.angularVelocityRPSA = intakeMotorA.getEncoder().getVelocity() / 60.0;
     inputs.currentAmpsA = intakeMotorA.getOutputCurrent();
 
     inputs.voltageB = intakeVolts;
-    inputs.angularVelocityRPSB = intakeMotorB.getEncoder().getVelocity();
+    inputs.angularVelocityRPSB = intakeMotorB.getEncoder().getVelocity() / 60.0;
     inputs.currentAmpsB = intakeMotorB.getOutputCurrent();
   }
 }
