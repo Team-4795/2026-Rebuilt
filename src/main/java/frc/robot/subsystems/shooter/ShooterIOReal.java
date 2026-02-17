@@ -2,7 +2,6 @@ package frc.robot.subsystems.Shooter;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVelocityTorqueCurrentFOC;
@@ -131,12 +130,12 @@ public class ShooterIOReal implements ShooterIO {
     talonFXConfig.Audio.BeepOnBoot = true;
 
     // PID + FF settings
-    talonFXConfig.Slot0.kS = ShooterConstants.kS;
+    talonFXConfig.Slot0.kS = KS.get();
     talonFXConfig.Slot0.kV = kV;
-    talonFXConfig.Slot0.kA = ShooterConstants.kA;
-    talonFXConfig.Slot0.kP = ShooterConstants.kP;
-    talonFXConfig.Slot0.kI = ShooterConstants.kI;
-    talonFXConfig.Slot0.kD = ShooterConstants.kD;
+    talonFXConfig.Slot0.kA = KA.get();
+    talonFXConfig.Slot0.kP = KP.get();
+    talonFXConfig.Slot0.kI = KI.get();
+    talonFXConfig.Slot0.kD = KD.get();
 
     talonFXConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     talonFXConfig.CurrentLimits.StatorCurrentLimit = ShooterConstants.CURRENT_LIMIT;

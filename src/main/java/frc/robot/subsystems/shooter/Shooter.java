@@ -46,6 +46,10 @@ public class Shooter extends SubsystemBase {
     return io.readyToShoot();
   }
 
+  public void configure() {
+    io.configure();
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);
