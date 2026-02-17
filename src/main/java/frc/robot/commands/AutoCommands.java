@@ -33,11 +33,11 @@ public class AutoCommands {
   }
 
   public static Command intake() {
-    return Commands.run(() -> intake.setIntakeVoltage(4), intake);
+    return Commands.run(() -> intake.setIntakeVoltage(2), intake);
   }
 
   public static Command reverseIntake() {
-    return Commands.run(() -> intake.setIntakeVoltage(-4), intake);
+    return Commands.run(() -> intake.setIntakeVoltage(-2), intake);
   }
 
   public static Command aimAtHub() {

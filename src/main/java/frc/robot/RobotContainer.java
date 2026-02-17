@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.DrivebaseAlign;
 import frc.robot.commands.UnderTrench;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerIO;
@@ -79,7 +80,7 @@ public class RobotContainer {
   private final Trigger visionOff = m_driverController.x();
   private final Trigger zeroDrivebase = m_driverController.y();
 
-  private final Trigger configure = m_operatorController.povDown();
+  private final Trigger configure = m_driverController.povDown();
 
   private LoggedDashboardChooser<Command> autoChooser;
 
@@ -185,7 +186,7 @@ public class RobotContainer {
     // Turret Bindings
     m_operatorController.povLeft().onTrue(Commands.runOnce(() -> turret.setGoal(0.5)));
     m_operatorController.povRight().onTrue(Commands.runOnce(() -> turret.setGoal(0.1)));
-    m_driverController.povDown().whileTrue(AutoCommands.aimAtTarget());
+    // m_driverController.povDown().whileTrue(AutoCommands.aimAtTarget());
     m_driverController.x().onTrue(Commands.runOnce(() -> turret.zero()));
 
     // Indexer Bindings
@@ -217,11 +218,13 @@ public class RobotContainer {
 
     m_driverController.a().whileTrue(new UnderTrench());
 
-    configure.onTrue(
-        Commands.sequence(
-            Commands.runOnce(() -> turret.configure()),
-            Commands.runOnce(() -> shooterHood.configure()),
-            Commands.runOnce(() -> shooter.configure())));
+    // configure.onTrue(
+    //     Commands.sequence(
+    //         Commands.runOnce(() -> turret.configure()),
+    //         Commands.runOnce(() -> shooterHood.configure()),
+    //         Commands.runOnce(() -> shooter.configure())));
+
+    configure.whileTrue(new DrivebaseAlign());
   }
 
   /**
