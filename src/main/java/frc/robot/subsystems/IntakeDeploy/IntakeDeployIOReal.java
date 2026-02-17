@@ -33,12 +33,8 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
   LoggedTunableNumber KG = new LoggedTunableNumber("IntakeDeploy/KG", IntakeDeployConstants.kG);
   LoggedTunableNumber KV = new LoggedTunableNumber("IntakeDeploy/KV", IntakeDeployConstants.kV);
 
-  private ArmFeedforward ffmodel =
-      new ArmFeedforward(
-          KS.get(), KG.get(), KV.get());
-  private PIDController controller =
-      new PIDController(
-          KP.get(), KI.get(), KD.get());
+  private ArmFeedforward ffmodel = new ArmFeedforward(KS.get(), KG.get(), KV.get());
+  private PIDController controller = new PIDController(KP.get(), KI.get(), KD.get());
 
   private final TrapezoidProfile.Constraints constraints =
       new TrapezoidProfile.Constraints(
@@ -107,6 +103,9 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
 
   @Override
   public void updateInputs(IntakeDeployIOInputs inputs) {
+    ffmodel = new ArmFeedforward(KS.get(), KG.get(), KV.get());
+    controller = new PIDController(KP.get(), KI.get(), KD.get());
+  
     inputs.deployMotorVoltage = deployVolts;
     inputs.deployMotorPositionA = encoderA.getPosition();
     inputs.deployMotorVelocityA = encoderA.getVelocity();

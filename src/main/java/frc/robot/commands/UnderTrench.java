@@ -34,6 +34,8 @@ public class UnderTrench extends Command {
   private double distance;
   private double mult = 1.0;
 
+  private double targetRotation;
+
   public UnderTrench() {
     driverController = Constants.OIConstants.driverController;
     rotationConstraints = new TrapezoidProfile.Constraints(drive.getMaxAngularSpeedRadPerSec(), 40);
@@ -87,9 +89,16 @@ public class UnderTrench extends Command {
     double drivePIDOutput = translationController.calculate(distance, 0);
     double driveVel =
         mult * scalar * (translationController.getSetpoint().velocity + drivePIDOutput);
+
+    double driveRotation = currentPose.getRotation().getRadians();
+    if (Math.abs(Math.PI / 2.0 - driveRotation) < Math.abs(-Math.PI / 2.0 - driveRotation)) {
+      targetRotation = Math.PI / 2.0;
+    } else {
+      targetRotation = -Math.PI / 2.0;
+    }
     double rotationPIDOutput =
         rotationController.calculate(
-            MathUtil.angleModulus(currentPose.getRotation().getRadians()), Math.PI / 2.0);
+            MathUtil.angleModulus(currentPose.getRotation().getRadians()), targetRotation);
     double omega = rotationController.getSetpoint().velocity + rotationPIDOutput;
 
     ChassisSpeeds speeds =

@@ -7,6 +7,7 @@ import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
+import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.drive.Drive;
 
@@ -41,6 +42,10 @@ public class AutoCommands {
 
   public static Command aimAtHub() {
     return new AimAtHub(drive, turret);
+  }
+
+  public static Command aimAtTarget() {
+    return new AimAtTarget(drive, turret, StateManager.getInstance());
   }
 
   public static Command autoScore() {

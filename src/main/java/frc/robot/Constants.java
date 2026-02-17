@@ -51,6 +51,9 @@ public final class Constants {
 
     public static double trenchWidth = Units.inchesToMeters(50);
 
+    public static Translation2d centerField =
+        new Translation2d(fieldLength / 2.0, fieldWidth / 2.0);
+
     public static Translation2d redHub = new Translation2d(11.910, 4.060);
     public static Translation2d redLeftTrench =
         VisionConstants.FIELD_LAYOUT.getTagPose(7).get().getTranslation().toTranslation2d();
@@ -76,6 +79,16 @@ public final class Constants {
     public static Translation2d[] redShuttleZoneThree = new Translation2d[4];
     public static Translation2d[] redShuttleZoneFour = new Translation2d[4];
     public static Translation2d[] redShuttleZoneFive = new Translation2d[4];
+
+    public static Translation2d blueShuttleTargetOne =
+        new Translation2d(blueLeftTrench.getX() / 2.0, fieldWidth * 0.75);
+    public static Translation2d blueShuttleTargetTwo =
+        new Translation2d(blueLeftTrench.getX() / 2.0, fieldWidth * 0.25);
+
+    public static Translation2d redShuttleTargetOne =
+        blueShuttleTargetOne.rotateAround(centerField, new Rotation2d(Math.PI));
+    public static Translation2d redShuttleTargetTwo =
+        blueShuttleTargetTwo.rotateAround(centerField, new Rotation2d(Math.PI));
 
     public static void initConstants() {
       double shuttlingDeadzone = 0.5;
@@ -111,20 +124,28 @@ public final class Constants {
                 new Translation2d(0, fieldWidth / 2.0 + shuttlingDeadzone));
       }
 
+      // Blue Zone Five
+      blueShuttleZoneFive[0] =
+          new Translation2d(redLeftTrench.getX(), centerField.getY() - shuttlingDeadzone);
+      blueShuttleZoneFive[1] =
+          new Translation2d(fieldLength, centerField.getY() - shuttlingDeadzone);
+      blueShuttleZoneFive[2] =
+          new Translation2d(fieldLength, centerField.getY() + shuttlingDeadzone);
+      blueShuttleZoneFive[3] =
+          new Translation2d(redLeftTrench.getX(), centerField.getY() + shuttlingDeadzone);
+
       // Red Zones
       for (int i = 0; i < 4; i++) {
         redShuttleZoneOne[i] =
-            blueShuttleZoneOne[i].rotateAround(
-                new Translation2d(fieldLength / 2.0, fieldWidth / 2.0), new Rotation2d(Math.PI));
+            blueShuttleZoneOne[i].rotateAround(centerField, new Rotation2d(Math.PI));
         redShuttleZoneTwo[i] =
-            blueShuttleZoneTwo[i].rotateAround(
-                new Translation2d(fieldLength / 2.0, fieldWidth / 2.0), new Rotation2d(Math.PI));
+            blueShuttleZoneTwo[i].rotateAround(centerField, new Rotation2d(Math.PI));
         redShuttleZoneThree[i] =
-            blueShuttleZoneThree[i].rotateAround(
-                new Translation2d(fieldLength / 2.0, fieldWidth / 2.0), new Rotation2d(Math.PI));
+            blueShuttleZoneThree[i].rotateAround(centerField, new Rotation2d(Math.PI));
         redShuttleZoneFour[i] =
-            blueShuttleZoneFour[i].rotateAround(
-                new Translation2d(fieldLength / 2.0, fieldWidth / 2.0), new Rotation2d(Math.PI));
+            blueShuttleZoneFour[i].rotateAround(centerField, new Rotation2d(Math.PI));
+        redShuttleZoneFive[i] =
+            blueShuttleZoneFive[i].rotateAround(centerField, new Rotation2d(Math.PI));
       }
     }
   }
