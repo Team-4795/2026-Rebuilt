@@ -14,7 +14,8 @@ public class IntakeIOReal implements IntakeIO {
   private final SparkFlex intakeMotorB =
       new SparkFlex(IntakeConstants.canIDIntakeB, MotorType.kBrushless);
 
-  private SparkFlexConfig intakeConfig = new SparkFlexConfig();
+  private SparkFlexConfig intakeConfigA = new SparkFlexConfig();
+  private SparkFlexConfig intakeConfigB = new SparkFlexConfig();
 
   private double intakeVolts = 0;
 
@@ -23,23 +24,28 @@ public class IntakeIOReal implements IntakeIO {
     intakeMotorA.clearFaults();
     intakeMotorB.clearFaults();
 
-    intakeConfig.smartCurrentLimit(IntakeConstants.CURRENT_LIMIT);
-    intakeConfig.idleMode(IdleMode.kCoast);
+    intakeConfigA.smartCurrentLimit(IntakeConstants.CURRENT_LIMIT);
+    intakeConfigA.idleMode(IdleMode.kCoast);
+
+    intakeConfigA.voltageCompensation(12.0);
+    intakeConfigA.inverted(false);
+
+    intakeConfigB.apply(intakeConfigA);
+    intakeConfigB.follow(intakeMotorA.getDeviceId(), true);
+
+    intakeMotorA.configure(
+        intakeConfigA, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    intakeMotorB.configure(
+        intakeConfigB, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     intakeMotorA.setCANTimeout(20);
     intakeMotorB.setCANTimeout(20);
-
-    intakeMotorA.configure(
-        intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    intakeMotorB.configure(
-        intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   @Override
   public void setIntakeVoltage(double v) {
     intakeVolts = v;
     intakeMotorA.setVoltage(intakeVolts);
-    intakeMotorB.setVoltage(intakeVolts);
   }
 
   @Override

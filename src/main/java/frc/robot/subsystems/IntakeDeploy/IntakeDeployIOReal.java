@@ -107,10 +107,13 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
     controller = new PIDController(KP.get(), KI.get(), KD.get());
   
     inputs.deployMotorVoltage = deployVolts;
+    
     inputs.deployMotorPositionA = encoderA.getPosition();
     inputs.deployMotorVelocityA = encoderA.getVelocity();
+
     inputs.deployMotorPositionB = encoderB.getPosition();
     inputs.deployMotorVelocityB = encoderB.getVelocity();
+
     inputs.deployMotorGoal = goal.position;
     inputs.deployMotorSetpoint = setpoint.position;
   }

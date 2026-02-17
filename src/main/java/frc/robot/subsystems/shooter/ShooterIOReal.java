@@ -2,6 +2,7 @@ package frc.robot.subsystems.Shooter;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVelocityTorqueCurrentFOC;
@@ -18,6 +19,9 @@ public class ShooterIOReal implements ShooterIO {
   private TalonFX topShooterMotor = new TalonFX(ShooterConstants.TOP_CAN_ID);
   private TalonFX bottomShooterMotor = new TalonFX(ShooterConstants.BOTTOM_CAN_ID);
 
+  private TalonFXConfiguration topConfig = new TalonFXConfiguration();
+  private TalonFXConfiguration bottomConfig = new TalonFXConfiguration();
+
   private final StatusSignal<AngularVelocity> topRPS = topShooterMotor.getVelocity();
   private final StatusSignal<AngularVelocity> bottomRPS = bottomShooterMotor.getVelocity();
   private final StatusSignal<Current> topCurrent = topShooterMotor.getTorqueCurrent();
@@ -28,8 +32,12 @@ public class ShooterIOReal implements ShooterIO {
   LoggedTunableNumber KD = new LoggedTunableNumber("Shooter/KD", ShooterConstants.kD);
 
   LoggedTunableNumber KS = new LoggedTunableNumber("Shooter/KS", ShooterConstants.kS);
-  LoggedTunableNumber KV = new LoggedTunableNumber("Shooter/KV", ShooterConstants.kV);
+  LoggedTunableNumber KV_TOP = new LoggedTunableNumber("Shooter/KV_TOP", ShooterConstants.kV);
+  LoggedTunableNumber KV_BOT = new LoggedTunableNumber("Shooter/KV_BOT", ShooterConstants.kV);
   LoggedTunableNumber KA = new LoggedTunableNumber("Shooter/KA", ShooterConstants.kA);
+
+  LoggedTunableNumber MM_ACCELERATION = new LoggedTunableNumber("Shooter/Acceleration", ShooterConstants.MM_ACCELERATION);
+  LoggedTunableNumber MM_JERK = new LoggedTunableNumber("Shooter/Jerk", ShooterConstants.MM_JERK);
 
   public static LoggedTunableNumber RPM =
       new LoggedTunableNumber("Shooter/RPM", ShooterConstants.RPM);
@@ -41,8 +49,8 @@ public class ShooterIOReal implements ShooterIO {
   private double goalVelocityRPS = 0.0;
 
   public ShooterIOReal() {
-    var topConfig = config(ShooterConstants.kV);
-    var bottomConfig = config(ShooterConstants.kV);
+    topConfig = config(ShooterConstants.kV);
+    bottomConfig = config(ShooterConstants.kV);
 
     BaseStatusSignal.setUpdateFrequencyForAll(50, topRPS, bottomRPS, topCurrent, bottomCurrent);
 
@@ -83,7 +91,13 @@ public class ShooterIOReal implements ShooterIO {
   }
 
   @Override
-  public void configure() {}
+  public void configure() {
+    topConfig = config(KV_TOP.get());
+    bottomConfig = config(KV_BOT.get());
+
+    topShooterMotor.getConfigurator().apply(topConfig);
+    bottomShooterMotor.getConfigurator().apply(bottomConfig);
+  }
 
   @Override
   public void setVoltage(double volts) {
@@ -114,7 +128,6 @@ public class ShooterIOReal implements ShooterIO {
 
   public TalonFXConfiguration config(double kV) {
     var talonFXConfig = new TalonFXConfiguration();
-
     talonFXConfig.Audio.BeepOnBoot = true;
 
     // PID + FF settings
@@ -135,9 +148,8 @@ public class ShooterIOReal implements ShooterIO {
     talonFXConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
     // Motion Magic settings
-    var motionMagicConfig = talonFXConfig.MotionMagic;
-    motionMagicConfig.MotionMagicAcceleration = ShooterConstants.MM_ACCELERATION;
-    motionMagicConfig.MotionMagicJerk = ShooterConstants.MM_JERK;
+    talonFXConfig.MotionMagic.MotionMagicAcceleration = ShooterConstants.MM_ACCELERATION;
+    talonFXConfig.MotionMagic.MotionMagicJerk = ShooterConstants.MM_JERK;
 
     return talonFXConfig;
   }
