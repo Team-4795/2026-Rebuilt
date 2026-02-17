@@ -35,7 +35,8 @@ public class ShooterIOReal implements ShooterIO {
   LoggedTunableNumber KV_BOT = new LoggedTunableNumber("Shooter/KV_BOT", ShooterConstants.kV);
   LoggedTunableNumber KA = new LoggedTunableNumber("Shooter/KA", ShooterConstants.kA);
 
-  LoggedTunableNumber MM_ACCELERATION = new LoggedTunableNumber("Shooter/Acceleration", ShooterConstants.MM_ACCELERATION);
+  LoggedTunableNumber MM_ACCELERATION =
+      new LoggedTunableNumber("Shooter/Acceleration", ShooterConstants.MM_ACCELERATION);
   LoggedTunableNumber MM_JERK = new LoggedTunableNumber("Shooter/Jerk", ShooterConstants.MM_JERK);
 
   public static LoggedTunableNumber RPM =

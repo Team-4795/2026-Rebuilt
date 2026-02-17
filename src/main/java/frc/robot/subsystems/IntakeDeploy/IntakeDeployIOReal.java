@@ -105,9 +105,9 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
   public void updateInputs(IntakeDeployIOInputs inputs) {
     ffmodel = new ArmFeedforward(KS.get(), KG.get(), KV.get());
     controller = new PIDController(KP.get(), KI.get(), KD.get());
-  
+
     inputs.deployMotorVoltage = deployVolts;
-    
+
     inputs.deployMotorPositionA = encoderA.getPosition();
     inputs.deployMotorVelocityA = encoderA.getVelocity();
 

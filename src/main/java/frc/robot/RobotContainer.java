@@ -221,8 +221,7 @@ public class RobotContainer {
         Commands.sequence(
             Commands.runOnce(() -> turret.configure()),
             Commands.runOnce(() -> shooterHood.configure()),
-            Commands.runOnce(() -> shooter.configure())
-            ));
+            Commands.runOnce(() -> shooter.configure())));
   }
 
   /**
