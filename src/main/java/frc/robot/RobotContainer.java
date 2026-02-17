@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
-import frc.robot.commands.DrivebaseAlign;
 import frc.robot.commands.UnderTrench;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerIO;
@@ -224,7 +223,6 @@ public class RobotContainer {
     //         Commands.runOnce(() -> shooterHood.configure()),
     //         Commands.runOnce(() -> shooter.configure())));
 
-    configure.whileTrue(new DrivebaseAlign());
   }
 
   /**
