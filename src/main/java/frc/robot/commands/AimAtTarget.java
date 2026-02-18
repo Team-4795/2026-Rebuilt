@@ -48,6 +48,7 @@ public class AimAtTarget extends Command {
 
     turretAngle =
         (Math.atan2(deltaY, deltaX) - robotPose.getRotation().getRadians()) / (2 * Math.PI);
+    turretAngle -= TurretConstants.angleOffset;
     desiredRot = (((turretAngle % 1.0) + 1.0) % 1.0);
 
     if (StateManager.getInstance().getState() != State.SHUTTLING_DEAD_ZONE) {
