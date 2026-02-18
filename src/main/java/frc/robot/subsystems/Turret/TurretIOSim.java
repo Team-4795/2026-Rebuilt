@@ -34,7 +34,7 @@ public class TurretIOSim implements TurretIO {
           new TrapezoidProfile.State(
               turretSimMotor.getAngularPositionRad(), turretSimMotor.getAngularVelocityRadPerSec());
       double angleRotations =
-          MathUtil.clamp(angle - TurretConstants.angleOffset, TurretConstants.minAngle / 360.0, TurretConstants.maxAngle / 360.0);
+          MathUtil.clamp(angle, TurretConstants.minAngle / 360.0, TurretConstants.maxAngle / 360.0);
       goal = new TrapezoidProfile.State(Units.rotationsToRadians(angleRotations), 0);
     }
   }

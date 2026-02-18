@@ -6,7 +6,7 @@ public final class ShooterConstants {
   public static final int TOP_CAN_ID = 15;
   public static final int BOTTOM_CAN_ID = 16;
 
-  public static final int CURRENT_LIMIT = 40;
+  public static final int CURRENT_LIMIT = 80;
 
   public static final double minVel = 0.0;
   public static final double maxVel = 100.0;
@@ -18,7 +18,7 @@ public final class ShooterConstants {
   public static final double kI = 0;
   public static final double kD = 0.0;
   public static final double kS = 0;
-  public static final double kV = 0.07;
+  public static final double kV = 0.1;
   public static final double kA = 0;
   public static final double RPM = 58;
 

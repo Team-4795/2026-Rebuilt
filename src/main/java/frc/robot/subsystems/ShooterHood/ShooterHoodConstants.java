@@ -5,13 +5,13 @@ import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 public final class ShooterHoodConstants {
   public static final int CAN_ID = 17;
 
-  public static final int CURRENT_LIMIT = 40;
+  public static final int CURRENT_LIMIT = 80;
 
-  public static final int kP = 0;
+  public static final double kP = 0;
   public static final int kI = 0;
   public static final int kD = 0;
   public static final int kS = 0;
-  public static final int kV = 0;
+  public static final double kV = 0.0;
   public static final int kA = 0;
 
   public static final int GEARING = 30; // might not be right

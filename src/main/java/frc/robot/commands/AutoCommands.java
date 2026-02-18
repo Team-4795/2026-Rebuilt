@@ -24,8 +24,14 @@ public class AutoCommands {
 
   public static Command shoot() {
     return Commands.parallel(
-        Commands.run(() -> indexer.setVoltageIndexer(1)),
-        Commands.run(() -> indexer.setVoltageTower(1)));
+        Commands.run(() -> indexer.setVoltageIndexer(-12)),
+        Commands.run(() -> indexer.setVoltageTower(-12)));
+  }
+
+  public static Command stopShoot() {
+    return Commands.parallel(
+        Commands.run(() -> indexer.setVoltageIndexer(0)),
+        Commands.run(() -> indexer.setVoltageTower(0)));
   }
 
   public static Command retractIntake() {
@@ -33,11 +39,11 @@ public class AutoCommands {
   }
 
   public static Command intake() {
-    return Commands.run(() -> intake.setIntakeVoltage(3), intake);
+    return Commands.run(() -> intake.setIntakeVoltage(10), intake);
   }
 
   public static Command reverseIntake() {
-    return Commands.run(() -> intake.setIntakeVoltage(-3), intake);
+    return Commands.run(() -> intake.setIntakeVoltage(-10), intake);
   }
 
   public static Command aimAtHub() {

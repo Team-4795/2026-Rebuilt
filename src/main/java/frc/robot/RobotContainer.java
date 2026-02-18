@@ -38,12 +38,9 @@ import frc.robot.subsystems.Turret.TurretIOReal;
 import frc.robot.subsystems.Turret.TurretIOSim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
-import frc.robot.subsystems.drive.GyroIORedux;
 import frc.robot.subsystems.drive.ModuleIOSim;
-import frc.robot.subsystems.drive.ModuleIOSparkFlex;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
-import frc.robot.subsystems.vision.VisionIOReal;
 import frc.robot.subsystems.vision.VisionIOSim;
 import frc.robot.util.NamedCommandManager;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
@@ -80,14 +77,14 @@ public class RobotContainer {
   // private final Trigger configure = m_driverController.povDown();
 
   // Testing Bindings
-  // private final Trigger manualShooter = m_operatorController.povDown();
+  private final Trigger manualShooter = m_operatorController.a();
 
   private final Trigger manualTurretOne = m_operatorController.povLeft();
   private final Trigger manualTurretTwo = m_operatorController.povRight();
-  private final Trigger zeroTurretTrigger = m_operatorController.a();
+  // private final Trigger zeroTurretTrigger = m_operatorController.a();
 
   private final Trigger indexerButton = m_operatorController.rightTrigger();
-  private final Trigger towerButton = m_operatorController.leftTrigger();
+  private final Trigger stop = m_operatorController.leftTrigger();
 
   private final Trigger intakeButton = m_operatorController.leftBumper();
   private final Trigger reverseIntake = m_operatorController.rightBumper();
@@ -106,14 +103,23 @@ public class RobotContainer {
         indexer = Indexer.initialize(new IndexerIOReal());
         turret = Turret.initialize(new TurretIOReal());
         shooterHood = ShooterHood.initialize(new ShooterHoodIOReal());
+        // drive =
+        //     Drive.initialize(
+        //         new GyroIOPigeon2(),
+        //         new ModuleIOSparkFlex(0),
+        //         new ModuleIOSparkFlex(1),
+        //         new ModuleIOSparkFlex(2),
+        //         new ModuleIOSparkFlex(3));
+
         drive =
             Drive.initialize(
-                new GyroIORedux(),
-                new ModuleIOSparkFlex(0),
-                new ModuleIOSparkFlex(1),
-                new ModuleIOSparkFlex(2),
-                new ModuleIOSparkFlex(3));
-        vision = Vision.initialize(new VisionIOReal(0));
+                new GyroIO() {},
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim());
+
+        vision = Vision.initialize(new VisionIOSim());
         break;
 
       case SIM:
@@ -184,14 +190,12 @@ public class RobotContainer {
 
     // Shooter Bindings
     // manualShooter.whileTrue(
-    //     Commands.startEnd(() -> shooter.setVoltage(3), () -> shooter.setVoltage(0), shooter));
+    //     Commands.startEnd(() -> shooter.setVoltage(6), () -> shooter.setVoltage(0), shooter));
 
-    // m_operatorController
-    //     .rightBumper()
-    //     .whileTrue(
-    //         Commands.startEnd(
-    //             () -> shooter.setVelocityRPS(ShooterIOReal.RPM.get()),
-    //             () -> shooter.setVelocityRPS(0)));
+    manualShooter.whileTrue(
+        Commands.startEnd(
+            () -> shooter.setVelocityRPS(ShooterIOReal.RPM.get()),
+            () -> shooter.setVelocityRPS(0)));
     // Dynamic shooting
     // m_operatorController.leftBumper().whileTrue(AutoCommands.setShooterVelocityDynamic());
 
@@ -202,17 +206,13 @@ public class RobotContainer {
     //     Commands.startEnd(() -> turret.setVoltage(-2), () -> turret.setVoltage(0), turret));
     // zeroTurretTrigger.onTrue(Commands.runOnce(() -> turret.zero()));
 
-    m_operatorController.povLeft().onTrue(Commands.runOnce(() -> turret.setGoal(0.5)));
-    m_operatorController.povRight().onTrue(Commands.runOnce(() -> turret.setGoal(0.1)));
-    m_driverController.povDown().whileTrue(AutoCommands.aimAtTarget());
+    // m_operatorController.povLeft().onTrue(Commands.runOnce(() -> turret.setGoal(0.5)));
+    // m_operatorController.povRight().onTrue(Commands.runOnce(() -> turret.setGoal(0.1)));
+    // m_driverController.povDown().whileTrue(AutoCommands.aimAtTarget());
 
     // Indexer Bindings
-    towerButton.whileTrue(
-        Commands.startEnd(
-            () -> indexer.setVoltageTower(4), () -> indexer.setVoltageTower(0), indexer));
-    indexerButton.whileTrue(
-        Commands.startEnd(
-            () -> indexer.setVoltageIndexer(4), () -> indexer.setVoltageIndexer(0), indexer));
+    indexerButton.whileTrue(AutoCommands.shoot());
+    stop.onTrue(AutoCommands.stopShoot());
 
     // Needs to be tested
     // m_operatorController.a().whileTrue(AutoCommands.zeroSequence());
