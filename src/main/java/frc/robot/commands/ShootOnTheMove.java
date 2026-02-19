@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -74,7 +75,16 @@ public class ShootOnTheMove extends Command {
     turret.setGoal(desiredRot);
 
     Logger.recordOutput("Aim At Hub/Hub Pose", hub);
+    Logger.recordOutput("Aim At Hub/Desired Hub", new Pose2d(deltaX, deltaY, new Rotation2d()));
     Logger.recordOutput("Aim At Hub/Desired Rotation", desiredRot);
+    Logger.recordOutput("Aim At Hub/ XOffset", deltaX);
+    Logger.recordOutput("Aim At Hub/ YOffset", deltaY);
+    Logger.recordOutput("Aim At Hub/ OmegaXOffset", omegaXOffset);
+    Logger.recordOutput("Aim At Hub/ OmegaYOffset", omegaYOffset);
+    Logger.recordOutput("Aim At Hub/ LinearXOffset", velocityXOffset);
+    Logger.recordOutput("Aim At Hub/ LinearYOffset", velocityYOffset);
+
+
   }
 
   @Override
