@@ -28,9 +28,10 @@ public class ShootOnTheMove extends Command {
   double turretAngle = 0;
   Translation2d velocityVector;
   double rotationOffset = TurretConstants.angleOffset; // zeroing offset
-  double tAir; // calculate this with utility class or interpolating tree
+  double tAir = 1; // calculate this with utility class or interpolating tree
   double tLat; // time for indexer to actually shoot out a ball (latency)
   ChassisSpeeds fieldRelative;
+
 
   public ShootOnTheMove(Drive drive, Turret turret) {
     this.drive = drive;
@@ -49,20 +50,26 @@ public class ShootOnTheMove extends Command {
 
     fieldRelative =
         ChassisSpeeds.fromRobotRelativeSpeeds(drive.getChassisSpeeds(), robotPose.getRotation());
+    
+    double omega = drive.getChassisSpeeds().omegaRadiansPerSecond;
 
     velocityXOffset = fieldRelative.vxMetersPerSecond * tAir;
     velocityYOffset = fieldRelative.vyMetersPerSecond * tAir;
-    omegaXOffset = -Math.sin(robotPose.getRotation().getRadians()) * TurretConstants.OFFSET.getX() * tAir;
-    omegaYOffset = Math.cos(robotPose.getRotation().getRadians()) * TurretConstants.OFFSET.getY() * tAir;
 
+    //trig way 
+    // omegaXOffset = -Math.sin(robotPose.getRotation().getRadians() + TurretConstants.robotRelativeAngleOffset) * TurretConstants.turretRadiusOffset * drive.getChassisSpeeds().omegaRadiansPerSecond * tAir;
+    // omegaYOffset = Math.cos(robotPose.getRotation().getRadians() + TurretConstants.robotRelativeAngleOffset) * TurretConstants.turretRadiusOffset * drive.getChassisSpeeds().omegaRadiansPerSecond * tAir;
 
-    velocityOmega = (fieldRelative.omegaRadiansPerSecond * tAir) / (2 * Math.PI);
+    //cross product here pretty sure this is the same thing as trig above. 
+    omegaXOffset = -omega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY();
+    omegaYOffset = omega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX(); 
 
     deltaX = hub.getX() - turretPose.getX() - velocityXOffset;
     deltaY = hub.getY() - turretPose.getY() - velocityYOffset;
 
     turretAngle =
         (Math.atan2(deltaY, deltaX) - robotPose.getRotation().getRadians()) / (2 * Math.PI);
+    turretAngle -= TurretConstants.angleOffset;
     desiredRot = (((turretAngle % 1.0) + 1.0) % 1.0);
     turret.setGoal(desiredRot);
 
