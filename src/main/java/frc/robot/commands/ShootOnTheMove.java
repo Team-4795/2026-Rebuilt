@@ -52,6 +52,10 @@ public class ShootOnTheMove extends Command {
 
     velocityXOffset = fieldRelative.vxMetersPerSecond * tAir;
     velocityYOffset = fieldRelative.vyMetersPerSecond * tAir;
+    omegaXOffset = -Math.sin(robotPose.getRotation().getRadians()) * TurretConstants.OFFSET.getX() * tAir;
+    omegaYOffset = Math.cos(robotPose.getRotation().getRadians()) * TurretConstants.OFFSET.getY() * tAir;
+
+
     velocityOmega = (fieldRelative.omegaRadiansPerSecond * tAir) / (2 * Math.PI);
 
     deltaX = hub.getX() - turretPose.getX() - velocityXOffset;
