@@ -51,6 +51,11 @@ public class TurretIOSim implements TurretIO {
   }
 
   @Override
+  public void lockTurret() {
+    TurretConstants.canMove = !TurretConstants.canMove;
+  }
+
+  @Override
   public double getGoal() {
     return goal.position;
   }

@@ -38,6 +38,10 @@ public class Turret extends SubsystemBase {
     io.setVoltage(voltage);
   }
 
+  public void lockTurret() {
+    io.lockTurret();
+  }
+
   public double getTurretAngle() {
     return io.getPosition();
   }

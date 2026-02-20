@@ -11,8 +11,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.UnderTrench;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerIO;
+import frc.robot.subsystems.Indexer.IndexerIOReal;
 import frc.robot.subsystems.Indexer.IndexerIOSim;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakeIO;
@@ -85,7 +87,7 @@ public class RobotContainer {
   private final Trigger zeroTurretTrigger = m_operatorController.x();
 
   private final Trigger shooterHoodOne = m_operatorController.povUp();
-  private final Trigger shooterHoodTwo = m_operatorController.povDown();
+  private final Trigger shooterHoodTwo = m_driverController.povDown();
 
   private final Trigger shoot = m_operatorController.rightTrigger();
   private final Trigger stopShoot = m_operatorController.leftTrigger();
@@ -104,7 +106,7 @@ public class RobotContainer {
         intake = Intake.initialize(new IntakeIOReal());
         deploy = IntakeDeploy.initialize(new IntakeDeployIOReal());
         shooter = Shooter.initialize(new ShooterIOReal());
-        indexer = Indexer.initialize(new IndexerIOSim());
+        indexer = Indexer.initialize(new IndexerIOReal());
         turret = Turret.initialize(new TurretIOReal());
         shooterHood = ShooterHood.initialize(new ShooterHoodIOReal());
         drive =
@@ -114,13 +116,6 @@ public class RobotContainer {
                 new ModuleIOSparkFlex(1),
                 new ModuleIOSparkFlex(2),
                 new ModuleIOSparkFlex(3));
-        // drive =
-        //     Drive.initialize(
-        //         new GyroIO() {},
-        //         new ModuleIOSim(),
-        //         new ModuleIOSim(),
-        //         new ModuleIOSim(),
-        //         new ModuleIOSim());
         vision = Vision.initialize(new VisionIOSim());
         break;
 
@@ -166,7 +161,7 @@ public class RobotContainer {
     autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
 
     // Configure the trigger bindings
-    configureBindings();
+    configureTestingButtons();
   }
 
   public boolean readyToShoot() {
@@ -182,7 +177,7 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {
+  private void configureTestingButtons() {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
@@ -190,15 +185,12 @@ public class RobotContainer {
             () -> -m_driverController.getLeftX(),
             () -> -m_driverController.getRightX()));
 
-    // Shooter Bindings
-    // shooterButton.whileTrue(
-    //     Commands.startEnd(() -> shooter.setVoltage(6), () -> shooter.setVoltage(0), shooter));
 
     shooterButton.whileTrue(
         Commands.startEnd(
             () -> shooter.setVelocityRPS(ShooterIOReal.RPM.get()),
             () -> shooter.setVelocityRPS(0)));
-
+            
     // Dynamic shooting
     // m_operatorController.leftBumper().whileTrue(AutoCommands.setShooterVelocityDynamic());
 
@@ -218,9 +210,17 @@ public class RobotContainer {
     stopShoot.onTrue(AutoCommands.stopShoot());
 
     // Shooter Hood Bindings
-    shooterHoodOne.whileTrue(Commands.run(() -> shooterHood.setGoal(-0.05), shooterHood));
-
-    shooterHoodTwo.whileTrue(Commands.run(() -> shooterHood.setGoal(-0.08), shooterHood));
+    shooterHoodOne.whileTrue(
+        Commands.startEnd(
+          () -> shooterHood.setVoltage(3), 
+          () -> shooterHood.setVoltage(0), 
+          shooterHood));
+    
+    shooterHoodTwo.whileTrue(
+        Commands.startEnd(
+          () -> shooterHood.setVoltage(-3), 
+          () -> shooterHood.setVoltage(0), 
+          shooterHood));
 
     // shooterHoodUp
     //     .whileTrue(Commands.run(() -> shooterHood.setGoal(1), shooterHood));
@@ -233,20 +233,33 @@ public class RobotContainer {
     intakeButton.whileTrue(AutoCommands.intake());
     reverseIntake.whileTrue(AutoCommands.reverseIntake());
 
-    // m_operatorController.povUp().whileTrue(AutoCommands.retractIntake());
-
-    // m_driverController.a().whileTrue(new UnderTrench());
-
-    // m_operatorController.a().whileTrue(AutoCommands.zeroSequence());
-
     configure.onTrue(
         Commands.sequence(
             // Commands.runOnce(() -> turret.configure()),
-            // Commands.runOnce(() -> shooterHood.configure())));
+            // Commands.runOnce(() -> shooterHood.configure()),
             Commands.runOnce(() -> shooter.configure())));
 
-    // configure.whileTrue(new ShootOnTheMove(drive, turret));
   }
+
+  public void configureButtonBindings() {
+    //retract intake
+    m_driverController.leftBumper().whileTrue(Commands.runOnce(() -> deploy.setGoal(0))); 
+    m_driverController.leftTrigger().whileTrue(AutoCommands.intake());
+    m_driverController.rightTrigger().whileTrue(AutoCommands.aimAtTarget().alongWith(Commands.runOnce(() -> drive.stopWithX())));
+    m_driverController.x().whileTrue(Commands.runOnce(() -> vision.toggleShouldUpdate()));
+    m_driverController.y().onTrue(Commands.runOnce(() -> drive.zeroHeading()));
+
+    m_operatorController.a().whileTrue(AutoCommands.zeroSequence());
+    m_operatorController.b().onTrue(Commands.runOnce(() -> turret.lockTurret(), turret));
+
+    //add climber here
+    // m_operatorController.povUp().whileTrue(Comamnds.startEnd(() -> ))
+    // m_operatorController.povDown()
+
+    //add manual setpoints here
+  }
+
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.x`

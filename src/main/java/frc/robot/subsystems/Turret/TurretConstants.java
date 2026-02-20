@@ -26,8 +26,11 @@ public class TurretConstants {
   public static final double expoV = 0;
   public static final double maxJerk = 0;
   public static final int CAN_ID = 14;
+  public static boolean canMove = true; 
 
   public static final double gearing = 60;
   public static final Translation2d OFFSET = new Translation2d(-0.152, -0.165);
+  public static final double turretRadiusOffset = Math.sqrt(Math.pow(OFFSET.getX(), 2) + Math.pow(OFFSET.getY(), 2)); 
+  public static final double robotRelativeAngleOffset = 0; 
   public static final double angleOffset = 0.05;
 }
