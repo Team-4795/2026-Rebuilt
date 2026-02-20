@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
-import frc.robot.commands.UnderTrench;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerIO;
 import frc.robot.subsystems.Indexer.IndexerIOReal;
@@ -185,12 +184,11 @@ public class RobotContainer {
             () -> -m_driverController.getLeftX(),
             () -> -m_driverController.getRightX()));
 
-
     shooterButton.whileTrue(
         Commands.startEnd(
             () -> shooter.setVelocityRPS(ShooterIOReal.RPM.get()),
             () -> shooter.setVelocityRPS(0)));
-            
+
     // Dynamic shooting
     // m_operatorController.leftBumper().whileTrue(AutoCommands.setShooterVelocityDynamic());
 
@@ -212,15 +210,11 @@ public class RobotContainer {
     // Shooter Hood Bindings
     shooterHoodOne.whileTrue(
         Commands.startEnd(
-          () -> shooterHood.setVoltage(3), 
-          () -> shooterHood.setVoltage(0), 
-          shooterHood));
-    
+            () -> shooterHood.setVoltage(3), () -> shooterHood.setVoltage(0), shooterHood));
+
     shooterHoodTwo.whileTrue(
         Commands.startEnd(
-          () -> shooterHood.setVoltage(-3), 
-          () -> shooterHood.setVoltage(0), 
-          shooterHood));
+            () -> shooterHood.setVoltage(-3), () -> shooterHood.setVoltage(0), shooterHood));
 
     // shooterHoodUp
     //     .whileTrue(Commands.run(() -> shooterHood.setGoal(1), shooterHood));
@@ -238,28 +232,27 @@ public class RobotContainer {
             // Commands.runOnce(() -> turret.configure()),
             // Commands.runOnce(() -> shooterHood.configure()),
             Commands.runOnce(() -> shooter.configure())));
-
   }
 
   public void configureButtonBindings() {
-    //retract intake
-    m_driverController.leftBumper().whileTrue(Commands.runOnce(() -> deploy.setGoal(0))); 
+    // retract intake
+    m_driverController.leftBumper().whileTrue(Commands.runOnce(() -> deploy.setGoal(0)));
     m_driverController.leftTrigger().whileTrue(AutoCommands.intake());
-    m_driverController.rightTrigger().whileTrue(AutoCommands.aimAtTarget().alongWith(Commands.runOnce(() -> drive.stopWithX())));
+    m_driverController
+        .rightTrigger()
+        .whileTrue(AutoCommands.aimAtTarget().alongWith(Commands.runOnce(() -> drive.stopWithX())));
     m_driverController.x().whileTrue(Commands.runOnce(() -> vision.toggleShouldUpdate()));
     m_driverController.y().onTrue(Commands.runOnce(() -> drive.zeroHeading()));
 
     m_operatorController.a().whileTrue(AutoCommands.zeroSequence());
     m_operatorController.b().onTrue(Commands.runOnce(() -> turret.lockTurret(), turret));
 
-    //add climber here
+    // add climber here
     // m_operatorController.povUp().whileTrue(Comamnds.startEnd(() -> ))
     // m_operatorController.povDown()
 
-    //add manual setpoints here
+    // add manual setpoints here
   }
-
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.x`

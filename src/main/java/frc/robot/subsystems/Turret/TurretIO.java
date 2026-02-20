@@ -24,9 +24,7 @@ public interface TurretIO {
 
   public default void setGoal(double goal) {}
 
-  public default void lockTurret() {
-    
-  }
+  public default void lockTurret() {}
 
   public default void updateInputs(TurretIOInputs inputs) {}
 

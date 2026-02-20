@@ -96,8 +96,8 @@ public class TurretIOReal implements TurretIO {
   public void setGoal(double goal) {
     this.goal =
         MathUtil.clamp(goal, TurretConstants.minAngle / 360.0, TurretConstants.maxAngle / 360.0);
-    if(TurretConstants.canMove) {
-    turretMotor.setControl(control.withPosition(this.goal));
+    if (TurretConstants.canMove) {
+      turretMotor.setControl(control.withPosition(this.goal));
     }
   }
 
