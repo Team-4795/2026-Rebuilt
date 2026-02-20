@@ -33,7 +33,6 @@ public class ShootOnTheMove extends Command {
   double tLat; // time for indexer to actually shoot out a ball (latency)
   ChassisSpeeds fieldRelative;
 
-
   public ShootOnTheMove(Drive drive, Turret turret) {
     this.drive = drive;
     this.turret = turret;
@@ -51,19 +50,23 @@ public class ShootOnTheMove extends Command {
 
     fieldRelative =
         ChassisSpeeds.fromRobotRelativeSpeeds(drive.getChassisSpeeds(), robotPose.getRotation());
-    
+
     double omega = drive.getChassisSpeeds().omegaRadiansPerSecond;
 
     velocityXOffset = fieldRelative.vxMetersPerSecond * tAir;
     velocityYOffset = fieldRelative.vyMetersPerSecond * tAir;
 
-    //trig way 
-    // omegaXOffset = -Math.sin(robotPose.getRotation().getRadians() + TurretConstants.robotRelativeAngleOffset) * TurretConstants.turretRadiusOffset * drive.getChassisSpeeds().omegaRadiansPerSecond * tAir;
-    // omegaYOffset = Math.cos(robotPose.getRotation().getRadians() + TurretConstants.robotRelativeAngleOffset) * TurretConstants.turretRadiusOffset * drive.getChassisSpeeds().omegaRadiansPerSecond * tAir;
+    // trig way
+    // omegaXOffset = -Math.sin(robotPose.getRotation().getRadians() +
+    // TurretConstants.robotRelativeAngleOffset) * TurretConstants.turretRadiusOffset *
+    // drive.getChassisSpeeds().omegaRadiansPerSecond * tAir;
+    // omegaYOffset = Math.cos(robotPose.getRotation().getRadians() +
+    // TurretConstants.robotRelativeAngleOffset) * TurretConstants.turretRadiusOffset *
+    // drive.getChassisSpeeds().omegaRadiansPerSecond * tAir;
 
-    //cross product here pretty sure this is the same thing as trig above. 
+    // cross product here pretty sure this is the same thing as trig above.
     omegaXOffset = -omega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY();
-    omegaYOffset = omega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX(); 
+    omegaYOffset = omega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX();
 
     deltaX = hub.getX() - turretPose.getX() - velocityXOffset;
     deltaY = hub.getY() - turretPose.getY() - velocityYOffset;
@@ -74,17 +77,25 @@ public class ShootOnTheMove extends Command {
     desiredRot = (((turretAngle % 1.0) + 1.0) % 1.0);
     turret.setGoal(desiredRot);
 
-    Logger.recordOutput("Aim At Hub/Hub Pose", hub);
-    Logger.recordOutput("Aim At Hub/Desired Hub", new Pose2d(deltaX, deltaY, new Rotation2d()));
-    Logger.recordOutput("Aim At Hub/Desired Rotation", desiredRot);
-    Logger.recordOutput("Aim At Hub/ XOffset", deltaX);
-    Logger.recordOutput("Aim At Hub/ YOffset", deltaY);
-    Logger.recordOutput("Aim At Hub/ OmegaXOffset", omegaXOffset);
-    Logger.recordOutput("Aim At Hub/ OmegaYOffset", omegaYOffset);
-    Logger.recordOutput("Aim At Hub/ LinearXOffset", velocityXOffset);
-    Logger.recordOutput("Aim At Hub/ LinearYOffset", velocityYOffset);
-
-
+    Logger.recordOutput("Shoot on move At Hub/Hub Pose", hub);
+    Logger.recordOutput(
+        "Shoot on move At Hub/Desired Hub",
+        new Pose2d(
+            hub.getX()
+                + turretPose.getX()
+                + TurretConstants.OFFSET.rotateBy(robotPose.getRotation()).getX()
+                + velocityXOffset,
+            hub.getY()
+                + TurretConstants.OFFSET.rotateBy(robotPose.getRotation()).getY()
+                + velocityYOffset,
+            new Rotation2d()));
+    Logger.recordOutput("Shoot on move At Hub/Desired Rotation", desiredRot);
+    Logger.recordOutput("Shoot on move At Hub/ XOffset", deltaX);
+    Logger.recordOutput("Shoot on move At Hub/ YOffset", deltaY);
+    Logger.recordOutput("Shoot on move At Hub/ OmegaXOffset", omegaXOffset);
+    Logger.recordOutput("Shoot on move At Hub/ OmegaYOffset", omegaYOffset);
+    Logger.recordOutput("Shoot on move At Hub/ LinearXOffset", velocityXOffset);
+    Logger.recordOutput("Shoot on move At Hub/ LinearYOffset", velocityYOffset);
   }
 
   @Override

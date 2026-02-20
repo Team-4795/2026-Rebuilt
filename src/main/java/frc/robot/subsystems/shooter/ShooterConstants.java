@@ -14,18 +14,20 @@ public final class ShooterConstants {
   // Margin for ready to shoot command
   public static final double marginOfError = 1.0;
 
-  public static final double kP = 2.8;
+  public static final double kP = 2.5;
   public static final double kI = 0;
   public static final double kD = 0.0;
-  public static final double kS = 0;
-  public static final double kV = 0.1;
+
+  public static final double kS = 0.1;
+  public static final double kV = 0.275;
   public static final double kA = 0;
-  public static final double RPM = 58;
+
+  public static final double RPM = 80;
 
   public static final double GEARING = 2.0 / 3.0;
 
   // motion magic constants
-  public static final double MM_ACCELERATION = 75;
+  public static final double MM_ACCELERATION = 50;
   public static final double MM_JERK = 150;
 
   public static final InterpolatingDoubleTreeMap shooterMap = new InterpolatingDoubleTreeMap();

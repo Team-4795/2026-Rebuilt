@@ -50,7 +50,7 @@ public class ShooterHoodIOReal implements ShooterHoodIO {
     motorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     motorConfig.CurrentLimits.SupplyCurrentLimit = ShooterHoodConstants.CURRENT_LIMIT;
 
-    motorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    motorConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
     motorConfig.Feedback.SensorToMechanismRatio = ShooterHoodConstants.GEARING;
 
@@ -126,7 +126,7 @@ public class ShooterHoodIOReal implements ShooterHoodIO {
     BaseStatusSignal.refreshAll(position, velocityRPS, current, voltage);
 
     inputs.goalRotations = this.goal;
-    inputs.position = position.getValueAsDouble();
+    inputs.position = shooterHoodMotor.getPosition().getValueAsDouble();
     inputs.velocityRPS = velocityRPS.getValueAsDouble();
     inputs.current = current.getValueAsDouble();
     inputs.voltage = voltage.getValueAsDouble();

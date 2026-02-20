@@ -13,7 +13,6 @@ import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerIO;
-import frc.robot.subsystems.Indexer.IndexerIOReal;
 import frc.robot.subsystems.Indexer.IndexerIOSim;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakeIO;
@@ -38,7 +37,9 @@ import frc.robot.subsystems.Turret.TurretIOReal;
 import frc.robot.subsystems.Turret.TurretIOSim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
+import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIOSim;
+import frc.robot.subsystems.drive.ModuleIOSparkFlex;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOSim;
@@ -84,7 +85,7 @@ public class RobotContainer {
   private final Trigger zeroTurretTrigger = m_operatorController.x();
 
   private final Trigger shooterHoodOne = m_operatorController.povUp();
-  private final Trigger shooterHoodTwo = m_driverController.povDown();
+  private final Trigger shooterHoodTwo = m_operatorController.povDown();
 
   private final Trigger shoot = m_operatorController.rightTrigger();
   private final Trigger stopShoot = m_operatorController.leftTrigger();
@@ -103,23 +104,23 @@ public class RobotContainer {
         intake = Intake.initialize(new IntakeIOReal());
         deploy = IntakeDeploy.initialize(new IntakeDeployIOReal());
         shooter = Shooter.initialize(new ShooterIOReal());
-        indexer = Indexer.initialize(new IndexerIOReal());
+        indexer = Indexer.initialize(new IndexerIOSim());
         turret = Turret.initialize(new TurretIOReal());
         shooterHood = ShooterHood.initialize(new ShooterHoodIOReal());
-        // drive =
-        //     Drive.initialize(
-        //         new GyroIOPigeon2(),
-        //         new ModuleIOSparkFlex(0),
-        //         new ModuleIOSparkFlex(1),
-        //         new ModuleIOSparkFlex(2),
-        //         new ModuleIOSparkFlex(3));
         drive =
             Drive.initialize(
-                new GyroIO() {},
-                new ModuleIOSim(),
-                new ModuleIOSim(),
-                new ModuleIOSim(),
-                new ModuleIOSim());
+                new GyroIOPigeon2(),
+                new ModuleIOSparkFlex(0),
+                new ModuleIOSparkFlex(1),
+                new ModuleIOSparkFlex(2),
+                new ModuleIOSparkFlex(3));
+        // drive =
+        //     Drive.initialize(
+        //         new GyroIO() {},
+        //         new ModuleIOSim(),
+        //         new ModuleIOSim(),
+        //         new ModuleIOSim(),
+        //         new ModuleIOSim());
         vision = Vision.initialize(new VisionIOSim());
         break;
 
@@ -197,7 +198,7 @@ public class RobotContainer {
         Commands.startEnd(
             () -> shooter.setVelocityRPS(ShooterIOReal.RPM.get()),
             () -> shooter.setVelocityRPS(0)));
-            
+
     // Dynamic shooting
     // m_operatorController.leftBumper().whileTrue(AutoCommands.setShooterVelocityDynamic());
 
@@ -217,17 +218,9 @@ public class RobotContainer {
     stopShoot.onTrue(AutoCommands.stopShoot());
 
     // Shooter Hood Bindings
-    shooterHoodOne.whileTrue(
-        Commands.startEnd(
-          () -> shooterHood.setVoltage(3), 
-          () -> shooterHood.setVoltage(0), 
-          shooterHood));
-    
-    shooterHoodTwo.whileTrue(
-        Commands.startEnd(
-          () -> shooterHood.setVoltage(-3), 
-          () -> shooterHood.setVoltage(0), 
-          shooterHood));
+    shooterHoodOne.whileTrue(Commands.run(() -> shooterHood.setGoal(-0.05), shooterHood));
+
+    shooterHoodTwo.whileTrue(Commands.run(() -> shooterHood.setGoal(-0.08), shooterHood));
 
     // shooterHoodUp
     //     .whileTrue(Commands.run(() -> shooterHood.setGoal(1), shooterHood));
@@ -249,9 +242,10 @@ public class RobotContainer {
     configure.onTrue(
         Commands.sequence(
             // Commands.runOnce(() -> turret.configure()),
-            // Commands.runOnce(() -> shooterHood.configure()),
+            // Commands.runOnce(() -> shooterHood.configure())));
             Commands.runOnce(() -> shooter.configure())));
 
+    // configure.whileTrue(new ShootOnTheMove(drive, turret));
   }
 
   /**
