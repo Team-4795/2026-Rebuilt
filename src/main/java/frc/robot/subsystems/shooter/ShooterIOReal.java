@@ -52,6 +52,11 @@ public class ShooterIOReal implements ShooterIO {
     topConfig = config(ShooterConstants.kV);
     bottomConfig = config(ShooterConstants.kV);
 
+    //bang bang stuff here
+    //topConfig.Slot0.kP = 30; 
+    //config.TorqueCurrent.PeakForwardTorqueCurrent = 40; 
+    //config.TorqueCurrent.PeakReverseTorqueCurrent = 0; 
+
     BaseStatusSignal.setUpdateFrequencyForAll(50, topRPS, bottomRPS, topCurrent, bottomCurrent);
 
     topShooterMotor.optimizeBusUtilization(1.0);
@@ -60,12 +65,15 @@ public class ShooterIOReal implements ShooterIO {
     bottomShooterMotor.clearStickyFaults();
     topShooterMotor.clearStickyFaults();
 
-    // Bottom motor follows top motor. Spin in opposite directions
+    // Bottom motor follows top motor. Spin in opposite directions 
     bottomShooterMotor.setControl(
         new Follower(topShooterMotor.getDeviceID(), MotorAlignmentValue.Opposed));
 
+    topConfig.
+
     topShooterMotor.getConfigurator().apply(topConfig);
     bottomShooterMotor.getConfigurator().apply(bottomConfig);
+
   }
 
   @Override
