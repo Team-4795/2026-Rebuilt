@@ -16,36 +16,36 @@ public class VisionConstants {
   public static final double XY_SINGLE_STDEV = 0.08;
   public static final double XY_MULTIPLE_STDEV = 0.04;
 
-  public static final String[] CAM_NAMES = {"Front Cam", "Left Cam", "Right Cam"};
+  public static final String[] CAM_NAMES = {"Luma Right", "Arducam Back", "Luma Left"};
 
   public static final Transform3d[] CAM_POSES =
       new Transform3d[] {
-        // Front cam
+        // Luma Right
         new Transform3d(
             new Translation3d(
-                Units.inchesToMeters(-16.25),
-                Units.inchesToMeters(5.75),
-                Units.inchesToMeters(11.5)),
+                Units.inchesToMeters(-3.25),
+                Units.inchesToMeters(-13.895),
+                Units.inchesToMeters(8.75)),
             new Rotation3d(
-                Units.degreesToRadians(0), Units.degreesToRadians(0), Units.degreesToRadians(180))),
+                Units.degreesToRadians(-20), Units.degreesToRadians(0), Units.degreesToRadians(-90))),
 
-        // Side left cam
+        // Arducam Back
         new Transform3d(
             new Translation3d(
-                Units.inchesToMeters(0), Units.inchesToMeters(14.5), Units.inchesToMeters(4)),
+                Units.inchesToMeters(-12.343), Units.inchesToMeters(-11), Units.inchesToMeters(8.750)),
             new Rotation3d(
-                Units.degreesToRadians(0),
-                Units.degreesToRadians(-15),
-                Units.degreesToRadians(90))),
+                Units.degreesToRadians(-0),
+                Units.degreesToRadians(20),
+                Units.degreesToRadians(180))),
 
-        // Side right cam
-        new Transform3d(
-            new Translation3d(
-                Units.inchesToMeters(0), Units.inchesToMeters(-14.5), Units.inchesToMeters(4)),
-            new Rotation3d(
-                Units.degreesToRadians(0),
-                Units.degreesToRadians(-15),
-                Units.degreesToRadians(-90)))
+        // Luma Left
+        // new Transform3d(
+        //     new Translation3d(
+        //         Units.inchesToMeters(0), Units.inchesToMeters(-14.5), Units.inchesToMeters(4)),
+        //     new Rotation3d(
+        //         Units.degreesToRadians(0),
+        //         Units.degreesToRadians(0),
+        //         Units.degreesToRadians(90)))
       };
 
   // currently does not have 2026 field, check back when they update it

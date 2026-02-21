@@ -69,8 +69,6 @@ public class ShooterIOReal implements ShooterIO {
     bottomShooterMotor.setControl(
         new Follower(topShooterMotor.getDeviceID(), MotorAlignmentValue.Opposed));
 
-    topConfig.
-
     topShooterMotor.getConfigurator().apply(topConfig);
     bottomShooterMotor.getConfigurator().apply(bottomConfig);
 

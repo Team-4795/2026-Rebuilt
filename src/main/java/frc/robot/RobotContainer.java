@@ -43,6 +43,7 @@ import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSparkFlex;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
+import frc.robot.subsystems.vision.VisionIOReal;
 import frc.robot.subsystems.vision.VisionIOSim;
 import frc.robot.util.NamedCommandManager;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
@@ -115,7 +116,7 @@ public class RobotContainer {
                 new ModuleIOSparkFlex(1),
                 new ModuleIOSparkFlex(2),
                 new ModuleIOSparkFlex(3));
-        vision = Vision.initialize(new VisionIOSim());
+        vision = Vision.initialize(new VisionIOReal(0), new VisionIOReal(1));
         break;
 
       case SIM:
