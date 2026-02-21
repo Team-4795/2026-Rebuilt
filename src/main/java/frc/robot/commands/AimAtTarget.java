@@ -48,7 +48,7 @@ public class AimAtTarget extends Command {
 
     turretAngle =
         (Math.atan2(deltaY, deltaX) - robotPose.getRotation().getRadians()) / (2 * Math.PI);
-    turretAngle -= TurretConstants.angleOffset;
+    turretAngle += TurretConstants.angleOffset;
     desiredRot = (((turretAngle % 1.0) + 1.0) % 1.0);
 
     if (StateManager.getInstance().getState() != State.SHUTTLING_DEAD_ZONE) {
@@ -57,6 +57,8 @@ public class AimAtTarget extends Command {
 
     Logger.recordOutput("Aim At Hub/Hub Pose", targetPose);
     Logger.recordOutput("Aim At Hub/Desired Rotation", desiredRot);
+    Logger.recordOutput("x", deltaX);
+    Logger.recordOutput("y", deltaY);
   }
 
   @Override

@@ -7,6 +7,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.Angle;
@@ -57,6 +58,8 @@ public class TurretIOReal implements TurretIO {
     turretConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     turretConfig.CurrentLimits.SupplyCurrentLimit = 60;
 
+    turretConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+
     turretConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
     turretConfig.Feedback.SensorToMechanismRatio = TurretConstants.gearing;
@@ -75,6 +78,7 @@ public class TurretIOReal implements TurretIO {
 
     turretMotor.getConfigurator().apply(controlConfig);
     zero();
+    configure();
   }
 
   @Override
@@ -96,9 +100,7 @@ public class TurretIOReal implements TurretIO {
   public void setGoal(double goal) {
     this.goal =
         MathUtil.clamp(goal, TurretConstants.minAngle / 360.0, TurretConstants.maxAngle / 360.0);
-    if (TurretConstants.canMove) {
-      turretMotor.setControl(control.withPosition(this.goal));
-    }
+    turretMotor.setControl(control.withPosition(this.goal));
   }
 
   @Override

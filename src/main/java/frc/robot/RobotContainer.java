@@ -21,7 +21,6 @@ import frc.robot.subsystems.Intake.IntakeIOReal;
 import frc.robot.subsystems.Intake.IntakeIOSim;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployIO;
-import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOReal;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOSim;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterIO;
@@ -84,7 +83,8 @@ public class RobotContainer {
 
   private final Trigger turretOne = m_operatorController.povLeft();
   private final Trigger turretTwo = m_operatorController.povRight();
-  private final Trigger zeroTurretTrigger = m_operatorController.x();
+  private final Trigger aimAtTarget = m_operatorController.y();
+  private final Trigger zeroButton = m_operatorController.x();
 
   private final Trigger shooterHoodOne = m_operatorController.povUp();
   private final Trigger shooterHoodTwo = m_driverController.povDown();
@@ -104,7 +104,7 @@ public class RobotContainer {
     switch (Constants.currentMode) {
       case REAL:
         intake = Intake.initialize(new IntakeIOReal());
-        deploy = IntakeDeploy.initialize(new IntakeDeployIOReal());
+        deploy = IntakeDeploy.initialize(new IntakeDeployIOSim());
         shooter = Shooter.initialize(new ShooterIOReal());
         indexer = Indexer.initialize(new IndexerIOReal());
         turret = Turret.initialize(new TurretIOReal());
@@ -194,14 +194,15 @@ public class RobotContainer {
     // m_operatorController.leftBumper().whileTrue(AutoCommands.setShooterVelocityDynamic());
 
     // Turret Bindings
-    turretOne.whileTrue(
-        Commands.startEnd(() -> turret.setVoltage(2), () -> turret.setVoltage(0), turret));
-    turretTwo.whileTrue(
-        Commands.startEnd(() -> turret.setVoltage(-2), () -> turret.setVoltage(0), turret));
-    zeroTurretTrigger.onTrue(Commands.runOnce(() -> turret.zero()));
+    // turretOne.whileTrue(
+    //     Commands.startEnd(() -> turret.setVoltage(4), () -> turret.setVoltage(0), turret));
+    // turretTwo.whileTrue(
+    //     Commands.startEnd(() -> turret.setVoltage(-4), () -> turret.setVoltage(0), turret));
+    // zeroTurretTrigger.onTrue(Commands.runOnce(() -> turret.zero()));
 
-    // turretOne.onTrue(Commands.runOnce(() -> turret.setGoal(0)));
-    // turretTwo.onTrue(Commands.runOnce(() -> turret.setGoal(0.5)));
+    aimAtTarget.whileTrue(AutoCommands.aimAtTarget());
+    // zeroTurretTrigger.onTrue(Commands.runOnce(() -> turret.setGoal(0.7)));
+
     // m_driverController.povDown().whileTrue(AutoCommands.aimAtTarget());
 
     // Indexer Bindings
@@ -228,14 +229,21 @@ public class RobotContainer {
     intakeButton.whileTrue(AutoCommands.intake());
     reverseIntake.whileTrue(AutoCommands.reverseIntake());
 
-    configure.onTrue(
-        Commands.sequence(
-            // Commands.runOnce(() -> turret.configure()),
-            // Commands.runOnce(() -> shooterHood.configure()),
-            Commands.runOnce(() -> shooter.configure())));
+    configure.onTrue(Commands.sequence(Commands.runOnce(() -> turret.configure())));
+    // Commands.runOnce(() -> shooterHood.configure()),
+    // Commands.runOnce(() -> shooter.configure()));
+
+    zeroButton.onTrue(AutoCommands.zeroSequence());
   }
 
   public void configureButtonBindings() {
+    drive.setDefaultCommand(
+        DriveCommands.joystickDrive(
+            drive,
+            () -> -m_driverController.getLeftY(),
+            () -> -m_driverController.getLeftX(),
+            () -> -m_driverController.getRightX()));
+
     // retract intake
     m_driverController.leftBumper().whileTrue(Commands.runOnce(() -> deploy.setGoal(0)));
     m_driverController.leftTrigger().whileTrue(AutoCommands.intake());

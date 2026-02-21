@@ -16,7 +16,7 @@ public class VisionConstants {
   public static final double XY_SINGLE_STDEV = 0.08;
   public static final double XY_MULTIPLE_STDEV = 0.04;
 
-  public static final String[] CAM_NAMES = {"Luma Right", "Arducam Back", "Luma Left"};
+  public static final String[] CAM_NAMES = {"Luma Right", "Back Cam", "Luma Left"};
 
   public static final Transform3d[] CAM_POSES =
       new Transform3d[] {
@@ -27,15 +27,19 @@ public class VisionConstants {
                 Units.inchesToMeters(-13.895),
                 Units.inchesToMeters(8.75)),
             new Rotation3d(
-                Units.degreesToRadians(-20), Units.degreesToRadians(0), Units.degreesToRadians(-90))),
+                Units.degreesToRadians(0),
+                Units.degreesToRadians(-20),
+                Units.degreesToRadians(-90))),
 
         // Arducam Back
         new Transform3d(
             new Translation3d(
-                Units.inchesToMeters(-12.343), Units.inchesToMeters(-11), Units.inchesToMeters(8.750)),
+                Units.inchesToMeters(-12.343),
+                Units.inchesToMeters(-11),
+                Units.inchesToMeters(8.750)),
             new Rotation3d(
-                Units.degreesToRadians(-0),
-                Units.degreesToRadians(20),
+                Units.degreesToRadians(0),
+                Units.degreesToRadians(-20),
                 Units.degreesToRadians(180))),
 
         // Luma Left

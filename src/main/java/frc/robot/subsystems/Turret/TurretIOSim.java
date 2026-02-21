@@ -29,13 +29,17 @@ public class TurretIOSim implements TurretIO {
 
   @Override
   public void setGoal(double angle) {
-    if (angle != goal.position) {
-      setpoint =
-          new TrapezoidProfile.State(
-              turretSimMotor.getAngularPositionRad(), turretSimMotor.getAngularVelocityRadPerSec());
-      double angleRotations =
-          MathUtil.clamp(angle, TurretConstants.minAngle / 360.0, TurretConstants.maxAngle / 360.0);
-      goal = new TrapezoidProfile.State(Units.rotationsToRadians(angleRotations), 0);
+    if (TurretConstants.canMove) {
+      if (angle != goal.position) {
+        setpoint =
+            new TrapezoidProfile.State(
+                turretSimMotor.getAngularPositionRad(),
+                turretSimMotor.getAngularVelocityRadPerSec());
+        double angleRotations =
+            MathUtil.clamp(
+                angle, TurretConstants.minAngle / 360.0, TurretConstants.maxAngle / 360.0);
+        goal = new TrapezoidProfile.State(Units.rotationsToRadians(angleRotations), 0);
+      }
     }
   }
 

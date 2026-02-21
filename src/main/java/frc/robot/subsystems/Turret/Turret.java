@@ -82,5 +82,6 @@ public class Turret extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("Turret", inputs);
     Logger.recordOutput("Turret/Turret Visualization", visualizeTurret());
+    Logger.recordOutput("Turret/Is Locked", TurretConstants.canMove);
   }
 }

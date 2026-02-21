@@ -1,6 +1,7 @@
 package frc.robot.subsystems.Turret;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 
 public class TurretConstants {
   public static final double margin = 10;
@@ -10,12 +11,12 @@ public class TurretConstants {
   // Margin for ready to shoot command
   public static final double marginOfError = 0.01;
 
-  public static final double kP = 5;
+  public static final double kP = 2;
   public static final double kI = 0;
   public static final double kD = 0;
-  public static final double kV = 5.3;
-  public static final double kA = 0.12;
-  public static final double kS = 0;
+  public static final double kV = 5.8;
+  public static final double kA = 0;
+  public static final double kS = 0.3;
 
   public static final double simkP = 6.5;
   public static final double simkV = 0;
@@ -33,5 +34,5 @@ public class TurretConstants {
   public static final double turretRadiusOffset =
       Math.sqrt(Math.pow(OFFSET.getX(), 2) + Math.pow(OFFSET.getY(), 2));
   public static final double robotRelativeAngleOffset = 0;
-  public static final double angleOffset = 0.05;
+  public static final double angleOffset = Units.degreesToRotations(22.98);
 }

@@ -9,22 +9,22 @@ public final class ShooterConstants {
   public static final int CURRENT_LIMIT = 80;
 
   public static final double minVel = 0.0;
-  public static final double maxVel = 100.0;
+  public static final double maxVel = 75.0;
 
   // Margin for ready to shoot command
   public static final double marginOfError = 1.0;
 
-  public static final double kP = 2.5;
+  public static final double kP = 3;
   public static final double kI = 0;
-  public static final double kD = 0.0;
+  public static final double kD = 0;
 
   public static final double kS = 0.1;
-  public static final double kV = 0.275;
+  public static final double kV = 0.3;
   public static final double kA = 0;
 
-  public static final double RPM = 80;
+  public static final double RPM = 60;
 
-  public static final double GEARING = 2.0 / 3.0;
+  public static final double GEARING = 1.0 / 2.0;
 
   // motion magic constants
   public static final double MM_ACCELERATION = 50;
