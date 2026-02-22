@@ -70,7 +70,7 @@ public class ShooterIOSim implements ShooterIO {
             12);
     bottomVolts =
         MathUtil.clamp(
-            ff.calculate(Units.rotationsToRadians(bottomMotorVel))
+            ff.calculate(bottomMotorVel)
                 + controller.calculate(bottomMotor.getAngularVelocityRPM() / 60.0, bottomMotorVel),
             -12,
             12);

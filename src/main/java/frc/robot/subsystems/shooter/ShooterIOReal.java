@@ -39,9 +39,6 @@ public class ShooterIOReal implements ShooterIO {
       new LoggedTunableNumber("Shooter/Acceleration", ShooterConstants.MM_ACCELERATION);
   LoggedTunableNumber MM_JERK = new LoggedTunableNumber("Shooter/Jerk", ShooterConstants.MM_JERK);
 
-  public static LoggedTunableNumber RPM =
-      new LoggedTunableNumber("Shooter/RPM", ShooterConstants.RPM);
-
   private final MotionMagicVelocityTorqueCurrentFOC m_request =
       new MotionMagicVelocityTorqueCurrentFOC(0);
 

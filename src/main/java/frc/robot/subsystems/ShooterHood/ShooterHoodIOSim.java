@@ -12,8 +12,7 @@ import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 public class ShooterHoodIOSim implements ShooterHoodIO {
   private final DCMotorSim shooterHoodSim =
       new DCMotorSim(
-          LinearSystemId.createDCMotorSystem(
-              DCMotor.getKrakenX44(1), 0.02, ShooterHoodConstants.GEARING),
+          LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX44(1), 0.02, 30),
           DCMotor.getKrakenX44(1));
 
   private SimpleMotorFeedforward ffmodel = new SimpleMotorFeedforward(0, 0.43, 0);

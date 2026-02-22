@@ -22,7 +22,7 @@ public final class ShooterConstants {
   public static final double kV = 0;
   public static final double kA = 0;
 
-  public static final double RPM = 60;
+  public static final double RPS = 60;
 
   public static final double GEARING = 1.0 / 2.0;
 

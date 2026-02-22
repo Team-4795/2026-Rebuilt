@@ -23,7 +23,7 @@ public class Intake extends SubsystemBase {
   private Intake(IntakeIO io) {
     this.io = io;
     io.updateInputs(inputs);
-    setDefaultCommand(Commands.run(() -> setIntakeVoltage(0), this)); // auto deploy
+    setDefaultCommand(Commands.run(() -> setIntakeVoltage(0), this));
   }
 
   // Method to set speed of intake motors

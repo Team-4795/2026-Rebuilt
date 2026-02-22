@@ -31,8 +31,11 @@ public class ShooterHood extends SubsystemBase {
   }
 
   public void setGoal(double goal) {
+    // Don't raise hood if in decapitation zone
     if (!StateManager.OperationStates.inDecapitationZone) {
       io.setGoal(goal);
+    } else {
+      io.setGoal(0);
     }
   }
 

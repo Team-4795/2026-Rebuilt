@@ -21,21 +21,12 @@ public class AutoCommands {
   private static Intake intake = Intake.getInstance();
   private static IntakeDeploy deploy = IntakeDeploy.getInstance();
 
-  public static LoggedTunableNumber hoodAngle = new LoggedTunableNumber("Auto Hood Angle", 0);
+  public static LoggedTunableNumber hoodAngle =
+      new LoggedTunableNumber("Auto Shoot/Hood Angle", -0.04);
+  public static LoggedTunableNumber shooterRPS =
+      new LoggedTunableNumber("Auto Shoot/Shooter RPS", 50);
 
   private AutoCommands() {}
-
-  public static Command shoot() {
-    return Commands.parallel(
-        Commands.run(() -> indexer.setVoltageIndexer(-12)),
-        Commands.run(() -> indexer.setVoltageTower(-12)));
-  }
-
-  public static Command stopShoot() {
-    return Commands.parallel(
-        Commands.run(() -> indexer.setVoltageIndexer(0)),
-        Commands.run(() -> indexer.setVoltageTower(0)));
-  }
 
   public static Command retractIntake() {
     return Commands.run(() -> deploy.setGoal(0), deploy);
@@ -49,18 +40,21 @@ public class AutoCommands {
     return Commands.run(() -> intake.setIntakeVoltage(-12), intake);
   }
 
-  public static Command aimAtHub() {
-    return new AimAtHub(drive, turret);
-  }
-
-  public static Command aimAtTarget() {
-    return new AimAtTarget(drive, turret, StateManager.getInstance());
-  }
-
   public static Command autoScore() {
     return Commands.parallel(
-        aimAtTarget(),
-        Commands.run(() -> hood.setGoal(hoodAngle.get()), hood)).until(() -> StateManager.OperationStates.inDecapitationZone);
+        turretAimAtTarget(), setHoodAngle(hoodAngle.get()), setShooterRPS(shooterRPS.get()));
+  }
+
+  public static Command shoot() {
+    return Commands.parallel(
+        Commands.run(() -> indexer.setVoltageIndexer(-12)),
+        Commands.run(() -> indexer.setVoltageTower(-12)));
+  }
+
+  public static Command stopShoot() {
+    return Commands.parallel(
+        Commands.run(() -> indexer.setVoltageIndexer(0)),
+        Commands.run(() -> indexer.setVoltageTower(0)));
   }
 
   public static Command zeroSequence() { // if it doesn't work check the motor limits
@@ -71,10 +65,31 @@ public class AutoCommands {
             Commands.runOnce(() -> turret.zero(), turret),
             Commands.runOnce(() -> turret.setVoltage(0), turret)),
         Commands.sequence(
-            Commands.runOnce(() -> hood.setVoltage(6), hood),
+            Commands.runOnce(() -> hood.setVoltage(4), hood),
             Commands.waitSeconds(1), // change
             Commands.runOnce(() -> hood.zero(), hood),
             Commands.runOnce(() -> hood.setVoltage(0), hood)));
+  }
+
+  public static Command turretAimAtHub() {
+    return new AimAtHub(drive, turret);
+  }
+
+  public static Command turretAimAtTarget() {
+    return new AimAtTarget(drive, turret, StateManager.getInstance());
+  }
+
+  public static Command underTrenchAssist() {
+    return new UnderTrench();
+  }
+
+  public static Command setShooterRPS(double RPS) {
+    return Commands.startEnd(
+        () -> shooter.setVelocityRPS(RPS), () -> shooter.setVelocityRPS(0), shooter);
+  }
+
+  public static Command setHoodAngle(double angle) {
+    return Commands.run(() -> hood.setGoal(angle), hood);
   }
 
   // Rev shooter wheels based on interpolation tree

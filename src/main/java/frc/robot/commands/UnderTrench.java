@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.subsystems.drive.Drive;
-import frc.robot.subsystems.drive.DriveConstants;
 
 public class UnderTrench extends Command {
   private Drive drive = Drive.getInstance();
@@ -39,15 +38,11 @@ public class UnderTrench extends Command {
   public UnderTrench() {
     driverController = Constants.OIConstants.driverController;
     rotationConstraints = new TrapezoidProfile.Constraints(drive.getMaxAngularSpeedRadPerSec(), 40);
-    rotationController =
-        new ProfiledPIDController(
-            DriveConstants.turnKp, 0, DriveConstants.turnKd, rotationConstraints);
+    rotationController = new ProfiledPIDController(3, 0, 0.1, rotationConstraints);
 
     translationConstraints =
-        new TrapezoidProfile.Constraints(drive.getMaxLinearSpeedMetersPerSec(), 7);
-    translationController =
-        new ProfiledPIDController(
-            DriveConstants.driveKp, 0, DriveConstants.driveKd, translationConstraints);
+        new TrapezoidProfile.Constraints(drive.getMaxLinearSpeedMetersPerSec(), 10);
+    translationController = new ProfiledPIDController(1, 0, 0, translationConstraints);
   }
 
   @Override
@@ -85,10 +80,9 @@ public class UnderTrench extends Command {
 
     translationController.reset(distance, translationController.getSetpoint().velocity);
 
-    double scalar = scalar(distance);
+    // double scalar = scalar(distance);
     double drivePIDOutput = translationController.calculate(distance, 0);
-    double driveVel =
-        mult * scalar * (translationController.getSetpoint().velocity + drivePIDOutput);
+    double driveVel = mult * (translationController.getSetpoint().velocity + drivePIDOutput);
 
     double driveRotation = currentPose.getRotation().getRadians();
     if (Math.abs(Math.PI / 2.0 - driveRotation) < Math.abs(-Math.PI / 2.0 - driveRotation)) {
