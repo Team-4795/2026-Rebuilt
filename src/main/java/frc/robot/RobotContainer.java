@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.UnderTrench;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerIO;
 import frc.robot.subsystems.Indexer.IndexerIOReal;
@@ -89,11 +90,13 @@ public class RobotContainer {
   private final Trigger shooterHoodOne = m_operatorController.povUp();
   private final Trigger shooterHoodTwo = m_driverController.povDown();
 
-  private final Trigger shoot = m_operatorController.rightTrigger();
+  private final Trigger shoot = m_driverController.rightTrigger();
   private final Trigger stopShoot = m_operatorController.leftTrigger();
 
   private final Trigger intakeButton = m_operatorController.leftBumper();
   private final Trigger reverseIntake = m_operatorController.rightBumper();
+
+  private final Trigger autoTrench = m_driverController.leftBumper();
 
   private LoggedDashboardChooser<Command> autoChooser;
 
@@ -185,11 +188,6 @@ public class RobotContainer {
             () -> -m_driverController.getLeftX(),
             () -> -m_driverController.getRightX()));
 
-    shooterButton.whileTrue(
-        Commands.startEnd(
-            () -> shooter.setVelocityRPS(ShooterIOReal.RPM.get()),
-            () -> shooter.setVelocityRPS(0)));
-
     // Dynamic shooting
     // m_operatorController.leftBumper().whileTrue(AutoCommands.setShooterVelocityDynamic());
 
@@ -200,14 +198,21 @@ public class RobotContainer {
     //     Commands.startEnd(() -> turret.setVoltage(-4), () -> turret.setVoltage(0), turret));
     // zeroTurretTrigger.onTrue(Commands.runOnce(() -> turret.zero()));
 
-    aimAtTarget.whileTrue(AutoCommands.aimAtTarget());
     // zeroTurretTrigger.onTrue(Commands.runOnce(() -> turret.setGoal(0.7)));
 
     // m_driverController.povDown().whileTrue(AutoCommands.aimAtTarget());
 
+    autoTrench.whileTrue(new UnderTrench());
+    aimAtTarget.whileTrue(AutoCommands.autoScore());
+
+    shooterButton.whileTrue(
+        Commands.startEnd(
+            () -> shooter.setVelocityRPS(ShooterIOReal.RPM.get()),
+            () -> shooter.setVelocityRPS(0)));
+
     // Indexer Bindings
-    shoot.whileTrue(AutoCommands.shoot());
-    stopShoot.onTrue(AutoCommands.stopShoot());
+    shoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
+    // stopShoot.onTrue(AutoCommands.stopShoot());
 
     // Shooter Hood Bindings
     shooterHoodOne.whileTrue(
@@ -229,7 +234,7 @@ public class RobotContainer {
     intakeButton.whileTrue(AutoCommands.intake());
     reverseIntake.whileTrue(AutoCommands.reverseIntake());
 
-    configure.onTrue(Commands.sequence(Commands.runOnce(() -> turret.configure())));
+    configure.onTrue(Commands.sequence(Commands.runOnce(() -> shooter.configure())));
     // Commands.runOnce(() -> shooterHood.configure()),
     // Commands.runOnce(() -> shooter.configure()));
 

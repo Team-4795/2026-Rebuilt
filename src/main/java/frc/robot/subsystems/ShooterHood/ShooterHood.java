@@ -2,6 +2,7 @@ package frc.robot.subsystems.ShooterHood;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.StateManager.StateManager.OperationStates;
 import frc.robot.subsystems.drive.Drive;
 import org.littletonrobotics.junction.Logger;
@@ -30,7 +31,9 @@ public class ShooterHood extends SubsystemBase {
   }
 
   public void setGoal(double goal) {
-    io.setGoal(goal);
+    if (!StateManager.OperationStates.inDecapitationZone) {
+      io.setGoal(goal);
+    }
   }
 
   public void zero() {

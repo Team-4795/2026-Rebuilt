@@ -58,7 +58,7 @@ public class TurretIOReal implements TurretIO {
     turretConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     turretConfig.CurrentLimits.SupplyCurrentLimit = 60;
 
-    turretConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    turretConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
     turretConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 

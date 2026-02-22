@@ -45,6 +45,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
+import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.util.LocalADStarAK;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -345,7 +346,7 @@ public class Drive extends SubsystemBase {
 
   public double getDistanceToHub() {
     Translation2d robotPose = getPose().getTranslation();
-    Translation2d hubPose = Constants.FieldConstants.redHub;
+    Translation2d hubPose = StateManager.getInstance().getTargetPose().getTranslation();
     double distance = robotPose.getDistance(hubPose);
     return distance;
   }

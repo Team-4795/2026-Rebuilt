@@ -54,9 +54,6 @@ public class ShooterIOReal implements ShooterIO {
 
     BaseStatusSignal.setUpdateFrequencyForAll(1000, topRPS, bottomRPS, topCurrent, bottomCurrent);
 
-    topShooterMotor.optimizeBusUtilization(1.0);
-    bottomShooterMotor.optimizeBusUtilization(1.0);
-
     bottomShooterMotor.clearStickyFaults();
     topShooterMotor.clearStickyFaults();
 
@@ -146,6 +143,9 @@ public class ShooterIOReal implements ShooterIO {
     talonFXConfig.Feedback.SensorToMechanismRatio = ShooterConstants.GEARING;
 
     talonFXConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+
+    talonFXConfig.TorqueCurrent.PeakForwardTorqueCurrent = 120;
+    talonFXConfig.TorqueCurrent.PeakReverseTorqueCurrent = 0;
 
     // Motion Magic settings
     talonFXConfig.MotionMagic.MotionMagicAcceleration = MM_ACCELERATION.get();

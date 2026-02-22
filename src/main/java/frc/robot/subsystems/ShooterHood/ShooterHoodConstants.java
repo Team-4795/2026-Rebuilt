@@ -35,7 +35,7 @@ public final class ShooterHoodConstants {
 
   // distance, rotations
   static {
-    shooterHoodMap.put(1.0, 10.0);
+    shooterHoodMap.put(3.742609, -0.07);
     shooterHoodMap.put(2.0, 0.5);
   }
 }

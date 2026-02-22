@@ -10,6 +10,7 @@ import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.util.LoggedTunableNumber;
 
 public class AutoCommands {
   private static Drive drive = Drive.getInstance();
@@ -19,6 +20,8 @@ public class AutoCommands {
   private static ShooterHood hood = ShooterHood.getInstance();
   private static Intake intake = Intake.getInstance();
   private static IntakeDeploy deploy = IntakeDeploy.getInstance();
+
+  public static LoggedTunableNumber hoodAngle = new LoggedTunableNumber("Auto Hood Angle", 0);
 
   private AutoCommands() {}
 
@@ -39,11 +42,11 @@ public class AutoCommands {
   }
 
   public static Command intake() {
-    return Commands.run(() -> intake.setIntakeVoltage(10), intake);
+    return Commands.run(() -> intake.setIntakeVoltage(12), intake);
   }
 
   public static Command reverseIntake() {
-    return Commands.run(() -> intake.setIntakeVoltage(-10), intake);
+    return Commands.run(() -> intake.setIntakeVoltage(-12), intake);
   }
 
   public static Command aimAtHub() {
@@ -56,10 +59,9 @@ public class AutoCommands {
 
   public static Command autoScore() {
     return Commands.parallel(
-        aimAtHub(),
-        setShooterHoodDynamic(),
-        setShooterVelocityDynamic(),
-        Commands.run(() -> drive.stopWithX()));
+        aimAtTarget(),
+        Commands.run(() -> hood.setGoal(hoodAngle.get()), hood)
+            .until(() -> StateManager.OperationStates.inDecapitationZone));
   }
 
   public static Command zeroSequence() { // if it doesn't work check the motor limits
