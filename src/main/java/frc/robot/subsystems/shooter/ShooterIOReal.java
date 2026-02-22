@@ -4,7 +4,7 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.MotionMagicVelocityTorqueCurrentFOC;
+import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
@@ -31,16 +31,14 @@ public class ShooterIOReal implements ShooterIO {
   LoggedTunableNumber KD = new LoggedTunableNumber("Shooter/KD", ShooterConstants.kD);
 
   LoggedTunableNumber KS = new LoggedTunableNumber("Shooter/KS", ShooterConstants.kS);
-  LoggedTunableNumber KV_TOP = new LoggedTunableNumber("Shooter/KV_TOP", ShooterConstants.kV);
-  LoggedTunableNumber KV_BOT = new LoggedTunableNumber("Shooter/KV_BOT", ShooterConstants.kV);
+  LoggedTunableNumber KV = new LoggedTunableNumber("Shooter/KV_TOP", ShooterConstants.kV);
   LoggedTunableNumber KA = new LoggedTunableNumber("Shooter/KA", ShooterConstants.kA);
 
   LoggedTunableNumber MM_ACCELERATION =
       new LoggedTunableNumber("Shooter/Acceleration", ShooterConstants.MM_ACCELERATION);
   LoggedTunableNumber MM_JERK = new LoggedTunableNumber("Shooter/Jerk", ShooterConstants.MM_JERK);
 
-  private final MotionMagicVelocityTorqueCurrentFOC m_request =
-      new MotionMagicVelocityTorqueCurrentFOC(0);
+  private final VelocityTorqueCurrentFOC m_request = new VelocityTorqueCurrentFOC(0);
 
   private double volts = 0.0;
   private double goalVelocityRPS = 0.0;
@@ -86,8 +84,8 @@ public class ShooterIOReal implements ShooterIO {
 
   @Override
   public void configure() {
-    topConfig = config(KV_TOP.get());
-    bottomConfig = config(KV_BOT.get());
+    topConfig = config(KV.get());
+    bottomConfig = config(KV.get());
 
     topShooterMotor.getConfigurator().apply(topConfig);
     bottomShooterMotor.getConfigurator().apply(bottomConfig);
