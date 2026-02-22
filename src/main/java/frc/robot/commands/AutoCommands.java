@@ -60,8 +60,7 @@ public class AutoCommands {
   public static Command autoScore() {
     return Commands.parallel(
         aimAtTarget(),
-        Commands.run(() -> hood.setGoal(hoodAngle.get()), hood)
-            .until(() -> StateManager.OperationStates.inDecapitationZone));
+        Commands.run(() -> hood.setGoal(hoodAngle.get()), hood)).until(() -> StateManager.OperationStates.inDecapitationZone);
   }
 
   public static Command zeroSequence() { // if it doesn't work check the motor limits
