@@ -10,7 +10,6 @@ import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.drive.Drive;
-import frc.robot.util.LoggedTunableNumber;
 
 public class AutoCommands {
   private static Drive drive = Drive.getInstance();
@@ -21,11 +20,6 @@ public class AutoCommands {
   private static Intake intake = Intake.getInstance();
   private static IntakeDeploy deploy = IntakeDeploy.getInstance();
 
-  public static LoggedTunableNumber hoodAngle =
-      new LoggedTunableNumber("Auto Shoot/Hood Angle", -0.04);
-  public static LoggedTunableNumber shooterRPS =
-      new LoggedTunableNumber("Auto Shoot/Shooter RPS", 50);
-
   private AutoCommands() {}
 
   public static Command retractIntake() {
@@ -33,18 +27,19 @@ public class AutoCommands {
   }
 
   public static Command intake() {
-    return Commands.run(() -> intake.setIntakeVoltage(12), intake);
-  }
-
-  public static Command reverseIntake() {
     return Commands.run(() -> intake.setIntakeVoltage(-12), intake);
   }
 
-  public static Command autoScore() {
-    return Commands.parallel(
-        turretAimAtTarget(), setHoodAngle(hoodAngle.get()), setShooterRPS(shooterRPS.get()));
+  public static Command reverseIntake() {
+    return Commands.run(() -> intake.setIntakeVoltage(12), intake);
   }
 
+  public static Command autoScore() {
+    return Commands.parallel(turretAimAtTarget(), setShooterHoodDynamic())
+        .alongWith(
+            Commands.startEnd(() -> shooter.setVelocityRPS(60), () -> shooter.setVelocityRPS(0)));
+  }
+  
   public static Command shoot() {
     return Commands.parallel(
         Commands.run(() -> indexer.setVoltageIndexer(-12)),

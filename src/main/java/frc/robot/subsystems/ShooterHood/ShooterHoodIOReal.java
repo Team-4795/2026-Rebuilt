@@ -40,6 +40,9 @@ public class ShooterHoodIOReal implements ShooterHoodIO {
   LoggedTunableNumber maxJerk =
       new LoggedTunableNumber("ShooterHood/jerk", ShooterHoodConstants.maxJerk);
 
+  public static LoggedTunableNumber hoodAngle =
+      new LoggedTunableNumber("Auto Shoot/Hood Angle", -0.04);
+
   private double goal = 0.0;
 
   public ShooterHoodIOReal() {

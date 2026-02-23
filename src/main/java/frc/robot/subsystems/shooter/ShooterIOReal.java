@@ -3,11 +3,10 @@ package frc.robot.subsystems.Shooter;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.MotorAlignmentValue;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -38,6 +37,9 @@ public class ShooterIOReal implements ShooterIO {
       new LoggedTunableNumber("Shooter/Acceleration", ShooterConstants.MM_ACCELERATION);
   LoggedTunableNumber MM_JERK = new LoggedTunableNumber("Shooter/Jerk", ShooterConstants.MM_JERK);
 
+  public static LoggedTunableNumber shooterRPS =
+      new LoggedTunableNumber("Auto Shoot/Shooter RPS", 60);
+
   private final VelocityTorqueCurrentFOC m_request = new VelocityTorqueCurrentFOC(0);
 
   private double volts = 0.0;
@@ -47,14 +49,13 @@ public class ShooterIOReal implements ShooterIO {
     topConfig = config(ShooterConstants.kV);
     bottomConfig = config(ShooterConstants.kV);
 
+    bottomConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    topConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+
     BaseStatusSignal.setUpdateFrequencyForAll(1000, topRPS, bottomRPS, topCurrent, bottomCurrent);
 
     bottomShooterMotor.clearStickyFaults();
     topShooterMotor.clearStickyFaults();
-
-    // Bottom motor follows top motor. Spin in opposite directions
-    bottomShooterMotor.setControl(
-        new Follower(topShooterMotor.getDeviceID(), MotorAlignmentValue.Opposed));
 
     topShooterMotor.getConfigurator().apply(topConfig);
     bottomShooterMotor.getConfigurator().apply(bottomConfig);
@@ -79,6 +80,7 @@ public class ShooterIOReal implements ShooterIO {
   public void setVelocityRPS(double velocityRPS) {
     velocityRPS = MathUtil.clamp(velocityRPS, ShooterConstants.minVel, ShooterConstants.maxVel);
     topShooterMotor.setControl(m_request.withVelocity(velocityRPS));
+    bottomShooterMotor.setControl(m_request.withVelocity(velocityRPS));
     this.goalVelocityRPS = velocityRPS;
   }
 
@@ -86,6 +88,9 @@ public class ShooterIOReal implements ShooterIO {
   public void configure() {
     topConfig = config(KV.get());
     bottomConfig = config(KV.get());
+
+    bottomConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    topConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
     topShooterMotor.getConfigurator().apply(topConfig);
     bottomShooterMotor.getConfigurator().apply(bottomConfig);
@@ -139,7 +144,7 @@ public class ShooterIOReal implements ShooterIO {
 
     talonFXConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
-    talonFXConfig.TorqueCurrent.PeakForwardTorqueCurrent = 120;
+    talonFXConfig.TorqueCurrent.PeakForwardTorqueCurrent = 80;
     talonFXConfig.TorqueCurrent.PeakReverseTorqueCurrent = 0;
 
     // Motion Magic settings

@@ -78,7 +78,7 @@ public class RobotContainer {
   // private final Trigger zeroDrivebase = m_driverController.y();
 
   // Testing Bindings
-  private final Trigger intakeButton = m_operatorController.leftTrigger();
+  private final Trigger intakeButton = m_driverController.rightBumper();
   private final Trigger reverseIntake = m_operatorController.rightTrigger();
   private final Trigger zeroButton = m_operatorController.x();
 
@@ -188,7 +188,12 @@ public class RobotContainer {
     intakeButton.whileTrue(AutoCommands.intake());
     reverseIntake.whileTrue(AutoCommands.reverseIntake());
 
-    autoScore.whileTrue(AutoCommands.autoScore());
+    autoScore.whileTrue(
+        AutoCommands.autoScore()
+            .alongWith(
+                Commands.startEnd(
+                    () -> shooter.setVelocityRPS(ShooterIOReal.shooterRPS.get()),
+                    () -> shooter.setVelocityRPS(0))));
 
     shoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
 

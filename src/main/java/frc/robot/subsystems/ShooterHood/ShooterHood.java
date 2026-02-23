@@ -55,6 +55,8 @@ public class ShooterHood extends SubsystemBase {
     // Set goal if outside the box
     if (!OperationStates.inDecapitationZone) {
       io.setGoal(ShooterHoodConstants.shooterHoodMap.get(Drive.getInstance().getDistanceToHub()));
+    } else {
+      io.setGoal(0);
     }
   }
 
