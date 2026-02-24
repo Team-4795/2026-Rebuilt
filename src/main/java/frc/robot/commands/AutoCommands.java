@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
+import frc.robot.subsystems.IntakeDeploy.IntakeDeployConstants;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.StateManager.StateManager;
@@ -26,6 +27,14 @@ public class AutoCommands {
     return Commands.run(() -> deploy.setGoal(0), deploy);
   }
 
+  public static Command agitateIntake() {
+    return Commands.repeatingSequence(
+        Commands.runOnce(() -> deploy.setGoal(0.1), deploy),
+        Commands.waitSeconds(0.5),
+        Commands.runOnce(() -> deploy.setGoal(IntakeDeployConstants.stowPosition)),
+        Commands.waitSeconds(0.5));
+  }
+
   public static Command intake() {
     return Commands.run(() -> intake.setIntakeVoltage(-12), intake);
   }
@@ -39,7 +48,7 @@ public class AutoCommands {
         .alongWith(
             Commands.startEnd(() -> shooter.setVelocityRPS(60), () -> shooter.setVelocityRPS(0)));
   }
-  
+
   public static Command shoot() {
     return Commands.parallel(
         Commands.run(() -> indexer.setVoltageIndexer(-12)),

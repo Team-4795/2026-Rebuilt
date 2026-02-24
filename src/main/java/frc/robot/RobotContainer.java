@@ -87,6 +87,8 @@ public class RobotContainer {
   private final Trigger autoTrench = m_driverController.leftBumper();
   private final Trigger configure = m_driverController.povDown();
 
+  private final Trigger agitateIntake = m_driverController.povUp();
+
   // private final Trigger shooterButton = m_operatorController.a();
 
   // private final Trigger turretOne = m_operatorController.povLeft();
@@ -202,6 +204,8 @@ public class RobotContainer {
     configure.onTrue(Commands.sequence(Commands.runOnce(() -> shooter.configure())));
 
     zeroButton.onTrue(AutoCommands.zeroSequence());
+
+    agitateIntake.whileTrue(AutoCommands.agitateIntake());
 
     // shooterButton.whileTrue(AutoCommands.setShooterRPS(50));
 

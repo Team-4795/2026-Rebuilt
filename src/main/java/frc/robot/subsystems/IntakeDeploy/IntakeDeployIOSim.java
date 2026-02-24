@@ -9,12 +9,9 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 
 public class IntakeDeployIOSim implements IntakeDeployIO {
-  private ArmFeedforward ffmodel =
-      new ArmFeedforward(
-          IntakeDeployConstants.kS, IntakeDeployConstants.kG, IntakeDeployConstants.kV);
+  private ArmFeedforward ffmodel = new ArmFeedforward(0.05, IntakeDeployConstants.kG, 0.9);
   private PIDController controller =
-      new PIDController(
-          IntakeDeployConstants.kP, IntakeDeployConstants.kI, IntakeDeployConstants.kD);
+      new PIDController(2, IntakeDeployConstants.kI, IntakeDeployConstants.kD);
 
   private final TrapezoidProfile.Constraints constraints =
       new TrapezoidProfile.Constraints(
@@ -39,7 +36,7 @@ public class IntakeDeployIOSim implements IntakeDeployIO {
   @Override
   public void setVoltage(double v) {
     motorDeployA.setInputVoltage(v);
-    motorDeployA.setInputVoltage(v);
+    motorDeployB.setInputVoltage(v);
   }
 
   @Override
