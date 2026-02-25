@@ -2,10 +2,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
+import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretConstants;
 import frc.robot.subsystems.drive.Drive;
@@ -15,7 +16,8 @@ public class ShootOnTheMove extends Command {
   private final Turret turret;
   private final Drive drive;
   Pose2d robotPose;
-  Translation2d hub = Constants.FieldConstants.redHub;
+  Pose2d hub = StateManager.getInstance().getTargetPose();
+  Pose2d offsetHub;
   Translation2d turretOffsetPose = TurretConstants.OFFSET;
   Translation2d turretPose;
   double deltaX = 0;
@@ -47,6 +49,7 @@ public class ShootOnTheMove extends Command {
     robotPose = drive.getPose();
     turretPose =
         robotPose.getTranslation().plus(turretOffsetPose.rotateBy(robotPose.getRotation()));
+    hub = StateManager.getInstance().getTargetPose();
 
     fieldRelative =
         ChassisSpeeds.fromRobotRelativeSpeeds(drive.getChassisSpeeds(), robotPose.getRotation());
@@ -68,8 +71,13 @@ public class ShootOnTheMove extends Command {
     omegaXOffset = -omega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY();
     omegaYOffset = omega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX();
 
-    deltaX = hub.getX() - turretPose.getX() - velocityXOffset;
-    deltaY = hub.getY() - turretPose.getY() - velocityYOffset;
+    offsetHub = new Pose2d(
+        hub.getX() - velocityXOffset - omegaXOffset, 
+        hub.getY() - velocityYOffset - omegaYOffset, 
+        new Rotation2d());
+
+    deltaX = offsetHub.getX() - turretPose.getX();
+    deltaY = offsetHub.getY() - turretPose.getY();
 
     turretAngle =
         (Math.atan2(deltaY, deltaX) - robotPose.getRotation().getRadians()) / (2 * Math.PI);
@@ -78,17 +86,8 @@ public class ShootOnTheMove extends Command {
     turret.setGoal(desiredRot);
 
     Logger.recordOutput("Shoot on move At Hub/Hub Pose", hub);
-    Logger.recordOutput(
-        "Shoot on move At Hub/Desired Hub",
-        new Pose2d(
-            hub.getX()
-                + turretPose.getX()
-                + TurretConstants.OFFSET.rotateBy(robotPose.getRotation()).getX()
-                + velocityXOffset,
-            hub.getY()
-                + TurretConstants.OFFSET.rotateBy(robotPose.getRotation()).getY()
-                + velocityYOffset,
-            new Rotation2d()));
+    Logger.recordOutput("Shoot on move At Hub/Desired Hub", offsetHub);
+
     Logger.recordOutput("Shoot on move At Hub/Desired Rotation", desiredRot);
     Logger.recordOutput("Shoot on move At Hub/ XOffset", deltaX);
     Logger.recordOutput("Shoot on move At Hub/ YOffset", deltaY);

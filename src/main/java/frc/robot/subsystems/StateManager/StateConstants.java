@@ -7,19 +7,19 @@ import frc.robot.Constants;
 public class StateConstants {
   public static final Pose2d hub =
       new Pose2d(
-          Constants.FieldConstants.redHub.getX(),
-          Constants.FieldConstants.redHub.getY(),
+          Constants.FieldConstants.blueHub.getX(),
+          Constants.FieldConstants.blueHub.getY(),
           new Rotation2d());
 
   public static final Pose2d shuttleLeftTarget =
       new Pose2d(
-          Constants.FieldConstants.redShuttleTargetOne.getX(),
-          Constants.FieldConstants.redShuttleTargetOne.getY(),
+          Constants.FieldConstants.shuttleTargetOne.getX(),
+          Constants.FieldConstants.shuttleTargetOne.getY(),
           new Rotation2d());
 
   public static final Pose2d shuttleRightTarget =
       new Pose2d(
-          Constants.FieldConstants.redShuttleTargetTwo.getX(),
-          Constants.FieldConstants.redShuttleTargetTwo.getY(),
+          Constants.FieldConstants.shuttleTargetTwo.getX(),
+          Constants.FieldConstants.shuttleTargetTwo.getY(),
           new Rotation2d());
 }

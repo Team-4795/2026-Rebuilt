@@ -7,11 +7,12 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import org.littletonrobotics.junction.Logger;
 
-public class ZoneVisualization {
+public class Zone {
+  private Path2D side;
 
-  // Specify vertices of zone
-  public static Path2D getZone(Translation2d[] zoneVertices) {
-    Path2D side;
+  public Zone() {}
+
+  public Zone(Translation2d[] zoneVertices) {
     side = new Path2D.Double(Path2D.WIND_EVEN_ODD, zoneVertices.length);
     side.moveTo(zoneVertices[0].getX(), zoneVertices[0].getY());
 
@@ -20,11 +21,22 @@ public class ZoneVisualization {
     }
 
     side.closePath();
-    return side;
+  }
+
+  // Specify vertices of zone
+  public void updateZone(Translation2d[] zoneVertices) {
+    side = new Path2D.Double(Path2D.WIND_EVEN_ODD, zoneVertices.length);
+    side.moveTo(zoneVertices[0].getX(), zoneVertices[0].getY());
+
+    for (int i = 1; i < zoneVertices.length; i++) {
+      side.lineTo(zoneVertices[i].getX(), zoneVertices[i].getY());
+    }
+
+    side.closePath();
   }
 
   // Log the zone
-  public static void logPoints(Path2D side, String zoneName) {
+  public void logPoints(String zoneName) {
     Rectangle2D rect = side.getBounds2D();
     double x = rect.getX();
     double y = rect.getY();
@@ -43,7 +55,7 @@ public class ZoneVisualization {
   }
 
   // Check whether robot is within the zone
-  public static boolean isRobotInZone(Path2D side, Pose2d robotPose) {
+  public boolean contains(Pose2d robotPose) {
     Rectangle2D rect = side.getBounds2D();
     return rect.contains(robotPose.getX(), robotPose.getY());
   }

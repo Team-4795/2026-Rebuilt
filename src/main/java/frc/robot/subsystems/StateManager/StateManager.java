@@ -11,8 +11,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.subsystems.ShooterHood.ShooterHoodConstants;
 import frc.robot.subsystems.drive.Drive;
-import frc.robot.util.ZoneVisualization;
-import java.awt.geom.Path2D;
+import frc.robot.util.Zone;
 import org.littletonrobotics.junction.Logger;
 
 public class StateManager extends SubsystemBase {
@@ -20,41 +19,25 @@ public class StateManager extends SubsystemBase {
   private State state;
 
   // Corners of zone as an array
-  private Translation2d[] decapitationZone;
+  private Translation2d[] decapitationZoneTranslation = new Translation2d[4];
+  private Translation2d[] shuttlingZoneOneTranslation = Constants.FieldConstants.shuttleZoneOne;
+  private Translation2d[] shuttlingZoneTwoTranslation = Constants.FieldConstants.shuttleZoneTwo;
+  private Translation2d[] shuttlingZoneThreeTranslation = Constants.FieldConstants.shuttleZoneThree;
+  private Translation2d[] shuttlingZoneFourTranslation = Constants.FieldConstants.shuttleZoneFour;
+  private Translation2d[] shuttlingZoneFiveTranslation = Constants.FieldConstants.shuttleZoneFive;
 
-  private Translation2d[] blueShuttlingZoneOne;
-  private Translation2d[] blueShuttlingZoneTwo;
-  private Translation2d[] blueShuttlingZoneThree;
-  private Translation2d[] blueShuttlingZoneFour;
-  private Translation2d[] blueShuttlingZoneFive;
-
-  private Translation2d[] redShuttlingZoneOne;
-  private Translation2d[] redShuttlingZoneTwo;
-  private Translation2d[] redShuttlingZoneThree;
-  private Translation2d[] redShuttlingZoneFour;
-  private Translation2d[] redShuttlingZoneFive;
-
-  // Class to visualize zones in ascope
-  private Path2D decapitationVisualization;
-
-  private Path2D blueShuttlingZoneOneVisualization;
-  private Path2D blueShuttlingZoneTwoVisualization;
-  private Path2D blueShuttlingZoneThreeVisualization;
-  private Path2D blueShuttlingZoneFourVisualization;
-  private Path2D blueShuttlingZoneFiveVisualization;
-
-  private Path2D redShuttlingZoneOneVisualization;
-  private Path2D redShuttlingZoneTwoVisualization;
-  private Path2D redShuttlingZoneThreeVisualization;
-  private Path2D redShuttlingZoneFourVisualization;
-  private Path2D redShuttlingZoneFiveVisualization;
+  private Zone decapitationZone;
+  private Zone shuttlingZoneOne;
+  private Zone shuttlingZoneTwo;
+  private Zone shuttlingZoneThree;
+  private Zone shuttlingZoneFour;
+  private Zone shuttlingZoneFive;
 
   private Alliance alliance;
   private Pose2d pose;
 
   public static class OperationStates {
     public static boolean inDecapitationZone = false;
-
     public static boolean inShuttlingZone1 = false;
     public static boolean inShuttlingZone2 = false;
     public static boolean inShuttlingZone3 = false;
@@ -76,7 +59,13 @@ public class StateManager extends SubsystemBase {
   }
 
   private StateManager() {
-    this.decapitationZone = new Translation2d[4];
+    this.decapitationZone = new Zone();
+    this.shuttlingZoneOne = new Zone(shuttlingZoneOneTranslation);
+    this.shuttlingZoneTwo = new Zone(shuttlingZoneTwoTranslation);
+    this.shuttlingZoneThree = new Zone(shuttlingZoneThreeTranslation);
+    this.shuttlingZoneFour = new Zone(shuttlingZoneFourTranslation);
+    this.shuttlingZoneFive = new Zone(shuttlingZoneFiveTranslation);
+
     this.state = State.SHOOTING;
   }
 
@@ -85,12 +74,11 @@ public class StateManager extends SubsystemBase {
   }
 
   public Pose2d getTargetPose() {
-    // Mirror pose if Blue Alliance
-    if (alliance != null && alliance.equals(Alliance.Blue)) {
+    // Mirror pose if Red Alliance
+    if (alliance != null && alliance.equals(Alliance.Red)) {
       return state.targetPose.rotateAround(
           Constants.FieldConstants.centerField, new Rotation2d(Math.PI));
     }
-
     return state.targetPose;
   }
 
@@ -100,59 +88,36 @@ public class StateManager extends SubsystemBase {
 
   @Override
   public void periodic() {
-    pose = Drive.getInstance().getPose();
-
+    // Make shuttling zones red alliance if needed
     if (alliance == null && DriverStation.getAlliance().isPresent()) {
       alliance = DriverStation.getAlliance().get();
-      if (alliance.equals(Alliance.Blue)) {
-        updateBlueShuttleZones();
-      }
 
       if (alliance.equals(Alliance.Red)) {
-        updateRedShuttleZones();
+        shuttlingZoneOne.updateZone(toRedAlliance(shuttlingZoneOneTranslation));
+        shuttlingZoneTwo.updateZone(toRedAlliance(shuttlingZoneTwoTranslation));
+        shuttlingZoneThree.updateZone(toRedAlliance(shuttlingZoneThreeTranslation));
+        shuttlingZoneFour.updateZone(toRedAlliance(shuttlingZoneFourTranslation));
+        shuttlingZoneFive.updateZone(toRedAlliance(shuttlingZoneFiveTranslation));
       }
     }
-
+    
     updateDecapitationZone();
 
-    // Visualize zones in Ascope (turn Pose2d[] into trajectories to actually see rectangle)
-    ZoneVisualization.logPoints(decapitationVisualization, "Decapitation Zone");
+    decapitationZone.logPoints("Decapitation Zone");
+    shuttlingZoneOne.logPoints("Shuttling Zone 1");
+    shuttlingZoneTwo.logPoints("Shuttling Zone 2");
+    shuttlingZoneThree.logPoints("Shuttling Zone 3");
+    shuttlingZoneFour.logPoints("Shuttling Zone 4");
+    shuttlingZoneFive.logPoints("Shuttling Zone 5");
 
-    // Update operation states based on if robot in zone
-    OperationStates.inDecapitationZone =
-        ZoneVisualization.isRobotInZone(decapitationVisualization, pose);
+    pose = Drive.getInstance().getPose();
 
-    // Update blue alliance
-    if (DriverStation.getAlliance().isPresent() && alliance.equals(Alliance.Blue)) {
-      logBlueZones();
-
-      OperationStates.inShuttlingZone1 =
-          ZoneVisualization.isRobotInZone(blueShuttlingZoneOneVisualization, pose);
-      OperationStates.inShuttlingZone2 =
-          ZoneVisualization.isRobotInZone(blueShuttlingZoneTwoVisualization, pose);
-      OperationStates.inShuttlingZone3 =
-          ZoneVisualization.isRobotInZone(blueShuttlingZoneThreeVisualization, pose);
-      OperationStates.inShuttlingZone4 =
-          ZoneVisualization.isRobotInZone(blueShuttlingZoneFourVisualization, pose);
-      OperationStates.inShuttlingZone5 =
-          ZoneVisualization.isRobotInZone(blueShuttlingZoneFiveVisualization, pose);
-    }
-
-    // Update red alliance
-    if (DriverStation.getAlliance().isPresent() && alliance.equals(Alliance.Red)) {
-      logRedZones();
-
-      OperationStates.inShuttlingZone1 =
-          ZoneVisualization.isRobotInZone(redShuttlingZoneOneVisualization, pose);
-      OperationStates.inShuttlingZone2 =
-          ZoneVisualization.isRobotInZone(redShuttlingZoneTwoVisualization, pose);
-      OperationStates.inShuttlingZone3 =
-          ZoneVisualization.isRobotInZone(redShuttlingZoneThreeVisualization, pose);
-      OperationStates.inShuttlingZone4 =
-          ZoneVisualization.isRobotInZone(redShuttlingZoneFourVisualization, pose);
-      OperationStates.inShuttlingZone5 =
-          ZoneVisualization.isRobotInZone(redShuttlingZoneFiveVisualization, pose);
-    }
+    OperationStates.inDecapitationZone = decapitationZone.contains(pose);
+    OperationStates.inShuttlingZone1 = shuttlingZoneOne.contains(pose);
+    OperationStates.inShuttlingZone2 = shuttlingZoneTwo.contains(pose);
+    OperationStates.inShuttlingZone3 = shuttlingZoneThree.contains(pose);
+    OperationStates.inShuttlingZone4 = shuttlingZoneFour.contains(pose);
+    OperationStates.inShuttlingZone5 = shuttlingZoneFive.contains(pose);
 
     // Set State
     if (OperationStates.inShuttlingZone1 || OperationStates.inShuttlingZone3) {
@@ -168,7 +133,6 @@ public class StateManager extends SubsystemBase {
     // Logging
     Logger.recordOutput(
         "State Manager/Operation States/In Decapitation Zone", OperationStates.inDecapitationZone);
-
     Logger.recordOutput(
         "State Manager/Operation States/In Zone 1", OperationStates.inShuttlingZone1);
     Logger.recordOutput(
@@ -208,55 +172,21 @@ public class StateManager extends SubsystemBase {
     Translation2d botLeft = new Translation2d(closest.getX() - boxXDim, closest.getY() - boxYDim);
     Translation2d botRight = new Translation2d(closest.getX() + boxXDim, closest.getY() - boxYDim);
 
-    decapitationZone[0] = topLeft;
-    decapitationZone[1] = topRight;
-    decapitationZone[2] = botLeft;
-    decapitationZone[3] = botRight;
+    decapitationZoneTranslation[0] = topLeft;
+    decapitationZoneTranslation[1] = topRight;
+    decapitationZoneTranslation[2] = botLeft;
+    decapitationZoneTranslation[3] = botRight;
 
-    decapitationVisualization = ZoneVisualization.getZone(decapitationZone);
+    decapitationZone.updateZone(decapitationZoneTranslation);
   }
 
-  public void updateBlueShuttleZones() {
-    this.blueShuttlingZoneOne = Constants.FieldConstants.blueShuttleZoneOne;
-    this.blueShuttlingZoneTwo = Constants.FieldConstants.blueShuttleZoneTwo;
-    this.blueShuttlingZoneThree = Constants.FieldConstants.blueShuttleZoneThree;
-    this.blueShuttlingZoneFour = Constants.FieldConstants.blueShuttleZoneFour;
-    this.blueShuttlingZoneFive = Constants.FieldConstants.blueShuttleZoneFive;
-
-    blueShuttlingZoneOneVisualization = ZoneVisualization.getZone(blueShuttlingZoneOne);
-    blueShuttlingZoneTwoVisualization = ZoneVisualization.getZone(blueShuttlingZoneTwo);
-    blueShuttlingZoneThreeVisualization = ZoneVisualization.getZone(blueShuttlingZoneThree);
-    blueShuttlingZoneFourVisualization = ZoneVisualization.getZone(blueShuttlingZoneFour);
-    blueShuttlingZoneFiveVisualization = ZoneVisualization.getZone(blueShuttlingZoneFive);
-  }
-
-  public void updateRedShuttleZones() {
-    this.redShuttlingZoneOne = Constants.FieldConstants.redShuttleZoneOne;
-    this.redShuttlingZoneTwo = Constants.FieldConstants.redShuttleZoneTwo;
-    this.redShuttlingZoneThree = Constants.FieldConstants.redShuttleZoneThree;
-    this.redShuttlingZoneFour = Constants.FieldConstants.redShuttleZoneFour;
-    this.redShuttlingZoneFive = Constants.FieldConstants.redShuttleZoneFive;
-
-    redShuttlingZoneOneVisualization = ZoneVisualization.getZone(redShuttlingZoneOne);
-    redShuttlingZoneTwoVisualization = ZoneVisualization.getZone(redShuttlingZoneTwo);
-    redShuttlingZoneThreeVisualization = ZoneVisualization.getZone(redShuttlingZoneThree);
-    redShuttlingZoneFourVisualization = ZoneVisualization.getZone(redShuttlingZoneFour);
-    redShuttlingZoneFiveVisualization = ZoneVisualization.getZone(redShuttlingZoneFive);
-  }
-
-  public void logRedZones() {
-    ZoneVisualization.logPoints(redShuttlingZoneOneVisualization, "Shuttle Zone 1");
-    ZoneVisualization.logPoints(redShuttlingZoneTwoVisualization, "Shuttle Zone 2");
-    ZoneVisualization.logPoints(redShuttlingZoneThreeVisualization, "Shuttle Zone 3");
-    ZoneVisualization.logPoints(redShuttlingZoneFourVisualization, "Shuttle Zone 4");
-    ZoneVisualization.logPoints(redShuttlingZoneFiveVisualization, "Shuttle Zone 5");
-  }
-
-  public void logBlueZones() {
-    ZoneVisualization.logPoints(blueShuttlingZoneOneVisualization, "Shuttle Zone 1");
-    ZoneVisualization.logPoints(blueShuttlingZoneTwoVisualization, "Shuttle Zone 2");
-    ZoneVisualization.logPoints(blueShuttlingZoneThreeVisualization, "Shuttle Zone 3");
-    ZoneVisualization.logPoints(blueShuttlingZoneFourVisualization, "Shuttle Zone 4");
-    ZoneVisualization.logPoints(blueShuttlingZoneFiveVisualization, "Shuttle Zone 5");
+  private Translation2d[] toRedAlliance(Translation2d[] blueAllianceTranslation) {
+    Translation2d[] redAllianceTranslation = new Translation2d[4];
+    for (int i = 0; i < blueAllianceTranslation.length; i++) {
+      redAllianceTranslation[i] =
+          blueAllianceTranslation[i].rotateAround(
+              Constants.FieldConstants.centerField, new Rotation2d(Math.PI));
+    }
+    return redAllianceTranslation;
   }
 }

@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -68,27 +67,16 @@ public final class Constants {
 
     public static ArrayList<Translation2d> trenchList = new ArrayList<Translation2d>();
 
-    public static Translation2d[] blueShuttleZoneOne = new Translation2d[4];
-    public static Translation2d[] blueShuttleZoneTwo = new Translation2d[4];
-    public static Translation2d[] blueShuttleZoneThree = new Translation2d[4];
-    public static Translation2d[] blueShuttleZoneFour = new Translation2d[4];
-    public static Translation2d[] blueShuttleZoneFive = new Translation2d[4];
+    public static Translation2d[] shuttleZoneOne = new Translation2d[4];
+    public static Translation2d[] shuttleZoneTwo = new Translation2d[4];
+    public static Translation2d[] shuttleZoneThree = new Translation2d[4];
+    public static Translation2d[] shuttleZoneFour = new Translation2d[4];
+    public static Translation2d[] shuttleZoneFive = new Translation2d[4];
 
-    public static Translation2d[] redShuttleZoneOne = new Translation2d[4];
-    public static Translation2d[] redShuttleZoneTwo = new Translation2d[4];
-    public static Translation2d[] redShuttleZoneThree = new Translation2d[4];
-    public static Translation2d[] redShuttleZoneFour = new Translation2d[4];
-    public static Translation2d[] redShuttleZoneFive = new Translation2d[4];
-
-    public static Translation2d blueShuttleTargetOne =
+    public static Translation2d shuttleTargetOne =
         new Translation2d(blueLeftTrench.getX() / 2.0, fieldWidth * 0.75);
-    public static Translation2d blueShuttleTargetTwo =
+    public static Translation2d shuttleTargetTwo =
         new Translation2d(blueLeftTrench.getX() / 2.0, fieldWidth * 0.25);
-
-    public static Translation2d redShuttleTargetOne =
-        blueShuttleTargetOne.rotateAround(centerField, new Rotation2d(Math.PI));
-    public static Translation2d redShuttleTargetTwo =
-        blueShuttleTargetTwo.rotateAround(centerField, new Rotation2d(Math.PI));
 
     public static void initConstants() {
       double shuttlingDeadzone = 0.5;
@@ -98,55 +86,37 @@ public final class Constants {
       trenchList.add(blueLeftTrench);
       trenchList.add(blueRightTrench);
 
-      // Blue Zone One
-      blueShuttleZoneOne[0] = new Translation2d(blueLeftTrench.getX(), fieldWidth / 2.0);
-      blueShuttleZoneOne[1] = new Translation2d(redRightTrench.getX(), fieldWidth / 2.0);
-      blueShuttleZoneOne[2] = new Translation2d(blueLeftTrench.getX(), 0);
-      blueShuttleZoneOne[3] = new Translation2d(redRightTrench.getX(), 0);
+      // Zone One
+      shuttleZoneOne[0] = new Translation2d(blueLeftTrench.getX(), fieldWidth / 2.0);
+      shuttleZoneOne[1] = new Translation2d(redRightTrench.getX(), fieldWidth / 2.0);
+      shuttleZoneOne[2] = new Translation2d(blueLeftTrench.getX(), 0);
+      shuttleZoneOne[3] = new Translation2d(redRightTrench.getX(), 0);
 
-      // Blue Zone Two
+      // Zone Two
       for (int i = 0; i < 4; i++) {
-        blueShuttleZoneTwo[i] = blueShuttleZoneOne[i].plus(new Translation2d(0, fieldWidth / 2.0));
+        shuttleZoneTwo[i] = shuttleZoneOne[i].plus(new Translation2d(0, fieldWidth / 2.0));
       }
 
-      // Blue Zone Three
-      blueShuttleZoneThree[0] = new Translation2d(redLeftTrench.getX(), 0);
-      blueShuttleZoneThree[1] = new Translation2d(fieldLength, 0);
-      blueShuttleZoneThree[2] =
-          new Translation2d(fieldLength, fieldWidth / 2.0 - shuttlingDeadzone);
-      blueShuttleZoneThree[3] =
+      // Zone Three
+      shuttleZoneThree[0] = new Translation2d(redLeftTrench.getX(), 0);
+      shuttleZoneThree[1] = new Translation2d(fieldLength, 0);
+      shuttleZoneThree[2] = new Translation2d(fieldLength, fieldWidth / 2.0 - shuttlingDeadzone);
+      shuttleZoneThree[3] =
           new Translation2d(redLeftTrench.getX(), fieldWidth / 2.0 - shuttlingDeadzone);
 
-      // Blue Zone Four
+      // Zone Four
       for (int i = 0; i < 4; i++) {
-        blueShuttleZoneFour[i] =
-            blueShuttleZoneThree[i].plus(
-                new Translation2d(0, fieldWidth / 2.0 + shuttlingDeadzone));
+        shuttleZoneFour[i] =
+            shuttleZoneThree[i].plus(new Translation2d(0, fieldWidth / 2.0 + shuttlingDeadzone));
       }
 
-      // Blue Zone Five
-      blueShuttleZoneFive[0] =
+      // Zone Five
+      shuttleZoneFive[0] =
           new Translation2d(redLeftTrench.getX(), centerField.getY() - shuttlingDeadzone);
-      blueShuttleZoneFive[1] =
-          new Translation2d(fieldLength, centerField.getY() - shuttlingDeadzone);
-      blueShuttleZoneFive[2] =
-          new Translation2d(fieldLength, centerField.getY() + shuttlingDeadzone);
-      blueShuttleZoneFive[3] =
+      shuttleZoneFive[1] = new Translation2d(fieldLength, centerField.getY() - shuttlingDeadzone);
+      shuttleZoneFive[2] = new Translation2d(fieldLength, centerField.getY() + shuttlingDeadzone);
+      shuttleZoneFive[3] =
           new Translation2d(redLeftTrench.getX(), centerField.getY() + shuttlingDeadzone);
-
-      // Red Zones
-      for (int i = 0; i < 4; i++) {
-        redShuttleZoneOne[i] =
-            blueShuttleZoneOne[i].rotateAround(centerField, new Rotation2d(Math.PI));
-        redShuttleZoneTwo[i] =
-            blueShuttleZoneTwo[i].rotateAround(centerField, new Rotation2d(Math.PI));
-        redShuttleZoneThree[i] =
-            blueShuttleZoneThree[i].rotateAround(centerField, new Rotation2d(Math.PI));
-        redShuttleZoneFour[i] =
-            blueShuttleZoneFour[i].rotateAround(centerField, new Rotation2d(Math.PI));
-        redShuttleZoneFive[i] =
-            blueShuttleZoneFive[i].rotateAround(centerField, new Rotation2d(Math.PI));
-      }
     }
   }
 }

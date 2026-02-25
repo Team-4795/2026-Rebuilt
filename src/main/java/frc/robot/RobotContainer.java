@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.ShootOnTheMove;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerIO;
 import frc.robot.subsystems.Indexer.IndexerIOReal;
@@ -190,12 +191,14 @@ public class RobotContainer {
     intakeButton.whileTrue(AutoCommands.intake());
     reverseIntake.whileTrue(AutoCommands.reverseIntake());
 
-    autoScore.whileTrue(
-        AutoCommands.autoScore()
-            .alongWith(
-                Commands.startEnd(
-                    () -> shooter.setVelocityRPS(ShooterIOReal.shooterRPS.get()),
-                    () -> shooter.setVelocityRPS(0))));
+    // autoScore.whileTrue(
+    //     AutoCommands.autoScore()
+    //         .alongWith(
+    //             Commands.startEnd(
+    //                 () -> shooter.setVelocityRPS(ShooterIOReal.shooterRPS.get()),
+    //                 () -> shooter.setVelocityRPS(0))));
+
+    autoScore.whileTrue(new ShootOnTheMove(drive, turret));
 
     shoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
 
