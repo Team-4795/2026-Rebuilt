@@ -23,5 +23,7 @@ public interface IntakeDeployIO {
 
   public default void setVoltage(double volts) {}
 
+  public default void zero() {}
+
   public default void updateInputs(IntakeDeployIOInputs inputs) {}
 }

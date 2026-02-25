@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -71,10 +70,11 @@ public class ShootOnTheMove extends Command {
     omegaXOffset = -omega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY();
     omegaYOffset = omega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX();
 
-    offsetHub = new Pose2d(
-        hub.getX() - velocityXOffset - omegaXOffset, 
-        hub.getY() - velocityYOffset - omegaYOffset, 
-        new Rotation2d());
+    offsetHub =
+        new Pose2d(
+            hub.getX() - velocityXOffset - omegaXOffset,
+            hub.getY() - velocityYOffset - omegaYOffset,
+            new Rotation2d());
 
     deltaX = offsetHub.getX() - turretPose.getX();
     deltaY = offsetHub.getY() - turretPose.getY();

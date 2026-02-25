@@ -142,7 +142,7 @@ public class Drive extends SubsystemBase {
 
   @Override
   public void periodic() {
-    Logger.recordOutput("Distance to Hub", getDistanceToHub());
+    Logger.recordOutput("Distance to Hub", getTurretDistanceToHub());
     odometryLock.lock(); // Prevents odometry updates while reading data
     gyroIO.updateInputs(gyroInputs);
     Logger.processInputs("Drive/Gyro", gyroInputs);
@@ -345,12 +345,19 @@ public class Drive extends SubsystemBase {
     return maxSpeedMetersPerSec / driveBaseRadius;
   }
 
-  public double getDistanceToHub() {
+  public double getTurretDistanceToHub() {
     Translation2d robotPose = getPose().getTranslation();
     Translation2d turretPose =
         robotPose.plus(TurretConstants.OFFSET.rotateBy(getPose().getRotation()));
     Translation2d hubPose = StateManager.getInstance().getTargetPose().getTranslation();
     double distance = turretPose.getDistance(hubPose);
+    return distance;
+  }
+
+  public double getPoseDistanceToHub() {
+    Translation2d robotPose = getPose().getTranslation();
+    Translation2d hubPose = StateManager.getInstance().getTargetPose().getTranslation();
+    double distance = robotPose.getDistance(hubPose);
     return distance;
   }
 }

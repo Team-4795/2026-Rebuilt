@@ -117,15 +117,15 @@ public class UnderTrench extends Command {
     */
   }
 
-  private double scalar(double distance) {
-    if (distance > 0.2) {
-      return 1.0;
-    } else if (0 < distance && distance < 0.2) {
-      return MathUtil.clamp((1.0 / (0.2 - 0)) * (distance - 0), 0, 1);
-    } else {
-      return 0.0;
-    }
-  }
+  // private double scalar(double distance) {
+  //   if (distance > 0.2) {
+  //     return 1.0;
+  //   } else if (0 < distance && distance < 0.2) {
+  //     return MathUtil.clamp((1.0 / (0.2 - 0)) * (distance - 0), 0, 1);
+  //   } else {
+  //     return 0.0;
+  //   }
+  // }
 
   @Override
   public void end(boolean interrupted) {}

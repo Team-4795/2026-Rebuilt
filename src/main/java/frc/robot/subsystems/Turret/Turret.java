@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.drive.Drive;
 import org.littletonrobotics.junction.Logger;
 
@@ -31,7 +32,9 @@ public class Turret extends SubsystemBase {
   }
 
   public void setGoal(double goal) {
-    io.setGoal(goal);
+    if (StateManager.getInstance().canTurretMove()) {
+      io.setGoal(goal);
+    }
   }
 
   public void setVoltage(double voltage) {

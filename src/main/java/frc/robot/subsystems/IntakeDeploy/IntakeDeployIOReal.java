@@ -84,6 +84,12 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
   }
 
   @Override
+  public void zero() {
+    encoderA.setPosition(0);
+    encoderB.setPosition(0);
+  }
+
+  @Override
   public void updateMotionProfile() {
     setpoint = profile.calculate(0.02, setpoint, goal);
     double ffvolts =

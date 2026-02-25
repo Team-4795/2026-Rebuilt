@@ -36,6 +36,10 @@ public class IntakeDeploy extends SubsystemBase {
     io.setVoltage(volts);
   }
 
+  public void zero() {
+    io.zero();
+  }
+
   @Override
   public void periodic() {
     io.updateMotionProfile();

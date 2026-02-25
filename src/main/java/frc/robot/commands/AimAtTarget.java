@@ -3,7 +3,6 @@ package frc.robot.commands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.StateManager.State;
 import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretConstants;
@@ -51,9 +50,7 @@ public class AimAtTarget extends Command {
     turretAngle -= TurretConstants.angleOffset;
     desiredRot = (((turretAngle % 1.0) + 1.0) % 1.0);
 
-    if (StateManager.getInstance().getState() != State.SHUTTLING_DEAD_ZONE) {
-      turret.setGoal(desiredRot);
-    }
+    turret.setGoal(desiredRot);
 
     Logger.recordOutput("Aim At Hub/Hub Pose", targetPose);
     Logger.recordOutput("Aim At Hub/Desired Rotation", desiredRot);

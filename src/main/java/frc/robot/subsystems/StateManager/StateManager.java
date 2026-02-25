@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
 import frc.robot.subsystems.ShooterHood.ShooterHoodConstants;
+import frc.robot.subsystems.Turret.TurretConstants;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.util.Zone;
 import org.littletonrobotics.junction.Logger;
@@ -66,6 +67,12 @@ public class StateManager extends SubsystemBase {
     this.shuttlingZoneFour = new Zone(shuttlingZoneFourTranslation);
     this.shuttlingZoneFive = new Zone(shuttlingZoneFiveTranslation);
 
+    shuttlingZoneOne.logPoints("Shuttling Zone 1");
+    shuttlingZoneTwo.logPoints("Shuttling Zone 2");
+    shuttlingZoneThree.logPoints("Shuttling Zone 3");
+    shuttlingZoneFour.logPoints("Shuttling Zone 4");
+    shuttlingZoneFive.logPoints("Shuttling Zone 5");
+
     this.state = State.SHOOTING;
   }
 
@@ -86,6 +93,14 @@ public class StateManager extends SubsystemBase {
     return this.state;
   }
 
+  public boolean canTurretMove() {
+    return (TurretConstants.canMove && getState() != State.SHUTTLING_DEAD_ZONE);
+  }
+
+  public boolean canHoodMove() {
+    return !OperationStates.inDecapitationZone;
+  }
+
   @Override
   public void periodic() {
     // Make shuttling zones red alliance if needed
@@ -98,17 +113,17 @@ public class StateManager extends SubsystemBase {
         shuttlingZoneThree.updateZone(toRedAlliance(shuttlingZoneThreeTranslation));
         shuttlingZoneFour.updateZone(toRedAlliance(shuttlingZoneFourTranslation));
         shuttlingZoneFive.updateZone(toRedAlliance(shuttlingZoneFiveTranslation));
+
+        shuttlingZoneOne.logPoints("Shuttling Zone 1");
+        shuttlingZoneTwo.logPoints("Shuttling Zone 2");
+        shuttlingZoneThree.logPoints("Shuttling Zone 3");
+        shuttlingZoneFour.logPoints("Shuttling Zone 4");
+        shuttlingZoneFive.logPoints("Shuttling Zone 5");
       }
     }
-    
-    updateDecapitationZone();
 
+    updateDecapitationZone();
     decapitationZone.logPoints("Decapitation Zone");
-    shuttlingZoneOne.logPoints("Shuttling Zone 1");
-    shuttlingZoneTwo.logPoints("Shuttling Zone 2");
-    shuttlingZoneThree.logPoints("Shuttling Zone 3");
-    shuttlingZoneFour.logPoints("Shuttling Zone 4");
-    shuttlingZoneFive.logPoints("Shuttling Zone 5");
 
     pose = Drive.getInstance().getPose();
 
