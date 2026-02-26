@@ -89,6 +89,8 @@ public class RobotContainer {
 
   private final Trigger agitateIntake = m_driverController.povUp();
 
+  private final Trigger retractIntake = m_driverController.povLeft();
+
   // private final Trigger shooterButton = m_operatorController.a();
 
   // private final Trigger turretOne = m_operatorController.povLeft();
@@ -206,6 +208,8 @@ public class RobotContainer {
     zeroButton.onTrue(AutoCommands.zeroSequence());
 
     agitateIntake.whileTrue(AutoCommands.agitateIntake());
+
+    retractIntake.whileTrue(AutoCommands.retractIntake());
 
     // shooterButton.whileTrue(AutoCommands.setShooterRPS(50));
 
