@@ -190,12 +190,12 @@ public class RobotContainer {
     intakeButton.whileTrue(AutoCommands.intake());
     reverseIntake.whileTrue(AutoCommands.reverseIntake());
 
-    // autoScore.whileTrue(
-    //     Commands.startEnd(
-    //         () -> shooter.setVelocityRPS(ShooterIOReal.shooterRPS.get()),
-    //         () -> shooter.setVelocityRPS(0)));
+    autoScore.whileTrue(
+        Commands.startEnd(
+            () -> shooter.setVelocityRPS(ShooterIOReal.shooterRPS.get()),
+            () -> shooter.setVelocityRPS(0)));
 
-    autoScore.whileTrue(AutoCommands.autoScore());
+    // autoScore.whileTrue(AutoCommands.autoScore());
 
     shoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
 

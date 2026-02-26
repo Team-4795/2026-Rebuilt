@@ -8,6 +8,7 @@ import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployConstants;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
+import frc.robot.subsystems.ShooterHood.ShooterHoodConstants;
 import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.drive.Drive;
@@ -98,7 +99,8 @@ public class AutoCommands {
   }
 
   public static Command setHoodAngle(double angle) {
-    return Commands.run(() -> hood.setGoal(angle), hood);
+    return Commands.run(() -> hood.setGoal(
+          ShooterHoodConstants.shooterHoodMap.get(Drive.getInstance().getTurretDistanceToHub())), hood);
   }
 
   // Rev shooter wheels based on interpolation tree

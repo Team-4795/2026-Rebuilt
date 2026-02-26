@@ -57,11 +57,11 @@ public class ShooterIOReal implements ShooterIO {
     bottomShooterMotor.clearStickyFaults();
     topShooterMotor.clearStickyFaults();
 
-    bottomShooterMotor.setControl(
-        new Follower(topShooterMotor.getDeviceID(), MotorAlignmentValue.Opposed));
-
     topShooterMotor.getConfigurator().apply(topConfig);
     bottomShooterMotor.getConfigurator().apply(bottomConfig);
+
+    bottomShooterMotor.setControl(
+        new Follower(topShooterMotor.getDeviceID(), MotorAlignmentValue.Opposed));
   }
 
   @Override
