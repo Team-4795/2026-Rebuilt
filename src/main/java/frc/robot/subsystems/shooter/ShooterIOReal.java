@@ -52,7 +52,6 @@ public class ShooterIOReal implements ShooterIO {
     topConfig = config(ShooterConstants.kV);
     bottomConfig = config(ShooterConstants.kV);
 
-
     BaseStatusSignal.setUpdateFrequencyForAll(1000, topRPS, bottomRPS, topCurrent, bottomCurrent);
 
     bottomShooterMotor.clearStickyFaults();
@@ -85,10 +84,10 @@ public class ShooterIOReal implements ShooterIO {
     velocityRPS = MathUtil.clamp(velocityRPS, ShooterConstants.minVel, ShooterConstants.maxVel);
     this.goalVelocityRPS = velocityRPS;
 
-    if(this.goalVelocityRPS == 0) {
+    if (this.goalVelocityRPS == 0) {
       topShooterMotor.setControl(new NeutralOut());
     } else {
-    topShooterMotor.setControl(m_request.withVelocity(velocityRPS));
+      topShooterMotor.setControl(m_request.withVelocity(velocityRPS));
     }
   }
 

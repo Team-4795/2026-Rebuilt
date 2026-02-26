@@ -65,7 +65,13 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "First Align"
+                        "name": "Align Hub"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Shooter Hood Angle"
                       }
                     }
                   ]
@@ -116,19 +122,19 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Second Align"
+                        "name": "Align Hub"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Shooter Hood Angle"
                       }
                     }
                   ]
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Feeder Auto 3"
           }
         }
       ]

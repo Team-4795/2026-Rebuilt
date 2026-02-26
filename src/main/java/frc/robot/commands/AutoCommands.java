@@ -77,8 +77,7 @@ public class AutoCommands {
             Commands.runOnce(() -> deploy.setDeployVoltage(3), deploy),
             Commands.waitSeconds(1),
             Commands.runOnce(() -> deploy.setDeployVoltage(0), deploy),
-            Commands.runOnce(() -> deploy.zero(), deploy))
-        );
+            Commands.runOnce(() -> deploy.zero(), deploy)));
   }
 
   public static Command turretAimAtHub() {
