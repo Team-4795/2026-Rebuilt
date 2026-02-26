@@ -3,10 +3,13 @@ package frc.robot.subsystems.Shooter;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -49,13 +52,14 @@ public class ShooterIOReal implements ShooterIO {
     topConfig = config(ShooterConstants.kV);
     bottomConfig = config(ShooterConstants.kV);
 
-    bottomConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-    topConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
     BaseStatusSignal.setUpdateFrequencyForAll(1000, topRPS, bottomRPS, topCurrent, bottomCurrent);
 
     bottomShooterMotor.clearStickyFaults();
     topShooterMotor.clearStickyFaults();
+
+    bottomShooterMotor.setControl(
+        new Follower(topShooterMotor.getDeviceID(), MotorAlignmentValue.Opposed));
 
     topShooterMotor.getConfigurator().apply(topConfig);
     bottomShooterMotor.getConfigurator().apply(bottomConfig);
@@ -79,9 +83,13 @@ public class ShooterIOReal implements ShooterIO {
   @Override
   public void setVelocityRPS(double velocityRPS) {
     velocityRPS = MathUtil.clamp(velocityRPS, ShooterConstants.minVel, ShooterConstants.maxVel);
-    topShooterMotor.setControl(m_request.withVelocity(velocityRPS));
-    bottomShooterMotor.setControl(m_request.withVelocity(velocityRPS));
     this.goalVelocityRPS = velocityRPS;
+
+    if(this.goalVelocityRPS == 0) {
+      topShooterMotor.setControl(new NeutralOut());
+    } else {
+    topShooterMotor.setControl(m_request.withVelocity(velocityRPS));
+    }
   }
 
   @Override
@@ -147,9 +155,9 @@ public class ShooterIOReal implements ShooterIO {
     talonFXConfig.TorqueCurrent.PeakForwardTorqueCurrent = 80;
     talonFXConfig.TorqueCurrent.PeakReverseTorqueCurrent = 0;
 
-    // Motion Magic settings
-    talonFXConfig.MotionMagic.MotionMagicAcceleration = MM_ACCELERATION.get();
-    talonFXConfig.MotionMagic.MotionMagicJerk = MM_JERK.get();
+    // // Motion Magic settings
+    // talonFXConfig.MotionMagic.MotionMagicAcceleration = MM_ACCELERATION.get();
+    // talonFXConfig.MotionMagic.MotionMagicJerk = MM_JERK.get();
 
     return talonFXConfig;
   }
