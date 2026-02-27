@@ -62,8 +62,8 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
         1.0 / IntakeDeployConstants.GEARING_DEPLOY / 60.0);
     deployConfigA.encoder.quadratureMeasurementPeriod(20);
 
-    deployConfigA.softLimit.forwardSoftLimitEnabled(true);
-    deployConfigA.softLimit.reverseSoftLimitEnabled(true);
+    deployConfigA.softLimit.forwardSoftLimitEnabled(false);
+    deployConfigA.softLimit.reverseSoftLimitEnabled(false);
     deployConfigA.softLimit.forwardSoftLimit(IntakeDeployConstants.deployMaxAngle);
     deployConfigA.softLimit.reverseSoftLimit(IntakeDeployConstants.deployMinAngle);
 
@@ -116,7 +116,7 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
   @Override
   public void setVoltage(double v) {
     deployVolts = v;
-    intakeDeployMotorA.setVoltage(-deployVolts);
+    intakeDeployMotorA.setVoltage(deployVolts);
   }
 
   @Override
@@ -134,6 +134,9 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
 
     inputs.deployMotorGoal = goal.position;
     inputs.deployMotorSetpoint = setpoint.position;
+
+    inputs.setpointVelocity = setpoint.velocity;
+    inputs.setpointPosition = setpoint.position;
 
     Logger.recordOutput("Intake Deploy/PID Volts", PIDVolts);
     Logger.recordOutput("Intake Deploy/FF Volts", FFVolts);

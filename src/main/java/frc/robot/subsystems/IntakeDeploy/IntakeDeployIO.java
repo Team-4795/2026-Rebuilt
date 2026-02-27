@@ -15,6 +15,9 @@ public interface IntakeDeployIO {
 
     public double deployMotorGoal = 0.0;
     public double deployMotorSetpoint = 0.0;
+
+    public double setpointPosition = 0;
+    public double setpointVelocity = 0;
   }
 
   public default void setGoal(double goal) {}

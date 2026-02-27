@@ -21,6 +21,18 @@
           "data": {
             "name": "Retract Intake"
           }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Deploy Intake"
+          }
         }
       ]
     }
