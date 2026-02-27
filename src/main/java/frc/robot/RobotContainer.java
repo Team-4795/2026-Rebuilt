@@ -21,6 +21,7 @@ import frc.robot.subsystems.Intake.IntakeIOReal;
 import frc.robot.subsystems.Intake.IntakeIOSim;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployIO;
+import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOReal;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOSim;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterIO;
@@ -108,7 +109,7 @@ public class RobotContainer {
     switch (Constants.currentMode) {
       case REAL:
         intake = Intake.initialize(new IntakeIOReal());
-        deploy = IntakeDeploy.initialize(new IntakeDeployIOSim());
+        deploy = IntakeDeploy.initialize(new IntakeDeployIOReal());
         shooter = Shooter.initialize(new ShooterIOReal());
         indexer = Indexer.initialize(new IndexerIOReal());
         turret = Turret.initialize(new TurretIOReal());
@@ -210,6 +211,10 @@ public class RobotContainer {
     agitateIntake.whileTrue(AutoCommands.agitateIntake());
 
     retractIntake.whileTrue(AutoCommands.retractIntake());
+
+    // retractIntake.whileTrue(
+    //     Commands.startEnd(
+    //         () -> deploy.setDeployVoltage(3), () -> deploy.setDeployVoltage(0), deploy));
 
     // shooterButton.whileTrue(AutoCommands.setShooterRPS(50));
 

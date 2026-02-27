@@ -12,6 +12,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.robot.util.LoggedTunableNumber;
+import org.littletonrobotics.junction.Logger;
 
 public class IntakeDeployIOReal implements IntakeDeployIO {
   // two motors to extend intake
@@ -44,7 +45,9 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
   private TrapezoidProfile.State goal = new TrapezoidProfile.State();
   private TrapezoidProfile.State setpoint = new TrapezoidProfile.State();
 
-  private double deployVolts = 0;
+  private double deployVolts = 0.0;
+  private double PIDVolts = 0.0;
+  private double FFVolts = 0.0;
 
   public IntakeDeployIOReal() {
     // Deploy motor config
@@ -54,8 +57,9 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
     deployConfigA.smartCurrentLimit(IntakeDeployConstants.CURRENT_LIMIT);
     deployConfigA.idleMode(IdleMode.kBrake);
 
-    deployConfigA.encoder.positionConversionFactor(IntakeDeployConstants.GEARING_DEPLOY);
-    deployConfigA.encoder.velocityConversionFactor(IntakeDeployConstants.GEARING_DEPLOY / 60.0);
+    deployConfigA.encoder.positionConversionFactor(1.0 / IntakeDeployConstants.GEARING_DEPLOY);
+    deployConfigA.encoder.velocityConversionFactor(
+        1.0 / IntakeDeployConstants.GEARING_DEPLOY / 60.0);
     deployConfigA.encoder.quadratureMeasurementPeriod(20);
 
     deployConfigA.softLimit.forwardSoftLimitEnabled(true);
@@ -73,6 +77,8 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
         deployConfigA, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     intakeDeployMotorB.configure(
         deployConfigB, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    zero();
   }
 
   @Override
@@ -85,20 +91,23 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
 
   @Override
   public void zero() {
-    encoderA.setPosition(0);
-    encoderB.setPosition(0);
+    encoderA.setPosition(IntakeDeployConstants.deployOffset);
+    encoderB.setPosition(IntakeDeployConstants.deployOffset);
   }
 
   @Override
   public void updateMotionProfile() {
-    setpoint = profile.calculate(0.02, setpoint, goal);
-    double ffvolts =
-        ffmodel.calculate(
-            Units.rotationsToRadians(encoderA.getPosition() - IntakeDeployConstants.deployOffset),
-            Units.rotationsPerMinuteToRadiansPerSecond(setpoint.velocity * 60.0));
-    double pidvolts = controller.calculate(encoderA.getPosition(), setpoint.position);
+    ffmodel = new ArmFeedforward(KS.get(), KG.get(), KV.get());
+    controller = new PIDController(KP.get(), KI.get(), KD.get());
 
-    setVoltage(ffvolts + pidvolts);
+    setpoint = profile.calculate(0.02, setpoint, goal);
+    FFVolts =
+        ffmodel.calculate(
+            Units.rotationsToRadians(encoderA.getPosition()),
+            Units.rotationsPerMinuteToRadiansPerSecond(setpoint.velocity * 60.0));
+    PIDVolts = controller.calculate(encoderA.getPosition(), setpoint.position);
+
+    setVoltage(FFVolts + PIDVolts);
   }
 
   @Override
@@ -122,5 +131,8 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
 
     inputs.deployMotorGoal = goal.position;
     inputs.deployMotorSetpoint = setpoint.position;
+
+    Logger.recordOutput("Intake Deploy/PID Volts", PIDVolts);
+    Logger.recordOutput("Intake Deploy/FF Volts", FFVolts);
   }
 }

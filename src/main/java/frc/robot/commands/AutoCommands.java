@@ -25,7 +25,7 @@ public class AutoCommands {
   private AutoCommands() {}
 
   public static Command retractIntake() {
-    return Commands.run(() -> deploy.setGoal(0), deploy);
+    return Commands.run(() -> deploy.setGoal(IntakeDeployConstants.deployOffset), deploy);
   }
 
   public static Command agitateIntake() {
@@ -99,8 +99,12 @@ public class AutoCommands {
   }
 
   public static Command setHoodAngle(double angle) {
-    return Commands.run(() -> hood.setGoal(
-          ShooterHoodConstants.shooterHoodMap.get(Drive.getInstance().getTurretDistanceToHub())), hood);
+    return Commands.run(
+        () ->
+            hood.setGoal(
+                ShooterHoodConstants.shooterHoodMap.get(
+                    Drive.getInstance().getTurretDistanceToHub())),
+        hood);
   }
 
   // Rev shooter wheels based on interpolation tree

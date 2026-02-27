@@ -24,7 +24,8 @@ public class IntakeDeploy extends SubsystemBase {
     this.io = io;
     io.updateInputs(inputs);
     setDefaultCommand(
-        Commands.run(() -> setGoal(IntakeDeployConstants.stowPosition), this)); // auto deploy
+        Commands.run(() -> setGoal(IntakeDeployConstants.stowPosition), this)
+            .andThen(Commands.run(() -> io.updateMotionProfile())));
   }
 
   public void setGoal(double goal) {
@@ -42,8 +43,6 @@ public class IntakeDeploy extends SubsystemBase {
 
   @Override
   public void periodic() {
-    io.updateMotionProfile();
-
     io.updateInputs(inputs);
     Logger.processInputs("IntakeDeploy", inputs);
   }

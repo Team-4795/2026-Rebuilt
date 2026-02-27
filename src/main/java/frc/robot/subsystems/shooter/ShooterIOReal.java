@@ -52,7 +52,7 @@ public class ShooterIOReal implements ShooterIO {
     topConfig = config(ShooterConstants.kV);
     bottomConfig = config(ShooterConstants.kV);
 
-    BaseStatusSignal.setUpdateFrequencyForAll(1000, topRPS, bottomRPS, topCurrent, bottomCurrent);
+    BaseStatusSignal.setUpdateFrequencyForAll(20, topRPS, bottomRPS, topCurrent, bottomCurrent);
 
     bottomShooterMotor.clearStickyFaults();
     topShooterMotor.clearStickyFaults();
