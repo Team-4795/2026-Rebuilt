@@ -12,5 +12,7 @@ public class NamedCommandManager {
     NamedCommands.registerCommand("Intake", AutoCommands.intake().withTimeout(3));
     NamedCommands.registerCommand("Shooter Hood Angle", AutoCommands.setShooterHoodDynamic());
     NamedCommands.registerCommand("Testing Hood", AutoCommands.setHoodAngle(-0.05));
+    NamedCommands.registerCommand("Retract Intake", AutoCommands.retractIntake());
+    NamedCommands.registerCommand("Deploy Intake", AutoCommands.deployIntake());
   }
 }

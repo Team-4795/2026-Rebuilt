@@ -68,7 +68,7 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
     deployConfigA.softLimit.reverseSoftLimit(IntakeDeployConstants.deployMinAngle);
 
     deployConfigA.voltageCompensation(12.0);
-    deployConfigA.inverted(false);
+    deployConfigA.inverted(true);
 
     deployConfigB.apply(deployConfigA);
     deployConfigB.follow(intakeDeployMotorA.getDeviceId(), true);
@@ -79,12 +79,15 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
         deployConfigB, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     zero();
+
+    goal.position = encoderA.getPosition();
+    goal.velocity = 0;
   }
 
   @Override
   public void setGoal(double angle) {
     if (angle != goal.position) {
-      setpoint = new TrapezoidProfile.State(encoderA.getPosition(), encoderA.getVelocity() / 60.0);
+      setpoint = new TrapezoidProfile.State(encoderA.getPosition(), encoderA.getVelocity());
       goal = new TrapezoidProfile.State(angle, 0);
     }
   }
@@ -104,7 +107,7 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
     FFVolts =
         ffmodel.calculate(
             Units.rotationsToRadians(encoderA.getPosition()),
-            Units.rotationsPerMinuteToRadiansPerSecond(setpoint.velocity * 60.0));
+            Units.rotationsPerMinuteToRadiansPerSecond(setpoint.velocity));
     PIDVolts = controller.calculate(encoderA.getPosition(), setpoint.position);
 
     setVoltage(FFVolts + PIDVolts);
@@ -113,7 +116,7 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
   @Override
   public void setVoltage(double v) {
     deployVolts = v;
-    intakeDeployMotorA.setVoltage(deployVolts);
+    intakeDeployMotorA.setVoltage(-deployVolts);
   }
 
   @Override
