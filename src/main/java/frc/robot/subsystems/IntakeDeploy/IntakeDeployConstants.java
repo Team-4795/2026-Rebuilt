@@ -15,14 +15,14 @@ public class IntakeDeployConstants {
 
   public static final double deployOffset = 0.327884;
 
-  public static final double MAX_VELOCITY = 5;
-  public static final double MAX_ACCELERATION = 5;
+  public static final double MAX_VELOCITY = 3;
+  public static final double MAX_ACCELERATION = 3;
 
-  public static final double kP = 0;
+  public static final double kP = 2;
   public static final double kI = 0.0;
   public static final double kD = 0.0;
 
-  public static final double kS = 0.0;
-  public static final double kG = 2.5;
-  public static final double kV = 20;
+  public static final double kS = 0.2;
+  public static final double kG = 0.2;
+  public static final double kV = 0.75;
 }

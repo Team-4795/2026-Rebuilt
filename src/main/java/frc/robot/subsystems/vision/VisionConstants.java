@@ -45,13 +45,9 @@ public class VisionConstants {
         // Luma Left
         new Transform3d(
             new Translation3d( // Change Translation
-                Units.inchesToMeters(0), 
-                Units.inchesToMeters(0), 
-                Units.inchesToMeters(0)),
+                Units.inchesToMeters(0), Units.inchesToMeters(0), Units.inchesToMeters(0)),
             new Rotation3d( // Rotation should be good. Only touch if 3d pose looks weird
-                Units.degreesToRadians(0),
-                Units.degreesToRadians(-20),
-                Units.degreesToRadians(90)))
+                Units.degreesToRadians(0), Units.degreesToRadians(-20), Units.degreesToRadians(90)))
       };
 
   // currently does not have 2026 field, check back when they update it

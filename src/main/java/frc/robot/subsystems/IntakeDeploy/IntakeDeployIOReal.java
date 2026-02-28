@@ -100,14 +100,14 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
 
   @Override
   public void updateMotionProfile() {
-    ffmodel = new ArmFeedforward(KS.get(), KG.get(), KV.get());
-    controller = new PIDController(KP.get(), KI.get(), KD.get());
+    // ffmodel = new ArmFeedforward(KS.get(), KG.get(), KV.get());
+    // controller = new PIDController(KP.get(), KI.get(), KD.get());
 
     setpoint = profile.calculate(0.02, setpoint, goal);
     FFVolts =
         ffmodel.calculate(
             Units.rotationsToRadians(encoderA.getPosition()),
-            Units.rotationsPerMinuteToRadiansPerSecond(setpoint.velocity));
+            Units.rotationsPerMinuteToRadiansPerSecond(setpoint.velocity * 60));
     PIDVolts = controller.calculate(encoderA.getPosition(), setpoint.position);
 
     setVoltage(FFVolts + PIDVolts);

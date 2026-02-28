@@ -25,7 +25,7 @@ public class AutoCommands {
   private AutoCommands() {}
 
   public static Command retractIntake() {
-    return Commands.runOnce(() -> deploy.setGoal(IntakeDeployConstants.deployOffset - 0.1));
+    return Commands.runOnce(() -> deploy.setGoal(IntakeDeployConstants.deployOffset - 0.05));
   }
 
   public static Command deployIntake() {
@@ -34,9 +34,9 @@ public class AutoCommands {
 
   public static Command agitateIntake() {
     return Commands.repeatingSequence(
-        Commands.runOnce(() -> deploy.setGoal(0.1), deploy),
+        Commands.runOnce(() -> deploy.setGoal(0.15), deploy),
         Commands.waitSeconds(0.5),
-        Commands.runOnce(() -> deploy.setGoal(IntakeDeployConstants.stowPosition)),
+        Commands.runOnce(() -> deploy.setGoal(0)),
         Commands.waitSeconds(0.5));
   }
 

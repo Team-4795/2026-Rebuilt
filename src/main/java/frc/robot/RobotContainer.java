@@ -34,7 +34,6 @@ import frc.robot.subsystems.ShooterHood.ShooterHoodIOSim;
 import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretIO;
-import frc.robot.subsystems.Turret.TurretIOReal;
 import frc.robot.subsystems.Turret.TurretIOSim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
@@ -112,7 +111,7 @@ public class RobotContainer {
         deploy = IntakeDeploy.initialize(new IntakeDeployIOReal());
         shooter = Shooter.initialize(new ShooterIOReal());
         indexer = Indexer.initialize(new IndexerIOReal());
-        turret = Turret.initialize(new TurretIOReal());
+        turret = Turret.initialize(new TurretIOSim());
         shooterHood = ShooterHood.initialize(new ShooterHoodIOReal());
         drive =
             Drive.initialize(
@@ -183,19 +182,19 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureTestingButtons() {
-    drive.setDefaultCommand(
-        DriveCommands.joystickDrive(
-            drive,
-            () -> -m_driverController.getLeftY(),
-            () -> -m_driverController.getLeftX(),
-            () -> -m_driverController.getRightX()));
+    // drive.setDefaultCommand(
+    //     DriveCommands.joystickDrive(
+    //         drive,
+    //         () -> -m_driverController.getLeftY(),
+    //         () -> -m_driverController.getLeftX(),
+    //         () -> -m_driverController.getRightX()));
 
     intakeButton.whileTrue(AutoCommands.intake());
     reverseIntake.whileTrue(AutoCommands.reverseIntake());
 
     autoScore.whileTrue(
         Commands.startEnd(
-            () -> shooter.setVelocityRPS(ShooterIOReal.shooterRPS.get()),
+            () -> shooter.setVelocityRPS(ShooterHoodIOReal.shooterRPS.get()), // ShooterIOReal.shooterRPS.get()
             () -> shooter.setVelocityRPS(0)));
 
     // autoScore.whileTrue(AutoCommands.autoScore());
