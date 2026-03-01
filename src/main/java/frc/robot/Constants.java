@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -42,6 +43,20 @@ public final class Constants {
     public static final CommandXboxController operatorController = new CommandXboxController(1);
     public static final double KAxisDeadband = 0.1;
     public static final double OperatorLAxisDeadband = 0.3;
+  }
+
+  public static class InterpolatingTree {
+    public static final InterpolatingDoubleTreeMap tAirMap = new InterpolatingDoubleTreeMap();
+
+    // Distance, tAir
+    static {
+      tAirMap.put(2.20, 1.3);
+      tAirMap.put(2.59, 1.26);
+      tAirMap.put(3.03, 1.16);
+      tAirMap.put(3.39, 1.2);
+      tAirMap.put(3.88, 1.1);
+      tAirMap.put(4.39, 1.21);
+    }
   }
 
   public static class FieldConstants {

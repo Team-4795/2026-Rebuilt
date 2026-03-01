@@ -354,6 +354,67 @@ public class Drive extends SubsystemBase {
     return distance;
   }
 
+  public double getTurretOffsettedDistanceToHub() {
+    double tAir = 1.2;
+    Pose2d robotPose = getPose();
+    Pose2d targetPose = StateManager.getInstance().getTargetPose();
+    Translation2d turretPose =
+        robotPose.getTranslation().plus(TurretConstants.OFFSET.rotateBy(robotPose.getRotation()));
+
+    ChassisSpeeds fieldRelative =
+        ChassisSpeeds.fromRobotRelativeSpeeds(getChassisSpeeds(), robotPose.getRotation());
+
+    double omega = getChassisSpeeds().omegaRadiansPerSecond;
+
+    double velocityXOffset = fieldRelative.vxMetersPerSecond * tAir;
+    double velocityYOffset = fieldRelative.vyMetersPerSecond * tAir;
+
+    double omegaXOffset =
+        -omega * TurretConstants.OFFSET.rotateBy(robotPose.getRotation()).getY() * 0;
+    double omegaYOffset =
+        omega * TurretConstants.OFFSET.rotateBy(robotPose.getRotation()).getX() * 0;
+
+    Pose2d offsettedTarget =
+        new Pose2d(
+            targetPose.getX() - velocityXOffset + omegaXOffset,
+            targetPose.getY() - velocityYOffset + omegaYOffset,
+            new Rotation2d());
+
+    double distance = turretPose.getDistance(offsettedTarget.getTranslation());
+    return distance;
+  }
+
+    public double getTurretOffsettedDistanceToHub2() {
+    double tAir = getTurretDistanceToHub();
+    Pose2d robotPose = getPose();
+    Pose2d targetPose = StateManager.getInstance().getTargetPose();
+    Translation2d turretPose =
+        robotPose.getTranslation().plus(TurretConstants.OFFSET.rotateBy(robotPose.getRotation()));
+
+    ChassisSpeeds fieldRelative =
+        ChassisSpeeds.fromRobotRelativeSpeeds(getChassisSpeeds(), robotPose.getRotation());
+
+    double omega = getChassisSpeeds().omegaRadiansPerSecond;
+
+    double velocityXOffset = fieldRelative.vxMetersPerSecond * tAir;
+    double velocityYOffset = fieldRelative.vyMetersPerSecond * tAir;
+
+    double omegaXOffset =
+        -omega * TurretConstants.OFFSET.rotateBy(robotPose.getRotation()).getY() * 0;
+    double omegaYOffset =
+        omega * TurretConstants.OFFSET.rotateBy(robotPose.getRotation()).getX() * 0;
+
+    Pose2d offsettedTarget =
+        new Pose2d(
+            targetPose.getX() - velocityXOffset + omegaXOffset,
+            targetPose.getY() - velocityYOffset + omegaYOffset,
+            new Rotation2d());
+
+    double distance = turretPose.getDistance(offsettedTarget.getTranslation());
+    return distance;
+  }
+
+
   public double getPoseDistanceToHub() {
     Translation2d robotPose = getPose().getTranslation();
     Translation2d hubPose = StateManager.getInstance().getTargetPose().getTranslation();
