@@ -11,7 +11,7 @@ public class TurretConstants {
   // Margin for ready to shoot command
   public static final double marginOfError = 0.01;
 
-  public static final double kP = 3;
+  public static final double kP = 6;
   public static final double kI = 0;
   public static final double kD = 0;
   public static final double kV = 5.8;
@@ -28,7 +28,7 @@ public class TurretConstants {
   public static final double maxJerk = 0;
   public static final int CAN_ID = 14;
 
-  public static boolean canMove = false;
+  public static boolean canMove = true;
 
   public static final double gearing = 60;
   public static final Translation2d OFFSET = new Translation2d(-0.152, -0.165);

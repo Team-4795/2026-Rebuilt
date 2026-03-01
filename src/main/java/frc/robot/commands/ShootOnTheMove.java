@@ -14,9 +14,11 @@ import org.littletonrobotics.junction.Logger;
 public class ShootOnTheMove extends Command {
   private final Turret turret;
   private final Drive drive;
+  private final StateManager stateManager;
   Pose2d robotPose;
   Pose2d hub = StateManager.getInstance().getTargetPose();
   Pose2d offsetHub;
+  Pose2d targetPose;
   Translation2d turretOffsetPose = TurretConstants.OFFSET;
   Translation2d turretPose;
   double deltaX = 0;
@@ -34,18 +36,22 @@ public class ShootOnTheMove extends Command {
   double tLat; // time for indexer to actually shoot out a ball (latency)
   ChassisSpeeds fieldRelative;
 
-  public ShootOnTheMove(Drive drive, Turret turret) {
+  public ShootOnTheMove(Drive drive, Turret turret, StateManager manager) {
     this.drive = drive;
     this.turret = turret;
+    this.stateManager = manager;
     addRequirements(turret);
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+    targetPose = stateManager.getTargetPose();
+  }
 
   @Override
   public void execute() {
     robotPose = drive.getPose();
+    targetPose = stateManager.getTargetPose();
     turretPose =
         robotPose.getTranslation().plus(turretOffsetPose.rotateBy(robotPose.getRotation()));
     hub = StateManager.getInstance().getTargetPose();
@@ -67,22 +73,23 @@ public class ShootOnTheMove extends Command {
     // drive.getChassisSpeeds().omegaRadiansPerSecond * tAir;
 
     // cross product here pretty sure this is the same thing as trig above.
-    omegaXOffset = -omega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY();
-    omegaYOffset = omega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX();
+    omegaXOffset = -omega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * 0;
+    omegaYOffset = omega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX() * 0;
 
     offsetHub =
         new Pose2d(
-            hub.getX() - velocityXOffset - omegaXOffset,
-            hub.getY() - velocityYOffset - omegaYOffset,
+            targetPose.getX() + velocityXOffset + omegaXOffset,
+            targetPose.getY() + velocityYOffset + omegaYOffset,
             new Rotation2d());
 
-    deltaX = offsetHub.getX() - turretPose.getX();
-    deltaY = offsetHub.getY() - turretPose.getY();
+    deltaX = targetPose.getX() - turretPose.getX() + velocityXOffset;
+    deltaY = targetPose.getY() - turretPose.getY() + velocityYOffset;
 
     turretAngle =
         (Math.atan2(deltaY, deltaX) - robotPose.getRotation().getRadians()) / (2 * Math.PI);
     turretAngle -= TurretConstants.angleOffset;
     desiredRot = (((turretAngle % 1.0) + 1.0) % 1.0);
+
     turret.setGoal(desiredRot);
 
     Logger.recordOutput("Shoot on move At Hub/Hub Pose", hub);

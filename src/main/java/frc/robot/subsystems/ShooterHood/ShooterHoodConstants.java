@@ -36,8 +36,16 @@ public final class ShooterHoodConstants {
   // distance, rotations
   static {
     // shooterHoodMap.put(4.250619, -0.06); need rps of 63 as well
-    shooterHoodMap.put(3.680411, -0.04);
-    shooterHoodMap.put(3.08628, -0.03);
-    shooterHoodMap.put(2.408265, -0.017);
+    // shooterHoodMap.put(3.680411, -0.04);
+    // shooterHoodMap.put(3.08628, -0.03);
+    // shooterHoodMap.put(2.408265, -0.017);
+    shooterHoodMap.put(4.83, -0.068);
+    shooterHoodMap.put(4.33, -0.067);
+    shooterHoodMap.put(3.8, -0.06);
+    shooterHoodMap.put(3.24, -0.049);
+    shooterHoodMap.put(2.75, -0.0375);
+    shooterHoodMap.put(2.23, -0.025);
+    shooterHoodMap.put(1.754, -0.014);
+    shooterHoodMap.put(1.16, -0.01);
   }
 }

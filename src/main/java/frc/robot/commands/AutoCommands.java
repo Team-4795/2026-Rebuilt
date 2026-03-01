@@ -7,6 +7,7 @@ import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployConstants;
 import frc.robot.subsystems.Shooter.Shooter;
+import frc.robot.subsystems.Shooter.ShooterConstants;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.ShooterHood.ShooterHoodConstants;
 import frc.robot.subsystems.StateManager.StateManager;
@@ -25,11 +26,11 @@ public class AutoCommands {
   private AutoCommands() {}
 
   public static Command retractIntake() {
-    return Commands.runOnce(() -> deploy.setGoal(IntakeDeployConstants.deployOffset - 0.05));
+    return Commands.runOnce(() -> deploy.setGoal(IntakeDeployConstants.deployOffset));
   }
 
   public static Command deployIntake() {
-    return Commands.runOnce(() -> deploy.setGoal(0));
+    return Commands.runOnce(() -> deploy.setGoal(-0.045));
   }
 
   public static Command agitateIntake() {
@@ -51,7 +52,23 @@ public class AutoCommands {
   public static Command autoScore() {
     return Commands.parallel(turretAimAtTarget(), setShooterHoodDynamic())
         .alongWith(
-            Commands.startEnd(() -> shooter.setVelocityRPS(60), () -> shooter.setVelocityRPS(0)));
+            Commands.startEnd(
+                () ->
+                    shooter.setVelocityRPS(
+                        ShooterConstants.shooterMap.get(
+                            Drive.getInstance().getTurretDistanceToHub())),
+                () -> shooter.setVelocityRPS(0)));
+  }
+
+  public static Command movingAlign() {
+    return Commands.parallel(shootOnTheMove(), setShooterHoodDynamic())
+        .alongWith(
+            Commands.startEnd(
+                () ->
+                    shooter.setVelocityRPS(
+                        ShooterConstants.shooterMap.get(
+                            Drive.getInstance().getTurretDistanceToHub())),
+                () -> shooter.setVelocityRPS(0)));
   }
 
   public static Command shoot() {
@@ -93,6 +110,10 @@ public class AutoCommands {
     return new AimAtTarget(drive, turret, StateManager.getInstance());
   }
 
+  public static Command shootOnTheMove() {
+    return new ShootOnTheMove(drive, turret, StateManager.getInstance());
+  }
+
   public static Command underTrenchAssist() {
     return new UnderTrench();
   }
@@ -118,6 +139,10 @@ public class AutoCommands {
 
   // Angle shooter hood based on interpolation tree
   public static Command setShooterHoodDynamic() {
-    return Commands.run(() -> hood.setGoalDynamic());
+    return Commands.run(
+        () ->
+            hood.setGoal(
+                ShooterHoodConstants.shooterHoodMap.get(
+                    Drive.getInstance().getTurretDistanceToHub())));
   }
 }

@@ -21,7 +21,6 @@ import frc.robot.subsystems.Intake.IntakeIOReal;
 import frc.robot.subsystems.Intake.IntakeIOSim;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployIO;
-import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOReal;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOSim;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterIO;
@@ -34,6 +33,7 @@ import frc.robot.subsystems.ShooterHood.ShooterHoodIOSim;
 import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretIO;
+import frc.robot.subsystems.Turret.TurretIOReal;
 import frc.robot.subsystems.Turret.TurretIOSim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
@@ -78,11 +78,11 @@ public class RobotContainer {
   // private final Trigger zeroDrivebase = m_driverController.y();
 
   // Testing Bindings
-  private final Trigger intakeButton = m_driverController.rightBumper();
+  private final Trigger intakeButton = m_driverController.leftTrigger();
   private final Trigger reverseIntake = m_operatorController.rightTrigger();
   private final Trigger zeroButton = m_operatorController.x();
 
-  private final Trigger autoScore = m_driverController.leftTrigger();
+  private final Trigger autoScore = m_driverController.rightBumper();
   private final Trigger shoot = m_driverController.rightTrigger();
   private final Trigger autoTrench = m_driverController.leftBumper();
   private final Trigger configure = m_driverController.povDown();
@@ -108,10 +108,10 @@ public class RobotContainer {
     switch (Constants.currentMode) {
       case REAL:
         intake = Intake.initialize(new IntakeIOReal());
-        deploy = IntakeDeploy.initialize(new IntakeDeployIOReal());
+        deploy = IntakeDeploy.initialize(new IntakeDeployIOSim());
         shooter = Shooter.initialize(new ShooterIOReal());
         indexer = Indexer.initialize(new IndexerIOReal());
-        turret = Turret.initialize(new TurretIOSim());
+        turret = Turret.initialize(new TurretIOReal());
         shooterHood = ShooterHood.initialize(new ShooterHoodIOReal());
         drive =
             Drive.initialize(
@@ -182,20 +182,17 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureTestingButtons() {
-    // drive.setDefaultCommand(
-    //     DriveCommands.joystickDrive(
-    //         drive,
-    //         () -> -m_driverController.getLeftY(),
-    //         () -> -m_driverController.getLeftX(),
-    //         () -> -m_driverController.getRightX()));
+    drive.setDefaultCommand(
+        DriveCommands.joystickDrive(
+            drive,
+            () -> -m_driverController.getLeftY(),
+            () -> -m_driverController.getLeftX(),
+            () -> -m_driverController.getRightX()));
 
     intakeButton.whileTrue(AutoCommands.intake());
-    reverseIntake.whileTrue(AutoCommands.reverseIntake());
+    reverseIntake.whileTrue(AutoCommands.movingAlign());
 
-    autoScore.whileTrue(
-        Commands.startEnd(
-            () -> shooter.setVelocityRPS(ShooterHoodIOReal.shooterRPS.get()), // ShooterIOReal.shooterRPS.get()
-            () -> shooter.setVelocityRPS(0)));
+    autoScore.whileTrue(AutoCommands.autoScore());
 
     // autoScore.whileTrue(AutoCommands.autoScore());
 
@@ -203,11 +200,11 @@ public class RobotContainer {
 
     autoTrench.whileTrue(AutoCommands.underTrenchAssist());
 
-    configure.onTrue(Commands.sequence(Commands.runOnce(() -> shooter.configure())));
+    configure.onTrue(Commands.sequence(Commands.runOnce(() -> turret.configure())));
 
     zeroButton.onTrue(AutoCommands.zeroSequence());
 
-    agitateIntake.whileTrue(AutoCommands.agitateIntake());
+    // agitateIntake.whileTrue(AutoCommands.deployIntake());
 
     retractIntake.whileTrue(AutoCommands.retractIntake());
 
