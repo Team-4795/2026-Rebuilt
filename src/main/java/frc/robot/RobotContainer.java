@@ -193,13 +193,14 @@ public class RobotContainer {
 
     autoScore.whileTrue(AutoCommands.autoScore());
 
-    reverseIntake.whileTrue(AutoCommands.movingAlign()
-        .alongWith(
-            DriveCommands.joystickDrive(
-                drive,
-                  () -> -m_driverController.getLeftY() / 2.0,
-                  () -> -m_driverController.getLeftX() / 2.0,
-                  () -> -m_driverController.getRightX() / 2.0)));
+    reverseIntake.whileTrue(
+        AutoCommands.movingAlign()
+            .alongWith(
+                DriveCommands.joystickDrive(
+                    drive,
+                    () -> -m_driverController.getLeftY() / 2.0,
+                    () -> -m_driverController.getLeftX() / 2.0,
+                    () -> -m_driverController.getRightX() / 2.0)));
 
     // autoScore.whileTrue(AutoCommands.autoScore());
 

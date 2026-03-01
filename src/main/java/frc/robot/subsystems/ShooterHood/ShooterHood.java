@@ -42,7 +42,7 @@ public class ShooterHood extends SubsystemBase {
     // Set goal if outside the box
     if (StateManager.getInstance().canHoodMove()) {
       io.setGoal(
-          ShooterHoodConstants.shooterHoodMap.get(Drive.getInstance().getTurretDistanceToHub()));
+          ShooterHoodConstants.shooterHoodHubMap.get(Drive.getInstance().getTurretDistanceToHub()));
     } else {
       io.setGoal(0);
     }
