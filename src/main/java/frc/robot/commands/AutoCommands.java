@@ -11,7 +11,7 @@ import frc.robot.subsystems.Shooter.ShooterConstants;
 import frc.robot.subsystems.Shooter.ShooterIOReal;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.ShooterHood.ShooterHoodConstants;
-import frc.robot.subsystems.ShooterHood.ShooterHoodIOReal;
+import frc.robot.subsystems.StateManager.State;
 import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.drive.Drive;
@@ -57,10 +57,8 @@ public class AutoCommands {
   }
 
   public static Command interpolationMapTesting() {
-    return Commands.parallel(
-        turretAimAtTarget(),
-        setShooterRPS(ShooterIOReal.shooterRPS.get()));
-    }
+    return Commands.parallel(turretAimAtTarget(), setShooterRPS(ShooterIOReal.shooterRPS.get()));
+  }
 
   public static Command movingAlign() {
     return Commands.parallel(
@@ -82,7 +80,7 @@ public class AutoCommands {
   public static Command zeroSequence() { // if it doesn't work check the motor limits
     return Commands.parallel(
         Commands.sequence(
-            Commands.runOnce(() -> turret.setVoltage(-3), turret),
+            Commands.runOnce(() -> turret.setVoltage(3), turret),
             Commands.waitSeconds(1), // change
             Commands.runOnce(() -> turret.zero(), turret),
             Commands.runOnce(() -> turret.setVoltage(0), turret)),
@@ -130,21 +128,36 @@ public class AutoCommands {
 
   // Rev shooter wheels based on interpolation tree
   public static Command setShooterVelocityDynamic() {
-    return Commands.startEnd(
-        () ->
-            shooter.setVelocityRPS(
-                ShooterConstants.shooterVelocityHubMap.get(
-                    Drive.getInstance().getTurretDistanceToHub())),
-        () -> shooter.setVelocityRPS(0));
+    return Commands.either(
+        Commands.startEnd(
+            () ->
+                shooter.setVelocityRPS(
+                    ShooterConstants.shooterVelocityHubMap.get(
+                        Drive.getInstance().getTurretDistanceToHub())),
+            () -> shooter.setVelocityRPS(0)),
+        Commands.startEnd(
+            () ->
+                shooter.setVelocityRPS(
+                    ShooterConstants.shooterVelocityShuttlingMap.get(
+                        Drive.getInstance().getTurretDistanceToHub())),
+            () -> shooter.setVelocityRPS(0)),
+        () -> StateManager.getInstance().getState().equals(State.SHOOTING));
   }
 
   // Angle shooter hood based on interpolation tree
   public static Command setShooterHoodDynamic() {
-    return Commands.run(
-        () ->
-            hood.setGoal(
-                ShooterHoodConstants.shooterHoodHubMap.get(
-                    Drive.getInstance().getTurretDistanceToHub())));
+    return Commands.either(
+        Commands.run(
+            () ->
+                hood.setGoal(
+                    ShooterHoodConstants.shooterHoodHubMap.get(
+                        Drive.getInstance().getTurretDistanceToHub()))),
+        Commands.run(
+            () ->
+                hood.setGoal(
+                    ShooterHoodConstants.shooterHoodShuttlingMap.get(
+                        Drive.getInstance().getTurretDistanceToHub()))),
+        () -> StateManager.getInstance().getState().equals(State.SHOOTING));
   }
 
   public static Command setShooterVelocityDynamicSOTM() {

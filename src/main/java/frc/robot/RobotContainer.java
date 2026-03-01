@@ -194,9 +194,7 @@ public class RobotContainer {
 
     intakeButton.whileTrue(AutoCommands.intake());
 
-    autoScore.whileTrue(
-        AutoCommands.interpolationMapTesting()
-            .alongWith(Commands.run(() -> shooterHood.setGoal(ShooterHoodIOReal.hoodAngle.get()))));
+    autoScore.whileTrue(AutoCommands.autoScore());
 
     sotm.whileTrue(
         AutoCommands.movingAlign()

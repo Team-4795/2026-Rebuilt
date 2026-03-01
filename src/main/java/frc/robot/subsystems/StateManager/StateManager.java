@@ -80,6 +80,15 @@ public class StateManager extends SubsystemBase {
     this.state = state;
   }
 
+  public double distanceToTarget() {
+    Pose2d robotPose = Drive.getInstance().getPose();
+
+    Translation2d turretPose =
+        robotPose.getTranslation().plus(TurretConstants.OFFSET.rotateBy(robotPose.getRotation()));
+
+    return getTargetPose().getTranslation().getDistance(turretPose);
+  }
+
   public Pose2d getTargetPose() {
     // Mirror pose if Red Alliance
     if (alliance != null && alliance.equals(Alliance.Red)) {
@@ -161,6 +170,8 @@ public class StateManager extends SubsystemBase {
 
     Logger.recordOutput("State Manager/State", state);
     Logger.recordOutput("State Manager/State Target", getTargetPose());
+
+    Logger.recordOutput("State Manager/Distance to Target", distanceToTarget());
   }
 
   // Update zone based off the closest trench and robot velocity

@@ -9,7 +9,7 @@ public final class ShooterConstants {
   public static final int CURRENT_LIMIT = 120;
 
   public static final double minVel = 0.0;
-  public static final double maxVel = 75.0;
+  public static final double maxVel = 100.0;
 
   // Margin for ready to shoot command
   public static final double marginOfError = 1.0;
@@ -47,6 +47,8 @@ public final class ShooterConstants {
     shooterVelocityHubMap.put(4.83, 70.0);
 
     // Shuttling
-    shooterVelocityShuttlingMap.put(0.0, 0.0);
+    shooterVelocityShuttlingMap.put(5.246212, 70.0);
+    shooterVelocityShuttlingMap.put(6.479048, 73.0);
+    shooterVelocityShuttlingMap.put(7.329184, 78.0);
   }
 }
