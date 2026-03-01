@@ -36,7 +36,7 @@ public class ShootOnTheMove extends Command {
   double tAir = 1; // calculate this with utility class or interpolating tree
   double tLat; // time for indexer to actually shoot out a ball (latency)
   ChassisSpeeds fieldRelative;
-  double iterativeDistance = 0; 
+  double iterativeDistance = 0;
 
   public ShootOnTheMove(Drive drive, Turret turret, StateManager manager) {
     this.drive = drive;
@@ -61,24 +61,27 @@ public class ShootOnTheMove extends Command {
     fieldRelative =
         ChassisSpeeds.fromRobotRelativeSpeeds(drive.getChassisSpeeds(), robotPose.getRotation());
 
-    for(int i = 0; i < 20; i++) {
+    velocityOmega = drive.getChassisSpeeds().omegaRadiansPerSecond;
+
+    for (int i = 0; i < 20; i++) {
       tAir = Constants.InterpolatingTree.tAirMap.get(iterativeDistance);
 
       velocityXOffset = fieldRelative.vxMetersPerSecond * tAir;
       velocityYOffset = fieldRelative.vyMetersPerSecond * tAir;
 
+      omegaXOffset =
+          -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
+      omegaYOffset =
+          velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX() * tAir;
+
       offsettedTarget =
-        new Pose2d(
-            targetPose.getX() - velocityXOffset + omegaXOffset,
-            targetPose.getY() - velocityYOffset + omegaYOffset,
-            new Rotation2d());
+          new Pose2d(
+              targetPose.getX() - velocityXOffset - omegaXOffset,
+              targetPose.getY() - velocityYOffset - omegaYOffset,
+              new Rotation2d());
 
       iterativeDistance = offsettedTarget.getTranslation().getDistance(turretPose);
     }
-    double omega = drive.getChassisSpeeds().omegaRadiansPerSecond;
-
-    omegaXOffset = -omega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * 0;
-    omegaYOffset = omega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX() * 0;
 
     deltaX = offsettedTarget.getX() - turretPose.getX();
     deltaY = offsettedTarget.getY() - turretPose.getY();

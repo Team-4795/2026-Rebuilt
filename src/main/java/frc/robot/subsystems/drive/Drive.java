@@ -384,7 +384,7 @@ public class Drive extends SubsystemBase {
     return distance;
   }
 
-    public double getTurretOffsettedDistanceToHub2() {
+  public double getTurretOffsettedDistanceToHub2() {
     double tAir = getTurretDistanceToHub();
     Pose2d robotPose = getPose();
     Pose2d targetPose = StateManager.getInstance().getTargetPose();
@@ -413,7 +413,6 @@ public class Drive extends SubsystemBase {
     double distance = turretPose.getDistance(offsettedTarget.getTranslation());
     return distance;
   }
-
 
   public double getPoseDistanceToHub() {
     Translation2d robotPose = getPose().getTranslation();
