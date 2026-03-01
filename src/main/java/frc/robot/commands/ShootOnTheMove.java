@@ -17,8 +17,8 @@ public class ShootOnTheMove extends Command {
   private final StateManager stateManager;
   Pose2d robotPose;
   Pose2d hub = StateManager.getInstance().getTargetPose();
-  Pose2d offsetHub;
   Pose2d targetPose;
+  Pose2d offsettedTarget;
   Translation2d turretOffsetPose = TurretConstants.OFFSET;
   Translation2d turretPose;
   double deltaX = 0;
@@ -54,7 +54,6 @@ public class ShootOnTheMove extends Command {
     targetPose = stateManager.getTargetPose();
     turretPose =
         robotPose.getTranslation().plus(turretOffsetPose.rotateBy(robotPose.getRotation()));
-    hub = StateManager.getInstance().getTargetPose();
 
     fieldRelative =
         ChassisSpeeds.fromRobotRelativeSpeeds(drive.getChassisSpeeds(), robotPose.getRotation());
@@ -76,14 +75,14 @@ public class ShootOnTheMove extends Command {
     omegaXOffset = -omega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * 0;
     omegaYOffset = omega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX() * 0;
 
-    offsetHub =
+    offsettedTarget =
         new Pose2d(
-            targetPose.getX() + velocityXOffset + omegaXOffset,
-            targetPose.getY() + velocityYOffset + omegaYOffset,
+            targetPose.getX() - velocityXOffset + omegaXOffset,
+            targetPose.getY() - velocityYOffset + omegaYOffset,
             new Rotation2d());
 
-    deltaX = targetPose.getX() - turretPose.getX() + velocityXOffset;
-    deltaY = targetPose.getY() - turretPose.getY() + velocityYOffset;
+    deltaX = offsettedTarget.getX() - turretPose.getX();
+    deltaY = offsettedTarget.getY() - turretPose.getY();
 
     turretAngle =
         (Math.atan2(deltaY, deltaX) - robotPose.getRotation().getRadians()) / (2 * Math.PI);
@@ -93,7 +92,7 @@ public class ShootOnTheMove extends Command {
     turret.setGoal(desiredRot);
 
     Logger.recordOutput("Shoot on move At Hub/Hub Pose", hub);
-    Logger.recordOutput("Shoot on move At Hub/Desired Hub", offsetHub);
+    Logger.recordOutput("Shoot on move At Hub/Desired Hub", offsettedTarget);
 
     Logger.recordOutput("Shoot on move At Hub/Desired Rotation", desiredRot);
     Logger.recordOutput("Shoot on move At Hub/ XOffset", deltaX);
