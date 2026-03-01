@@ -21,6 +21,7 @@ import frc.robot.subsystems.Intake.IntakeIOReal;
 import frc.robot.subsystems.Intake.IntakeIOSim;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployIO;
+import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOReal;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOSim;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterIO;
@@ -79,7 +80,8 @@ public class RobotContainer {
 
   // Testing Bindings
   private final Trigger intakeButton = m_driverController.leftTrigger();
-  private final Trigger reverseIntake = m_operatorController.rightTrigger();
+
+  private final Trigger sotm = m_operatorController.rightTrigger();
   private final Trigger zeroButton = m_operatorController.x();
 
   private final Trigger autoScore = m_driverController.rightBumper();
@@ -87,9 +89,10 @@ public class RobotContainer {
   private final Trigger autoTrench = m_driverController.leftBumper();
   private final Trigger configure = m_driverController.povDown();
 
-  private final Trigger agitateIntake = m_driverController.povUp();
+  private final Trigger agitateIntake = m_driverController.x();
 
   private final Trigger retractIntake = m_driverController.povLeft();
+  private final Trigger deployIntake = m_driverController.povUp();
 
   // private final Trigger shooterButton = m_operatorController.a();
 
@@ -108,7 +111,7 @@ public class RobotContainer {
     switch (Constants.currentMode) {
       case REAL:
         intake = Intake.initialize(new IntakeIOReal());
-        deploy = IntakeDeploy.initialize(new IntakeDeployIOSim());
+        deploy = IntakeDeploy.initialize(new IntakeDeployIOReal());
         shooter = Shooter.initialize(new ShooterIOReal());
         indexer = Indexer.initialize(new IndexerIOReal());
         turret = Turret.initialize(new TurretIOReal());
@@ -120,7 +123,7 @@ public class RobotContainer {
                 new ModuleIOSparkFlex(1),
                 new ModuleIOSparkFlex(2),
                 new ModuleIOSparkFlex(3));
-        vision = Vision.initialize(new VisionIOReal(0), new VisionIOReal(1), new VisionIOReal(2));
+        vision = Vision.initialize(new VisionIOReal(0), new VisionIOReal(1));
         break;
 
       case SIM:
@@ -191,9 +194,11 @@ public class RobotContainer {
 
     intakeButton.whileTrue(AutoCommands.intake());
 
-    autoScore.whileTrue(AutoCommands.autoScore());
+    autoScore.whileTrue(
+        AutoCommands.interpolationMapTesting()
+            .alongWith(Commands.run(() -> shooterHood.setGoal(ShooterHoodIOReal.hoodAngle.get()))));
 
-    reverseIntake.whileTrue(
+    sotm.whileTrue(
         AutoCommands.movingAlign()
             .alongWith(
                 DriveCommands.joystickDrive(
@@ -212,9 +217,11 @@ public class RobotContainer {
 
     zeroButton.onTrue(AutoCommands.zeroSequence());
 
-    // agitateIntake.whileTrue(AutoCommands.deployIntake());
+    agitateIntake.whileTrue(AutoCommands.agitateIntake());
 
     retractIntake.whileTrue(AutoCommands.retractIntake());
+
+    deployIntake.whileTrue(AutoCommands.deployIntake());
 
     // retractIntake.whileTrue(
     //     Commands.startEnd(

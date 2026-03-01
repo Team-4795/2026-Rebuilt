@@ -42,7 +42,7 @@ public class UnderTrench extends Command {
 
     translationConstraints =
         new TrapezoidProfile.Constraints(drive.getMaxLinearSpeedMetersPerSec(), 10);
-    translationController = new ProfiledPIDController(1, 0, 0, translationConstraints);
+    translationController = new ProfiledPIDController(2, 0, 0, translationConstraints);
   }
 
   @Override
@@ -70,7 +70,16 @@ public class UnderTrench extends Command {
 
   @Override
   public void execute() {
-    targetTranslation = currentPose.getTranslation().nearest(FieldConstants.trenchList);
+    Translation2d nearestTrench = currentPose.getTranslation().nearest(FieldConstants.trenchList);
+
+    if (nearestTrench.equals(Constants.FieldConstants.redLeftTrench)
+        || nearestTrench.equals(Constants.FieldConstants.blueRightTrench)) {
+      targetRotation = -Math.PI / 2.0;
+      targetTranslation = nearestTrench.plus(new Translation2d(0, 0.06));
+    } else {
+      targetRotation = Math.PI / 2.0;
+      targetTranslation = nearestTrench.plus(new Translation2d(0, -0.06));
+    }
 
     robotY = drive.getPose().getY();
     targetY = targetTranslation.getY();
@@ -84,12 +93,6 @@ public class UnderTrench extends Command {
     double drivePIDOutput = translationController.calculate(distance, 0);
     double driveVel = mult * (translationController.getSetpoint().velocity + drivePIDOutput);
 
-    double driveRotation = currentPose.getRotation().getRadians();
-    if (Math.abs(Math.PI / 2.0 - driveRotation) < Math.abs(-Math.PI / 2.0 - driveRotation)) {
-      targetRotation = Math.PI / 2.0;
-    } else {
-      targetRotation = -Math.PI / 2.0;
-    }
     double rotationPIDOutput =
         rotationController.calculate(
             MathUtil.angleModulus(currentPose.getRotation().getRadians()), targetRotation);
@@ -109,12 +112,6 @@ public class UnderTrench extends Command {
         ChassisSpeeds.fromFieldRelativeSpeeds(
             speeds,
             isFlipped ? drive.getRotation().plus(new Rotation2d(Math.PI)) : drive.getRotation()));
-
-    /*
-    Logger.recordOutput("Velocity Setpoint", translationController.getSetpoint().velocity);
-    Logger.recordOutput("Position Setpoint", translationController.getSetpoint().position);
-    Logger.recordOutput("PID Output", drivePIDOutput);
-    */
   }
 
   // private double scalar(double distance) {

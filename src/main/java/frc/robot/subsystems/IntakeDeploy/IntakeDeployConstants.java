@@ -11,14 +11,14 @@ public class IntakeDeployConstants {
   // PLACEHOLDERS
   public static final double deployMaxAngle = 0.15;
   public static final double deployMinAngle = 0.35;
-  public static final double stowPosition = -0.079863;
 
+  public static final double stowPosition = -0.014;
   public static final double deployOffset = 0.327884;
 
   public static final double MAX_VELOCITY = 3;
   public static final double MAX_ACCELERATION = 3;
 
-  public static final double kP = 2;
+  public static final double kP = 3;
   public static final double kI = 0.0;
   public static final double kD = 0.0;
 

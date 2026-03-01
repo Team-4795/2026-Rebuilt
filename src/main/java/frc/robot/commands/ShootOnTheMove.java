@@ -66,8 +66,8 @@ public class ShootOnTheMove extends Command {
     for (int i = 0; i < 20; i++) {
       tAir = Constants.InterpolatingTree.tAirMap.get(iterativeDistance);
 
-      velocityXOffset = fieldRelative.vxMetersPerSecond * tAir;
-      velocityYOffset = fieldRelative.vyMetersPerSecond * tAir;
+      velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * 0.85;
+      velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * 0.85;
 
       omegaXOffset =
           -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;

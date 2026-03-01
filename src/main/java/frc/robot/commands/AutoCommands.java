@@ -8,8 +8,10 @@ import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployConstants;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterConstants;
+import frc.robot.subsystems.Shooter.ShooterIOReal;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.ShooterHood.ShooterHoodConstants;
+import frc.robot.subsystems.ShooterHood.ShooterHoodIOReal;
 import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.drive.Drive;
@@ -26,18 +28,18 @@ public class AutoCommands {
   private AutoCommands() {}
 
   public static Command retractIntake() {
-    return Commands.runOnce(() -> deploy.setGoal(IntakeDeployConstants.deployOffset));
+    return Commands.runOnce(() -> deploy.setGoal(IntakeDeployConstants.deployOffset - 0.05));
   }
 
   public static Command deployIntake() {
-    return Commands.runOnce(() -> deploy.setGoal(-0.045));
+    return Commands.runOnce(() -> deploy.setGoal(IntakeDeployConstants.stowPosition));
   }
 
   public static Command agitateIntake() {
     return Commands.repeatingSequence(
-        Commands.runOnce(() -> deploy.setGoal(0.15), deploy),
+        Commands.runOnce(() -> deploy.setGoal(0.2), deploy),
         Commands.waitSeconds(0.5),
-        Commands.runOnce(() -> deploy.setGoal(0)),
+        Commands.runOnce(() -> deploy.setGoal(IntakeDeployConstants.stowPosition)),
         Commands.waitSeconds(0.5));
   }
 
@@ -53,6 +55,12 @@ public class AutoCommands {
     return Commands.parallel(
         turretAimAtTarget(), setShooterHoodDynamic(), setShooterVelocityDynamic());
   }
+
+  public static Command interpolationMapTesting() {
+    return Commands.parallel(
+        turretAimAtTarget(),
+        setShooterRPS(ShooterIOReal.shooterRPS.get()));
+    }
 
   public static Command movingAlign() {
     return Commands.parallel(
