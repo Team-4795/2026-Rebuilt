@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.subsystems.StateManager.State;
 import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretConstants;
@@ -63,6 +64,7 @@ public class ShootOnTheMove extends Command {
 
     velocityOmega = drive.getChassisSpeeds().omegaRadiansPerSecond;
 
+    if(StateManager.getInstance().getState() == State.SHOOTING) {
     for (int i = 0; i < 20; i++) {
       tAir = Constants.InterpolatingTree.tAirMap.get(iterativeDistance);
 
@@ -82,7 +84,19 @@ public class ShootOnTheMove extends Command {
 
       iterativeDistance = offsettedTarget.getTranslation().getDistance(turretPose);
     }
+    } else {
+      tAir = 1.5; 
+            omegaXOffset =
+          -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
+      omegaYOffset =
+          velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX() * tAir;
 
+      offsettedTarget =
+          new Pose2d(
+              targetPose.getX() - velocityXOffset - omegaXOffset,
+              targetPose.getY() - velocityYOffset - omegaYOffset,
+              new Rotation2d());
+    }
     deltaX = offsettedTarget.getX() - turretPose.getX();
     deltaY = offsettedTarget.getY() - turretPose.getY();
 
