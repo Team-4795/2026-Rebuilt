@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.Indexer.Indexer;
@@ -220,6 +221,12 @@ public class RobotContainer {
     retractIntake.whileTrue(AutoCommands.retractIntake());
 
     deployIntake.whileTrue(AutoCommands.deployIntake());
+
+    m_operatorController.povUp().whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kForward)));
+    m_operatorController.povDown().whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kReverse)));
+    m_operatorController.povLeft().whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kForward)));
+    m_operatorController.povRight().whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kReverse)));
+
 
     // retractIntake.whileTrue(
     //     Commands.startEnd(
