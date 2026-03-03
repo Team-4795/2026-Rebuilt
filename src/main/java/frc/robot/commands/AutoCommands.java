@@ -117,13 +117,17 @@ public class AutoCommands {
         () -> shooter.setVelocityRPS(RPS), () -> shooter.setVelocityRPS(0), shooter);
   }
 
-  public static Command setHoodAngle(double angle) {
+  public static Command setHoodAngle() {
     return Commands.run(
         () ->
             hood.setGoal(
                 ShooterHoodConstants.shooterHoodHubMap.get(
                     Drive.getInstance().getTurretDistanceToHub())),
         hood);
+  }
+
+  public static Command setHoodAngle(double angle) {
+    return Commands.runOnce(() -> hood.setGoal(angle), hood);
   }
 
   // Rev shooter wheels based on interpolation tree

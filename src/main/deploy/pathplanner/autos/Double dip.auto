@@ -108,6 +108,12 @@
         {
           "type": "named",
           "data": {
+            "name": "Zero Hood Angle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Deploy Intake"
           }
         },
@@ -191,7 +197,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Testing Hood"
+                        "name": "Shooter Hood Angle"
                       }
                     }
                   ]
