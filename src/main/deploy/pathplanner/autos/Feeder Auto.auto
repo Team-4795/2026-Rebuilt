@@ -5,12 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "Deploy Intake"
-          }
-        },
-        {
           "type": "deadline",
           "data": {
             "commands": [
@@ -69,28 +63,9 @@
                       }
                     },
                     {
-                      "type": "sequential",
-                      "data": {
-                        "commands": [
-                          {
-                            "type": "wait",
-                            "data": {
-                              "waitTime": 5.0
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "Retract Intake"
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
                       "type": "named",
                       "data": {
-                        "name": "Align Hub"
+                        "name": "Testing Hood"
                       }
                     },
                     {
@@ -147,7 +122,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Align Hub"
+                        "name": "Testing Hood"
                       }
                     },
                     {
