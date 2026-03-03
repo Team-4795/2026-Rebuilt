@@ -69,6 +69,25 @@
                       }
                     },
                     {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 3.0
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Retract Intake"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
                       "type": "named",
                       "data": {
                         "name": "Align Hub"
@@ -84,6 +103,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Deploy Intake"
           }
         },
         {
@@ -139,6 +164,25 @@
                       }
                     },
                     {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 3.0
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Retract Intake"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
                       "type": "named",
                       "data": {
                         "name": "Align Hub"
@@ -147,7 +191,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Shooter Hood Angle"
+                        "name": "Testing Hood"
                       }
                     }
                   ]

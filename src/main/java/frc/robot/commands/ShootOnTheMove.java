@@ -64,29 +64,29 @@ public class ShootOnTheMove extends Command {
 
     velocityOmega = drive.getChassisSpeeds().omegaRadiansPerSecond;
 
-    if(StateManager.getInstance().getState() == State.SHOOTING) {
-    for (int i = 0; i < 20; i++) {
-      tAir = Constants.InterpolatingTree.tAirMap.get(iterativeDistance);
+    if (StateManager.getInstance().getState() == State.SHOOTING) {
+      for (int i = 0; i < 20; i++) {
+        tAir = Constants.InterpolatingTree.tAirMap.get(iterativeDistance);
 
-      velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * 0.85;
-      velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * 0.85;
+        velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * 0.85;
+        velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * 0.85;
 
-      omegaXOffset =
-          -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
-      omegaYOffset =
-          velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX() * tAir;
+        omegaXOffset =
+            -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
+        omegaYOffset =
+            velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX() * tAir;
 
-      offsettedTarget =
-          new Pose2d(
-              targetPose.getX() - velocityXOffset - omegaXOffset,
-              targetPose.getY() - velocityYOffset - omegaYOffset,
-              new Rotation2d());
+        offsettedTarget =
+            new Pose2d(
+                targetPose.getX() - velocityXOffset - omegaXOffset,
+                targetPose.getY() - velocityYOffset - omegaYOffset,
+                new Rotation2d());
 
-      iterativeDistance = offsettedTarget.getTranslation().getDistance(turretPose);
-    }
+        iterativeDistance = offsettedTarget.getTranslation().getDistance(turretPose);
+      }
     } else {
-      tAir = 1.5; 
-            omegaXOffset =
+      tAir = 1.5;
+      omegaXOffset =
           -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
       omegaYOffset =
           velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX() * tAir;

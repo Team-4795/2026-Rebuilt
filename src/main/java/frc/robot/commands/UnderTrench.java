@@ -87,8 +87,8 @@ public class UnderTrench extends Command {
 
     double driveHeading = currentPose.getRotation().getRadians();
 
-    if (Math.abs(driveHeading - 0) < Math.abs(driveHeading - Math.PI) && 
-        Math.abs(driveHeading - 0) < Math.abs(driveHeading + Math.PI) ) {
+    if (Math.abs(driveHeading - 0) < Math.abs(driveHeading - Math.PI)
+        && Math.abs(driveHeading - 0) < Math.abs(driveHeading + Math.PI)) {
       targetRotation = 0;
     } else {
       targetRotation = Math.PI;

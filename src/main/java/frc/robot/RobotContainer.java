@@ -222,11 +222,18 @@ public class RobotContainer {
 
     deployIntake.whileTrue(AutoCommands.deployIntake());
 
-    m_operatorController.povUp().whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kForward)));
-    m_operatorController.povDown().whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kReverse)));
-    m_operatorController.povLeft().whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kForward)));
-    m_operatorController.povRight().whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kReverse)));
-
+    m_operatorController
+        .povUp()
+        .whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kForward)));
+    m_operatorController
+        .povDown()
+        .whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kReverse)));
+    m_operatorController
+        .povLeft()
+        .whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kForward)));
+    m_operatorController
+        .povRight()
+        .whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kReverse)));
 
     // retractIntake.whileTrue(
     //     Commands.startEnd(
