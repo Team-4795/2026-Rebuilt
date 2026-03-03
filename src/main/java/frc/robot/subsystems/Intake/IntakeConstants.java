@@ -4,7 +4,7 @@ public class IntakeConstants {
   public static final int canIDIntakeA = 18;
   public static final int canIDIntakeB = 20;
   public static final int PWMPort = 0; // or 9
-  public static final int PWMPort2 = 1; 
+  public static final int PWMPort2 = 1;
 
   public static final int CURRENT_LIMIT = 40;
 

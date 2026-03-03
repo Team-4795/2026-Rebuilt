@@ -1,6 +1,5 @@
 package frc.robot.subsystems.Intake;
 
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkFlex;
 import edu.wpi.first.wpilibj.motorcontrol.PWMTalonFX;
 
 public class IntakeIOReal implements IntakeIO {

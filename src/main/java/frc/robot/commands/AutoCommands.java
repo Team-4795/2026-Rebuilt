@@ -44,11 +44,11 @@ public class AutoCommands {
   }
 
   public static Command intake() {
-    return Commands.run(() -> intake.setIntakeVoltage(-12), intake);
+    return Commands.run(() -> intake.setIntakeVoltage(12), intake);
   }
 
   public static Command reverseIntake() {
-    return Commands.run(() -> intake.setIntakeVoltage(12), intake);
+    return Commands.run(() -> intake.setIntakeVoltage(-12), intake);
   }
 
   public static Command autoScore() {
