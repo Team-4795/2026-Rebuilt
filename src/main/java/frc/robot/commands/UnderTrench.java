@@ -16,7 +16,7 @@ import frc.robot.Constants.FieldConstants;
 import frc.robot.subsystems.drive.Drive;
 
 public class UnderTrench extends Command {
-  private Drive drive = Drive.getInstance();
+  private Drive drive;
   private CommandXboxController driverController;
 
   private ProfiledPIDController rotationController;
@@ -35,14 +35,17 @@ public class UnderTrench extends Command {
 
   private double targetRotation;
 
-  public UnderTrench() {
+  public UnderTrench(Drive drive) {
+    this.drive = drive;
     driverController = Constants.OIConstants.driverController;
     rotationConstraints = new TrapezoidProfile.Constraints(drive.getMaxAngularSpeedRadPerSec(), 40);
-    rotationController = new ProfiledPIDController(3, 0, 0.1, rotationConstraints);
+    rotationController = new ProfiledPIDController(2, 0, 0.1, rotationConstraints);
 
     translationConstraints =
         new TrapezoidProfile.Constraints(drive.getMaxLinearSpeedMetersPerSec(), 10);
-    translationController = new ProfiledPIDController(2, 0, 0, translationConstraints);
+    translationController = new ProfiledPIDController(0.5, 0, 0, translationConstraints);
+
+    addRequirements(drive);
   }
 
   @Override
@@ -70,17 +73,6 @@ public class UnderTrench extends Command {
 
   @Override
   public void execute() {
-    Translation2d nearestTrench = currentPose.getTranslation().nearest(FieldConstants.trenchList);
-
-    if (nearestTrench.equals(Constants.FieldConstants.redLeftTrench)
-        || nearestTrench.equals(Constants.FieldConstants.blueRightTrench)) {
-      targetRotation = -Math.PI / 2.0;
-      targetTranslation = nearestTrench.plus(new Translation2d(0, 0.06));
-    } else {
-      targetRotation = Math.PI / 2.0;
-      targetTranslation = nearestTrench.plus(new Translation2d(0, -0.06));
-    }
-
     robotY = drive.getPose().getY();
     targetY = targetTranslation.getY();
 
@@ -92,6 +84,15 @@ public class UnderTrench extends Command {
     // double scalar = scalar(distance);
     double drivePIDOutput = translationController.calculate(distance, 0);
     double driveVel = mult * (translationController.getSetpoint().velocity + drivePIDOutput);
+
+    double driveHeading = currentPose.getRotation().getRadians();
+
+    if (Math.abs(driveHeading - 0) < Math.abs(driveHeading - Math.PI) && 
+        Math.abs(driveHeading - 0) < Math.abs(driveHeading + Math.PI) ) {
+      targetRotation = 0;
+    } else {
+      targetRotation = Math.PI;
+    }
 
     double rotationPIDOutput =
         rotationController.calculate(

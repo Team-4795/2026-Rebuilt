@@ -109,7 +109,7 @@ public class AutoCommands {
   }
 
   public static Command underTrenchAssist() {
-    return new UnderTrench();
+    return new UnderTrench(drive);
   }
 
   public static Command setShooterRPS(double RPS) {
