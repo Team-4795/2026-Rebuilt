@@ -53,6 +53,6 @@ public final class ShooterHoodConstants {
     shooterHoodShuttlingMap.put(6.4790482, -0.08);
     shooterHoodShuttlingMap.put(7.329184, -0.085);
     //guessed 
-    shooterHoodShuttlingMap.put(10, -0.095)
+    shooterHoodShuttlingMap.put(10, -0.09)
   }
 }
