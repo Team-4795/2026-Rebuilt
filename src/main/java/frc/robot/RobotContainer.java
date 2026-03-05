@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.DrivebaseAlign;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerIO;
 import frc.robot.subsystems.Indexer.IndexerIOReal;
@@ -290,6 +291,8 @@ public class RobotContainer {
 
     m_operatorController.a().whileTrue(AutoCommands.zeroSequence());
     m_operatorController.b().onTrue(Commands.runOnce(() -> turret.lockTurret(), turret));
+
+    m_operatorController.rightBumper().whileTrue(new DrivebaseAlign());
 
     // add climber here
     // m_operatorController.povUp().whileTrue(Comamnds.startEnd(() -> ))

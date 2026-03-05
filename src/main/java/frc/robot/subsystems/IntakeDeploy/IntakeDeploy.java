@@ -1,7 +1,10 @@
 package frc.robot.subsystems.IntakeDeploy;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.OIConstants;
 import org.littletonrobotics.junction.Logger;
 
 public class IntakeDeploy extends SubsystemBase {
@@ -28,6 +31,20 @@ public class IntakeDeploy extends SubsystemBase {
         Commands.run(
             () -> {
               io.updateMotionProfile();
+
+              double up =
+                  MathUtil.applyDeadband(
+                      OIConstants.operatorController.getRightTriggerAxis(),
+                      OIConstants.kAxisDeadband);
+              double down =
+                  MathUtil.applyDeadband(
+                      OIConstants.operatorController.getLeftTriggerAxis(),
+                      OIConstants.kAxisDeadband);
+
+              double change = 0.01 * (Math.pow(up, 3) - Math.pow(down, 3));
+              if (DriverStation.isTeleop()) {
+                setGoal(inputs.deployMotorGoal + change);
+              }
             },
             this));
   }
