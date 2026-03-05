@@ -198,15 +198,6 @@ public class RobotContainer {
 
     autoScore.whileTrue(AutoCommands.autoScore());
 
-    sotm.whileTrue(
-        AutoCommands.movingAlign()
-            .alongWith(
-                DriveCommands.joystickDrive(
-                    drive,
-                    () -> -m_driverController.getLeftY() / 2.0,
-                    () -> -m_driverController.getLeftX() / 2.0,
-                    () -> -m_driverController.getRightX() / 2.0)));
-
     // autoScore.whileTrue(AutoCommands.autoScore());
 
     shoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
@@ -280,12 +271,12 @@ public class RobotContainer {
             () -> -m_driverController.getRightX()));
 
     // retract intake
-    m_driverController.leftBumper().whileTrue(Commands.runOnce(() -> deploy.setGoal(0)));
+    m_driverController.leftBumper().whileTrue(AutoCommands.underTrenchAssist());
     m_driverController.leftTrigger().whileTrue(AutoCommands.intake());
     m_driverController
-        .rightTrigger()
-        .whileTrue(
-            AutoCommands.turretAimAtTarget().alongWith(Commands.runOnce(() -> drive.stopWithX())));
+        .a().whileTrue(AutoCommands.shoot().alongWith(Commands.run(() -> drive.stopWithX())));
+    m_driverController.rightTrigger().whileTrue(AutoCommands.shoot());
+
     m_driverController.x().whileTrue(Commands.runOnce(() -> vision.toggleShouldUpdate()));
     m_driverController.y().onTrue(Commands.runOnce(() -> drive.zeroHeading()));
 
@@ -293,6 +284,15 @@ public class RobotContainer {
     m_operatorController.b().onTrue(Commands.runOnce(() -> turret.lockTurret(), turret));
 
     m_operatorController.rightBumper().whileTrue(new DrivebaseAlign());
+
+    m_driverController.rightBumper().whileTrue(
+        AutoCommands.movingAlign()
+            .alongWith(
+                DriveCommands.joystickDrive(
+                    drive,
+                    () -> -m_driverController.getLeftY() / 2.0,
+                    () -> -m_driverController.getLeftX() / 2.0,
+                    () -> -m_driverController.getRightX() / 2.0)));
 
     // add climber here
     // m_operatorController.povUp().whileTrue(Comamnds.startEnd(() -> ))

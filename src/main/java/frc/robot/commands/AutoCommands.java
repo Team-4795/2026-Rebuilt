@@ -81,17 +81,17 @@ public class AutoCommands {
     return Commands.parallel(
         Commands.sequence(
             Commands.runOnce(() -> turret.setVoltage(3), turret),
-            Commands.waitSeconds(1), // change
+            Commands.waitSeconds(1.5), // change
             Commands.runOnce(() -> turret.zero(), turret),
             Commands.runOnce(() -> turret.setVoltage(0), turret)),
         Commands.sequence(
             Commands.runOnce(() -> hood.setVoltage(3), hood),
-            Commands.waitSeconds(1), // change
+            Commands.waitSeconds(1.5), // change
             Commands.runOnce(() -> hood.zero(), hood),
             Commands.runOnce(() -> hood.setVoltage(0), hood)),
         Commands.sequence(
             Commands.runOnce(() -> deploy.setDeployVoltage(3), deploy),
-            Commands.waitSeconds(1),
+            Commands.waitSeconds(1.5),
             Commands.runOnce(() -> deploy.setDeployVoltage(0), deploy),
             Commands.runOnce(() -> deploy.zero(), deploy)));
   }
