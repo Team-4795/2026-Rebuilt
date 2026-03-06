@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
-import frc.robot.commands.DrivebaseAlign;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerIO;
 import frc.robot.subsystems.Indexer.IndexerIOReal;
@@ -198,6 +197,15 @@ public class RobotContainer {
 
     autoScore.whileTrue(AutoCommands.autoScore());
 
+    // sotm.whileTrue(
+    //     AutoCommands.movingAlign()
+    //         .alongWith(
+    //             DriveCommands.joystickDrive(
+    //                 drive,
+    //                 () -> -m_driverController.getLeftY() / 2.0,
+    //                 () -> -m_driverController.getLeftX() / 2.0,
+    //                 () -> -m_driverController.getRightX() / 2.0)));
+
     // autoScore.whileTrue(AutoCommands.autoScore());
 
     shoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
@@ -271,28 +279,17 @@ public class RobotContainer {
             () -> -m_driverController.getRightX()));
 
     // retract intake
-    m_driverController.leftBumper().whileTrue(AutoCommands.underTrenchAssist());
+    m_driverController.leftBumper().whileTrue(Commands.runOnce(() -> deploy.setGoal(0)));
     m_driverController.leftTrigger().whileTrue(AutoCommands.intake());
     m_driverController
-        .a().whileTrue(AutoCommands.shoot().alongWith(Commands.run(() -> drive.stopWithX())));
-    m_driverController.rightTrigger().whileTrue(AutoCommands.shoot());
-
+        .rightTrigger()
+        .whileTrue(
+            AutoCommands.turretAimAtTarget().alongWith(Commands.runOnce(() -> drive.stopWithX())));
     m_driverController.x().whileTrue(Commands.runOnce(() -> vision.toggleShouldUpdate()));
     m_driverController.y().onTrue(Commands.runOnce(() -> drive.zeroHeading()));
 
     m_operatorController.a().whileTrue(AutoCommands.zeroSequence());
     m_operatorController.b().onTrue(Commands.runOnce(() -> turret.lockTurret(), turret));
-
-    m_operatorController.rightBumper().whileTrue(new DrivebaseAlign());
-
-    m_driverController.rightBumper().whileTrue(
-        AutoCommands.movingAlign()
-            .alongWith(
-                DriveCommands.joystickDrive(
-                    drive,
-                    () -> -m_driverController.getLeftY() / 2.0,
-                    () -> -m_driverController.getLeftX() / 2.0,
-                    () -> -m_driverController.getRightX() / 2.0)));
 
     // add climber here
     // m_operatorController.povUp().whileTrue(Comamnds.startEnd(() -> ))

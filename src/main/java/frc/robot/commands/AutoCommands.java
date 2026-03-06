@@ -80,7 +80,7 @@ public class AutoCommands {
   public static Command zeroSequence() { // if it doesn't work check the motor limits
     return Commands.parallel(
         Commands.sequence(
-            Commands.runOnce(() -> turret.setVoltage(3), turret),
+            Commands.runOnce(() -> turret.setVoltage(-2), turret),
             Commands.waitSeconds(1.5), // change
             Commands.runOnce(() -> turret.zero(), turret),
             Commands.runOnce(() -> turret.setVoltage(0), turret)),
