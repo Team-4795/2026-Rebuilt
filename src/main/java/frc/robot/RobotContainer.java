@@ -169,7 +169,7 @@ public class RobotContainer {
     autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
 
     // Configure the trigger bindings
-    configureTestingButtons();
+    configureButtonBindings();
   }
 
   public boolean readyToShoot() {
@@ -278,18 +278,36 @@ public class RobotContainer {
             () -> -m_driverController.getLeftX(),
             () -> -m_driverController.getRightX()));
 
-    // retract intake
-    m_driverController.leftBumper().whileTrue(Commands.runOnce(() -> deploy.setGoal(0)));
+        sotm.whileTrue(
+        AutoCommands.movingAlign()
+            .alongWith(
+                DriveCommands.joystickDrive(
+                    drive,
+                    () -> -m_driverController.getLeftY() / 2.0,
+                    () -> -m_driverController.getLeftX() / 2.0,
+                    () -> -m_driverController.getRightX() / 3.0)));
+
+    m_driverController.leftBumper().whileTrue(AutoCommands.underTrenchAssist());
     m_driverController.leftTrigger().whileTrue(AutoCommands.intake());
-    m_driverController
-        .rightTrigger()
+    m_driverController.a()
         .whileTrue(
             AutoCommands.turretAimAtTarget().alongWith(Commands.runOnce(() -> drive.stopWithX())));
+
+
     m_driverController.x().whileTrue(Commands.runOnce(() -> vision.toggleShouldUpdate()));
     m_driverController.y().onTrue(Commands.runOnce(() -> drive.zeroHeading()));
 
     m_operatorController.a().whileTrue(AutoCommands.zeroSequence());
     m_operatorController.b().onTrue(Commands.runOnce(() -> turret.lockTurret(), turret));
+
+    m_operatorController.povLeft().whileTrue(AutoCommands.depoCornerAlign()); 
+    m_operatorController.povRight().whileTrue(AutoCommands.feederCornerAlign());
+
+    m_operatorController.povDown().whileTrue(AutoCommands.deployIntake()); 
+    m_operatorController.povUp().whileTrue(AutoCommands.retractIntake());
+
+
+
 
     // add climber here
     // m_operatorController.povUp().whileTrue(Comamnds.startEnd(() -> ))

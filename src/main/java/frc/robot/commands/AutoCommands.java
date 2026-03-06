@@ -14,6 +14,7 @@ import frc.robot.subsystems.ShooterHood.ShooterHoodConstants;
 import frc.robot.subsystems.StateManager.State;
 import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.Turret.Turret;
+import frc.robot.subsystems.Turret.TurretConstants;
 import frc.robot.subsystems.drive.Drive;
 
 public class AutoCommands {
@@ -181,4 +182,18 @@ public class AutoCommands {
                 ShooterHoodConstants.shooterHoodHubMap.get(
                     Drive.getInstance().getTurretOffsettedDistanceToHub())));
   }
+
+  public static Command feederCornerAlign() {
+    return Commands.parallel(
+      Commands.run(() -> turret.setGoal(TurretConstants.rightCornerSetpoint), turret), 
+      Commands.run(() -> shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(5.4))),
+      Commands.run(() -> hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(5.4))));
+}
+
+  public static Command depoCornerAlign() {
+    return Commands.parallel(
+      Commands.run(() -> turret.setGoal(TurretConstants.leftCornerSetpoint), turret), 
+      Commands.run(() -> shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(5.4))),
+      Commands.run(() -> hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(5.4))));
+}
 }
