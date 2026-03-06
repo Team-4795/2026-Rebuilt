@@ -10,7 +10,8 @@ public class NamedCommandManager {
     NamedCommands.registerCommand("Second Align", AutoCommands.autoScore());
     NamedCommands.registerCommand("Aim at Hub", AutoCommands.turretAimAtHub());
     NamedCommands.registerCommand("Intake", AutoCommands.intake());
-    NamedCommands.registerCommand("Shooter Hood Angle", AutoCommands.setShooterHoodDynamic());
+    NamedCommands.registerCommand(
+        "Shooter Hood Angle", AutoCommands.setShooterHoodDynamic().withTimeout(100));
     NamedCommands.registerCommand("Testing Hood", AutoCommands.setHoodAngle(-0.05));
     NamedCommands.registerCommand("Retract Intake", AutoCommands.retractIntake());
     NamedCommands.registerCommand("Deploy Intake", AutoCommands.deployIntake());
