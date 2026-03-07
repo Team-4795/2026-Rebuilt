@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.littletonrobotics.junction.LogFileUtil;
@@ -124,7 +126,64 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    String gameData;
+    double timeLeftinMatch;
+    Alliance ourAlliance;
+    boolean isActive;
+
+    gameData = DriverStation.getGameSpecificMessage();
+    timeLeftinMatch = DriverStation.getMatchTime();
+    ourAlliance = DriverStation.getAlliance().orElse(null);
+    isActive = false;
+
+    if (gameData != null && gameData.length() > 0) {
+      switch (gameData.charAt(0)) {
+          // Blue is inactive first
+        case 'B':
+          isActive = (ourAlliance != null && ourAlliance == Alliance.Red);
+          break;
+
+          // Red is inactive first
+        case 'R':
+          isActive = (ourAlliance != null && ourAlliance == Alliance.Blue);
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    // Transition Shift
+    if (timeLeftinMatch <= 140 && timeLeftinMatch > 130) {
+      Logger.recordOutput("isActive?", true);
+    }
+
+    // Shift One
+    else if (timeLeftinMatch <= 130 && timeLeftinMatch > 105) {
+      Logger.recordOutput("isActive?", isActive);
+    }
+
+    // Shift Two
+    else if (timeLeftinMatch <= 105 && timeLeftinMatch > 80) {
+      Logger.recordOutput("isActive?", !isActive);
+    }
+
+    // Shift Three
+    else if (timeLeftinMatch <= 80 && timeLeftinMatch > 55) {
+      Logger.recordOutput("isActive?", isActive);
+    }
+
+    // Shift Four
+    else if (timeLeftinMatch <= 55 && timeLeftinMatch > 30) {
+      Logger.recordOutput("isActive?", !isActive);
+    }
+
+    // Endgame
+    else if (timeLeftinMatch <= 30) {
+      Logger.recordOutput("isActive?", true);
+    }
+  }
 
   /** This function is called once when test mode is enabled. */
   @Override

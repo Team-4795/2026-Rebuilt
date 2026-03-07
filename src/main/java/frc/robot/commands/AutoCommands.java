@@ -72,6 +72,12 @@ public class AutoCommands {
         Commands.run(() -> indexer.setVoltageTower(-12)));
   }
 
+  public static Command reverseIndexer() {
+    return Commands.parallel(
+        Commands.run(() -> indexer.setVoltageIndexer(12)),
+        Commands.run(() -> indexer.setVoltageTower(12)));
+  }
+
   public static Command stopShoot() {
     return Commands.parallel(
         Commands.run(() -> indexer.setVoltageIndexer(0)),
@@ -185,15 +191,15 @@ public class AutoCommands {
 
   public static Command feederCornerAlign() {
     return Commands.parallel(
-      Commands.run(() -> turret.setGoal(TurretConstants.rightCornerSetpoint), turret), 
-      Commands.run(() -> shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(5.4))),
-      Commands.run(() -> hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(5.4))));
-}
+        Commands.run(() -> turret.setGoal(TurretConstants.rightCornerSetpoint), turret),
+        Commands.run(() -> shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(5.4))),
+        Commands.run(() -> hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(5.4))));
+  }
 
   public static Command depoCornerAlign() {
     return Commands.parallel(
-      Commands.run(() -> turret.setGoal(TurretConstants.leftCornerSetpoint), turret), 
-      Commands.run(() -> shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(5.4))),
-      Commands.run(() -> hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(5.4))));
-}
+        Commands.run(() -> turret.setGoal(TurretConstants.leftCornerSetpoint), turret),
+        Commands.run(() -> shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(5.4))),
+        Commands.run(() -> hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(5.4))));
+  }
 }
