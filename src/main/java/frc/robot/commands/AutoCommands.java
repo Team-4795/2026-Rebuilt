@@ -57,6 +57,10 @@ public class AutoCommands {
         turretAimAtTarget(), setShooterHoodDynamic(), setShooterVelocityDynamic());
   }
 
+  public static Command autoScoreInAuto() {
+    return Commands.parallel(turretAimAtTarget(), setShooterVelocityDynamic());
+  }
+
   public static Command interpolationMapTesting() {
     return Commands.parallel(turretAimAtTarget(), setShooterRPS(ShooterIOReal.shooterRPS.get()));
   }

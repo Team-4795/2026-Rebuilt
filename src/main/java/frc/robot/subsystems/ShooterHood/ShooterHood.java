@@ -26,9 +26,9 @@ public class ShooterHood extends SubsystemBase {
   private ShooterHood(ShooterHoodIO shooterHoodIO) {
     io = shooterHoodIO;
     io.updateInputs(inputs);
-    // setDefaultCommand(Commands.run(() -> setGoal(0), this));
+    // setDefaultCommand(Commands.run(() -> setGoal(inputs.goalRotations), this));
 
-    setDefaultCommand(Commands.run(() -> setGoal(inputs.goalRotations), this));
+    setDefaultCommand(Commands.run(() -> antiDecapitation(), this));
   }
 
   public void setGoal(double goal) {
@@ -36,6 +36,12 @@ public class ShooterHood extends SubsystemBase {
     if (StateManager.getInstance().canHoodMove()) {
       io.setGoal(goal);
     } else {
+      io.setGoal(0);
+    }
+  }
+
+  public void antiDecapitation() {
+    if (StateManager.getInstance().canHoodMove() == false) {
       io.setGoal(0);
     }
   }

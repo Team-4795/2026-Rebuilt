@@ -7,7 +7,7 @@ public class NamedCommandManager {
   public static void registerNamedCommands() {
     NamedCommands.registerCommand("Shoot", AutoCommands.shoot());
     NamedCommands.registerCommand("Align Hub", AutoCommands.autoScore());
-    NamedCommands.registerCommand("Second Align", AutoCommands.autoScore());
+    NamedCommands.registerCommand("Testing Hub Align", AutoCommands.autoScoreInAuto());
     NamedCommands.registerCommand("Aim at Hub", AutoCommands.turretAimAtHub());
     NamedCommands.registerCommand("Intake", AutoCommands.intake());
     NamedCommands.registerCommand(

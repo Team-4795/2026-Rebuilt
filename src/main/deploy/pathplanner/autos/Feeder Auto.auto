@@ -30,9 +30,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "Feeder Auto 2"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Feeder Auto 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
           }
         },
         {
@@ -56,7 +69,7 @@
                           {
                             "type": "wait",
                             "data": {
-                              "waitTime": 1.5
+                              "waitTime": 2.0
                             }
                           },
                           {
@@ -90,7 +103,20 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Align Hub"
+                        "name": "Testing Hub Align"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "deadline",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 12.0
                       }
                     },
                     {
@@ -147,7 +173,20 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Testing Hood"
+                        "name": "Align Hub"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "deadline",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 12.0
                       }
                     },
                     {

@@ -316,7 +316,7 @@ public class RobotContainer {
     m_operatorController.povUp().whileTrue(AutoCommands.retractIntake());
 
     m_operatorController
-        .rightTrigger()
+        .rightBumper()
         .whileTrue(AutoCommands.reverseIndexer())
         .onFalse(AutoCommands.stopShoot());
 
