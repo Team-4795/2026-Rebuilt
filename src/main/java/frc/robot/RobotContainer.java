@@ -124,7 +124,7 @@ public class RobotContainer {
                 new ModuleIOSparkFlex(1),
                 new ModuleIOSparkFlex(2),
                 new ModuleIOSparkFlex(3));
-        vision = Vision.initialize(new VisionIOReal(0), new VisionIOReal(1));
+        vision = Vision.initialize(new VisionIOReal(0), new VisionIOReal(1)); //, new VisionIOReal(2));
         break;
 
       case SIM:
