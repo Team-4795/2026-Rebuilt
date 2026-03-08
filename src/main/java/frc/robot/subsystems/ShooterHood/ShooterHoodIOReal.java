@@ -75,6 +75,7 @@ public class ShooterHoodIOReal implements ShooterHoodIO {
     motorConfig.MotionMagic.MotionMagicJerk = ShooterHoodConstants.maxJerk;
 
     shooterHoodMotor.getConfigurator().apply(motorConfig);
+    zero();
   }
 
   @Override
