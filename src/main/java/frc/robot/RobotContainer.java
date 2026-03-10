@@ -315,6 +315,8 @@ public class RobotContainer {
     m_operatorController.povDown().whileTrue(AutoCommands.deployIntake());
     m_operatorController.povUp().whileTrue(AutoCommands.retractIntake());
 
+    m_operatorController.leftTrigger().whileTrue(AutoCommands.reverseIntake());
+
     m_operatorController
         .rightTrigger()
         .whileTrue(AutoCommands.reverseIndexer())

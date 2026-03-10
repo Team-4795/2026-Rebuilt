@@ -202,4 +202,8 @@ public class AutoCommands {
         Commands.run(() -> shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(5.4))),
         Commands.run(() -> hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(5.4))));
   }
+
+  public static Command pleaseNoTouch() {
+    return new Everything(drive, turret, StateManager.getInstance(), shooter, hood);
+  }
 }
