@@ -61,9 +61,9 @@ public class Everything extends Command {
 
     turret.setGoal(desiredRot);
     shooter.setVelocityRPS(
-        ShooterConstants.shooterVelocityHubMap.get(drive.getTurretOffsettedDistanceToHub()));
+        ShooterConstants.shooterVelocityHubMap.get(drive.getTurretOffsettedDistanceToTarget()));
     hood.setGoal(
-        ShooterHoodConstants.shooterHoodHubMap.get(drive.getTurretOffsettedDistanceToHub()));
+        ShooterHoodConstants.shooterHoodHubMap.get(drive.getTurretOffsettedDistanceToTarget()));
 
     Logger.recordOutput("Aim At Hub/Hub Pose", targetPose);
     Logger.recordOutput("Aim At Hub/Desired Rotation", desiredRot);

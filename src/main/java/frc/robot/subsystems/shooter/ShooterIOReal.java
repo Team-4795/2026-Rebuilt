@@ -111,8 +111,9 @@ public class ShooterIOReal implements ShooterIO {
 
   @Override
   public boolean readyToShoot() {
-    return (Math.abs(getTopRPS() - getGoal()) < ShooterConstants.marginOfError)
-        && (Math.abs(getBottomRPS() - getGoal()) < ShooterConstants.marginOfError);
+    return (getGoal() != 0)
+        && (getTopRPS() > (getGoal() - 10))
+        && (getBottomRPS() > (getGoal() - 10));
   }
 
   @Override

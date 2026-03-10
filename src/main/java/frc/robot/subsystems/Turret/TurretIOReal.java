@@ -133,7 +133,7 @@ public class TurretIOReal implements TurretIO {
 
   @Override
   public boolean readyToShoot() {
-    return Math.abs(getPosition() - getGoal()) < TurretConstants.marginOfError;
+    return (Math.abs(getPosition() - getGoal()) < TurretConstants.marginOfError);
   }
 
   @Override

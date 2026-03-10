@@ -33,6 +33,7 @@ import frc.robot.subsystems.ShooterHood.ShooterHoodIO;
 import frc.robot.subsystems.ShooterHood.ShooterHoodIOReal;
 import frc.robot.subsystems.ShooterHood.ShooterHoodIOSim;
 import frc.robot.subsystems.StateManager.StateManager;
+import frc.robot.subsystems.StateManager.StateManager.OperationStates;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretIO;
 import frc.robot.subsystems.Turret.TurretIOReal;
@@ -172,8 +173,13 @@ public class RobotContainer {
     configureButtonBindings();
   }
 
-  public boolean readyToShoot() {
-    return shooter.readyToShoot() && shooterHood.readyToShoot() && turret.readyToShoot();
+  public Trigger readyToShoot() {
+    return new Trigger(
+        () -> shooter.readyToShoot() && shooterHood.readyToShoot() && turret.readyToShoot());
+  }
+
+  public Trigger inDecapitationZone() {
+    return new Trigger(() -> OperationStates.inDecapitationZone);
   }
 
   /**
@@ -282,13 +288,24 @@ public class RobotContainer {
     m_driverController
         .rightBumper()
         .whileTrue(
-            AutoCommands.movingAlign()
-                .alongWith(
-                    DriveCommands.joystickDrive(
-                        drive,
-                        () -> -m_driverController.getLeftY() / 2.0,
-                        () -> -m_driverController.getLeftX() / 2.0,
-                        () -> -m_driverController.getRightX() / 3.0)));
+            Commands.parallel(
+                AutoCommands.movingAlign(),
+                DriveCommands.joystickDrive(
+                    drive,
+                    () -> -m_driverController.getLeftY() / 2.0,
+                    () -> -m_driverController.getLeftX() / 2.0,
+                    () -> -m_driverController.getRightX() / 3.0)));
+
+    readyToShoot().whileTrue(AutoCommands.shoot());
+    readyToShoot().whileFalse(AutoCommands.stopShoot());
+
+    inDecapitationZone().whileTrue(Commands.run(() -> shooterHood.setGoal(0)));
+
+    // DriveCommands.joystickDrive(
+    //     drive,
+    //     () -> -m_driverController.getLeftY() / 2.0,
+    //     () -> -m_driverController.getLeftX() / 2.0,
+    //     () -> -m_driverController.getRightX() / 3.0)),
 
     m_driverController.leftBumper().whileTrue(AutoCommands.underTrenchAssist());
     m_driverController.leftTrigger().whileTrue(AutoCommands.intake());

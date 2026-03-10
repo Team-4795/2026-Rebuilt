@@ -129,7 +129,7 @@ public class AutoCommands {
         () ->
             hood.setGoal(
                 ShooterHoodConstants.shooterHoodHubMap.get(
-                    Drive.getInstance().getTurretDistanceToHub())),
+                    Drive.getInstance().getTurretDistanceToTarget())),
         hood);
   }
 
@@ -144,13 +144,13 @@ public class AutoCommands {
             () ->
                 shooter.setVelocityRPS(
                     ShooterConstants.shooterVelocityHubMap.get(
-                        Drive.getInstance().getTurretDistanceToHub())),
+                        Drive.getInstance().getTurretDistanceToTarget())),
             () -> shooter.setVelocityRPS(0)),
         Commands.startEnd(
             () ->
                 shooter.setVelocityRPS(
                     ShooterConstants.shooterVelocityShuttlingMap.get(
-                        Drive.getInstance().getTurretDistanceToHub())),
+                        Drive.getInstance().getTurretDistanceToTarget())),
             () -> shooter.setVelocityRPS(0)),
         () -> StateManager.getInstance().getState().equals(State.SHOOTING));
   }
@@ -162,12 +162,12 @@ public class AutoCommands {
             () ->
                 hood.setGoal(
                     ShooterHoodConstants.shooterHoodHubMap.get(
-                        Drive.getInstance().getTurretDistanceToHub()))),
+                        Drive.getInstance().getTurretDistanceToTarget()))),
         Commands.run(
             () ->
                 hood.setGoal(
                     ShooterHoodConstants.shooterHoodShuttlingMap.get(
-                        Drive.getInstance().getTurretDistanceToHub()))),
+                        Drive.getInstance().getTurretDistanceToTarget()))),
         () -> StateManager.getInstance().getState().equals(State.SHOOTING));
   }
 
@@ -176,7 +176,7 @@ public class AutoCommands {
         () ->
             shooter.setVelocityRPS(
                 ShooterConstants.shooterVelocityHubMap.get(
-                    Drive.getInstance().getTurretOffsettedDistanceToHub())),
+                    Drive.getInstance().getTurretOffsettedDistanceToTarget())),
         () -> shooter.setVelocityRPS(0));
   }
 
@@ -186,7 +186,7 @@ public class AutoCommands {
         () ->
             hood.setGoal(
                 ShooterHoodConstants.shooterHoodHubMap.get(
-                    Drive.getInstance().getTurretOffsettedDistanceToHub())));
+                    Drive.getInstance().getTurretOffsettedDistanceToTarget())));
   }
 
   public static Command feederCornerAlign() {

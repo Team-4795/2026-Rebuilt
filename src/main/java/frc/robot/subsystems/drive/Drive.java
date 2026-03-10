@@ -142,7 +142,7 @@ public class Drive extends SubsystemBase {
 
   @Override
   public void periodic() {
-    Logger.recordOutput("Distance to Hub", getTurretDistanceToHub());
+    Logger.recordOutput("Distance to Hub", getTurretDistanceToTarget());
     odometryLock.lock(); // Prevents odometry updates while reading data
     gyroIO.updateInputs(gyroInputs);
     Logger.processInputs("Drive/Gyro", gyroInputs);
@@ -345,16 +345,16 @@ public class Drive extends SubsystemBase {
     return maxSpeedMetersPerSec / driveBaseRadius;
   }
 
-  public double getTurretDistanceToHub() {
+  public double getTurretDistanceToTarget() {
     Translation2d robotPose = getPose().getTranslation();
     Translation2d turretPose =
         robotPose.plus(TurretConstants.OFFSET.rotateBy(getPose().getRotation()));
-    Translation2d hubPose = StateManager.getInstance().getTargetPose().getTranslation();
-    double distance = turretPose.getDistance(hubPose);
+    Translation2d target = StateManager.getInstance().getTargetPose().getTranslation();
+    double distance = turretPose.getDistance(target);
     return distance;
   }
 
-  public double getTurretOffsettedDistanceToHub() {
+  public double getTurretOffsettedDistanceToTarget() {
     double tAir = 1.2;
     Pose2d robotPose = getPose();
     Pose2d targetPose = StateManager.getInstance().getTargetPose();
@@ -384,40 +384,10 @@ public class Drive extends SubsystemBase {
     return distance;
   }
 
-  public double getTurretOffsettedDistanceToHub2() {
-    double tAir = getTurretDistanceToHub();
-    Pose2d robotPose = getPose();
-    Pose2d targetPose = StateManager.getInstance().getTargetPose();
-    Translation2d turretPose =
-        robotPose.getTranslation().plus(TurretConstants.OFFSET.rotateBy(robotPose.getRotation()));
-
-    ChassisSpeeds fieldRelative =
-        ChassisSpeeds.fromRobotRelativeSpeeds(getChassisSpeeds(), robotPose.getRotation());
-
-    double omega = getChassisSpeeds().omegaRadiansPerSecond;
-
-    double velocityXOffset = fieldRelative.vxMetersPerSecond * tAir;
-    double velocityYOffset = fieldRelative.vyMetersPerSecond * tAir;
-
-    double omegaXOffset =
-        -omega * TurretConstants.OFFSET.rotateBy(robotPose.getRotation()).getY() * 0;
-    double omegaYOffset =
-        omega * TurretConstants.OFFSET.rotateBy(robotPose.getRotation()).getX() * 0;
-
-    Pose2d offsettedTarget =
-        new Pose2d(
-            targetPose.getX() - velocityXOffset + omegaXOffset,
-            targetPose.getY() - velocityYOffset + omegaYOffset,
-            new Rotation2d());
-
-    double distance = turretPose.getDistance(offsettedTarget.getTranslation());
-    return distance;
-  }
-
-  public double getPoseDistanceToHub() {
+  public double getPoseDistanceToTarget() {
     Translation2d robotPose = getPose().getTranslation();
-    Translation2d hubPose = StateManager.getInstance().getTargetPose().getTranslation();
-    double distance = robotPose.getDistance(hubPose);
+    Translation2d target = StateManager.getInstance().getTargetPose().getTranslation();
+    double distance = robotPose.getDistance(target);
     return distance;
   }
 }

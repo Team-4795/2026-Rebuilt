@@ -9,7 +9,10 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
+import frc.robot.subsystems.Shooter.Shooter;
+import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.ShooterHood.ShooterHoodConstants;
+import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretConstants;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.util.Zone;
@@ -80,7 +83,7 @@ public class StateManager extends SubsystemBase {
     this.state = state;
   }
 
-  public double distanceToTarget() {
+  public double turretDistanceToTarget() {
     Pose2d robotPose = Drive.getInstance().getPose();
 
     Translation2d turretPose =
@@ -104,10 +107,6 @@ public class StateManager extends SubsystemBase {
 
   public boolean canTurretMove() {
     return (TurretConstants.canMove && getState() != State.SHUTTLING_DEAD_ZONE);
-  }
-
-  public boolean canHoodMove() {
-    return !OperationStates.inDecapitationZone;
   }
 
   @Override
@@ -171,7 +170,15 @@ public class StateManager extends SubsystemBase {
     Logger.recordOutput("State Manager/State", state);
     Logger.recordOutput("State Manager/State Target", getTargetPose());
 
-    Logger.recordOutput("State Manager/Distance to Target", distanceToTarget());
+    Logger.recordOutput("State Manager/Distance to Target", Drive.getInstance().getTurretDistanceToTarget());
+    Logger.recordOutput("State Manager/Distance to Offsetted Target", Drive.getInstance().getTurretOffsettedDistanceToTarget());
+
+
+    Logger.recordOutput(
+        "State Manager/Is Ready/Shooter Ready", Shooter.getInstance().readyToShoot());
+    Logger.recordOutput("State Manager/Is Ready/Turret Ready", Turret.getInstance().readyToShoot());
+    Logger.recordOutput(
+        "State Manager/Is Ready/Hood Ready", ShooterHood.getInstance().readyToShoot());
   }
 
   // Update zone based off the closest trench and robot velocity

@@ -2,7 +2,6 @@ package frc.robot.subsystems.ShooterHood;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.drive.Drive;
 import org.littletonrobotics.junction.Logger;
 
@@ -26,28 +25,19 @@ public class ShooterHood extends SubsystemBase {
   private ShooterHood(ShooterHoodIO shooterHoodIO) {
     io = shooterHoodIO;
     io.updateInputs(inputs);
+
     setDefaultCommand(Commands.run(() -> setGoal(0), this));
 
     // setDefaultCommand(Commands.run(() -> setGoal(inputs.goalRotations), this));
   }
 
   public void setGoal(double goal) {
-    // Don't raise hood if in decapitation zone
-    if (StateManager.getInstance().canHoodMove()) {
-      io.setGoal(goal);
-    } else {
-      io.setGoal(0);
-    }
+    io.setGoal(goal);
   }
 
   public void setGoalDynamic() {
-    // Set goal if outside the box
-    if (StateManager.getInstance().canHoodMove()) {
-      io.setGoal(
-          ShooterHoodConstants.shooterHoodHubMap.get(Drive.getInstance().getTurretDistanceToHub()));
-    } else {
-      io.setGoal(0);
-    }
+    io.setGoal(
+        ShooterHoodConstants.shooterHoodHubMap.get(Drive.getInstance().getTurretDistanceToTarget()));
   }
 
   public void zero() {

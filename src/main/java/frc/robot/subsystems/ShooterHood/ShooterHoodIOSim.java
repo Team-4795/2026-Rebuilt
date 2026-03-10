@@ -34,6 +34,11 @@ public class ShooterHoodIOSim implements ShooterHoodIO {
   }
 
   @Override
+  public double getGoal() {
+    return Units.radiansToRotations(goal.position);
+  }
+
+  @Override
   public void setVoltage(double volts) {
     shooterHoodSim.setInputVoltage(MathUtil.clamp(volts, -12, 12));
     this.voltage = volts;
@@ -58,14 +63,15 @@ public class ShooterHoodIOSim implements ShooterHoodIO {
 
   @Override
   public boolean readyToShoot() {
-    return Math.abs(getPosition() - getGoal()) < ShooterHoodConstants.marginOfError;
+    return (getGoal() != 0
+        && Math.abs(getPosition() - getGoal()) < ShooterHoodConstants.marginOfError);
   }
 
   @Override
   public void updateInputs(ShooterHoodIOInputs inputs) {
-    inputs.goalRotations = Units.radiansToRotations(goal.position);
+    inputs.goalRotations = getGoal();
     inputs.voltage = this.voltage;
-    inputs.position = shooterHoodSim.getAngularPositionRotations();
+    inputs.position = getPosition();
     inputs.velocityRPS = shooterHoodSim.getAngularVelocityRPM() / 60.0;
     inputs.current = shooterHoodSim.getCurrentDrawAmps();
 
