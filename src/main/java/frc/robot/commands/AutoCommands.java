@@ -103,10 +103,6 @@ public class AutoCommands {
             Commands.runOnce(() -> deploy.zero(), deploy)));
   }
 
-  public static Command turretAimAtHub() {
-    return new AimAtHub(drive, turret);
-  }
-
   public static Command turretAimAtTarget() {
     return new AimAtTarget(drive, turret, StateManager.getInstance());
   }

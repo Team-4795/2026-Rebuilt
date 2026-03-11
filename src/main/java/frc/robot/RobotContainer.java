@@ -76,8 +76,8 @@ public class RobotContainer {
   // Official Bindings
   private final Trigger sotm = m_driverController.rightBumper();
   private final Trigger autoTrench = m_driverController.leftBumper();
-  private final Trigger intakeButton = m_driverController.leftTrigger();
   private final Trigger shoot = m_driverController.rightTrigger();
+  private final Trigger intakeButton = m_driverController.leftTrigger();
   private final Trigger autoScore = m_driverController.a(); // No SOTM
   private final Trigger toggleVision = m_driverController.x();
   private final Trigger zeroDrive = m_driverController.y();
@@ -88,8 +88,9 @@ public class RobotContainer {
   private final Trigger feederCorner = m_operatorController.povRight();
   private final Trigger retractIntake = m_operatorController.povUp();
   private final Trigger deployIntake = m_operatorController.povDown();
-  private final Trigger reverseIntake = m_operatorController.leftTrigger();
-  private final Trigger reverseIndexer = m_operatorController.rightTrigger();
+  private final Trigger reverseIntake = m_operatorController.leftBumper();
+  private final Trigger reverseIndexer = m_operatorController.rightBumper();
+  // Operator Triggers already bound to manual intake deploy
 
   // Testing Bindings
   private final Trigger configure = m_driverController.povDown();

@@ -24,7 +24,7 @@ public final class ShooterConstants {
 
   public static final double RPS = 60;
 
-  public static final double GEARING = 20.0 / 36.0;
+  public static final double GEARING = 1.0;
 
   // motion magic constants
   public static final double MM_ACCELERATION = 999;
