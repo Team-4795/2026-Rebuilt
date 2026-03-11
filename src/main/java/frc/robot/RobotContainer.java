@@ -40,9 +40,7 @@ import frc.robot.subsystems.Turret.TurretIOReal;
 import frc.robot.subsystems.Turret.TurretIOSim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
-import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIOSim;
-import frc.robot.subsystems.drive.ModuleIOSparkFlex;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOReal;
@@ -74,9 +72,9 @@ public class RobotContainer {
       Constants.OIConstants.operatorController;
 
   // Official Bindings
-  private final Trigger sotm = m_driverController.rightBumper();
+  private final Trigger sotm = m_driverController.rightTrigger();
   private final Trigger autoTrench = m_driverController.leftBumper();
-  private final Trigger shoot = m_driverController.rightTrigger();
+  private final Trigger shoot = m_driverController.rightBumper();
   private final Trigger intakeButton = m_driverController.leftTrigger();
   private final Trigger autoScore = m_driverController.a(); // No SOTM
   private final Trigger toggleVision = m_driverController.x();
@@ -110,13 +108,20 @@ public class RobotContainer {
         indexer = Indexer.initialize(new IndexerIOReal());
         turret = Turret.initialize(new TurretIOReal());
         shooterHood = ShooterHood.initialize(new ShooterHoodIOReal());
+        // drive =
+        //     Drive.initialize(
+        //         new GyroIOPigeon2(),
+        //         new ModuleIOSparkFlex(0),
+        //         new ModuleIOSparkFlex(1),
+        //         new ModuleIOSparkFlex(2),
+        //         new ModuleIOSparkFlex(3));
         drive =
             Drive.initialize(
-                new GyroIOPigeon2(),
-                new ModuleIOSparkFlex(0),
-                new ModuleIOSparkFlex(1),
-                new ModuleIOSparkFlex(2),
-                new ModuleIOSparkFlex(3));
+                new GyroIO() {},
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim());
         vision = Vision.initialize(new VisionIOReal(0), new VisionIOReal(1));
         break;
 
@@ -197,7 +202,7 @@ public class RobotContainer {
 
     // autoScore.whileTrue(AutoCommands.autoScore());
 
-    shoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
+    // shoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
 
     autoTrench.whileTrue(AutoCommands.underTrenchAssist());
 
