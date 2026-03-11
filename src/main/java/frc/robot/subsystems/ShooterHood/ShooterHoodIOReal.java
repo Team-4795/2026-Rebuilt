@@ -106,8 +106,7 @@ public class ShooterHoodIOReal implements ShooterHoodIO {
 
   @Override
   public boolean readyToShoot() {
-    return (getGoal() != 0
-        && Math.abs(getPosition() - getGoal()) < ShooterHoodConstants.marginOfError);
+    return (getGoal() != 0 && Math.abs(getPosition() - getGoal()) < ShooterHoodConstants.marginOfError);
   }
 
   @Override

@@ -57,13 +57,13 @@ public class AutoCommands {
         turretAimAtTarget(), setShooterHoodDynamic(), setShooterVelocityDynamic());
   }
 
-  public static Command interpolationMapTesting() {
-    return Commands.parallel(turretAimAtTarget(), setShooterRPS(ShooterIOReal.shooterRPS.get()));
-  }
-
   public static Command movingAlign() {
     return Commands.parallel(
         shootOnTheMove(), setShooterHoodDynamicSOTM(), setShooterVelocityDynamicSOTM());
+  }
+
+  public static Command interpolationMapTesting() {
+    return Commands.parallel(turretAimAtTarget(), setShooterRPS(ShooterIOReal.shooterRPS.get()));
   }
 
   public static Command shoot() {
@@ -124,20 +124,11 @@ public class AutoCommands {
         () -> shooter.setVelocityRPS(RPS), () -> shooter.setVelocityRPS(0), shooter);
   }
 
-  public static Command setHoodAngle() {
-    return Commands.run(
-        () ->
-            hood.setGoal(
-                ShooterHoodConstants.shooterHoodHubMap.get(
-                    Drive.getInstance().getTurretDistanceToTarget())),
-        hood);
-  }
-
   public static Command setHoodAngle(double angle) {
     return Commands.runOnce(() -> hood.setGoal(angle), hood);
   }
 
-  // Rev shooter wheels based on interpolation tree
+  // Dynamic Interpolating Tree Commands
   public static Command setShooterVelocityDynamic() {
     return Commands.either(
         Commands.startEnd(
@@ -155,7 +146,6 @@ public class AutoCommands {
         () -> StateManager.getInstance().getState().equals(State.SHOOTING));
   }
 
-  // Angle shooter hood based on interpolation tree
   public static Command setShooterHoodDynamic() {
     return Commands.either(
         Commands.run(
@@ -171,24 +161,40 @@ public class AutoCommands {
         () -> StateManager.getInstance().getState().equals(State.SHOOTING));
   }
 
+  // SOTM Commands
   public static Command setShooterVelocityDynamicSOTM() {
-    return Commands.startEnd(
-        () ->
-            shooter.setVelocityRPS(
-                ShooterConstants.shooterVelocityHubMap.get(
-                    Drive.getInstance().getTurretOffsettedDistanceToTarget())),
-        () -> shooter.setVelocityRPS(0));
+    return Commands.either(
+        Commands.startEnd(
+            () ->
+                shooter.setVelocityRPS(
+                    ShooterConstants.shooterVelocityHubMap.get(
+                        Drive.getInstance().getTurretOffsettedDistanceToTarget())),
+            () -> shooter.setVelocityRPS(0)),
+        Commands.startEnd(
+            () ->
+                shooter.setVelocityRPS(
+                    ShooterConstants.shooterVelocityShuttlingMap.get(
+                        Drive.getInstance().getTurretOffsettedDistanceToTarget())),
+            () -> shooter.setVelocityRPS(0)),
+        () -> StateManager.getInstance().getState().equals(State.SHOOTING));
   }
 
-  // SOTM Hub instead
   public static Command setShooterHoodDynamicSOTM() {
-    return Commands.run(
-        () ->
-            hood.setGoal(
-                ShooterHoodConstants.shooterHoodHubMap.get(
-                    Drive.getInstance().getTurretOffsettedDistanceToTarget())));
+    return Commands.either(
+        Commands.run(
+            () ->
+                hood.setGoal(
+                    ShooterHoodConstants.shooterHoodHubMap.get(
+                        Drive.getInstance().getTurretOffsettedDistanceToTarget()))),
+        Commands.run(
+            () ->
+                hood.setGoal(
+                    ShooterHoodConstants.shooterHoodShuttlingMap.get(
+                        Drive.getInstance().getTurretOffsettedDistanceToTarget()))),
+        () -> StateManager.getInstance().getState().equals(State.SHOOTING));
   }
 
+  // Corner Setpoints
   public static Command feederCornerAlign() {
     return Commands.parallel(
         Commands.run(() -> turret.setGoal(TurretConstants.rightCornerSetpoint), turret),

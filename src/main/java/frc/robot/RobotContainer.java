@@ -74,35 +74,26 @@ public class RobotContainer {
       Constants.OIConstants.operatorController;
 
   // Official Bindings
-  // private final Trigger robotRelativeDrive = m_driverController.rightBumper();
-  // private final Trigger intakeButton = m_driverController.leftTrigger();
-  // private final Trigger autoScore = m_driverController.rightTrigger();
-  // private final Trigger visionOff = m_driverController.x();
-  // private final Trigger zeroDrivebase = m_driverController.y();
+  private final Trigger sotm = m_driverController.rightBumper();
+  private final Trigger autoTrench = m_driverController.leftBumper();
+  private final Trigger intakeButton = m_driverController.leftTrigger();
+  private final Trigger shoot = m_driverController.rightTrigger();
+  private final Trigger autoScore = m_driverController.a(); // No SOTM
+  private final Trigger toggleVision = m_driverController.x();
+  private final Trigger zeroDrive = m_driverController.y();
+
+  private final Trigger zeroButton = m_operatorController.a(); // Zero sequence
+  private final Trigger lockTurret = m_operatorController.b();
+  private final Trigger depoCorner = m_operatorController.povLeft();
+  private final Trigger feederCorner = m_operatorController.povRight();
+  private final Trigger retractIntake = m_operatorController.povUp();
+  private final Trigger deployIntake = m_operatorController.povDown();
+  private final Trigger reverseIntake = m_operatorController.leftTrigger();
+  private final Trigger reverseIndexer = m_operatorController.rightTrigger();
 
   // Testing Bindings
-  private final Trigger intakeButton = m_driverController.leftTrigger();
-
-  private final Trigger sotm = m_operatorController.rightTrigger();
-  private final Trigger zeroButton = m_operatorController.x();
-
-  private final Trigger autoScore = m_driverController.rightBumper();
-  private final Trigger shoot = m_driverController.rightTrigger();
-  private final Trigger autoTrench = m_driverController.leftBumper();
   private final Trigger configure = m_driverController.povDown();
-
   private final Trigger agitateIntake = m_driverController.x();
-
-  private final Trigger retractIntake = m_driverController.povLeft();
-  private final Trigger deployIntake = m_driverController.povUp();
-
-  // private final Trigger shooterButton = m_operatorController.a();
-
-  // private final Trigger turretOne = m_operatorController.povLeft();
-  // private final Trigger turretTwo = m_operatorController.povRight();
-
-  // private final Trigger shooterHoodOne = m_operatorController.povUp();
-  // private final Trigger shooterHoodTwo = m_driverController.povDown();
 
   private LoggedDashboardChooser<Command> autoChooser;
 
@@ -171,15 +162,6 @@ public class RobotContainer {
 
     // Configure the trigger bindings
     configureButtonBindings();
-  }
-
-  public Trigger readyToShoot() {
-    return new Trigger(
-        () -> shooter.readyToShoot() && shooterHood.readyToShoot() && turret.readyToShoot());
-  }
-
-  public Trigger inDecapitationZone() {
-    return new Trigger(() -> OperationStates.inDecapitationZone);
   }
 
   /**
@@ -277,6 +259,19 @@ public class RobotContainer {
   }
 
   public void configureButtonBindings() {
+    Trigger readyToShoot =
+        new Trigger(
+            () -> shooter.readyToShoot() && shooterHood.readyToShoot() && turret.readyToShoot());
+
+    Trigger inDecapitationZone = new Trigger(() -> OperationStates.inDecapitationZone);
+
+    // Auto shoot
+    readyToShoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
+
+    // Anti decapitation
+    inDecapitationZone.whileTrue(Commands.run(() -> shooterHood.setGoal(0)));
+
+    // Joystick drive
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
@@ -285,59 +280,53 @@ public class RobotContainer {
             () -> -m_driverController.getRightX()));
 
     // SOTM
-    m_driverController
-        .rightBumper()
-        .whileTrue(
-            Commands.parallel(
-                AutoCommands.movingAlign(),
-                DriveCommands.joystickDrive(
-                    drive,
-                    () -> -m_driverController.getLeftY() / 2.0,
-                    () -> -m_driverController.getLeftX() / 2.0,
-                    () -> -m_driverController.getRightX() / 3.0)));
+    sotm.whileTrue(
+        Commands.parallel(
+            AutoCommands.movingAlign(),
+            DriveCommands.joystickDrive(
+                drive,
+                () -> -m_driverController.getLeftY() / 2.0,
+                () -> -m_driverController.getLeftX() / 2.0,
+                () -> -m_driverController.getRightX() / 3.0)));
 
-    readyToShoot().whileTrue(AutoCommands.shoot());
-    readyToShoot().whileFalse(AutoCommands.stopShoot());
+    // Auto trench
+    autoTrench.whileTrue(AutoCommands.underTrenchAssist());
 
-    inDecapitationZone().whileTrue(Commands.run(() -> shooterHood.setGoal(0)));
+    // Intake
+    intakeButton.whileTrue(AutoCommands.intake());
 
-    // DriveCommands.joystickDrive(
-    //     drive,
-    //     () -> -m_driverController.getLeftY() / 2.0,
-    //     () -> -m_driverController.getLeftX() / 2.0,
-    //     () -> -m_driverController.getRightX() / 3.0)),
+    // Run Indexer
+    shoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
 
-    m_driverController.leftBumper().whileTrue(AutoCommands.underTrenchAssist());
-    m_driverController.leftTrigger().whileTrue(AutoCommands.intake());
+    // Auto Score (no SOTM)
+    autoScore.whileTrue(
+        AutoCommands.autoScore().alongWith(Commands.runOnce(() -> drive.stopWithX())));
 
-    m_driverController
-        .rightTrigger()
-        .whileTrue(AutoCommands.shoot())
-        .onFalse(AutoCommands.stopShoot());
+    // Toggle vision
+    toggleVision.whileTrue(Commands.runOnce(() -> vision.toggleShouldUpdate()));
 
-    // Auto Score
-    m_driverController
-        .a()
-        .whileTrue(AutoCommands.autoScore().alongWith(Commands.runOnce(() -> drive.stopWithX())));
+    // Zero drive
+    zeroDrive.onTrue(Commands.runOnce(() -> drive.zeroHeading()));
 
-    m_driverController.x().whileTrue(Commands.runOnce(() -> vision.toggleShouldUpdate()));
-    m_driverController.y().onTrue(Commands.runOnce(() -> drive.zeroHeading()));
+    // Zero Sequence
+    zeroButton.whileTrue(AutoCommands.zeroSequence());
 
-    m_operatorController.a().whileTrue(AutoCommands.zeroSequence());
-    m_operatorController.b().onTrue(Commands.runOnce(() -> turret.lockTurret(), turret));
+    // Lock turret
+    lockTurret.onTrue(Commands.runOnce(() -> turret.lockTurret(), turret));
 
-    m_operatorController.povLeft().whileTrue(AutoCommands.depoCornerAlign());
-    m_operatorController.povRight().whileTrue(AutoCommands.feederCornerAlign());
+    // Corner setpoints
+    depoCorner.whileTrue(AutoCommands.depoCornerAlign());
+    feederCorner.whileTrue(AutoCommands.feederCornerAlign());
 
-    m_operatorController.povDown().whileTrue(AutoCommands.deployIntake());
-    m_operatorController.povUp().whileTrue(AutoCommands.retractIntake());
+    // Deployable intake
+    deployIntake.whileTrue(AutoCommands.deployIntake());
+    retractIntake.whileTrue(AutoCommands.retractIntake());
 
-    m_operatorController.leftTrigger().whileTrue(AutoCommands.reverseIntake());
+    // Reverse intake
+    reverseIntake.whileTrue(AutoCommands.reverseIntake());
 
-    m_operatorController
-        .rightTrigger()
-        .whileTrue(AutoCommands.reverseIndexer())
-        .onFalse(AutoCommands.stopShoot());
+    // Reverse indexer
+    reverseIndexer.whileTrue(AutoCommands.reverseIndexer()).onFalse(AutoCommands.stopShoot());
 
     // add climber here
     // m_operatorController.povUp().whileTrue(Comamnds.startEnd(() -> ))

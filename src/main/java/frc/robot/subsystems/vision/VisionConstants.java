@@ -1,12 +1,12 @@
 package frc.robot.subsystems.vision;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
-import java.io.IOException;
 
 public class VisionConstants {
   // all placeholders
@@ -50,15 +50,10 @@ public class VisionConstants {
                 Units.degreesToRadians(0), Units.degreesToRadians(-20), Units.degreesToRadians(90)))
       };
 
-  // currently does not have 2026 field, check back when they update it
   public static AprilTagFieldLayout FIELD_LAYOUT;
 
   static {
-    try {
-      FIELD_LAYOUT = AprilTagFieldLayout.loadFromResource("/frc/robot/2026AprilTag.json");
-      FIELD_LAYOUT.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    FIELD_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark);
+    FIELD_LAYOUT.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
   }
 }

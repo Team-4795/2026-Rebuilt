@@ -83,15 +83,6 @@ public class StateManager extends SubsystemBase {
     this.state = state;
   }
 
-  public double turretDistanceToTarget() {
-    Pose2d robotPose = Drive.getInstance().getPose();
-
-    Translation2d turretPose =
-        robotPose.getTranslation().plus(TurretConstants.OFFSET.rotateBy(robotPose.getRotation()));
-
-    return getTargetPose().getTranslation().getDistance(turretPose);
-  }
-
   public Pose2d getTargetPose() {
     // Mirror pose if Red Alliance
     if (alliance != null && alliance.equals(Alliance.Red)) {
@@ -168,11 +159,13 @@ public class StateManager extends SubsystemBase {
         "State Manager/Operation States/In Zone 5", OperationStates.inShuttlingZone5);
 
     Logger.recordOutput("State Manager/State", state);
-    Logger.recordOutput("State Manager/State Target", getTargetPose());
+    Logger.recordOutput("State Manager/State Target Pose", getTargetPose());
 
-    Logger.recordOutput("State Manager/Distance to Target", Drive.getInstance().getTurretDistanceToTarget());
-    Logger.recordOutput("State Manager/Distance to Offsetted Target", Drive.getInstance().getTurretOffsettedDistanceToTarget());
-
+    Logger.recordOutput(
+        "State Manager/Distance to Target", Drive.getInstance().getTurretDistanceToTarget());
+    Logger.recordOutput(
+        "State Manager/Distance to Offsetted Target",
+        Drive.getInstance().getTurretOffsettedDistanceToTarget());
 
     Logger.recordOutput(
         "State Manager/Is Ready/Shooter Ready", Shooter.getInstance().readyToShoot());

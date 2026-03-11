@@ -2,7 +2,6 @@ package frc.robot.subsystems.ShooterHood;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.drive.Drive;
 import org.littletonrobotics.junction.Logger;
 
 public class ShooterHood extends SubsystemBase {
@@ -27,17 +26,10 @@ public class ShooterHood extends SubsystemBase {
     io.updateInputs(inputs);
 
     setDefaultCommand(Commands.run(() -> setGoal(0), this));
-
-    // setDefaultCommand(Commands.run(() -> setGoal(inputs.goalRotations), this));
   }
 
   public void setGoal(double goal) {
     io.setGoal(goal);
-  }
-
-  public void setGoalDynamic() {
-    io.setGoal(
-        ShooterHoodConstants.shooterHoodHubMap.get(Drive.getInstance().getTurretDistanceToTarget()));
   }
 
   public void zero() {
