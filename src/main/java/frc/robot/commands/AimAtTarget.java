@@ -30,7 +30,8 @@ public class AimAtTarget extends Command {
   double desiredRot;
   double turretAngle;
 
-  public AimAtTarget(Drive drive, Turret turret, Shooter shooter, ShooterHood hood, StateManager stateManager) {
+  public AimAtTarget(
+      Drive drive, Turret turret, Shooter shooter, ShooterHood hood, StateManager stateManager) {
     this.drive = drive;
     this.turret = turret;
     this.shooter = shooter;
@@ -63,12 +64,11 @@ public class AimAtTarget extends Command {
     desiredRot = (((turretAngle % 1.0) + 1.0) % 1.0);
 
     turret.setGoal(desiredRot);
-    
-    if(stateManager.getState() == State.SHOOTING) {
+
+    if (stateManager.getState() == State.SHOOTING) {
       shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(distance));
       hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(distance));
-    }
-    else {
+    } else {
       shooter.setVelocityRPS(ShooterConstants.shooterVelocityShuttlingMap.get(distance));
       hood.setGoal(ShooterHoodConstants.shooterHoodShuttlingMap.get(distance));
     }

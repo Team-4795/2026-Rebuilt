@@ -165,11 +165,10 @@ public class StateManager extends SubsystemBase {
         "State Manager/Distance to Target", Drive.getInstance().getTurretDistanceToTarget());
 
     Logger.recordOutput(
-      "State Manager/Is Ready/Shooter Ready", Shooter.getInstance().readyToShoot());
+        "State Manager/Is Ready/Shooter Ready", Shooter.getInstance().readyToShoot());
+    Logger.recordOutput("State Manager/Is Ready/Turret Ready", Turret.getInstance().readyToShoot());
     Logger.recordOutput(
-      "State Manager/Is Ready/Turret Ready", Turret.getInstance().readyToShoot());
-    Logger.recordOutput(
-      "State Manager/Is Ready/Hood Ready", ShooterHood.getInstance().readyToShoot());
+        "State Manager/Is Ready/Hood Ready", ShooterHood.getInstance().readyToShoot());
   }
 
   // Update zone based off the closest trench and robot velocity

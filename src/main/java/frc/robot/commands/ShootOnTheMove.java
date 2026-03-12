@@ -46,7 +46,8 @@ public class ShootOnTheMove extends Command {
   double iterativeDistance = 0;
   double distance;
 
-  public ShootOnTheMove(Drive drive, Turret turret, Shooter shooter, ShooterHood hood, StateManager manager) {
+  public ShootOnTheMove(
+      Drive drive, Turret turret, Shooter shooter, ShooterHood hood, StateManager manager) {
     this.drive = drive;
     this.turret = turret;
     this.shooter = shooter;
@@ -96,6 +97,10 @@ public class ShootOnTheMove extends Command {
       }
     } else {
       tAir = 1.5;
+
+      velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * 0.85;
+      velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * 0.85;
+
       omegaXOffset =
           -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
       omegaYOffset =
@@ -120,11 +125,10 @@ public class ShootOnTheMove extends Command {
 
     turret.setGoal(desiredRot);
 
-    if(stateManager.getState() == State.SHOOTING) {
+    if (stateManager.getState() == State.SHOOTING) {
       shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(distance));
       hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(distance));
-    }
-    else {
+    } else {
       shooter.setVelocityRPS(ShooterConstants.shooterVelocityShuttlingMap.get(distance));
       hood.setGoal(ShooterHoodConstants.shooterHoodShuttlingMap.get(distance));
     }
@@ -147,5 +151,10 @@ public class ShootOnTheMove extends Command {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    shooter.setVelocityRPS(0);
   }
 }
