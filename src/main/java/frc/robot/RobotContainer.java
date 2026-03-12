@@ -84,7 +84,7 @@ public class RobotContainer {
   private final Trigger lockTurret = m_operatorController.b();
   private final Trigger depoCorner = m_operatorController.povLeft();
   private final Trigger feederCorner = m_operatorController.povRight();
-  private final Trigger retractIntake = m_operatorController.povUp();
+  private final Trigger agitateIntake = m_operatorController.povUp();
   private final Trigger deployIntake = m_operatorController.povDown();
   private final Trigger reverseIntake = m_operatorController.leftBumper();
   private final Trigger reverseIndexer = m_operatorController.rightBumper();
@@ -92,7 +92,6 @@ public class RobotContainer {
 
   // Testing Bindings
   private final Trigger configure = m_driverController.povDown();
-  private final Trigger agitateIntake = m_driverController.x();
 
   private LoggedDashboardChooser<Command> autoChooser;
 
@@ -212,7 +211,7 @@ public class RobotContainer {
 
     agitateIntake.whileTrue(AutoCommands.agitateIntake());
 
-    retractIntake.whileTrue(AutoCommands.retractIntake());
+    // retractIntake.whileTrue(AutoCommands.retractIntake());
 
     deployIntake.whileTrue(AutoCommands.deployIntake());
 
@@ -326,7 +325,8 @@ public class RobotContainer {
 
     // Deployable intake
     deployIntake.whileTrue(AutoCommands.deployIntake());
-    retractIntake.whileTrue(AutoCommands.retractIntake());
+    agitateIntake.whileTrue(AutoCommands.agitateIntake());
+    // retractIntake.whileTrue(AutoCommands.retractIntake());
 
     // Reverse intake
     reverseIntake.whileTrue(AutoCommands.reverseIntake());
