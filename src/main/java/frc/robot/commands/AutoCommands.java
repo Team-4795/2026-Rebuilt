@@ -52,19 +52,17 @@ public class AutoCommands {
     return Commands.run(() -> intake.setIntakeVoltage(-12), intake);
   }
 
+  public static Command shootOnTheMove() {
+    return new ShootOnTheMove(drive, turret, shooter, hood, StateManager.getInstance());
+  }
+
   public static Command autoScore() {
-    return Commands.parallel(
-        turretAimAtTarget(), setShooterHoodDynamic(), setShooterVelocityDynamic());
+    return new AimAtTarget(drive, turret, shooter, hood, StateManager.getInstance());
   }
 
-  public static Command movingAlign() {
-    return Commands.parallel(
-        shootOnTheMove(), setShooterHoodDynamicSOTM(), setShooterVelocityDynamicSOTM());
-  }
-
-  public static Command interpolationMapTesting() {
-    return Commands.parallel(turretAimAtTarget(), setShooterRPS(ShooterIOReal.shooterRPS.get()));
-  }
+  // public static Command interpolationMapTesting() {
+  //   return Commands.parallel(turretAimAtTarget(), setShooterRPS(ShooterIOReal.shooterRPS.get()));
+  // }
 
   public static Command shoot() {
     return Commands.parallel(
@@ -101,14 +99,6 @@ public class AutoCommands {
             Commands.waitSeconds(1.5),
             Commands.runOnce(() -> deploy.setDeployVoltage(0), deploy),
             Commands.runOnce(() -> deploy.zero(), deploy)));
-  }
-
-  public static Command turretAimAtTarget() {
-    return new AimAtTarget(drive, turret, StateManager.getInstance());
-  }
-
-  public static Command shootOnTheMove() {
-    return new ShootOnTheMove(drive, turret, StateManager.getInstance());
   }
 
   public static Command underTrenchAssist() {
@@ -154,39 +144,6 @@ public class AutoCommands {
                 hood.setGoal(
                     ShooterHoodConstants.shooterHoodShuttlingMap.get(
                         Drive.getInstance().getTurretDistanceToTarget()))),
-        () -> StateManager.getInstance().getState().equals(State.SHOOTING));
-  }
-
-  // SOTM Commands
-  public static Command setShooterVelocityDynamicSOTM() {
-    return Commands.either(
-        Commands.startEnd(
-            () ->
-                shooter.setVelocityRPS(
-                    ShooterConstants.shooterVelocityHubMap.get(
-                        Drive.getInstance().getTurretOffsettedDistanceToTarget())),
-            () -> shooter.setVelocityRPS(0)),
-        Commands.startEnd(
-            () ->
-                shooter.setVelocityRPS(
-                    ShooterConstants.shooterVelocityShuttlingMap.get(
-                        Drive.getInstance().getTurretOffsettedDistanceToTarget())),
-            () -> shooter.setVelocityRPS(0)),
-        () -> StateManager.getInstance().getState().equals(State.SHOOTING));
-  }
-
-  public static Command setShooterHoodDynamicSOTM() {
-    return Commands.either(
-        Commands.run(
-            () ->
-                hood.setGoal(
-                    ShooterHoodConstants.shooterHoodHubMap.get(
-                        Drive.getInstance().getTurretOffsettedDistanceToTarget()))),
-        Commands.run(
-            () ->
-                hood.setGoal(
-                    ShooterHoodConstants.shooterHoodShuttlingMap.get(
-                        Drive.getInstance().getTurretOffsettedDistanceToTarget()))),
         () -> StateManager.getInstance().getState().equals(State.SHOOTING));
   }
 

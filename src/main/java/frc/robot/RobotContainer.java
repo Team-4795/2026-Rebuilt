@@ -252,16 +252,16 @@ public class RobotContainer {
     // Dynamic shooter hood
     // m_driverController.leftTrigger().whileTrue(AutoCommands.setShooterHoodDynamic());
 
-    m_operatorController
-        .a()
-        .whileTrue(
-            AutoCommands.turretAimAtTarget()
-                .alongWith(
-                    Commands.run(() -> shooterHood.setGoal(ShooterHoodIOReal.hoodAngle.get())))
-                .alongWith(
-                    Commands.startEnd(
-                        () -> shooter.setVelocityRPS(ShooterIOReal.shooterRPS.get()),
-                        () -> shooter.setVelocityRPS(0))));
+    // m_operatorController
+    //     .a()
+    //     .whileTrue(
+    //         AutoCommands.turretAimAtTarget()
+    //             .alongWith(
+    //                 Commands.run(() -> shooterHood.setGoal(ShooterHoodIOReal.hoodAngle.get())))
+    //             .alongWith(
+    //                 Commands.startEnd(
+    //                     () -> shooter.setVelocityRPS(ShooterIOReal.shooterRPS.get()),
+    //                     () -> shooter.setVelocityRPS(0))));
   }
 
   public void configureButtonBindings() {
@@ -288,7 +288,7 @@ public class RobotContainer {
     // SOTM
     sotm.whileTrue(
         Commands.parallel(
-            AutoCommands.movingAlign(),
+            AutoCommands.shootOnTheMove(),
             DriveCommands.joystickDrive(
                 drive,
                 () -> -m_driverController.getLeftY() / 2.0,
@@ -306,7 +306,9 @@ public class RobotContainer {
 
     // Auto Score (no SOTM)
     autoScore.whileTrue(
-        AutoCommands.autoScore().alongWith(Commands.runOnce(() -> drive.stopWithX())));
+        Commands.parallel(
+            AutoCommands.autoScore(),
+            Commands.runOnce(() -> drive.stopWithX())));
 
     // Toggle vision
     toggleVision.whileTrue(Commands.runOnce(() -> vision.toggleShouldUpdate()));
