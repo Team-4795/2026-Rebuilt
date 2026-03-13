@@ -36,11 +36,13 @@ public class AutoCommands {
   }
 
   public static Command agitateIntake() {
-    return Commands.repeatingSequence(
-        Commands.runOnce(() -> deploy.setGoal(0.2), deploy),
-        Commands.waitSeconds(0.5),
-        Commands.runOnce(() -> deploy.setGoal(IntakeDeployConstants.stowPosition)),
-        Commands.waitSeconds(0.5));
+    return Commands.parallel(
+        Commands.repeatingSequence(
+            Commands.runOnce(() -> deploy.setGoal(0.2), deploy),
+            Commands.waitSeconds(0.5),
+            Commands.runOnce(() -> deploy.setGoal(0)),
+            Commands.waitSeconds(0.5)),
+        intake());
   }
 
   public static Command intake() {

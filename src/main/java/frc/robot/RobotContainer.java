@@ -40,7 +40,9 @@ import frc.robot.subsystems.Turret.TurretIOReal;
 import frc.robot.subsystems.Turret.TurretIOSim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
+import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIOSim;
+import frc.robot.subsystems.drive.ModuleIOSparkFlex;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOReal;
@@ -107,20 +109,20 @@ public class RobotContainer {
         indexer = Indexer.initialize(new IndexerIOReal());
         turret = Turret.initialize(new TurretIOReal());
         shooterHood = ShooterHood.initialize(new ShooterHoodIOReal());
-        // drive =
-        //     Drive.initialize(
-        //         new GyroIOPigeon2(),
-        //         new ModuleIOSparkFlex(0),
-        //         new ModuleIOSparkFlex(1),
-        //         new ModuleIOSparkFlex(2),
-        //         new ModuleIOSparkFlex(3));
         drive =
             Drive.initialize(
-                new GyroIO() {},
-                new ModuleIOSim(),
-                new ModuleIOSim(),
-                new ModuleIOSim(),
-                new ModuleIOSim());
+                new GyroIOPigeon2(),
+                new ModuleIOSparkFlex(0),
+                new ModuleIOSparkFlex(1),
+                new ModuleIOSparkFlex(2),
+                new ModuleIOSparkFlex(3));
+        // drive =
+        //     Drive.initialize(
+        //         new GyroIO() {},
+        //         new ModuleIOSim(),
+        //         new ModuleIOSim(),
+        //         new ModuleIOSim(),
+        //         new ModuleIOSim());
         vision = Vision.initialize(new VisionIOReal(0), new VisionIOReal(1));
         break;
 
