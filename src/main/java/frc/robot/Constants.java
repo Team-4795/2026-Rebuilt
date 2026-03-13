@@ -36,4 +36,13 @@ public final class Constants {
     public static final double KAxisDeadband = 0.1;
     public static final double OperatorLAxisDeadband = 0.3;
   }
+
+    public static class HoodConstants {
+
+    public static final double margin = 0.05;
+
+    public static final double maxAngle = 0.5 - margin;
+    public static final double minAngle = 0.0 + margin;
+
+}
 }
