@@ -5,6 +5,8 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -36,6 +38,7 @@ import frc.robot.subsystems.ShooterHood.ShooterHoodIOSim;
 import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.StateManager.StateManager.OperationStates;
 import frc.robot.subsystems.Turret.Turret;
+import frc.robot.subsystems.Turret.TurretConstants;
 import frc.robot.subsystems.Turret.TurretIO;
 import frc.robot.subsystems.Turret.TurretIOReal;
 import frc.robot.subsystems.Turret.TurretIOSim;
@@ -71,7 +74,12 @@ public class RobotContainer {
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
   private final CommandXboxController m_operatorController =
       Constants.OIConstants.operatorController;
-  private final Hood hood = new Hood();
+
+  // Robot demo bindings
+  private final Trigger manualHood = m_driverController.x();
+  private final Trigger turretPos1 = m_driverController.povLeft();
+  private final Trigger turretPos2 = m_driverController.povUp();
+  private final Trigger turretPos3 = m_driverController.povRight();
 
   // Official Bindings
   private final Trigger sotm = m_driverController.rightTrigger();
@@ -91,9 +99,6 @@ public class RobotContainer {
   private final Trigger reverseIntake = m_operatorController.leftBumper();
   private final Trigger reverseIndexer = m_operatorController.rightBumper();
   // Operator Triggers already bound to manual intake deploy
-
-  // outreach bindings
-  private final Trigger manualHood = m_operatorController.x();
 
   // Testing Bindings
   private final Trigger configure = m_driverController.povDown();
@@ -347,6 +352,10 @@ public class RobotContainer {
 
     // outreach thingy
     manualHood.whileTrue(AutoCommands.manualHood(ShooterHoodConstants.minAngle));
+    // turret setpoints
+    turretPos1.whileTrue(AutoCommands.manualTurret(Units.degreesToRotations(TurretConstants.minAngle)));
+    turretPos2.whileTrue(AutoCommands.manualTurret(Units.degreesToRotations(180)));
+    turretPos3.whileTrue(AutoCommands.manualTurret(Units.degreesToRotations(TurretConstants.maxAngle)));
   }
 
   /**

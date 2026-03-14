@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Indexer.Indexer;
@@ -15,6 +16,8 @@ import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretConstants;
 import frc.robot.subsystems.drive.Drive;
+import java.util.function.DoubleSupplier;
+import org.littletonrobotics.junction.Logger;
 
 public class AutoCommands {
   private static Drive drive = Drive.getInstance();
@@ -165,7 +168,11 @@ public class AutoCommands {
     return new Everything(drive, turret, StateManager.getInstance(), shooter, hood);
   }
 
-  public static Command manualHood (double angle){
-        return Commands.run(() -> hood.setGoal(angle), hood);
+  public static Command manualHood(double angle) {
+    return Commands.run(() -> hood.setGoal(angle), hood);
+  }
+
+  public static Command manualTurret(double angle) {
+    return Commands.runOnce(() -> turret.setGoal((angle)));
   }
 }
