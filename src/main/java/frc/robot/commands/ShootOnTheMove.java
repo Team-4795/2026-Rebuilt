@@ -12,6 +12,7 @@ import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.ShooterHood.ShooterHoodConstants;
 import frc.robot.subsystems.StateManager.State;
 import frc.robot.subsystems.StateManager.StateManager;
+import frc.robot.subsystems.StateManager.StateManager.OperationStates;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretConstants;
 import frc.robot.subsystems.drive.Drive;
@@ -45,6 +46,7 @@ public class ShootOnTheMove extends Command {
   ChassisSpeeds fieldRelative;
   double iterativeDistance = 0;
   double distance;
+  double dampener;
 
   public ShootOnTheMove(
       Drive drive, Turret turret, Shooter shooter, ShooterHood hood, StateManager manager) {
@@ -63,6 +65,8 @@ public class ShootOnTheMove extends Command {
 
   @Override
   public void execute() {
+    dampener = 0.9;
+
     robotPose = drive.getPose();
     targetPose = stateManager.getTargetPose();
     turretPose =
@@ -79,8 +83,8 @@ public class ShootOnTheMove extends Command {
       for (int i = 0; i < 20; i++) {
         tAir = Constants.InterpolatingTree.tAirMap.get(iterativeDistance);
 
-        velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * 0.85;
-        velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * 0.85;
+        velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * dampener;
+        velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * dampener;
 
         omegaXOffset =
             -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
@@ -98,8 +102,8 @@ public class ShootOnTheMove extends Command {
     } else {
       tAir = 1.5;
 
-      velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * 0.85;
-      velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * 0.85;
+      velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * dampener;
+      velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * dampener;
 
       omegaXOffset =
           -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
@@ -125,12 +129,14 @@ public class ShootOnTheMove extends Command {
 
     turret.setGoal(desiredRot);
 
-    if (stateManager.getState() == State.SHOOTING) {
+    if (stateManager.getState() == State.SHOOTING && !OperationStates.inDecapitationZone) {
       shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(distance));
       hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(distance));
     } else {
-      shooter.setVelocityRPS(ShooterConstants.shooterVelocityShuttlingMap.get(distance));
-      hood.setGoal(ShooterHoodConstants.shooterHoodShuttlingMap.get(distance));
+      if (!OperationStates.inDecapitationZone) {
+        shooter.setVelocityRPS(ShooterConstants.shooterVelocityShuttlingMap.get(distance));
+        hood.setGoal(ShooterHoodConstants.shooterHoodShuttlingMap.get(distance));
+      }
     }
 
     Logger.recordOutput("Shoot on move At Hub/Hub Pose", hub);

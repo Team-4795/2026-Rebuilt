@@ -123,7 +123,7 @@ public class RobotContainer {
         //         new ModuleIOSim(),
         //         new ModuleIOSim(),
         //         new ModuleIOSim());
-        vision = Vision.initialize(new VisionIOReal(0), new VisionIOReal(1));
+        vision = Vision.initialize(new VisionIOReal(0), new VisionIOReal(1), new VisionIOReal(2));
         break;
 
       case SIM:

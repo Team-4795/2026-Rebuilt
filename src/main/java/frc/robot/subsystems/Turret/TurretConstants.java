@@ -35,7 +35,7 @@ public class TurretConstants {
   public static final double turretRadiusOffset =
       Math.sqrt(Math.pow(OFFSET.getX(), 2) + Math.pow(OFFSET.getY(), 2));
   public static final double robotRelativeAngleOffset = 0;
-  public static final double angleOffset = Units.degreesToRotations(22.98);
+  public static final double angleOffset = Units.degreesToRotations(25.4);
 
   // Assume intake facing leftwards
   public static final double rightCornerSetpoint = 0.806912;

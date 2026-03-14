@@ -24,8 +24,8 @@ public class VisionConstants {
         new Transform3d(
             new Translation3d(
                 Units.inchesToMeters(-3.25),
-                Units.inchesToMeters(-13.895),
-                Units.inchesToMeters(8.75)),
+                Units.inchesToMeters(-14),
+                Units.inchesToMeters(10.25)),
             new Rotation3d(
                 Units.degreesToRadians(0),
                 Units.degreesToRadians(-20),
@@ -34,9 +34,7 @@ public class VisionConstants {
         // Back Cam
         new Transform3d(
             new Translation3d(
-                Units.inchesToMeters(-12.343),
-                Units.inchesToMeters(-11),
-                Units.inchesToMeters(8.750)),
+                Units.inchesToMeters(-12.5), Units.inchesToMeters(-11.1), Units.inchesToMeters(9)),
             new Rotation3d(
                 Units.degreesToRadians(0),
                 Units.degreesToRadians(-20),
@@ -45,7 +43,9 @@ public class VisionConstants {
         // Luma Left
         new Transform3d(
             new Translation3d( // Change Translation
-                Units.inchesToMeters(0), Units.inchesToMeters(0), Units.inchesToMeters(0)),
+                Units.inchesToMeters(-10.5),
+                Units.inchesToMeters(14.5),
+                Units.inchesToMeters(10.5)),
             new Rotation3d( // Rotation should be good. Only touch if 3d pose looks weird
                 Units.degreesToRadians(0), Units.degreesToRadians(-20), Units.degreesToRadians(90)))
       };
