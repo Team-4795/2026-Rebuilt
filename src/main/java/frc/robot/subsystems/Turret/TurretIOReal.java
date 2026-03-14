@@ -5,6 +5,7 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -101,7 +102,11 @@ public class TurretIOReal implements TurretIO {
     this.goal =
         MathUtil.clamp(goal, TurretConstants.minAngle / 360.0, TurretConstants.maxAngle / 360.0);
 
+    if(!readyToShoot()) {
     turretMotor.setControl(control.withPosition(this.goal));
+    } else {
+      turretMotor.setControl(new NeutralOut());
+    }
   }
 
   @Override
