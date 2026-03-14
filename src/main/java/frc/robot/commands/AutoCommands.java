@@ -164,4 +164,8 @@ public class AutoCommands {
   public static Command pleaseNoTouch() {
     return new Everything(drive, turret, StateManager.getInstance(), shooter, hood);
   }
+
+  public static Command manualHood (double angle){
+        return Commands.run(() -> hood.setGoal(angle), hood);
+  }
 }

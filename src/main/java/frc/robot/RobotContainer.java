@@ -29,6 +29,7 @@ import frc.robot.subsystems.Shooter.ShooterIO;
 import frc.robot.subsystems.Shooter.ShooterIOReal;
 import frc.robot.subsystems.Shooter.ShooterIOSim;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
+import frc.robot.subsystems.ShooterHood.ShooterHoodConstants;
 import frc.robot.subsystems.ShooterHood.ShooterHoodIO;
 import frc.robot.subsystems.ShooterHood.ShooterHoodIOReal;
 import frc.robot.subsystems.ShooterHood.ShooterHoodIOSim;
@@ -90,6 +91,9 @@ public class RobotContainer {
   private final Trigger reverseIntake = m_operatorController.leftBumper();
   private final Trigger reverseIndexer = m_operatorController.rightBumper();
   // Operator Triggers already bound to manual intake deploy
+
+  // outreach bindings
+  private final Trigger manualHood = m_operatorController.x();
 
   // Testing Bindings
   private final Trigger configure = m_driverController.povDown();
@@ -340,6 +344,9 @@ public class RobotContainer {
     // m_operatorController.povDown()
 
     // add manual setpoints here
+
+    // outreach thingy
+    manualHood.whileTrue(AutoCommands.manualHood(ShooterHoodConstants.minAngle));
   }
 
   /**

@@ -1,17 +1,16 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 public class Hood extends SubsystemBase {
-    
-    private double hoodAngle = 0.0; 
 
-    public Hood() {}
+  private double hoodAngle = 0.0;
 
-    public void setAngle(double newAngle){
-         if (newAngle > Constants.HoodConstants.maxAngle) {
+  public Hood() {}
+
+  public void setAngle(double newAngle) {
+    if (newAngle > Constants.HoodConstants.maxAngle) {
       newAngle = Constants.HoodConstants.maxAngle;
     }
 
@@ -30,5 +29,4 @@ public class Hood extends SubsystemBase {
   public void periodic() {
     Logger.recordOutput("Hood/Angle", hoodAngle);
   }
-
 }
