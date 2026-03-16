@@ -37,6 +37,9 @@ public class TurretConstants {
   public static final double robotRelativeAngleOffset = 0;
   public static final double angleOffset = Units.degreesToRotations(25.4);
 
+  public static final double tubingFeedForward = 0; //volts
+  public static final double tubingAngle = 0.2; //rotations
+
   // Assume intake facing leftwards
   public static final double rightCornerSetpoint = 0.806912;
   public static final double leftCornerSetpoint = 0.57944;
