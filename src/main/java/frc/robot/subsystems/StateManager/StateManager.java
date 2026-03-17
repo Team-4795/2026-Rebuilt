@@ -47,6 +47,7 @@ public class StateManager extends SubsystemBase {
     public static boolean inShuttlingZone3 = false;
     public static boolean inShuttlingZone4 = false;
     public static boolean inShuttlingZone5 = false;
+    public static boolean isIntaking = false;
   }
 
   public static StateManager initalize() {
@@ -157,6 +158,8 @@ public class StateManager extends SubsystemBase {
         "State Manager/Operation States/In Zone 4", OperationStates.inShuttlingZone4);
     Logger.recordOutput(
         "State Manager/Operation States/In Zone 5", OperationStates.inShuttlingZone5);
+
+    Logger.recordOutput("State Manager/Operation States/Is Intaking", OperationStates.isIntaking);
 
     Logger.recordOutput("State Manager/State", state);
     Logger.recordOutput("State Manager/State Target Pose", getTargetPose());

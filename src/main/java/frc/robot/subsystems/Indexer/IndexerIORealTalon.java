@@ -1,7 +1,6 @@
 package frc.robot.subsystems.Indexer;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -14,8 +13,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
 public class IndexerIORealTalon implements IndexerIO {
-  private final TalonFX towerMotor =
-      new TalonFX(IndexerConstants.towerCanID);
+  private final TalonFX towerMotor = new TalonFX(IndexerConstants.towerCanID);
   private final SparkFlex indexerMotor =
       new SparkFlex(IndexerConstants.indexerCanID, MotorType.kBrushless);
   private final RelativeEncoder indexerEncoder = indexerMotor.getEncoder();

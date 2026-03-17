@@ -290,6 +290,7 @@ public class RobotContainer {
     sotm.whileTrue(
         Commands.parallel(
             AutoCommands.shootOnTheMove(),
+            AutoCommands.autoAgitate(),
             DriveCommands.joystickDrive(
                 drive,
                 () -> -m_driverController.getLeftY() / 2.0,
@@ -300,7 +301,11 @@ public class RobotContainer {
     autoTrench.whileTrue(AutoCommands.underTrenchAssist());
 
     // Intake
-    intakeButton.whileTrue(AutoCommands.intake());
+    intakeButton
+        .whileTrue(
+            Commands.parallel(
+                AutoCommands.intake(), Commands.runOnce(() -> OperationStates.isIntaking = true)))
+        .onFalse(Commands.runOnce(() -> OperationStates.isIntaking = false));
 
     // Run Indexer
     shoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
@@ -327,7 +332,7 @@ public class RobotContainer {
 
     // Deployable intake
     deployIntake.whileTrue(AutoCommands.deployIntake());
-    agitateIntake.whileTrue(AutoCommands.agitateIntake());
+    agitateIntake.whileTrue(AutoCommands.autoAgitate());
     // retractIntake.whileTrue(AutoCommands.retractIntake());
 
     // Reverse intake

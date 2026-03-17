@@ -12,6 +12,7 @@ import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.ShooterHood.ShooterHoodConstants;
 import frc.robot.subsystems.StateManager.State;
 import frc.robot.subsystems.StateManager.StateManager;
+import frc.robot.subsystems.StateManager.StateManager.OperationStates;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretConstants;
 import frc.robot.subsystems.drive.Drive;
@@ -44,6 +45,12 @@ public class AutoCommands {
             Commands.waitSeconds(0.5)),
         intake());
   }
+
+  public static Command autoAgitate() {
+    return Commands.sequence(Commands.waitSeconds(3), agitateIntake())
+        .onlyWhile(() -> !OperationStates.isIntaking).repeatedly();
+  }
+
 
   public static Command intake() {
     return Commands.run(() -> intake.setIntakeVoltage(12), intake);
