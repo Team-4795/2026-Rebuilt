@@ -25,6 +25,7 @@ public class AutoCommands {
   private static ShooterHood hood = ShooterHood.getInstance();
   private static Intake intake = Intake.getInstance();
   private static IntakeDeploy deploy = IntakeDeploy.getInstance();
+  private static StateManager manager = StateManager.getInstance();
 
   private AutoCommands() {}
 
@@ -48,9 +49,9 @@ public class AutoCommands {
 
   public static Command autoAgitate() {
     return Commands.sequence(Commands.waitSeconds(3), agitateIntake())
-        .onlyWhile(() -> !OperationStates.isIntaking).repeatedly();
+        .onlyWhile(() -> !OperationStates.isIntaking)
+        .repeatedly();
   }
-
 
   public static Command intake() {
     return Commands.run(() -> intake.setIntakeVoltage(12), intake);
@@ -61,11 +62,11 @@ public class AutoCommands {
   }
 
   public static Command shootOnTheMove() {
-    return new ShootOnTheMove(drive, turret, shooter, hood, StateManager.getInstance());
+    return new ShootOnTheMove(drive, turret, shooter, hood, manager);
   }
 
   public static Command autoScore() {
-    return new AimAtTarget(drive, turret, shooter, hood, StateManager.getInstance());
+    return new AimAtTarget(drive, turret, shooter, hood, manager);
   }
 
   // public static Command interpolationMapTesting() {
@@ -137,7 +138,7 @@ public class AutoCommands {
                     ShooterConstants.shooterVelocityShuttlingMap.get(
                         Drive.getInstance().getTurretDistanceToTarget())),
             () -> shooter.setVelocityRPS(0)),
-        () -> StateManager.getInstance().getState().equals(State.SHOOTING));
+        () -> manager.getState().equals(State.SHOOTING));
   }
 
   public static Command setShooterHoodDynamic() {
@@ -152,7 +153,7 @@ public class AutoCommands {
                 hood.setGoal(
                     ShooterHoodConstants.shooterHoodShuttlingMap.get(
                         Drive.getInstance().getTurretDistanceToTarget()))),
-        () -> StateManager.getInstance().getState().equals(State.SHOOTING));
+        () -> manager.getState().equals(State.SHOOTING));
   }
 
   // Corner Setpoints
@@ -171,6 +172,6 @@ public class AutoCommands {
   }
 
   public static Command pleaseNoTouch() {
-    return new Everything(drive, turret, StateManager.getInstance(), shooter, hood);
+    return new Everything(drive, turret, manager, shooter, hood);
   }
 }

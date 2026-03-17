@@ -303,8 +303,8 @@ public class RobotContainer {
     // Intake
     intakeButton
         .whileTrue(
-            Commands.parallel(
-                AutoCommands.intake(), Commands.runOnce(() -> OperationStates.isIntaking = true)))
+            AutoCommands.intake()
+                .alongWith(Commands.runOnce(() -> OperationStates.isIntaking = true)))
         .onFalse(Commands.runOnce(() -> OperationStates.isIntaking = false));
 
     // Run Indexer
@@ -332,8 +332,7 @@ public class RobotContainer {
 
     // Deployable intake
     deployIntake.whileTrue(AutoCommands.deployIntake());
-    agitateIntake.whileTrue(AutoCommands.autoAgitate());
-    // retractIntake.whileTrue(AutoCommands.retractIntake());
+    agitateIntake.whileTrue(AutoCommands.agitateIntake());
 
     // Reverse intake
     reverseIntake.whileTrue(AutoCommands.reverseIntake());

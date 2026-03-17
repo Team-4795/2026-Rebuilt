@@ -28,5 +28,9 @@ public interface IntakeDeployIO {
 
   public default void zero() {}
 
+  public default double getPosition() {
+    return 0.0;
+  }
+
   public default void updateInputs(IntakeDeployIOInputs inputs) {}
 }

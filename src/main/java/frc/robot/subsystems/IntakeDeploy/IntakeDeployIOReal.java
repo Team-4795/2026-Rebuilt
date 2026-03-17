@@ -120,6 +120,11 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
   }
 
   @Override
+  public double getPosition() {
+    return encoderA.getPosition();
+  }
+
+  @Override
   public void updateInputs(IntakeDeployIOInputs inputs) {
     ffmodel = new ArmFeedforward(KS.get(), KG.get(), KV.get());
     controller = new PIDController(KP.get(), KI.get(), KD.get());

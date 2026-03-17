@@ -52,6 +52,10 @@ public class IntakeDeploy extends SubsystemBase {
     io.setVoltage(volts);
   }
 
+  public double getPosition() {
+    return io.getPosition();
+  }
+
   public void zero() {
     io.zero();
   }

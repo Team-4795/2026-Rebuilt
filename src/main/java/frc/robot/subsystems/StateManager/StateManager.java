@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
+import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.ShooterHood.ShooterHoodConstants;
@@ -98,7 +99,9 @@ public class StateManager extends SubsystemBase {
   }
 
   public boolean canTurretMove() {
-    return (TurretConstants.canMove && getState() != State.SHUTTLING_DEAD_ZONE);
+    return (TurretConstants.canMove
+        && getState() != State.SHUTTLING_DEAD_ZONE
+        && IntakeDeploy.getInstance().getPosition() < 0.25);
   }
 
   @Override
@@ -158,14 +161,10 @@ public class StateManager extends SubsystemBase {
         "State Manager/Operation States/In Zone 4", OperationStates.inShuttlingZone4);
     Logger.recordOutput(
         "State Manager/Operation States/In Zone 5", OperationStates.inShuttlingZone5);
-
     Logger.recordOutput("State Manager/Operation States/Is Intaking", OperationStates.isIntaking);
 
     Logger.recordOutput("State Manager/State", state);
     Logger.recordOutput("State Manager/State Target Pose", getTargetPose());
-
-    Logger.recordOutput(
-        "State Manager/Distance to Target", Drive.getInstance().getTurretDistanceToTarget());
 
     Logger.recordOutput(
         "State Manager/Is Ready/Shooter Ready", Shooter.getInstance().readyToShoot());

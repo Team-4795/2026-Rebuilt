@@ -47,7 +47,9 @@ public class VisionConstants {
                 Units.inchesToMeters(14.5),
                 Units.inchesToMeters(10.5)),
             new Rotation3d( // Rotation should be good. Only touch if 3d pose looks weird
-                Units.degreesToRadians(0), Units.degreesToRadians(-20), Units.degreesToRadians(90)))
+                Units.degreesToRadians(180),
+                Units.degreesToRadians(-20),
+                Units.degreesToRadians(90)))
       };
 
   public static AprilTagFieldLayout FIELD_LAYOUT;
