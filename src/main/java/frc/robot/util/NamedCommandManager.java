@@ -16,5 +16,6 @@ public class NamedCommandManager {
     NamedCommands.registerCommand("Deploy Intake", AutoCommands.deployIntake());
     NamedCommands.registerCommand("Zero Hood Angle", AutoCommands.setHoodAngle(0));
     NamedCommands.registerCommand("Everything", AutoCommands.shootOnTheMove());
+    NamedCommands.registerCommand("Stop Shoot", AutoCommands.stopShoot());
   }
 }

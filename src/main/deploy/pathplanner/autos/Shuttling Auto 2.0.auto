@@ -5,47 +5,65 @@
     "data": {
       "commands": [
         {
-          "type": "race",
+          "type": "named",
+          "data": {
+            "name": "Deploy Intake"
+          }
+        },
+        {
+          "type": "deadline",
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "Shuttling LB P1 2.0"
-                }
-              },
-              {
-                "type": "race",
+                "type": "sequential",
                 "data": {
                   "commands": [
                     {
-                      "type": "named",
+                      "type": "path",
                       "data": {
-                        "name": "Deploy Intake"
+                        "pathName": "Shuttling LB P1 2.0"
                       }
                     },
                     {
-                      "type": "named",
+                      "type": "path",
                       "data": {
-                        "name": "Intake"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Shoot"
+                        "pathName": "Shuttling LB P2 2.0"
                       }
                     }
                   ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Everything"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot"
                 }
               }
             ]
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Shuttling LB P2 2.0"
+            "name": "Stop Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Zero Hood Angle"
           }
         },
         {
