@@ -12,7 +12,6 @@ import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.ShooterHood.ShooterHoodConstants;
 import frc.robot.subsystems.StateManager.State;
 import frc.robot.subsystems.StateManager.StateManager;
-import frc.robot.subsystems.StateManager.StateManager.OperationStates;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretConstants;
 import frc.robot.subsystems.drive.Drive;
@@ -87,8 +86,8 @@ public class AutoCommands {
 
   public static Command stopShoot() {
     return Commands.parallel(
-        Commands.run(() -> indexer.setVoltageIndexer(0)),
-        Commands.run(() -> indexer.setVoltageTower(0)));
+        Commands.runOnce(() -> indexer.setVoltageIndexer(0)),
+        Commands.runOnce(() -> indexer.setVoltageTower(0)));
   }
 
   public static Command zeroSequence() { // if it doesn't work check the motor limits

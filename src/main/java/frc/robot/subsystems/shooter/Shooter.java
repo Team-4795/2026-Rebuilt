@@ -35,7 +35,7 @@ public class Shooter extends SubsystemBase {
 
   public boolean readyToShoot() {
     return io.readyToShoot();
-    // return io.shootNow(); 
+    // return io.shootNow();
   }
 
   public void configure() {
@@ -45,8 +45,6 @@ public class Shooter extends SubsystemBase {
   public void resetShooter() {
     io.resetShooter();
   }
-
-
 
   @Override
   public void periodic() {
