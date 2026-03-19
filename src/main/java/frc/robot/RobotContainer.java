@@ -272,7 +272,7 @@ public class RobotContainer {
     Trigger inDecapitationZone = new Trigger(() -> OperationStates.inDecapitationZone);
 
     // Auto shoot
-    readyToShoot.onTrue(AutoCommands.shoot());
+    readyToShoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
 
     // Anti decapitation
     inDecapitationZone.whileTrue(Commands.run(() -> shooterHood.setGoal(0)));
