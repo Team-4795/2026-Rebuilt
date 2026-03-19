@@ -23,16 +23,14 @@ public interface ShooterIO {
     return 0.0;
   }
 
-  public default void resetShooter() {
-
-  }
+  public default void resetShooter() {}
 
   public default double getBottomRPS() {
     return 0.0;
   }
 
   public default boolean shootNow() {
-    return false; 
+    return false;
   }
 
   public default double getGoal() {

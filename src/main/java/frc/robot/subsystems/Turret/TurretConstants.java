@@ -9,7 +9,7 @@ public class TurretConstants {
   public static final double maxAngle = 360 - margin;
 
   // Margin for ready to shoot command
-  public static final double marginOfError = 0.01;
+  public static final double marginOfError = 0.005;
 
   public static final double kP = 6;
   public static final double kI = 0;

@@ -28,7 +28,7 @@ public class ShooterIOReal implements ShooterIO {
   private final StatusSignal<Current> topCurrent = topShooterMotor.getTorqueCurrent();
   private final StatusSignal<Current> bottomCurrent = bottomShooterMotor.getTorqueCurrent();
 
-  private boolean reachedRPS = false; 
+  private boolean reachedRPS = false;
 
   LoggedTunableNumber KP = new LoggedTunableNumber("Shooter/KP", ShooterConstants.kP);
   LoggedTunableNumber KI = new LoggedTunableNumber("Shooter/KI", ShooterConstants.kI);
@@ -118,18 +118,18 @@ public class ShooterIOReal implements ShooterIO {
         && (getBottomRPS() > (getGoal() - 6));
   }
 
-  @Override 
+  @Override
   public boolean shootNow() {
-    if(readyToShoot() && !reachedRPS) {
-      reachedRPS = true; 
-    } 
+    if (readyToShoot() && !reachedRPS) {
+      reachedRPS = true;
+    }
 
-    return reachedRPS; 
+    return reachedRPS;
   }
 
   @Override
   public void resetShooter() {
-    reachedRPS = false; 
+    reachedRPS = false;
   }
 
   @Override

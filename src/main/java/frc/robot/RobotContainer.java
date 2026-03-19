@@ -287,15 +287,15 @@ public class RobotContainer {
 
     // SOTM
     sotm.whileTrue(
-        Commands.parallel(
-            AutoCommands.shootOnTheMove(),
-            AutoCommands.intake(),
-            DriveCommands.joystickDrive(
-                drive,
-                () -> -m_driverController.getLeftY() / 2.0,
-                () -> -m_driverController.getLeftX() / 2.0,
-                () -> -m_driverController.getRightX() / 3.0)));//.onFalse(Commands.runOnce(() -> shooter.resetShooter()));
-
+            Commands.parallel(
+                AutoCommands.shootOnTheMove(),
+                AutoCommands.intake(),
+                DriveCommands.joystickDrive(
+                    drive,
+                    () -> -m_driverController.getLeftY() / 2.0,
+                    () -> -m_driverController.getLeftX() / 2.0,
+                    () -> -m_driverController.getRightX() / 3.0)))
+        .onFalse(Commands.runOnce(() -> shooter.resetShooter()));
 
     // Auto trench
     autoTrench.whileTrue(AutoCommands.underTrenchAssist());

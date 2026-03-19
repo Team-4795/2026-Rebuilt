@@ -12,7 +12,6 @@ import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.ShooterHood.ShooterHoodConstants;
 import frc.robot.subsystems.StateManager.State;
 import frc.robot.subsystems.StateManager.StateManager;
-import frc.robot.subsystems.StateManager.StateManager.OperationStates;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretConstants;
 import frc.robot.subsystems.drive.Drive;
