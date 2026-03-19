@@ -272,7 +272,7 @@ public class RobotContainer {
     Trigger inDecapitationZone = new Trigger(() -> OperationStates.inDecapitationZone);
 
     // Auto shoot
-    readyToShoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
+    readyToShoot.onTrue(AutoCommands.shoot());
 
     // Anti decapitation
     inDecapitationZone.whileTrue(Commands.run(() -> shooterHood.setGoal(0)));
@@ -294,9 +294,7 @@ public class RobotContainer {
                 drive,
                 () -> -m_driverController.getLeftY() / 2.0,
                 () -> -m_driverController.getLeftX() / 2.0,
-                () ->
-                    -m_driverController.getRightX()
-                        / 3.0))); // .onFalse(Commands.runOnce(() -> shooter.resetShooter()));
+                () -> -m_driverController.getRightX() / 3.0))).onFalse(AutoCommands.stopShoot());
 
     // Auto trench
     autoTrench.whileTrue(AutoCommands.underTrenchAssist());
@@ -310,6 +308,7 @@ public class RobotContainer {
     // Auto Score (no SOTM)
     autoScore.whileTrue(
         Commands.parallel(AutoCommands.autoScore(), Commands.runOnce(() -> drive.stopWithX())));
+    autoScore.onFalse(AutoCommands.stopShoot());
 
     // Toggle vision
     toggleVision.whileTrue(Commands.runOnce(() -> vision.toggleShouldUpdate()));

@@ -86,8 +86,8 @@ public class AutoCommands {
 
   public static Command stopShoot() {
     return Commands.parallel(
-        Commands.runOnce(() -> indexer.setVoltageIndexer(0)),
-        Commands.runOnce(() -> indexer.setVoltageTower(0)));
+        Commands.run(() -> indexer.setVoltageIndexer(0)),
+        Commands.run(() -> indexer.setVoltageTower(0)));
   }
 
   public static Command zeroSequence() { // if it doesn't work check the motor limits
