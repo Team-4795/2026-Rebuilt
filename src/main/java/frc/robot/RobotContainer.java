@@ -31,6 +31,7 @@ import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.ShooterHood.ShooterHoodIO;
 import frc.robot.subsystems.ShooterHood.ShooterHoodIOReal;
 import frc.robot.subsystems.ShooterHood.ShooterHoodIOSim;
+import frc.robot.subsystems.StateManager.State;
 import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.StateManager.StateManager.OperationStates;
 import frc.robot.subsystems.Turret.Turret;
@@ -216,19 +217,6 @@ public class RobotContainer {
 
     deployIntake.whileTrue(AutoCommands.deployIntake());
 
-    m_operatorController
-        .povUp()
-        .whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kForward)));
-    m_operatorController
-        .povDown()
-        .whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kReverse)));
-    m_operatorController
-        .povLeft()
-        .whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kForward)));
-    m_operatorController
-        .povRight()
-        .whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kReverse)));
-
     // retractIntake.whileTrue(
     //     Commands.startEnd(
     //         () -> deploy.setDeployVoltage(3), () -> deploy.setDeployVoltage(0), deploy));
@@ -292,9 +280,9 @@ public class RobotContainer {
                 AutoCommands.intake(),
                 DriveCommands.joystickDrive(
                     drive,
-                    () -> -m_driverController.getLeftY() / 2.0,
-                    () -> -m_driverController.getLeftX() / 2.0,
-                    () -> -m_driverController.getRightX() / 3.0)))
+                    () -> -m_driverController.getLeftY() / (stateManager.getState() == State.SHOOTING ? 3.0: 2.0),
+                    () -> -m_driverController.getLeftX() /  (stateManager.getState() == State.SHOOTING ? 3.0: 2.0),
+                    () -> -m_driverController.getRightX() /  (stateManager.getState() == State.SHOOTING ? 3.0: 2.0))))
         .onFalse(Commands.runOnce(() -> shooter.resetShooter()));
 
     // Auto trench
@@ -309,7 +297,6 @@ public class RobotContainer {
     // Auto Score (no SOTM)
     autoScore.whileTrue(
         Commands.parallel(AutoCommands.autoScore(), Commands.runOnce(() -> drive.stopWithX())));
-    autoScore.onFalse(AutoCommands.stopShoot());
 
     // Toggle vision
     toggleVision.whileTrue(Commands.runOnce(() -> vision.toggleShouldUpdate()));
@@ -342,6 +329,20 @@ public class RobotContainer {
     // m_operatorController.povDown()
 
     // add manual setpoints here
+
+    //     m_operatorController
+    //     .povUp()
+    //     .whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kForward)));
+    // m_operatorController
+    //     .povDown()
+    //     .whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kReverse)));
+    // m_operatorController
+    //     .povLeft()
+    //     .whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kForward)));
+    // m_operatorController
+    //     .povRight()
+    //     .whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kReverse)));
+
   }
 
   /**
