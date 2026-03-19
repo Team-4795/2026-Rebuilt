@@ -47,11 +47,11 @@ public class AutoCommands {
         intake());
   }
 
-  public static Command autoAgitate() {
-    return Commands.sequence(Commands.waitSeconds(3), agitateIntake())
-        .onlyWhile(() -> !OperationStates.isIntaking)
-        .repeatedly();
-  }
+  // public static Command autoAgitate() {
+  //   return Commands.sequence(Commands.waitSeconds(3), agitateIntake())
+  //       .onlyWhile(() -> !OperationStates.isIntaking)
+  //       .repeatedly();
+  // }
 
   public static Command intake() {
     return Commands.run(() -> intake.setIntakeVoltage(12), intake);

@@ -14,7 +14,7 @@ import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerIO;
-import frc.robot.subsystems.Indexer.IndexerIOReal;
+import frc.robot.subsystems.Indexer.IndexerIORealTalon;
 import frc.robot.subsystems.Indexer.IndexerIOSim;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakeIO;
@@ -22,7 +22,6 @@ import frc.robot.subsystems.Intake.IntakeIOReal;
 import frc.robot.subsystems.Intake.IntakeIOSim;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployIO;
-import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOReal;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOSim;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterIO;
@@ -104,9 +103,9 @@ public class RobotContainer {
     switch (Constants.currentMode) {
       case REAL:
         intake = Intake.initialize(new IntakeIOReal());
-        deploy = IntakeDeploy.initialize(new IntakeDeployIOReal());
+        deploy = IntakeDeploy.initialize(new IntakeDeployIOSim());
         shooter = Shooter.initialize(new ShooterIOReal());
-        indexer = Indexer.initialize(new IndexerIOReal());
+        indexer = Indexer.initialize(new IndexerIORealTalon());
         turret = Turret.initialize(new TurretIOReal());
         shooterHood = ShooterHood.initialize(new ShooterHoodIOReal());
         drive =
@@ -290,22 +289,19 @@ public class RobotContainer {
     sotm.whileTrue(
         Commands.parallel(
             AutoCommands.shootOnTheMove(),
-            AutoCommands.autoAgitate(),
+            AutoCommands.intake(),
             DriveCommands.joystickDrive(
                 drive,
                 () -> -m_driverController.getLeftY() / 2.0,
                 () -> -m_driverController.getLeftX() / 2.0,
-                () -> -m_driverController.getRightX() / 3.0)));
+                () -> -m_driverController.getRightX() / 3.0)));//.onFalse(Commands.runOnce(() -> shooter.resetShooter()));
+
 
     // Auto trench
     autoTrench.whileTrue(AutoCommands.underTrenchAssist());
 
     // Intake
-    intakeButton
-        .whileTrue(
-            AutoCommands.intake()
-                .alongWith(Commands.runOnce(() -> OperationStates.isIntaking = true)))
-        .onFalse(Commands.runOnce(() -> OperationStates.isIntaking = false));
+    intakeButton.whileTrue(AutoCommands.intake());
 
     // Run Indexer
     shoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
