@@ -53,7 +53,7 @@ public class AutoCommands {
   // }
 
   public static Command intake() {
-    return Commands.run(() -> intake.setIntakeVoltage(6), intake);
+    return Commands.run(() -> intake.setIntakeVoltage(7), intake);
   }
 
   public static Command reverseIntake() {

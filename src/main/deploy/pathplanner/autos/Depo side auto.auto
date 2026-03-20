@@ -5,12 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "Deploy Intake"
-          }
-        },
-        {
           "type": "race",
           "data": {
             "commands": [
@@ -24,6 +18,31 @@
                 "type": "named",
                 "data": {
                   "name": "Intake"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.6
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Deploy Intake"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1000.0
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -69,32 +88,13 @@
                           {
                             "type": "wait",
                             "data": {
-                              "waitTime": 1.5
+                              "waitTime": 2.0
                             }
                           },
                           {
                             "type": "named",
                             "data": {
                               "name": "Shoot"
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "type": "sequential",
-                      "data": {
-                        "commands": [
-                          {
-                            "type": "wait",
-                            "data": {
-                              "waitTime": 4.0
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "Retract Intake"
                             }
                           }
                         ]
