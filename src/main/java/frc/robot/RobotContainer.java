@@ -21,6 +21,7 @@ import frc.robot.subsystems.Intake.IntakeIOReal;
 import frc.robot.subsystems.Intake.IntakeIOSim;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployIO;
+import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOReal;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOSim;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterIO;
@@ -103,7 +104,7 @@ public class RobotContainer {
     switch (Constants.currentMode) {
       case REAL:
         intake = Intake.initialize(new IntakeIOReal());
-        deploy = IntakeDeploy.initialize(new IntakeDeployIOSim());
+        deploy = IntakeDeploy.initialize(new IntakeDeployIOReal());
         shooter = Shooter.initialize(new ShooterIOReal());
         indexer = Indexer.initialize(new IndexerIORealTalon());
         turret = Turret.initialize(new TurretIOReal());
@@ -362,8 +363,6 @@ public class RobotContainer {
 
   public Command stopMechanisms() {
     return Commands.parallel(
-      Commands.runOnce(() -> shooter.setVelocityRPS(0)),
-      AutoCommands.stopShoot()
-    );
+        Commands.runOnce(() -> shooter.setVelocityRPS(0)), AutoCommands.stopShoot());
   }
 }

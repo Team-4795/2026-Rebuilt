@@ -65,7 +65,7 @@ public class ShootOnTheMove extends Command {
 
   @Override
   public void execute() {
-    dampener = 0.9;
+    dampener = 1;
 
     robotPose = drive.getPose();
     targetPose = stateManager.getTargetPose();
