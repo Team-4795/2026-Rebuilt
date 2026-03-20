@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.Indexer.Indexer;
@@ -280,9 +279,15 @@ public class RobotContainer {
                 AutoCommands.intake(),
                 DriveCommands.joystickDrive(
                     drive,
-                    () -> -m_driverController.getLeftY() / (stateManager.getState() == State.SHOOTING ? 3.0: 2.0),
-                    () -> -m_driverController.getLeftX() /  (stateManager.getState() == State.SHOOTING ? 3.0: 2.0),
-                    () -> -m_driverController.getRightX() /  (stateManager.getState() == State.SHOOTING ? 3.0: 2.0))))
+                    () ->
+                        -m_driverController.getLeftY()
+                            / (stateManager.getState() == State.SHOOTING ? 3.0 : 2.0),
+                    () ->
+                        -m_driverController.getLeftX()
+                            / (stateManager.getState() == State.SHOOTING ? 3.0 : 2.0),
+                    () ->
+                        -m_driverController.getRightX()
+                            / (stateManager.getState() == State.SHOOTING ? 3.0 : 2.0))))
         .onFalse(Commands.runOnce(() -> shooter.resetShooter()));
 
     // Auto trench
@@ -353,5 +358,12 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return autoChooser.get();
+  }
+
+  public Command stopMechanisms() {
+    return Commands.parallel(
+      Commands.runOnce(() -> shooter.setVelocityRPS(0)),
+      AutoCommands.stopShoot()
+    );
   }
 }
