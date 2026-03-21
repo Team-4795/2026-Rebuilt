@@ -143,6 +143,9 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
     inputs.setpointVelocity = setpoint.velocity;
     inputs.setpointPosition = setpoint.position;
 
+    inputs.currentA = intakeDeployMotorA.getOutputCurrent();
+    inputs.currentB = intakeDeployMotorB.getOutputCurrent();
+
     Logger.recordOutput("Intake Deploy/PID Volts", PIDVolts);
     Logger.recordOutput("Intake Deploy/FF Volts", FFVolts);
   }

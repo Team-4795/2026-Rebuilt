@@ -6,7 +6,7 @@ public final class ShooterConstants {
   public static final int TOP_CAN_ID = 15;
   public static final int BOTTOM_CAN_ID = 16;
 
-  public static final int CURRENT_LIMIT = 160;
+  public static final int CURRENT_LIMIT = 80;
 
   public static final double minVel = -30.0;
   public static final double maxVel = 100.0;
@@ -57,6 +57,6 @@ public final class ShooterConstants {
     shooterVelocityShuttlingMap.put(5.246212, 70.0);
     shooterVelocityShuttlingMap.put(6.479048, 73.0);
     shooterVelocityShuttlingMap.put(7.329184, 78.0);
-    shooterVelocityShuttlingMap.put(10.0, 95.0);
+    // shooterVelocityShuttlingMap.put(10.0, 95.0);
   }
 }

@@ -53,7 +53,7 @@ public class AutoCommands {
   // }
 
   public static Command intake() {
-    return Commands.run(() -> intake.setIntakeVoltage(7), intake);
+    return Commands.run(() -> intake.setIntakeVoltage(9), intake);
   }
 
   public static Command reverseIntake() {
@@ -159,15 +159,15 @@ public class AutoCommands {
   public static Command feederCornerAlign() {
     return Commands.parallel(
         Commands.run(() -> turret.setGoal(TurretConstants.rightCornerSetpoint), turret),
-        Commands.run(() -> shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(5.4))),
-        Commands.run(() -> hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(5.4))));
+        Commands.run(() -> shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(5.2))),
+        Commands.run(() -> hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(5.2))));
   }
 
   public static Command depoCornerAlign() {
     return Commands.parallel(
         Commands.run(() -> turret.setGoal(TurretConstants.leftCornerSetpoint), turret),
-        Commands.run(() -> shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(5.4))),
-        Commands.run(() -> hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(5.4))));
+        Commands.run(() -> shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(5.2))),
+        Commands.run(() -> hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(5.2))));
   }
 
   public static Command pleaseNoTouch() {

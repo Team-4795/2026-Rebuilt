@@ -18,6 +18,9 @@ public interface IntakeDeployIO {
 
     public double setpointPosition = 0;
     public double setpointVelocity = 0;
+
+    public double currentA = 0;
+    public double currentB = 0;
   }
 
   public default void setGoal(double goal) {}

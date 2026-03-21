@@ -168,7 +168,7 @@ public class ShooterIOReal implements ShooterIO {
 
     talonFXConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
-    talonFXConfig.TorqueCurrent.PeakForwardTorqueCurrent = 120;
+    talonFXConfig.TorqueCurrent.PeakForwardTorqueCurrent = 80;
     talonFXConfig.TorqueCurrent.PeakReverseTorqueCurrent = 0;
 
     // // Motion Magic settings
