@@ -123,9 +123,23 @@
       "name": "Constraints Zone",
       "minWaypointRelativePos": 1.9012567324955112,
       "maxWaypointRelativePos": 6.0,
+      "maxWaypointRelativePos": 6.0,
       "constraints": {
         "maxVelocity": 0.5,
         "maxAcceleration": 2.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    },
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.4603580562659847,
+      "maxWaypointRelativePos": 1.4526854219948855,
+      "constraints": {
+        "maxVelocity": 3.0,
+        "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -156,6 +170,18 @@
           "name": "Shoot"
         }
       }
+    },
+    {
+      "name": "Stop Shoot",
+      "waypointRelativePos": 3.8363171355498693,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "Shoot",
+      "waypointRelativePos": 4.771992818671455,
+      "endWaypointRelativePos": null,
+      "command": null
     }
   ],
   "globalConstraints": {
