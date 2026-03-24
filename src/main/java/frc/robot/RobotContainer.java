@@ -4,9 +4,50 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.AutoCommands;
+import frc.robot.commands.DriveCommands;
+import frc.robot.subsystems.Indexer.Indexer;
+import frc.robot.subsystems.Indexer.IndexerIO;
+import frc.robot.subsystems.Indexer.IndexerIOReal;
+import frc.robot.subsystems.Indexer.IndexerIOSim;
+import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.Intake.IntakeIO;
+import frc.robot.subsystems.Intake.IntakeIOReal;
+import frc.robot.subsystems.Intake.IntakeIOSim;
+import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
+import frc.robot.subsystems.IntakeDeploy.IntakeDeployIO;
+import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOReal;
+import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOSim;
+import frc.robot.subsystems.Shooter.Shooter;
+import frc.robot.subsystems.Shooter.ShooterIO;
+import frc.robot.subsystems.Shooter.ShooterIOReal;
+import frc.robot.subsystems.Shooter.ShooterIOSim;
+import frc.robot.subsystems.ShooterHood.ShooterHood;
+import frc.robot.subsystems.ShooterHood.ShooterHoodIO;
+import frc.robot.subsystems.ShooterHood.ShooterHoodIOReal;
+import frc.robot.subsystems.ShooterHood.ShooterHoodIOSim;
+import frc.robot.subsystems.StateManager.StateManager;
+import frc.robot.subsystems.Turret.Turret;
+import frc.robot.subsystems.Turret.TurretIO;
+import frc.robot.subsystems.Turret.TurretIOReal;
+import frc.robot.subsystems.Turret.TurretIOSim;
+import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.drive.GyroIO;
+import frc.robot.subsystems.drive.GyroIOPigeon2;
+import frc.robot.subsystems.drive.ModuleIOSim;
+import frc.robot.subsystems.drive.ModuleIOSparkFlex;
+import frc.robot.subsystems.vision.Vision;
+import frc.robot.subsystems.vision.VisionIO;
+import frc.robot.subsystems.vision.VisionIOReal;
+import frc.robot.subsystems.vision.VisionIOSim;
+import frc.robot.util.NamedCommandManager;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -16,16 +57,123 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private final Shooter shooter;
+  private final Indexer indexer;
+  private final Turret turret;
+  private final Drive drive;
+  private final Vision vision;
+  private final ShooterHood shooterHood;
+  private final StateManager stateManager;
+  private final Intake intake;
+  private final IntakeDeploy deploy;
 
   // Controllers
   private final CommandXboxController m_driverController = Constants.OIConstants.driverController;
   private final CommandXboxController m_operatorController =
       Constants.OIConstants.operatorController;
 
+  // Official Bindings
+  // private final Trigger robotRelativeDrive = m_driverController.rightBumper();
+  // private final Trigger intakeButton = m_driverController.leftTrigger();
+  // private final Trigger autoScore = m_driverController.rightTrigger();
+  // private final Trigger visionOff = m_driverController.x();
+  // private final Trigger zeroDrivebase = m_driverController.y();
+
+  // Testing Bindings
+  private final Trigger intakeButton = m_driverController.leftTrigger();
+
+  private final Trigger sotm = m_operatorController.rightTrigger();
+  private final Trigger zeroButton = m_operatorController.x();
+
+  private final Trigger autoScore = m_driverController.rightBumper();
+  private final Trigger shoot = m_driverController.rightTrigger();
+  private final Trigger autoTrench = m_driverController.leftBumper();
+  private final Trigger configure = m_driverController.povDown();
+
+  private final Trigger agitateIntake = m_driverController.x();
+
+  private final Trigger retractIntake = m_driverController.povLeft();
+  private final Trigger deployIntake = m_driverController.povUp();
+
+  // private final Trigger shooterButton = m_operatorController.a();
+
+  // private final Trigger turretOne = m_operatorController.povLeft();
+  // private final Trigger turretTwo = m_operatorController.povRight();
+
+  // private final Trigger shooterHoodOne = m_operatorController.povUp();
+  // private final Trigger shooterHoodTwo = m_driverController.povDown();
+
+  private LoggedDashboardChooser<Command> autoChooser;
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    // there's probably a better way to do this
+    Constants.FieldConstants.initConstants();
+    switch (Constants.currentMode) {
+      case REAL:
+        intake = Intake.initialize(new IntakeIOReal());
+        deploy = IntakeDeploy.initialize(new IntakeDeployIOReal());
+        shooter = Shooter.initialize(new ShooterIOReal());
+        indexer = Indexer.initialize(new IndexerIOReal());
+        turret = Turret.initialize(new TurretIOReal());
+        shooterHood = ShooterHood.initialize(new ShooterHoodIOReal());
+        drive =
+            Drive.initialize(
+                new GyroIOPigeon2(),
+                new ModuleIOSparkFlex(0),
+                new ModuleIOSparkFlex(1),
+                new ModuleIOSparkFlex(2),
+                new ModuleIOSparkFlex(3));
+        vision = Vision.initialize(new VisionIOReal(0), new VisionIOReal(1)); //, new VisionIOReal(2));
+        break;
+
+      case SIM:
+        intake = Intake.initialize(new IntakeIOSim());
+        deploy = IntakeDeploy.initialize(new IntakeDeployIOSim());
+        shooter = Shooter.initialize(new ShooterIOSim());
+        indexer = Indexer.initialize(new IndexerIOSim());
+        turret = Turret.initialize(new TurretIOSim());
+        shooterHood = ShooterHood.initialize(new ShooterHoodIOSim());
+        drive =
+            Drive.initialize(
+                new GyroIO() {},
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim());
+        vision = Vision.initialize(new VisionIOSim());
+        break;
+
+      default:
+        intake = Intake.initialize(new IntakeIO() {});
+        deploy = IntakeDeploy.initialize(new IntakeDeployIO() {});
+        shooter = Shooter.initialize(new ShooterIO() {});
+        indexer = Indexer.initialize(new IndexerIO() {});
+        turret = Turret.initialize(new TurretIO() {});
+        shooterHood = ShooterHood.initialize(new ShooterHoodIO() {});
+        drive =
+            Drive.initialize(
+                new GyroIO() {},
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim());
+        vision = Vision.initialize(new VisionIO[] {});
+        break;
+    }
+
+    stateManager = StateManager.initalize();
+
+    // Register named commands
+    NamedCommandManager.registerNamedCommands();
+    autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
+
     // Configure the trigger bindings
-    configureBindings();
+    configureButtonBindings();
+  }
+
+  public boolean readyToShoot() {
+    return shooter.readyToShoot() && shooterHood.readyToShoot() && turret.readyToShoot();
   }
 
   /**
@@ -37,15 +185,155 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureBindings() {}
+  private void configureTestingButtons() {
+    drive.setDefaultCommand(
+        DriveCommands.joystickDrive(
+            drive,
+            () -> -m_driverController.getLeftY(),
+            () -> -m_driverController.getLeftX(),
+            () -> -m_driverController.getRightX()));
+
+    intakeButton.whileTrue(AutoCommands.intake());
+
+    autoScore.whileTrue(AutoCommands.autoScore());
+
+    // sotm.whileTrue(
+    //     AutoCommands.movingAlign()
+    //         .alongWith(
+    //             DriveCommands.joystickDrive(
+    //                 drive,
+    //                 () -> -m_driverController.getLeftY() / 2.0,
+    //                 () -> -m_driverController.getLeftX() / 2.0,
+    //                 () -> -m_driverController.getRightX() / 2.0)));
+
+    // autoScore.whileTrue(AutoCommands.autoScore());
+
+    shoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
+
+    autoTrench.whileTrue(AutoCommands.underTrenchAssist());
+
+    configure.onTrue(Commands.sequence(Commands.runOnce(() -> turret.configure())));
+
+    zeroButton.onTrue(AutoCommands.zeroSequence());
+
+    agitateIntake.whileTrue(AutoCommands.agitateIntake());
+
+    retractIntake.whileTrue(AutoCommands.retractIntake());
+
+    deployIntake.whileTrue(AutoCommands.deployIntake());
+
+    m_operatorController
+        .povUp()
+        .whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kForward)));
+    m_operatorController
+        .povDown()
+        .whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kReverse)));
+    m_operatorController
+        .povLeft()
+        .whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kForward)));
+    m_operatorController
+        .povRight()
+        .whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kReverse)));
+
+    // retractIntake.whileTrue(
+    //     Commands.startEnd(
+    //         () -> deploy.setDeployVoltage(3), () -> deploy.setDeployVoltage(0), deploy));
+
+    // shooterButton.whileTrue(AutoCommands.setShooterRPS(50));
+
+    // Dynamic shooting
+    // m_operatorController.leftBumper().whileTrue(AutoCommands.setShooterVelocityDynamic());
+
+    // Turret Bindings
+    // turretOne.whileTrue(
+    //     Commands.startEnd(() -> turret.setVoltage(4), () -> turret.setVoltage(0), turret));
+    // turretTwo.whileTrue(
+    //     Commands.startEnd(() -> turret.setVoltage(-4), () -> turret.setVoltage(0), turret));
+    // zeroTurretTrigger.onTrue(Commands.runOnce(() -> turret.zero()));
+
+    // shooterHoodUp
+    //     .whileTrue(Commands.run(() -> shooterHood.setGoal(1), shooterHood));
+    // shooterHoodDown
+    //     .whileTrue(Commands.run(() -> shooterHood.setGoal(0.25), shooterHood));
+    // Dynamic shooter hood
+    // m_driverController.leftTrigger().whileTrue(AutoCommands.setShooterHoodDynamic());
+
+    m_operatorController
+        .a()
+        .whileTrue(
+            AutoCommands.turretAimAtTarget()
+                .alongWith(
+                    Commands.run(() -> shooterHood.setGoal(ShooterHoodIOReal.hoodAngle.get())))
+                .alongWith(
+                    Commands.startEnd(
+                        () -> shooter.setVelocityRPS(ShooterIOReal.shooterRPS.get()),
+                        () -> shooter.setVelocityRPS(0))));
+  }
+
+  public void configureButtonBindings() {
+    drive.setDefaultCommand(
+        DriveCommands.joystickDrive(
+            drive,
+            () -> -m_driverController.getLeftY(),
+            () -> -m_driverController.getLeftX(),
+            () -> -m_driverController.getRightX()));
+
+    // SOTM
+    m_driverController
+        .rightBumper()
+        .whileTrue(
+            AutoCommands.movingAlign()
+                .alongWith(
+                    DriveCommands.joystickDrive(
+                        drive,
+                        () -> -m_driverController.getLeftY() / 2.0,
+                        () -> -m_driverController.getLeftX() / 2.0,
+                        () -> -m_driverController.getRightX() / 3.0)));
+
+    m_driverController.leftBumper().whileTrue(AutoCommands.underTrenchAssist());
+    m_driverController.leftTrigger().whileTrue(AutoCommands.intake());
+
+    m_driverController
+        .rightTrigger()
+        .whileTrue(AutoCommands.shoot())
+        .onFalse(AutoCommands.stopShoot());
+
+    // Auto Score
+    m_driverController
+        .a()
+        .whileTrue(AutoCommands.autoScore().alongWith(Commands.runOnce(() -> drive.stopWithX())));
+
+    m_driverController.x().whileTrue(Commands.runOnce(() -> vision.toggleShouldUpdate()));
+    m_driverController.y().onTrue(Commands.runOnce(() -> drive.zeroHeading()));
+
+    m_operatorController.a().whileTrue(AutoCommands.zeroSequence());
+    m_operatorController.b().onTrue(Commands.runOnce(() -> turret.lockTurret(), turret));
+
+    m_operatorController.povLeft().whileTrue(AutoCommands.depoCornerAlign());
+    m_operatorController.povRight().whileTrue(AutoCommands.feederCornerAlign());
+
+    m_operatorController.povDown().whileTrue(AutoCommands.deployIntake());
+    m_operatorController.povUp().whileTrue(AutoCommands.retractIntake());
+
+    m_operatorController
+        .rightBumper()
+        .whileTrue(AutoCommands.reverseIndexer())
+        .onFalse(AutoCommands.stopShoot());
+
+    // add climber here
+    // m_operatorController.povUp().whileTrue(Comamnds.startEnd(() -> ))
+    // m_operatorController.povDown()
+
+    // add manual setpoints here
+  }
 
   /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
+   * Use this to pass the autonomous command to the main {@link Robot} class.x`
    *
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return autoChooser.get();
   }
 }
