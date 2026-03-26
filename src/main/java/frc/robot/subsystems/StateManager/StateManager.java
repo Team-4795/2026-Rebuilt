@@ -9,7 +9,11 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
+import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
+import frc.robot.subsystems.Shooter.Shooter;
+import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.ShooterHood.ShooterHoodConstants;
+import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretConstants;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.util.Zone;
@@ -44,6 +48,7 @@ public class StateManager extends SubsystemBase {
     public static boolean inShuttlingZone3 = false;
     public static boolean inShuttlingZone4 = false;
     public static boolean inShuttlingZone5 = false;
+    public static boolean isIntaking = false;
   }
 
   public static StateManager initalize() {
@@ -80,15 +85,6 @@ public class StateManager extends SubsystemBase {
     this.state = state;
   }
 
-  public double distanceToTarget() {
-    Pose2d robotPose = Drive.getInstance().getPose();
-
-    Translation2d turretPose =
-        robotPose.getTranslation().plus(TurretConstants.OFFSET.rotateBy(robotPose.getRotation()));
-
-    return getTargetPose().getTranslation().getDistance(turretPose);
-  }
-
   public Pose2d getTargetPose() {
     // Mirror pose if Red Alliance
     if (alliance != null && alliance.equals(Alliance.Red)) {
@@ -103,11 +99,9 @@ public class StateManager extends SubsystemBase {
   }
 
   public boolean canTurretMove() {
-    return (TurretConstants.canMove && getState() != State.SHUTTLING_DEAD_ZONE);
-  }
-
-  public boolean canHoodMove() {
-    return !OperationStates.inDecapitationZone;
+    return (TurretConstants.canMove
+        && getState() != State.SHUTTLING_DEAD_ZONE
+        && IntakeDeploy.getInstance().getPosition() < 0.25);
   }
 
   @Override
@@ -167,11 +161,16 @@ public class StateManager extends SubsystemBase {
         "State Manager/Operation States/In Zone 4", OperationStates.inShuttlingZone4);
     Logger.recordOutput(
         "State Manager/Operation States/In Zone 5", OperationStates.inShuttlingZone5);
+    Logger.recordOutput("State Manager/Operation States/Is Intaking", OperationStates.isIntaking);
 
     Logger.recordOutput("State Manager/State", state);
-    Logger.recordOutput("State Manager/State Target", getTargetPose());
+    Logger.recordOutput("State Manager/State Target Pose", getTargetPose());
 
-    Logger.recordOutput("State Manager/Distance to Target", distanceToTarget());
+    Logger.recordOutput(
+        "State Manager/Is Ready/Shooter Ready", Shooter.getInstance().readyToShoot());
+    Logger.recordOutput("State Manager/Is Ready/Turret Ready", Turret.getInstance().readyToShoot());
+    Logger.recordOutput(
+        "State Manager/Is Ready/Hood Ready", ShooterHood.getInstance().readyToShoot());
   }
 
   // Update zone based off the closest trench and robot velocity

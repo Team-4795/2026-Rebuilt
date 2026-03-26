@@ -2,11 +2,11 @@ package frc.robot.subsystems.vision;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
-import java.io.IOException;
 
 public class VisionConstants {
   // all placeholders
@@ -24,8 +24,8 @@ public class VisionConstants {
         new Transform3d(
             new Translation3d(
                 Units.inchesToMeters(-3.25),
-                Units.inchesToMeters(-13.895),
-                Units.inchesToMeters(8.75)),
+                Units.inchesToMeters(-14),
+                Units.inchesToMeters(10.25)),
             new Rotation3d(
                 Units.degreesToRadians(0),
                 Units.degreesToRadians(-20),
@@ -34,9 +34,7 @@ public class VisionConstants {
         // Back Cam
         new Transform3d(
             new Translation3d(
-                Units.inchesToMeters(-12.343),
-                Units.inchesToMeters(-11),
-                Units.inchesToMeters(8.750)),
+                Units.inchesToMeters(-12.5), Units.inchesToMeters(-11.1), Units.inchesToMeters(9)),
             new Rotation3d(
                 Units.degreesToRadians(0),
                 Units.degreesToRadians(-20),
@@ -45,20 +43,19 @@ public class VisionConstants {
         // Luma Left
         new Transform3d(
             new Translation3d( // Change Translation
-                Units.inchesToMeters(0), Units.inchesToMeters(0), Units.inchesToMeters(0)),
+                Units.inchesToMeters(-10.5),
+                Units.inchesToMeters(14.5),
+                Units.inchesToMeters(10.5)),
             new Rotation3d( // Rotation should be good. Only touch if 3d pose looks weird
-                Units.degreesToRadians(0), Units.degreesToRadians(-20), Units.degreesToRadians(90)))
+                Units.degreesToRadians(180),
+                Units.degreesToRadians(-20),
+                Units.degreesToRadians(90)))
       };
 
-  // currently does not have 2026 field, check back when they update it
   public static AprilTagFieldLayout FIELD_LAYOUT;
 
   static {
-    try {
-      FIELD_LAYOUT = AprilTagFieldLayout.loadFromResource("/frc/robot/2026AprilTag.json");
-      FIELD_LAYOUT.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    FIELD_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark);
+    FIELD_LAYOUT.setOrigin(OriginPosition.kBlueAllianceWallRightSide);
   }
 }

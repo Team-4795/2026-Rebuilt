@@ -75,6 +75,7 @@ public class ShooterHoodIOReal implements ShooterHoodIO {
     motorConfig.MotionMagic.MotionMagicJerk = ShooterHoodConstants.maxJerk;
 
     shooterHoodMotor.getConfigurator().apply(motorConfig);
+    zero();
   }
 
   @Override
@@ -105,7 +106,8 @@ public class ShooterHoodIOReal implements ShooterHoodIO {
 
   @Override
   public boolean readyToShoot() {
-    return Math.abs(getPosition() - getGoal()) < ShooterHoodConstants.marginOfError;
+    return (getGoal() != 0
+        && Math.abs(getPosition() - getGoal()) < ShooterHoodConstants.marginOfError);
   }
 
   @Override

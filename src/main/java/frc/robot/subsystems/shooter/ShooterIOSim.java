@@ -29,6 +29,8 @@ public class ShooterIOSim implements ShooterIO {
   private double topVolts = 0.0;
   private double bottomVolts = 0.0;
 
+  private boolean reachedRPS = false;
+
   @Override
   public void setVelocityRPS(double velocityRPS) {
     this.topMotorVel = velocityRPS;
@@ -52,8 +54,23 @@ public class ShooterIOSim implements ShooterIO {
 
   @Override
   public boolean readyToShoot() {
-    return (Math.abs(getTopRPS() - getGoal()) < ShooterConstants.marginOfError)
-        && (Math.abs(getBottomRPS() - getGoal()) < ShooterConstants.marginOfError);
+    return (getGoal() != 0)
+        && (getTopRPS() > (getGoal() - 10))
+        && (getBottomRPS() > (getGoal() - 10));
+  }
+
+  @Override
+  public boolean shootNow() {
+    if (readyToShoot() && !reachedRPS) {
+      reachedRPS = true;
+    }
+
+    return reachedRPS;
+  }
+
+  @Override
+  public void resetShooter() {
+    reachedRPS = false;
   }
 
   @Override
@@ -77,13 +94,13 @@ public class ShooterIOSim implements ShooterIO {
     topMotor.setInputVoltage(topVolts);
     bottomMotor.setInputVoltage(bottomVolts);
 
-    inputs.goalVelocityRPS = topMotorVel;
+    inputs.goalVelocityRPS = getGoal();
 
-    inputs.bottomShooterVelocityRPS = bottomMotor.getAngularVelocityRPM() / 60.0;
+    inputs.bottomShooterVelocityRPS = getBottomRPS();
     inputs.bottomShooterCurrent = bottomMotor.getCurrentDrawAmps();
     inputs.bottomShooterVolts = bottomVolts;
 
-    inputs.topShooterVelocityRPS = topMotor.getAngularVelocityRPM() / 60.0;
+    inputs.topShooterVelocityRPS = getTopRPS();
     inputs.topShooterCurrent = topMotor.getCurrentDrawAmps();
     inputs.topShooterVolts = topVolts;
   }

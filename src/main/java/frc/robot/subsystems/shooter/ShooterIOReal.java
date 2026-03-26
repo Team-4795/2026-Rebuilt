@@ -28,6 +28,8 @@ public class ShooterIOReal implements ShooterIO {
   private final StatusSignal<Current> topCurrent = topShooterMotor.getTorqueCurrent();
   private final StatusSignal<Current> bottomCurrent = bottomShooterMotor.getTorqueCurrent();
 
+  private boolean reachedRPS = false;
+
   LoggedTunableNumber KP = new LoggedTunableNumber("Shooter/KP", ShooterConstants.kP);
   LoggedTunableNumber KI = new LoggedTunableNumber("Shooter/KI", ShooterConstants.kI);
   LoggedTunableNumber KD = new LoggedTunableNumber("Shooter/KD", ShooterConstants.kD);
@@ -111,8 +113,23 @@ public class ShooterIOReal implements ShooterIO {
 
   @Override
   public boolean readyToShoot() {
-    return (Math.abs(getTopRPS() - getGoal()) < ShooterConstants.marginOfError)
-        && (Math.abs(getBottomRPS() - getGoal()) < ShooterConstants.marginOfError);
+    return (getGoal() != 0)
+        && (getTopRPS() > (getGoal() - 6))
+        && (getBottomRPS() > (getGoal() - 6));
+  }
+
+  @Override
+  public boolean shootNow() {
+    if (readyToShoot() && !reachedRPS) {
+      reachedRPS = true;
+    }
+
+    return reachedRPS;
+  }
+
+  @Override
+  public void resetShooter() {
+    reachedRPS = false;
   }
 
   @Override
@@ -151,7 +168,7 @@ public class ShooterIOReal implements ShooterIO {
 
     talonFXConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
-    talonFXConfig.TorqueCurrent.PeakForwardTorqueCurrent = 120;
+    talonFXConfig.TorqueCurrent.PeakForwardTorqueCurrent = 80;
     talonFXConfig.TorqueCurrent.PeakReverseTorqueCurrent = 0;
 
     // // Motion Magic settings

@@ -53,10 +53,11 @@ public final class Constants {
     static {
       tAirMap.put(2.20, 1.3);
       tAirMap.put(2.59, 1.26);
-      tAirMap.put(3.03, 1.16);
-      tAirMap.put(3.39, 1.2);
-      tAirMap.put(3.88, 1.1);
-      tAirMap.put(4.39, 1.21);
+      tAirMap.put(3.03, 1.3);
+      tAirMap.put(3.39, 1.4);
+      tAirMap.put(3.88, 1.5);
+      tAirMap.put(4.39, 1.6);
+      tAirMap.put(5.0, 1.66);
     }
   }
 

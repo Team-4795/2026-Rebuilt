@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "testing shooter hood "
+            "pathName": "Shuttling LB P1"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Testing Hood"
+            "pathName": "Shuttling LB P2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": " Shuttling LB P3"
           }
         }
       ]

@@ -7,8 +7,7 @@ public class NamedCommandManager {
   public static void registerNamedCommands() {
     NamedCommands.registerCommand("Shoot", AutoCommands.shoot());
     NamedCommands.registerCommand("Align Hub", AutoCommands.autoScore());
-    NamedCommands.registerCommand("Testing Hub Align", AutoCommands.autoScoreInAuto());
-    NamedCommands.registerCommand("Aim at Hub", AutoCommands.turretAimAtHub());
+    NamedCommands.registerCommand("Second Align", AutoCommands.autoScore());
     NamedCommands.registerCommand("Intake", AutoCommands.intake());
     NamedCommands.registerCommand(
         "Shooter Hood Angle", AutoCommands.setShooterHoodDynamic().withTimeout(100));
@@ -16,6 +15,7 @@ public class NamedCommandManager {
     NamedCommands.registerCommand("Retract Intake", AutoCommands.retractIntake());
     NamedCommands.registerCommand("Deploy Intake", AutoCommands.deployIntake());
     NamedCommands.registerCommand("Zero Hood Angle", AutoCommands.setHoodAngle(0));
-    NamedCommands.registerCommand("Everything", AutoCommands.doNotUseThisMethodUnlessVeryCareful());
+    NamedCommands.registerCommand("Everything", AutoCommands.shootOnTheMove());
+    NamedCommands.registerCommand("Stop Shoot", AutoCommands.stopShoot().withTimeout(0.1));
   }
 }

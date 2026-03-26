@@ -37,7 +37,7 @@ public class DriveConstants {
   // Zeroed rotation values for each module, see setup instructions
   public static final Rotation2d frontLeftZeroRotation = new Rotation2d(-1.490081);
   public static final Rotation2d frontRightZeroRotation = new Rotation2d(0.078611);
-  public static final Rotation2d backLeftZeroRotation = new Rotation2d(-3.126138);
+  public static final Rotation2d backLeftZeroRotation = new Rotation2d(0.055); // -0.582658
   public static final Rotation2d backRightZeroRotation = new Rotation2d(1.489941);
 
   // Device CAN IDs
@@ -67,7 +67,8 @@ public class DriveConstants {
       (2 * Math.PI) / 60.0 / driveMotorReduction; // Rotor RPM -> Wheel Rad/Sec
 
   // Drive PID configuration
-  public static final double driveKp = 0.03;
+  //   public static final double driveKp = 0.03;
+  public static final double driveKp = 0.02;
 
   public static final double driveKd = 0.0;
   public static final double driveKs = 0.0;

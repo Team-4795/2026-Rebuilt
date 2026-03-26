@@ -102,6 +102,12 @@ public class TurretIOReal implements TurretIO {
         MathUtil.clamp(goal, TurretConstants.minAngle / 360.0, TurretConstants.maxAngle / 360.0);
 
     turretMotor.setControl(control.withPosition(this.goal));
+
+    // if (!readyToShoot()) {
+    //   turretMotor.setControl(control.withPosition(this.goal));
+    // } else {
+    //   turretMotor.setControl(new NeutralOut());
+    // }
   }
 
   @Override
@@ -133,7 +139,7 @@ public class TurretIOReal implements TurretIO {
 
   @Override
   public boolean readyToShoot() {
-    return Math.abs(getPosition() - getGoal()) < TurretConstants.marginOfError;
+    return (Math.abs(getPosition() - getGoal()) < TurretConstants.marginOfError);
   }
 
   @Override

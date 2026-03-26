@@ -120,6 +120,11 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
   }
 
   @Override
+  public double getPosition() {
+    return encoderA.getPosition();
+  }
+
+  @Override
   public void updateInputs(IntakeDeployIOInputs inputs) {
     ffmodel = new ArmFeedforward(KS.get(), KG.get(), KV.get());
     controller = new PIDController(KP.get(), KI.get(), KD.get());
@@ -137,6 +142,9 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
 
     inputs.setpointVelocity = setpoint.velocity;
     inputs.setpointPosition = setpoint.position;
+
+    inputs.currentA = intakeDeployMotorA.getOutputCurrent();
+    inputs.currentB = intakeDeployMotorB.getOutputCurrent();
 
     Logger.recordOutput("Intake Deploy/PID Volts", PIDVolts);
     Logger.recordOutput("Intake Deploy/FF Volts", FFVolts);

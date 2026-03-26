@@ -18,7 +18,7 @@ public final class ShooterHoodConstants {
 
   // Rotations
   public static final double maxAngle = 0.0;
-  public static final double minAngle = -0.1;
+  public static final double minAngle = -0.103;
 
   // Margin for ready to shoot command
   public static final double marginOfError = 0.01;
@@ -38,12 +38,18 @@ public final class ShooterHoodConstants {
 
   // distance, rotations
   static {
-    shooterHoodHubMap.put(5.401, -0.07);
-    shooterHoodHubMap.put(4.83, -0.068);
-    shooterHoodHubMap.put(4.33, -0.067);
-    shooterHoodHubMap.put(3.8, -0.06);
-    shooterHoodHubMap.put(3.24, -0.049);
-    shooterHoodHubMap.put(2.75, -0.0375);
+    // shooterHoodHubMap.put(5.401, -0.07);
+    shooterHoodHubMap.put(5.47, -0.056);
+    // shooterHoodHubMap.put(4.83, -0.068);
+    shooterHoodHubMap.put(4.85, -0.042);
+    shooterHoodHubMap.put(4.325, -0.038);
+    // shooterHoodHubMap.put(4.33, -0.067);
+    shooterHoodHubMap.put(4.04, -0.036);
+    // shooterHoodHubMap.put(3.84, -0.06);
+    // shooterHoodHubMap.put(3.24, -0.049);
+    shooterHoodHubMap.put(3.24, -0.033);
+    // shooterHoodHubMap.put(2.75, -0.0375);
+    shooterHoodHubMap.put(2.75, -0.029);
     shooterHoodHubMap.put(2.23, -0.025);
     shooterHoodHubMap.put(1.754, -0.014);
     shooterHoodHubMap.put(1.16, -0.01);
@@ -53,6 +59,6 @@ public final class ShooterHoodConstants {
     shooterHoodShuttlingMap.put(6.4790482, -0.08);
     shooterHoodShuttlingMap.put(7.329184, -0.085);
     // guessed
-    shooterHoodShuttlingMap.put(10.0, -0.09);
+    shooterHoodShuttlingMap.put(10.0, -0.103);
   }
 }
