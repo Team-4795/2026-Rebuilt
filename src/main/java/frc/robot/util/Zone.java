@@ -46,11 +46,11 @@ public class Zone {
     Logger.recordOutput(
         "Zones/" + zoneName,
         new Pose2d[] {
-          new Pose2d(x, y, new Rotation2d()),
-          new Pose2d(x + w, y, new Rotation2d()),
-          new Pose2d(x + w, y + h, new Rotation2d()),
-          new Pose2d(x, y + h, new Rotation2d()),
-          new Pose2d(x, y, new Rotation2d()) // close shape
+          new Pose2d(x, y, Rotation2d.kZero),
+          new Pose2d(x + w, y, Rotation2d.kZero),
+          new Pose2d(x + w, y + h, Rotation2d.kZero),
+          new Pose2d(x, y + h, Rotation2d.kZero),
+          new Pose2d(x, y, Rotation2d.kZero) // close shape
         });
   }
 

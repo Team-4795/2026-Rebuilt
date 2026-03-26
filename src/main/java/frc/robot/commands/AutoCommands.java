@@ -155,6 +155,17 @@ public class AutoCommands {
         () -> manager.getState().equals(State.SHOOTING));
   }
 
+  public static Command afterShoot() {
+    return (Commands.parallel(
+        Commands.sequence(
+            Commands.waitSeconds(3), // change ples
+            Commands.runOnce(() -> shooter.setVelocityRPS(0)),
+            Commands.runOnce(() -> shooter.resetShooter())),
+        Commands.sequence(
+          Commands.run(() -> hood.setGoal(hood.getGoal())).withTimeout(3),
+          Commands.runOnce(() -> hood.setGoal(0)))));
+  }
+
   // Corner Setpoints
   public static Command feederCornerAlign() {
     return Commands.parallel(

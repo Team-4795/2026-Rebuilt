@@ -160,7 +160,5 @@ public class ShootOnTheMove extends Command {
   }
 
   @Override
-  public void end(boolean interrupted) {
-    shooter.setVelocityRPS(0);
-  }
+  public void end(boolean interrupted) {}
 }

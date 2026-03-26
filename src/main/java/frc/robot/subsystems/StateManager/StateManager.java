@@ -187,7 +187,7 @@ public class StateManager extends SubsystemBase {
 
     // dimensions of no auto score zone
     double boxXDim =
-        1 + ShooterHoodConstants.boxXMultiplier * Math.abs(fieldRelative.vxMetersPerSecond);
+        0.5 + ShooterHoodConstants.boxXMultiplier * Math.abs(fieldRelative.vxMetersPerSecond);
     double boxYDim =
         FieldConstants.trenchWidth
             + ShooterHoodConstants.boxYMultiplier * Math.abs(fieldRelative.vyMetersPerSecond);

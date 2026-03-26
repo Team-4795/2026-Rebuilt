@@ -263,7 +263,7 @@ public class RobotContainer {
     readyToShoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
 
     // Anti decapitation
-    inDecapitationZone.whileTrue(Commands.run(() -> shooterHood.setGoal(0)));
+    inDecapitationZone.whileTrue(Commands.run(() -> shooterHood.setGoal(0), shooterHood));
 
     // Joystick drive
     drive.setDefaultCommand(
@@ -282,14 +282,14 @@ public class RobotContainer {
                     drive,
                     () ->
                         -m_driverController.getLeftY()
-                            / (stateManager.getState() == State.SHOOTING ? 3.0 : 2.5),
+                            * (stateManager.getState() == State.SHOOTING ? 0.33 : 0.6),
                     () ->
                         -m_driverController.getLeftX()
-                            / (stateManager.getState() == State.SHOOTING ? 3.0 : 2.5),
+                            * (stateManager.getState() == State.SHOOTING ? 0.33 : 0.6),
                     () ->
                         -m_driverController.getRightX()
-                            / (stateManager.getState() == State.SHOOTING ? 3.0 : 2.5))))
-        .onFalse(Commands.runOnce(() -> shooter.resetShooter()));
+                            * (stateManager.getState() == State.SHOOTING ? 0.33 : 0.6))))
+        .onFalse(AutoCommands.afterShoot());
 
     // Auto trench
     autoTrench.whileTrue(AutoCommands.underTrenchAssist());
