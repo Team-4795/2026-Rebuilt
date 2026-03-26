@@ -91,9 +91,9 @@ public final class Constants {
     public static Translation2d[] shuttleZoneFive = new Translation2d[4];
 
     public static Translation2d shuttleTargetOne =
-        new Translation2d(blueLeftTrench.getX() / 2.0, fieldWidth * 0.75);
+        new Translation2d(blueLeftTrench.getX() / 1.45, fieldWidth * 0.75);
     public static Translation2d shuttleTargetTwo =
-        new Translation2d(blueLeftTrench.getX() / 2.0, fieldWidth * 0.25);
+        new Translation2d(blueLeftTrench.getX() / 1.45, fieldWidth * 0.25);
 
     public static void initConstants() {
       double shuttlingDeadzone = 0.5;

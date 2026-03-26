@@ -162,8 +162,8 @@ public class AutoCommands {
             Commands.runOnce(() -> shooter.setVelocityRPS(0)),
             Commands.runOnce(() -> shooter.resetShooter())),
         Commands.sequence(
-          Commands.run(() -> hood.setGoal(hood.getGoal())).withTimeout(3),
-          Commands.runOnce(() -> hood.setGoal(0)))));
+            Commands.run(() -> hood.setGoal(hood.getGoal())).withTimeout(3),
+            Commands.runOnce(() -> hood.setGoal(0)))));
   }
 
   // Corner Setpoints
