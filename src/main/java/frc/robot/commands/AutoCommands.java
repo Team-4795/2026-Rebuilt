@@ -155,6 +155,7 @@ public class AutoCommands {
         () -> manager.getState().equals(State.SHOOTING));
   }
 
+  // Keep shooter and hood aimed for a period after to not miss last shots
   public static Command afterShoot() {
     return (Commands.parallel(
         Commands.sequence(

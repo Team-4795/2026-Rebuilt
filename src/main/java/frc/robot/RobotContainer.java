@@ -302,7 +302,8 @@ public class RobotContainer {
 
     // Auto Score (no SOTM)
     autoScore.whileTrue(
-        Commands.parallel(AutoCommands.autoScore(), Commands.runOnce(() -> drive.stopWithX())));
+        Commands.parallel(AutoCommands.autoScore(), Commands.runOnce(() -> drive.stopWithX())))
+        .onFalse(AutoCommands.afterShoot());
 
     // Toggle vision
     toggleVision.whileTrue(Commands.runOnce(() -> vision.toggleShouldUpdate()));
