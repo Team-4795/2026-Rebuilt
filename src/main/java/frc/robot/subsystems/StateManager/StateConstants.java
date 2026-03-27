@@ -5,6 +5,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.Constants;
 
 public class StateConstants {
+  public static final boolean shouldUseTimer = true;
+
   public static final Pose2d hub =
       new Pose2d(
           Constants.FieldConstants.blueHub.getX(),

@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
@@ -22,6 +23,8 @@ import org.littletonrobotics.junction.Logger;
 public class StateManager extends SubsystemBase {
   private static StateManager instance;
   private State state;
+
+  private MatchTimer timer;
 
   // Corners of zone as an array
   private Translation2d[] decapitationZoneTranslation = new Translation2d[4];
@@ -79,6 +82,8 @@ public class StateManager extends SubsystemBase {
     shuttlingZoneFive.logPoints("Shuttling Zone 5");
 
     this.state = State.SHOOTING;
+
+    timer = new MatchTimer();
   }
 
   private void setState(State state) {
@@ -148,6 +153,10 @@ public class StateManager extends SubsystemBase {
       setState(State.SHOOTING);
     }
 
+    // update match timer
+    timer.updateAll();
+    updateShiftRumble();
+
     // Logging
     Logger.recordOutput(
         "State Manager/Operation States/In Decapitation Zone", OperationStates.inDecapitationZone);
@@ -171,6 +180,11 @@ public class StateManager extends SubsystemBase {
     Logger.recordOutput("State Manager/Is Ready/Turret Ready", Turret.getInstance().readyToShoot());
     Logger.recordOutput(
         "State Manager/Is Ready/Hood Ready", ShooterHood.getInstance().readyToShoot());
+
+    Logger.recordOutput("State Manager/Timer/Current Shift", timer.getCurrentShift());
+    Logger.recordOutput("State Manager/Timer/Next Shift", timer.getNextShift());
+    Logger.recordOutput("State Manager/Timer/Who Won Auto?", timer.getAutoWinningAlliance());
+    Logger.recordOutput("State Manager/Timer/Time Until Next Shift", timer.getTimeToShift());
   }
 
   // Update zone based off the closest trench and robot velocity
@@ -203,6 +217,17 @@ public class StateManager extends SubsystemBase {
     decapitationZoneTranslation[3] = botRight;
 
     decapitationZone.updateZone(decapitationZoneTranslation);
+  }
+
+  public void startMatchTimer() {
+    timer.startTeleop();
+  }
+
+  private void updateShiftRumble() {
+    double t = timer.getTimeToShift();
+    if (t > 2.0 && t < 3.0)
+      Constants.OIConstants.driverController.setRumble(RumbleType.kBothRumble, 0.8);
+    else Constants.OIConstants.driverController.setRumble(RumbleType.kBothRumble, 0);
   }
 
   private Translation2d[] toRedAlliance(Translation2d[] blueAllianceTranslation) {

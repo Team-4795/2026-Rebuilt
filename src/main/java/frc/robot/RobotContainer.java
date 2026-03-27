@@ -301,8 +301,9 @@ public class RobotContainer {
     shoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
 
     // Auto Score (no SOTM)
-    autoScore.whileTrue(
-        Commands.parallel(AutoCommands.autoScore(), Commands.runOnce(() -> drive.stopWithX())))
+    autoScore
+        .whileTrue(
+            Commands.parallel(AutoCommands.autoScore(), Commands.runOnce(() -> drive.stopWithX())))
         .onFalse(AutoCommands.afterShoot());
 
     // Toggle vision
@@ -365,5 +366,9 @@ public class RobotContainer {
   public Command stopMechanisms() {
     return Commands.parallel(
         Commands.runOnce(() -> shooter.setVelocityRPS(0)), AutoCommands.stopShoot());
+  }
+
+  public void startTimer() {
+    stateManager.startMatchTimer();
   }
 }
