@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Shooter.Shooter;
@@ -114,7 +115,7 @@ public class ShootOnTheMove extends Command {
           new Pose2d(
               targetPose.getX() - velocityXOffset - omegaXOffset,
               targetPose.getY() - velocityYOffset - omegaYOffset,
-              new Rotation2d());
+              Rotation2d.kZero);
     }
 
     distance = offsettedTarget.getTranslation().getDistance(turretPose);
@@ -127,15 +128,20 @@ public class ShootOnTheMove extends Command {
     turretAngle -= TurretConstants.angleOffset;
     desiredRot = (((turretAngle % 1.0) + 1.0) % 1.0);
 
-    turret.setGoal(desiredRot);
-
     if (stateManager.getState() == State.SHOOTING && !OperationStates.inDecapitationZone) {
       shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(distance));
       hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(distance));
+      turret.setGoal(desiredRot);
     } else {
       if (!OperationStates.inDecapitationZone) {
         shooter.setVelocityRPS(ShooterConstants.shooterVelocityShuttlingMap.get(distance));
         hood.setGoal(ShooterHoodConstants.shooterHoodShuttlingMap.get(distance));
+        if (Math.abs(Units.degreesToRotations(TurretConstants.maxAngle) - desiredRot) < TurretConstants.shuttlingWrapMargin 
+          || Math.abs(Units.degreesToRotations(TurretConstants.minAngle) - desiredRot) < TurretConstants.shuttlingWrapMargin) {
+          turret.setGoal(turret.getTurretGoal());
+        } else {
+          turret.setGoal(desiredRot);
+        }
       }
     }
 

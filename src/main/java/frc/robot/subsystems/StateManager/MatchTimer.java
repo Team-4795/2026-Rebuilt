@@ -17,7 +17,7 @@ public class MatchTimer {
 
   public MatchTimer() {
     // mAlliance = DriverStation.getAlliance().orElse(null);
-    mAlliance = Alliance.Blue;
+    mAlliance = Alliance.Red; // because sim is funky with alliances
     timer = new Timer();
   }
 
@@ -68,7 +68,7 @@ public class MatchTimer {
           break;
       }
 
-      if (wAlliance.compareTo(mAlliance) == 0) wonAuto = true;
+      if (wAlliance == mAlliance) wonAuto = true;
     }
   }
 
@@ -112,11 +112,11 @@ public class MatchTimer {
    * set 1: if you won auto
    * 35s
    * 85s
-   * 110s
+   * 110s endgame
    *
    * set 2: if you lost auto
    * 10s
    * 60s
-   * 110s
+   * 110s endgame
    */
 }

@@ -49,6 +49,10 @@ public class Turret extends SubsystemBase {
     return io.getPosition();
   }
 
+  public double getTurretGoal() {
+    return io.getGoal();
+  }
+
   public void zero() {
     io.zero();
   }

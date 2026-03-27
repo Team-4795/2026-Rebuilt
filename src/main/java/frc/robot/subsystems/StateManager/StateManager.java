@@ -25,7 +25,8 @@ public class StateManager extends SubsystemBase {
   private State state;
 
   private MatchTimer timer;
-
+  private boolean rumble;
+  
   // Corners of zone as an array
   private Translation2d[] decapitationZoneTranslation = new Translation2d[4];
   private Translation2d[] shuttlingZoneOneTranslation = Constants.FieldConstants.shuttleZoneOne;
@@ -185,6 +186,8 @@ public class StateManager extends SubsystemBase {
     Logger.recordOutput("State Manager/Timer/Next Shift", timer.getNextShift());
     Logger.recordOutput("State Manager/Timer/Who Won Auto?", timer.getAutoWinningAlliance());
     Logger.recordOutput("State Manager/Timer/Time Until Next Shift", timer.getTimeToShift());
+
+    Logger.recordOutput("State Manager/Timer/Rumble Controller", rumble);
   }
 
   // Update zone based off the closest trench and robot velocity
@@ -223,11 +226,15 @@ public class StateManager extends SubsystemBase {
     timer.startTeleop();
   }
 
+  // TODO finish/test controller rumble
   private void updateShiftRumble() {
     double t = timer.getTimeToShift();
-    if (t > 2.0 && t < 3.0)
-      Constants.OIConstants.driverController.setRumble(RumbleType.kBothRumble, 0.8);
-    else Constants.OIConstants.driverController.setRumble(RumbleType.kBothRumble, 0);
+    if (t > 2.0 && t < 3.0) {
+      rumble = true;
+    }
+    else {
+      rumble = false;
+    }
   }
 
   private Translation2d[] toRedAlliance(Translation2d[] blueAllianceTranslation) {
