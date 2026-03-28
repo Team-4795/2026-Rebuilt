@@ -7,6 +7,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Shooter.Shooter;
+import frc.robot.subsystems.Shooter.ShooterConstants;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.ShooterHood.ShooterHoodConstants;
 import frc.robot.subsystems.StateManager.State;
@@ -130,11 +131,14 @@ public class ShootOnTheMove extends Command {
     desiredRot = (((turretAngle % 1.0) + 1.0) % 1.0);
     
     turret.setGoal(desiredRot);
-    
+
     if (stateManager.getState() == State.SHOOTING && !OperationStates.inDecapitationZone) {
       // shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(distance));
       shooter.setVelocityRPS(shooterRPS.getAsDouble());
       hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(distance));
+    } else if (!OperationStates.inDecapitationZone) {
+      shooter.setVelocityRPS(ShooterConstants.shooterVelocityShuttlingMap.get(distance));
+      hood.setGoal(ShooterHoodConstants.shooterHoodShuttlingMap.get(distance));
     }
 
     Logger.recordOutput("Shoot on move At Hub/Hub Pose", hub);
