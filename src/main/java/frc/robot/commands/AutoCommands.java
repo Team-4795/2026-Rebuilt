@@ -74,20 +74,20 @@ public class AutoCommands {
 
   public static Command shoot() {
     return Commands.parallel(
-        Commands.run(() -> indexer.setVoltageIndexer(-12)),
-        Commands.run(() -> indexer.setVoltageTower(-12)));
+        Commands.runOnce(() -> indexer.setVoltageIndexer(-12)),
+        Commands.runOnce(() -> indexer.setVoltageTower(-12)));
   }
 
   public static Command reverseIndexer() {
     return Commands.parallel(
-        Commands.run(() -> indexer.setVoltageIndexer(12)),
-        Commands.run(() -> indexer.setVoltageTower(12)));
+        Commands.runOnce(() -> indexer.setVoltageIndexer(12)),
+        Commands.runOnce(() -> indexer.setVoltageTower(12)));
   }
 
   public static Command stopShoot() {
     return Commands.parallel(
-        Commands.run(() -> indexer.setVoltageIndexer(0)),
-        Commands.run(() -> indexer.setVoltageTower(0)));
+        Commands.runOnce(() -> indexer.setVoltageIndexer(0)),
+        Commands.runOnce(() -> indexer.setVoltageTower(0)));
   }
 
   public static Command zeroSequence() { // if it doesn't work check the motor limits
@@ -157,14 +157,13 @@ public class AutoCommands {
 
   // Keep shooter and hood aimed for a period after to not miss last shots
   public static Command afterShoot() {
-    return (Commands.parallel(
+    return Commands.parallel(
+        stopShoot(),
         Commands.sequence(
-            Commands.waitSeconds(3), // change ples
+            Commands.waitSeconds(0.5), // change ples
             Commands.runOnce(() -> shooter.setVelocityRPS(0)),
             Commands.runOnce(() -> shooter.resetShooter())),
-        Commands.sequence(
-            Commands.run(() -> hood.setGoal(hood.getGoal())).withTimeout(3),
-            Commands.runOnce(() -> hood.setGoal(0)))));
+        Commands.sequence(Commands.waitSeconds(0.5), Commands.runOnce(() -> hood.setGoal(0))));
   }
 
   // Corner Setpoints

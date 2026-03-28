@@ -61,6 +61,15 @@ public class Turret extends SubsystemBase {
     return io.readyToShoot();
   }
 
+  public Translation2d getTurretPose() {
+    Pose2d robotPose = Drive.getInstance().getPose();
+    Translation2d turretOffsetPose = TurretConstants.OFFSET;
+
+    Translation2d turretPose =
+        robotPose.getTranslation().plus(turretOffsetPose.rotateBy(robotPose.getRotation()));
+    return turretPose;
+  }
+
   // Visualize the direction the turret aims in ascope
   public Pose2d visualizeTurret() {
     Translation2d turretOffsetPose = TurretConstants.OFFSET;

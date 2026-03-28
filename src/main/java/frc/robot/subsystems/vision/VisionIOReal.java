@@ -26,9 +26,6 @@ public class VisionIOReal implements VisionIO {
 
   @Override
   public void updateInputs(VisionIOInputs inputs) {
-    inputs.pipelineIndex = camera.getPipelineIndex();
-    inputs.sortMode = sortMode.toString();
-
     Optional<EstimatedRobotPose> visionEst = Optional.empty();
     for (var result : camera.getAllUnreadResults()) {
       visionEst = estimator.estimateCoprocMultiTagPose(result); // Multitag estimation

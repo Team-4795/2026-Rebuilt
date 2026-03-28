@@ -6,7 +6,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
@@ -26,7 +25,7 @@ public class StateManager extends SubsystemBase {
 
   private MatchTimer timer;
   private boolean rumble;
-  
+
   // Corners of zone as an array
   private Translation2d[] decapitationZoneTranslation = new Translation2d[4];
   private Translation2d[] shuttlingZoneOneTranslation = Constants.FieldConstants.shuttleZoneOne;
@@ -44,6 +43,7 @@ public class StateManager extends SubsystemBase {
 
   private Alliance alliance;
   private Pose2d pose;
+  private Translation2d turretPose;
 
   public static class OperationStates {
     public static boolean inDecapitationZone = false;
@@ -52,7 +52,6 @@ public class StateManager extends SubsystemBase {
     public static boolean inShuttlingZone3 = false;
     public static boolean inShuttlingZone4 = false;
     public static boolean inShuttlingZone5 = false;
-    public static boolean isIntaking = false;
   }
 
   public static StateManager initalize() {
@@ -110,6 +109,10 @@ public class StateManager extends SubsystemBase {
         && IntakeDeploy.getInstance().getPosition() < 0.25);
   }
 
+  public boolean canHoodMove() {
+    return !OperationStates.inDecapitationZone;
+  }
+
   @Override
   public void periodic() {
     // Make shuttling zones red alliance if needed
@@ -135,13 +138,14 @@ public class StateManager extends SubsystemBase {
     decapitationZone.logPoints("Decapitation Zone");
 
     pose = Drive.getInstance().getPose();
+    turretPose = Turret.getInstance().getTurretPose();
 
-    OperationStates.inDecapitationZone = decapitationZone.contains(pose);
-    OperationStates.inShuttlingZone1 = shuttlingZoneOne.contains(pose);
-    OperationStates.inShuttlingZone2 = shuttlingZoneTwo.contains(pose);
-    OperationStates.inShuttlingZone3 = shuttlingZoneThree.contains(pose);
-    OperationStates.inShuttlingZone4 = shuttlingZoneFour.contains(pose);
-    OperationStates.inShuttlingZone5 = shuttlingZoneFive.contains(pose);
+    OperationStates.inDecapitationZone = decapitationZone.contains(turretPose);
+    OperationStates.inShuttlingZone1 = shuttlingZoneOne.contains(turretPose);
+    OperationStates.inShuttlingZone2 = shuttlingZoneTwo.contains(turretPose);
+    OperationStates.inShuttlingZone3 = shuttlingZoneThree.contains(turretPose);
+    OperationStates.inShuttlingZone4 = shuttlingZoneFour.contains(turretPose);
+    OperationStates.inShuttlingZone5 = shuttlingZoneFive.contains(turretPose);
 
     // Set State
     if (OperationStates.inShuttlingZone1 || OperationStates.inShuttlingZone3) {
@@ -171,7 +175,6 @@ public class StateManager extends SubsystemBase {
         "State Manager/Operation States/In Zone 4", OperationStates.inShuttlingZone4);
     Logger.recordOutput(
         "State Manager/Operation States/In Zone 5", OperationStates.inShuttlingZone5);
-    Logger.recordOutput("State Manager/Operation States/Is Intaking", OperationStates.isIntaking);
 
     Logger.recordOutput("State Manager/State", state);
     Logger.recordOutput("State Manager/State Target Pose", getTargetPose());
@@ -187,7 +190,7 @@ public class StateManager extends SubsystemBase {
     Logger.recordOutput("State Manager/Timer/Who Won Auto?", timer.getAutoWinningAlliance());
     Logger.recordOutput("State Manager/Timer/Time Until Next Shift", timer.getTimeToShift());
 
-    Logger.recordOutput("State Manager/Timer/Rumble Controller", rumble);
+    Logger.recordOutput("State Manager/Timer/Rumble Controller?", rumble);
   }
 
   // Update zone based off the closest trench and robot velocity
@@ -231,8 +234,7 @@ public class StateManager extends SubsystemBase {
     double t = timer.getTimeToShift();
     if (t > 2.0 && t < 3.0) {
       rumble = true;
-    }
-    else {
+    } else {
       rumble = false;
     }
   }

@@ -11,12 +11,7 @@ public interface VisionIO {
     double[] timestamp = new double[] {};
     int[] tags = new int[] {};
 
-    double poseAmbiguity = 0.0;
     double latency = 0.0;
-    double temperature = 0.0;
-
-    int pipelineIndex = 10;
-    String sortMode = "";
   }
 
   public default void updateInputs(VisionIOInputs inputs) {}

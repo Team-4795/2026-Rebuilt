@@ -77,9 +77,9 @@ public class RobotContainer {
   // Official Bindings
   private final Trigger sotm = m_driverController.rightTrigger();
   private final Trigger autoTrench = m_driverController.leftBumper();
-  private final Trigger shoot = m_driverController.rightBumper();
+  private final Trigger runIndexer = m_driverController.rightBumper();
   private final Trigger intakeButton = m_driverController.leftTrigger();
-  private final Trigger autoScore = m_driverController.a(); // No SOTM
+  private final Trigger autoScore = m_driverController.a(); // No SOTM, stop w/ x
   private final Trigger toggleVision = m_driverController.x();
   private final Trigger zeroDrive = m_driverController.y();
 
@@ -91,7 +91,6 @@ public class RobotContainer {
   private final Trigger deployIntake = m_operatorController.povDown();
   private final Trigger reverseIntake = m_operatorController.leftBumper();
   private final Trigger reverseIndexer = m_operatorController.rightBumper();
-  // Operator Triggers already bound to manual intake deploy
 
   // Testing Bindings
   private final Trigger configure = m_driverController.povDown();
@@ -302,12 +301,12 @@ public class RobotContainer {
     intakeButton.whileTrue(AutoCommands.intake());
 
     // Run Indexer
-    shoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
+    runIndexer.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
 
     // Auto Score (no SOTM)
     autoScore
         .whileTrue(
-            Commands.parallel(AutoCommands.autoScore(), Commands.runOnce(() -> drive.stopWithX())))
+            Commands.parallel(AutoCommands.autoScore(), Commands.run(() -> drive.stopWithX())))
         .onFalse(AutoCommands.afterShoot());
 
     // Toggle vision
@@ -369,7 +368,9 @@ public class RobotContainer {
 
   public Command stopMechanisms() {
     return Commands.parallel(
-        Commands.runOnce(() -> shooter.setVelocityRPS(0)), AutoCommands.stopShoot());
+        Commands.runOnce(() -> shooterHood.setGoal(0)),
+        Commands.runOnce(() -> shooter.setVelocityRPS(0)),
+        AutoCommands.stopShoot());
   }
 
   public void startTimer() {

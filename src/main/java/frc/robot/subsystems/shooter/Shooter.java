@@ -34,7 +34,6 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean readyToShoot() {
-    // return io.readyToShoot();
     return io.shootNow();
   }
 

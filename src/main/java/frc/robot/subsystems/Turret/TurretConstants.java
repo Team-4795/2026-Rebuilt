@@ -9,7 +9,7 @@ public class TurretConstants {
   public static final double maxAngle = 360 - margin;
 
   // make wrapping harder when shuttling maybe
-  public static final double shuttlingWrapMargin = 0.2; // in rotations, placeholder
+  public static final double shuttlingWrapMargin = 0.05; // in rotations, placeholder
 
   // Margin for ready to shoot command
   public static final double marginOfError = 0.01;

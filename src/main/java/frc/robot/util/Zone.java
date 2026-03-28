@@ -55,8 +55,13 @@ public class Zone {
   }
 
   // Check whether robot is within the zone
-  public boolean contains(Pose2d robotPose) {
+  public boolean contains(Pose2d pose) {
     Rectangle2D rect = side.getBounds2D();
-    return rect.contains(robotPose.getX(), robotPose.getY());
+    return rect.contains(pose.getX(), pose.getY());
+  }
+
+  public boolean contains(Translation2d translation) {
+    Rectangle2D rect = side.getBounds2D();
+    return rect.contains(translation.getX(), translation.getY());
   }
 }

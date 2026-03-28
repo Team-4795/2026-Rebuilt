@@ -136,8 +136,11 @@ public class ShootOnTheMove extends Command {
       if (!OperationStates.inDecapitationZone) {
         shooter.setVelocityRPS(ShooterConstants.shooterVelocityShuttlingMap.get(distance));
         hood.setGoal(ShooterHoodConstants.shooterHoodShuttlingMap.get(distance));
-        if (Math.abs(Units.degreesToRotations(TurretConstants.maxAngle) - desiredRot) < TurretConstants.shuttlingWrapMargin 
-          || Math.abs(Units.degreesToRotations(TurretConstants.minAngle) - desiredRot) < TurretConstants.shuttlingWrapMargin) {
+
+        if (Math.abs(Units.degreesToRotations(TurretConstants.maxAngle) - desiredRot)
+                < TurretConstants.shuttlingWrapMargin
+            || Math.abs(Units.degreesToRotations(TurretConstants.minAngle) - desiredRot)
+                < TurretConstants.shuttlingWrapMargin) {
           turret.setGoal(turret.getTurretGoal());
         } else {
           turret.setGoal(desiredRot);

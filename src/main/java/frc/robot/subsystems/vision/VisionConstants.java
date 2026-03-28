@@ -42,11 +42,11 @@ public class VisionConstants {
 
         // Luma Left
         new Transform3d(
-            new Translation3d( // Change Translation
+            new Translation3d(
                 Units.inchesToMeters(-10.5),
                 Units.inchesToMeters(14.5),
                 Units.inchesToMeters(10.5)),
-            new Rotation3d( // Rotation should be good. Only touch if 3d pose looks weird
+            new Rotation3d(
                 Units.degreesToRadians(180),
                 Units.degreesToRadians(-20),
                 Units.degreesToRadians(90)))

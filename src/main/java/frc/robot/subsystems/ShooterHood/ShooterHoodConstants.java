@@ -28,7 +28,7 @@ public final class ShooterHoodConstants {
   public static final double maxJerk = 0;
 
   // change when testing
-  public static final double boxXMultiplier = 0.15;
+  public static final double boxXMultiplier = 0.25;
   public static final double boxYMultiplier = 0.05;
 
   public static final InterpolatingDoubleTreeMap shooterHoodHubMap =
@@ -38,17 +38,11 @@ public final class ShooterHoodConstants {
 
   // distance, rotations
   static {
-    // shooterHoodHubMap.put(5.401, -0.07);
     shooterHoodHubMap.put(5.47, -0.056);
-    // shooterHoodHubMap.put(4.83, -0.068);
     shooterHoodHubMap.put(4.85, -0.042);
     shooterHoodHubMap.put(4.325, -0.038);
-    // shooterHoodHubMap.put(4.33, -0.067);
     shooterHoodHubMap.put(4.04, -0.036);
-    // shooterHoodHubMap.put(3.84, -0.06);
-    // shooterHoodHubMap.put(3.24, -0.049);
     shooterHoodHubMap.put(3.24, -0.033);
-    // shooterHoodHubMap.put(2.75, -0.0375);
     shooterHoodHubMap.put(2.75, -0.029);
     shooterHoodHubMap.put(2.23, -0.025);
     shooterHoodHubMap.put(1.754, -0.014);
