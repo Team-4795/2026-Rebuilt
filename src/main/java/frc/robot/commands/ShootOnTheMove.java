@@ -4,7 +4,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Shooter.Shooter;
@@ -129,28 +128,13 @@ public class ShootOnTheMove extends Command {
         (Math.atan2(deltaY, deltaX) - robotPose.getRotation().getRadians()) / (2 * Math.PI);
     turretAngle -= TurretConstants.angleOffset;
     desiredRot = (((turretAngle % 1.0) + 1.0) % 1.0);
-
+    
+    turret.setGoal(desiredRot);
+    
     if (stateManager.getState() == State.SHOOTING && !OperationStates.inDecapitationZone) {
       // shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(distance));
       shooter.setVelocityRPS(shooterRPS.getAsDouble());
-
       hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(distance));
-      turret.setGoal(desiredRot);
-    } else {
-      if (!OperationStates.inDecapitationZone) {
-        // shooter.setVelocityRPS(ShooterConstants.shooterVelocityShuttlingMap.get(distance));
-        shooter.setVelocityRPS(shooterRPS.getAsDouble());
-        hood.setGoal(ShooterHoodConstants.shooterHoodShuttlingMap.get(distance));
-
-        if (Math.abs(Units.degreesToRotations(TurretConstants.maxAngle) - desiredRot)
-                < TurretConstants.shuttlingWrapMargin
-            || Math.abs(Units.degreesToRotations(TurretConstants.minAngle) - desiredRot)
-                < TurretConstants.shuttlingWrapMargin) {
-          turret.setGoal(turret.getTurretGoal());
-        } else {
-          turret.setGoal(desiredRot);
-        }
-      }
     }
 
     Logger.recordOutput("Shoot on move At Hub/Hub Pose", hub);
