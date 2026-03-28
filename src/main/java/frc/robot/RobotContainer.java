@@ -22,7 +22,6 @@ import frc.robot.subsystems.Intake.IntakeIOReal;
 import frc.robot.subsystems.Intake.IntakeIOSim;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployIO;
-import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOReal;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOSim;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterIO;
@@ -30,7 +29,6 @@ import frc.robot.subsystems.Shooter.ShooterIOReal;
 import frc.robot.subsystems.Shooter.ShooterIOSim;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.ShooterHood.ShooterHoodIO;
-import frc.robot.subsystems.ShooterHood.ShooterHoodIOReal;
 import frc.robot.subsystems.ShooterHood.ShooterHoodIOSim;
 import frc.robot.subsystems.StateManager.State;
 import frc.robot.subsystems.StateManager.StateManager;
@@ -41,9 +39,7 @@ import frc.robot.subsystems.Turret.TurretIOReal;
 import frc.robot.subsystems.Turret.TurretIOSim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
-import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIOSim;
-import frc.robot.subsystems.drive.ModuleIOSparkFlex;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOReal;
@@ -104,26 +100,26 @@ public class RobotContainer {
     switch (Constants.currentMode) {
       case REAL:
         intake = Intake.initialize(new IntakeIOReal());
-        deploy = IntakeDeploy.initialize(new IntakeDeployIOReal());
+        deploy = IntakeDeploy.initialize(new IntakeDeployIOSim());
         shooter = Shooter.initialize(new ShooterIOReal());
         indexer = Indexer.initialize(new IndexerIORealTalon());
         turret = Turret.initialize(new TurretIOReal());
-        shooterHood = ShooterHood.initialize(new ShooterHoodIOReal());
-        drive =
-            Drive.initialize(
-                new GyroIOPigeon2(),
-                new ModuleIOSparkFlex(0),
-                new ModuleIOSparkFlex(1),
-                new ModuleIOSparkFlex(2),
-                new ModuleIOSparkFlex(3));
+        shooterHood = ShooterHood.initialize(new ShooterHoodIOSim());
         // drive =
         //     Drive.initialize(
-        //         new GyroIO() {},
-        //         new ModuleIOSim(),
-        //         new ModuleIOSim(),
-        //         new ModuleIOSim(),
-        //         new ModuleIOSim());
-        vision = Vision.initialize(new VisionIOReal(0), new VisionIOReal(1), new VisionIOReal(2));
+        //         new GyroIOPigeon2(),
+        //         new ModuleIOSparkFlex(0),
+        //         new ModuleIOSparkFlex(1),
+        //         new ModuleIOSparkFlex(2),
+        //         new ModuleIOSparkFlex(3));
+        drive =
+            Drive.initialize(
+                new GyroIO() {},
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim());
+        vision = Vision.initialize(new VisionIOReal(0), new VisionIOReal(1));
         break;
 
       case SIM:

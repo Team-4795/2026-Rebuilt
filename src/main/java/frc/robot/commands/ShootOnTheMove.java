@@ -8,7 +8,6 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Shooter.Shooter;
-import frc.robot.subsystems.Shooter.ShooterConstants;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.ShooterHood.ShooterHoodConstants;
 import frc.robot.subsystems.StateManager.State;
@@ -17,6 +16,7 @@ import frc.robot.subsystems.StateManager.StateManager.OperationStates;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretConstants;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.util.LoggedTunableNumber;
 import org.littletonrobotics.junction.Logger;
 
 public class ShootOnTheMove extends Command {
@@ -48,6 +48,8 @@ public class ShootOnTheMove extends Command {
   double iterativeDistance = 0;
   double distance;
   double dampener;
+
+  public static LoggedTunableNumber shooterRPS = new LoggedTunableNumber("SOTM/Shooter RPS", 60);
 
   public ShootOnTheMove(
       Drive drive, Turret turret, Shooter shooter, ShooterHood hood, StateManager manager) {
@@ -129,12 +131,15 @@ public class ShootOnTheMove extends Command {
     desiredRot = (((turretAngle % 1.0) + 1.0) % 1.0);
 
     if (stateManager.getState() == State.SHOOTING && !OperationStates.inDecapitationZone) {
-      shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(distance));
+      // shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(distance));
+      shooter.setVelocityRPS(shooterRPS.getAsDouble());
+
       hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(distance));
       turret.setGoal(desiredRot);
     } else {
       if (!OperationStates.inDecapitationZone) {
-        shooter.setVelocityRPS(ShooterConstants.shooterVelocityShuttlingMap.get(distance));
+        // shooter.setVelocityRPS(ShooterConstants.shooterVelocityShuttlingMap.get(distance));
+        shooter.setVelocityRPS(shooterRPS.getAsDouble());
         hood.setGoal(ShooterHoodConstants.shooterHoodShuttlingMap.get(distance));
 
         if (Math.abs(Units.degreesToRotations(TurretConstants.maxAngle) - desiredRot)

@@ -53,7 +53,7 @@ public class AutoCommands {
   // }
 
   public static Command intake() {
-    return Commands.run(() -> intake.setIntakeVoltage(9), intake);
+    return Commands.run(() -> intake.setIntakeVoltage(12), intake);
   }
 
   public static Command reverseIntake() {
@@ -74,13 +74,13 @@ public class AutoCommands {
 
   public static Command shoot() {
     return Commands.parallel(
-        Commands.runOnce(() -> indexer.setVoltageIndexer(-12)),
+        Commands.runOnce(() -> indexer.setVoltageIndexer(-10)),
         Commands.runOnce(() -> indexer.setVoltageTower(-12)));
   }
 
   public static Command reverseIndexer() {
     return Commands.parallel(
-        Commands.runOnce(() -> indexer.setVoltageIndexer(12)),
+        Commands.runOnce(() -> indexer.setVoltageIndexer(9)),
         Commands.runOnce(() -> indexer.setVoltageTower(12)));
   }
 
@@ -160,10 +160,10 @@ public class AutoCommands {
     return Commands.parallel(
         stopShoot(),
         Commands.sequence(
-            Commands.waitSeconds(0.5), // change ples
+            Commands.waitSeconds(0.8), // change ples
             Commands.runOnce(() -> shooter.setVelocityRPS(0)),
             Commands.runOnce(() -> shooter.resetShooter())),
-        Commands.sequence(Commands.waitSeconds(0.5), Commands.runOnce(() -> hood.setGoal(0))));
+        Commands.sequence(Commands.waitSeconds(0.8), Commands.runOnce(() -> hood.setGoal(0))));
   }
 
   // Corner Setpoints
