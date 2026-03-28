@@ -94,8 +94,8 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
 
   @Override
   public void zero() {
-    encoderA.setPosition(IntakeDeployConstants.deployOffset);
-    encoderB.setPosition(IntakeDeployConstants.deployOffset);
+    encoderA.setPosition(IntakeDeployConstants.stowPosition);
+    encoderB.setPosition(IntakeDeployConstants.stowPosition);
   }
 
   @Override

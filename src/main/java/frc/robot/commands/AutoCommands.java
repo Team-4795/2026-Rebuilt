@@ -29,11 +29,11 @@ public class AutoCommands {
   private AutoCommands() {}
 
   public static Command retractIntake() {
-    return Commands.runOnce(() -> deploy.setGoal(IntakeDeployConstants.deployOffset - 0.05));
+    return Commands.runOnce(() -> deploy.setGoal(IntakeDeployConstants.stowPosition - 0.05));
   }
 
   public static Command deployIntake() {
-    return Commands.runOnce(() -> deploy.setGoal(IntakeDeployConstants.stowPosition));
+    return Commands.runOnce(() -> deploy.setGoal(IntakeDeployConstants.intakePosition));
   }
 
   public static Command agitateIntake() {
