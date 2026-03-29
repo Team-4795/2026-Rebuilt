@@ -12,6 +12,8 @@ public interface IndexerIO {
     public double indexerVolts = 0.0;
     public double indexerAngularVelocityRPS = 0.0;
     public double indexerCurrentAmps = 0.0;
+
+    public double indexerGoalRPS = 0.0;
   }
 
   public default void updateInputs(IndexerIOInputs inputs) {}
@@ -19,4 +21,10 @@ public interface IndexerIO {
   public default void setVoltageTower(double voltage) {}
 
   public default void setVoltageIndexer(double voltage) {}
+
+  public default void setGoal(double goalRPS) {}
+
+  public default void updateMotionProfile() {}
+
+  public default void configure() {}
 }

@@ -43,10 +43,12 @@ public class MatchTimer {
 
   public void updateShift() {
     double time = timer.get();
-    if (index != 5) {
+    if (index != 6) {
       if (time >= shiftVals[index + 1].time) {
         currShift = shiftVals[++index];
-        nextShift = shiftVals[index + 1];
+        int next = index + 1;
+        if (index + 1 > 6) next = index;
+        nextShift = shiftVals[next];
       }
       if (time >= ourNextShift.time) {
         int nextInd = index + 2;

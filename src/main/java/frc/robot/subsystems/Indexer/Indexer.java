@@ -36,6 +36,7 @@ public class Indexer extends SubsystemBase {
   @Override
   public void periodic() {
     io.updateInputs(inputs);
+    io.updateMotionProfile();
     Logger.processInputs("Indexer", inputs);
   }
 }

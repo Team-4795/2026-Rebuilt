@@ -29,7 +29,8 @@ public enum Shift {
   S2(35.0),
   S3(60.0),
   S4(85.0),
-  ENDGAME(110.0);
+  ENDGAME(110.0),
+  END(140.0);
 
   public double time;
 
