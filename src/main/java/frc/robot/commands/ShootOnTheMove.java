@@ -98,7 +98,7 @@ public class ShootOnTheMove extends Command {
             new Pose2d(
                 targetPose.getX() - velocityXOffset - omegaXOffset,
                 targetPose.getY() - velocityYOffset - omegaYOffset,
-                new Rotation2d());
+                Rotation2d.kZero);
 
         iterativeDistance = offsettedTarget.getTranslation().getDistance(turretPose);
       }
@@ -129,13 +129,13 @@ public class ShootOnTheMove extends Command {
         (Math.atan2(deltaY, deltaX) - robotPose.getRotation().getRadians()) / (2 * Math.PI);
     turretAngle -= TurretConstants.angleOffset;
     desiredRot = (((turretAngle % 1.0) + 1.0) % 1.0);
-    
+
     turret.setGoal(desiredRot);
 
     if (stateManager.getState() == State.SHOOTING && !OperationStates.inDecapitationZone) {
-      // shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(distance));
-      shooter.setVelocityRPS(shooterRPS.getAsDouble());
+      shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(distance));
       hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(distance));
+      // shooter.setVelocityRPS(shooterRPS.getAsDouble());
     } else if (!OperationStates.inDecapitationZone) {
       shooter.setVelocityRPS(ShooterConstants.shooterVelocityShuttlingMap.get(distance));
       hood.setGoal(ShooterHoodConstants.shooterHoodShuttlingMap.get(distance));

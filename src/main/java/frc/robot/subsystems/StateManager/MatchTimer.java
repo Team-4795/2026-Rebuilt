@@ -72,12 +72,20 @@ public class MatchTimer {
     }
   }
 
+  public void setAlliance(Alliance alliance) {
+    this.mAlliance = alliance;
+  }
+
   public Alliance getAutoWinningAlliance() {
     return wAlliance;
   }
 
   public Alliance getFirstShiftAlliance() {
     return wAlliance == Alliance.Blue ? Alliance.Red : Alliance.Blue;
+  }
+
+  public Alliance getOurAlliance() {
+    return mAlliance;
   }
 
   public double getTimeToShift() {

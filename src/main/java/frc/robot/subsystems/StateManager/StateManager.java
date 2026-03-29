@@ -118,6 +118,7 @@ public class StateManager extends SubsystemBase {
     // Make shuttling zones red alliance if needed
     if (alliance == null && DriverStation.getAlliance().isPresent()) {
       alliance = DriverStation.getAlliance().get();
+      timer.setAlliance(alliance);
 
       if (alliance.equals(Alliance.Red)) {
         shuttlingZoneOne.updateZone(toRedAlliance(shuttlingZoneOneTranslation));
@@ -191,6 +192,8 @@ public class StateManager extends SubsystemBase {
     Logger.recordOutput("State Manager/Timer/Time Until Next Shift", timer.getTimeToShift());
 
     Logger.recordOutput("State Manager/Timer/Rumble Controller?", rumble);
+
+    Logger.recordOutput("State Manager/Alliance", timer.getOurAlliance());
   }
 
   // Update zone based off the closest trench and robot velocity

@@ -80,7 +80,7 @@ public class AutoCommands {
 
   public static Command reverseIndexer() {
     return Commands.parallel(
-        Commands.runOnce(() -> indexer.setVoltageIndexer(9)),
+        Commands.runOnce(() -> indexer.setVoltageIndexer(10)),
         Commands.runOnce(() -> indexer.setVoltageTower(12)));
   }
 
@@ -179,9 +179,5 @@ public class AutoCommands {
         Commands.run(() -> turret.setGoal(TurretConstants.leftCornerSetpoint), turret),
         Commands.run(() -> shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(5.2))),
         Commands.run(() -> hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(5.2))));
-  }
-
-  public static Command pleaseNoTouch() {
-    return new Everything(drive, turret, manager, shooter, hood);
   }
 }

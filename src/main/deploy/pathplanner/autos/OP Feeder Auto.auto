@@ -23,7 +23,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Everything"
+                  "name": "SOTM"
                 }
               },
               {
@@ -54,7 +54,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Everything"
+                  "name": "SOTM"
                 }
               },
               {
@@ -85,7 +85,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Everything"
+                  "name": "SOTM"
                 }
               },
               {
@@ -116,13 +116,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Shoot"
+                  "name": "SOTM"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Everything"
+                  "name": "Shoot"
                 }
               }
             ]
