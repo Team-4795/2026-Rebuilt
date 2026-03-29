@@ -37,9 +37,10 @@ public class IndexerIORealTalon implements IndexerIO {
 
   SparkClosedLoopController controller;
 
-  private double goal = 0.0;
+  private double indexerRPS = 0.0;
 
   public IndexerIORealTalon() {
+    // Tower Talon config
     fxConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     fxConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
@@ -50,8 +51,8 @@ public class IndexerIORealTalon implements IndexerIO {
 
     fxConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
+    // Indexer SparkFlex config
     indexerMotor.clearFaults();
-
     config.smartCurrentLimit(IndexerConstants.currentLimit);
     config.idleMode(IdleMode.kCoast);
 
@@ -75,7 +76,7 @@ public class IndexerIORealTalon implements IndexerIO {
     inputs.indexerAngularVelocityRPS = indexerEncoder.getVelocity() / 60.0;
     inputs.indexerCurrentAmps = indexerMotor.getOutputCurrent();
 
-    inputs.indexerGoalRPS = this.goal;
+    inputs.indexerGoalRPS = this.indexerRPS;
   }
 
   @Override
@@ -91,15 +92,16 @@ public class IndexerIORealTalon implements IndexerIO {
   }
 
   @Override
-  public void setGoal(double goalRPS) {
-    if (goal != goalRPS) {
-      goal = goalRPS;
+  public void setRPSIndexer(double goalRPS) {
+    if (indexerRPS != goalRPS) {
+      indexerRPS = goalRPS;
     }
   }
 
   @Override
   public void updateMotionProfile() {
-    controller.setSetpoint(goal * 60.0, ControlType.kVelocity); // do we want max motion instead?
+    controller.setSetpoint(
+        indexerRPS * 60.0, ControlType.kVelocity); // do we want max motion instead?
   }
 
   @Override

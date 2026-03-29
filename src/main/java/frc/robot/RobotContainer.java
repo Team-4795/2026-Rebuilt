@@ -177,75 +177,12 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureTestingButtons() {
-    drive.setDefaultCommand(
-        DriveCommands.joystickDrive(
-            drive,
-            () -> -m_driverController.getLeftY(),
-            () -> -m_driverController.getLeftX(),
-            () -> -m_driverController.getRightX()));
+    runIndexer.whileTrue(
+        Commands.parallel(
+            Commands.runOnce(() -> indexer.setRPSIndexer(40)),
+            Commands.runOnce(() -> indexer.setVoltageTower(-12))));
 
-    intakeButton.whileTrue(AutoCommands.intake());
-
-    autoScore.whileTrue(AutoCommands.autoScore());
-
-    // sotm.whileTrue(
-    //     AutoCommands.movingAlign()
-    //         .alongWith(
-    //             DriveCommands.joystickDrive(
-    //                 drive,
-    //                 () -> -m_driverController.getLeftY() / 2.0,
-    //                 () -> -m_driverController.getLeftX() / 2.0,
-    //                 () -> -m_driverController.getRightX() / 2.0)));
-
-    // autoScore.whileTrue(AutoCommands.autoScore());
-
-    // shoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
-
-    autoTrench.whileTrue(AutoCommands.underTrenchAssist());
-
-    configure.onTrue(Commands.sequence(Commands.runOnce(() -> turret.configure())));
-
-    zeroButton.onTrue(AutoCommands.zeroSequence());
-
-    agitateIntake.whileTrue(AutoCommands.agitateIntake());
-
-    // retractIntake.whileTrue(AutoCommands.retractIntake());
-
-    deployIntake.whileTrue(AutoCommands.deployIntake());
-
-    // retractIntake.whileTrue(
-    //     Commands.startEnd(
-    //         () -> deploy.setDeployVoltage(3), () -> deploy.setDeployVoltage(0), deploy));
-
-    // shooterButton.whileTrue(AutoCommands.setShooterRPS(50));
-
-    // Dynamic shooting
-    // m_operatorController.leftBumper().whileTrue(AutoCommands.setShooterVelocityDynamic());
-
-    // Turret Bindings
-    // turretOne.whileTrue(
-    //     Commands.startEnd(() -> turret.setVoltage(4), () -> turret.setVoltage(0), turret));
-    // turretTwo.whileTrue(
-    //     Commands.startEnd(() -> turret.setVoltage(-4), () -> turret.setVoltage(0), turret));
-    // zeroTurretTrigger.onTrue(Commands.runOnce(() -> turret.zero()));
-
-    // shooterHoodUp
-    //     .whileTrue(Commands.run(() -> shooterHood.setGoal(1), shooterHood));
-    // shooterHoodDown
-    //     .whileTrue(Commands.run(() -> shooterHood.setGoal(0.25), shooterHood));
-    // Dynamic shooter hood
-    // m_driverController.leftTrigger().whileTrue(AutoCommands.setShooterHoodDynamic());
-
-    // m_operatorController
-    //     .a()
-    //     .whileTrue(
-    //         AutoCommands.turretAimAtTarget()
-    //             .alongWith(
-    //                 Commands.run(() -> shooterHood.setGoal(ShooterHoodIOReal.hoodAngle.get())))
-    //             .alongWith(
-    //                 Commands.startEnd(
-    //                     () -> shooter.setVelocityRPS(ShooterIOReal.shooterRPS.get()),
-    //                     () -> shooter.setVelocityRPS(0))));
+    configure.onTrue(Commands.runOnce(() -> indexer.configure()));
   }
 
   public void configureButtonBindings() {

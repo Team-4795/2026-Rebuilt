@@ -22,7 +22,7 @@ public interface IndexerIO {
 
   public default void setVoltageIndexer(double voltage) {}
 
-  public default void setGoal(double goalRPS) {}
+  public default void setRPSIndexer(double goalRPS) {}
 
   public default void updateMotionProfile() {}
 

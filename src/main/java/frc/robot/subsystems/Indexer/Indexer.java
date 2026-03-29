@@ -33,6 +33,14 @@ public class Indexer extends SubsystemBase {
     io.setVoltageIndexer(voltage);
   }
 
+  public void setRPSIndexer(double RPS) {
+    io.setRPSIndexer(RPS);
+  }
+
+  public void configure() {
+    io.configure();
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);
