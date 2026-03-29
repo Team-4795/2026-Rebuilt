@@ -188,10 +188,11 @@ public class StateManager extends SubsystemBase {
 
     Logger.recordOutput("State Manager/Timer/Current Shift", timer.getCurrentShift());
     Logger.recordOutput("State Manager/Timer/Next Shift", timer.getNextShift());
+    Logger.recordOutput("State Manager/Timer/Our Next Shift", timer.getOurNextShift());
     Logger.recordOutput("State Manager/Timer/Who Won Auto?", timer.getAutoWinningAlliance());
     Logger.recordOutput("State Manager/Timer/Time Until Next Shift", timer.getTimeToShift());
-
-    Logger.recordOutput("State Manager/Timer/Rumble Controller?", rumble);
+    Logger.recordOutput("State Manager/Timer/Time Until Our Shift", timer.getTimeToOurShift());
+    Logger.recordOutput("State Manager/Timer/Rumble Controller", rumble);
 
     Logger.recordOutput("State Manager/Alliance", timer.getOurAlliance());
   }

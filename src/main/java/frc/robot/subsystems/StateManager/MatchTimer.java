@@ -11,6 +11,7 @@ public class MatchTimer {
   private Alliance mAlliance; // our alliance
   private Shift[] shiftVals = Shift.values();
   private Shift currShift = shiftVals[0];
+  private Shift ourNextShift = shiftVals[0];
   private Shift nextShift = shiftVals[0];
   private int index = 0;
   private boolean wonAuto = false;
@@ -29,9 +30,10 @@ public class MatchTimer {
     timer.start();
     updateAutoWinningAlliance();
     currShift = shiftVals[0];
+    nextShift = shiftVals[1];
     index = 0;
-    if (!wonAuto) nextShift = shiftVals[1]; // shift 1
-    else nextShift = shiftVals[2]; // shift 2
+    if (!wonAuto) ourNextShift = shiftVals[1]; // shift 1
+    else ourNextShift = shiftVals[2]; // shift 2
   }
 
   public void updateAll() {
@@ -44,11 +46,12 @@ public class MatchTimer {
     if (index != 5) {
       if (time >= shiftVals[index + 1].time) {
         currShift = shiftVals[++index];
+        nextShift = shiftVals[index + 1];
       }
-      if (time >= nextShift.time) {
+      if (time >= ourNextShift.time) {
         int nextInd = index + 2;
         if (nextInd > 5) nextInd = 5;
-        nextShift = shiftVals[nextInd];
+        ourNextShift = shiftVals[nextInd];
       }
     }
   }
@@ -93,12 +96,21 @@ public class MatchTimer {
     return nextShift.time - tElapsed;
   }
 
+  public double getTimeToOurShift() {
+    double tElapsed = timer.get();
+    return ourNextShift.time - tElapsed;
+  }
+
   public Shift getCurrentShift() {
     return currShift;
   }
 
   public Shift getNextShift() {
     return nextShift;
+  }
+
+  public Shift getOurNextShift() {
+    return ourNextShift;
   }
 
   public boolean didWeWin() {
