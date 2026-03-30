@@ -10,7 +10,6 @@ import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterConstants;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.ShooterHood.ShooterHoodConstants;
-import frc.robot.subsystems.ShooterHood.ShooterHoodIOReal;
 import frc.robot.subsystems.StateManager.State;
 import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.StateManager.StateManager.OperationStates;
@@ -134,10 +133,10 @@ public class ShootOnTheMove extends Command {
     turret.setGoal(desiredRot);
 
     if (stateManager.getState() == State.SHOOTING && !OperationStates.inDecapitationZone) {
-      // shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(distance));
-      // hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(distance));
-      shooter.setVelocityRPS(shooterRPS.getAsDouble());
-      hood.setGoal(ShooterHoodIOReal.hoodAngle.getAsDouble());
+      shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(distance));
+      hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(distance));
+      // shooter.setVelocityRPS(shooterRPS.getAsDouble());
+      // hood.setGoal(ShooterHoodIOReal.hoodAngle.getAsDouble());
     } else if (!OperationStates.inDecapitationZone) {
       shooter.setVelocityRPS(ShooterConstants.shooterVelocityShuttlingMap.get(distance));
       hood.setGoal(ShooterHoodConstants.shooterHoodShuttlingMap.get(distance));

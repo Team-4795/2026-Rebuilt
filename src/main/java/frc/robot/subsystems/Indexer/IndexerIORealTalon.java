@@ -7,7 +7,6 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.ResetMode;
-import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -98,11 +97,11 @@ public class IndexerIORealTalon implements IndexerIO {
     }
   }
 
-  @Override
-  public void updateMotionProfile() {
-    controller.setSetpoint(
-        indexerRPS * 60.0, ControlType.kVelocity); // do we want max motion instead?
-  }
+  // @Override
+  // public void updateMotionProfile() {
+  //   controller.setSetpoint(
+  //       indexerRPS * 60.0, ControlType.kVelocity); // do we want max motion instead?
+  // }
 
   @Override
   public void configure() {

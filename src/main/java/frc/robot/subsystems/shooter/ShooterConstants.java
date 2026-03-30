@@ -6,7 +6,7 @@ public final class ShooterConstants {
   public static final int TOP_CAN_ID = 15;
   public static final int BOTTOM_CAN_ID = 16;
 
-  public static final int CURRENT_LIMIT = 80;
+  public static final int CURRENT_LIMIT = 160;
 
   public static final double minVel = -30.0;
   public static final double maxVel = 100.0;
@@ -37,15 +37,23 @@ public final class ShooterConstants {
 
   // Distance, RPM
   static {
-    shooterVelocityHubMap.put(1.16, 55.0);
-    shooterVelocityHubMap.put(1.754, 57.0);
-    shooterVelocityHubMap.put(2.23, 60.0);
-    shooterVelocityHubMap.put(2.75, 64.0);
-    shooterVelocityHubMap.put(3.24, 64.0);
-    shooterVelocityHubMap.put(4.04, 69.0);
-    shooterVelocityHubMap.put(4.325, 71.75);
-    shooterVelocityHubMap.put(4.85, 72.75);
-    shooterVelocityHubMap.put(5.47, 74.5);
+    // shooterVelocityHubMap.put(1.16, 55.0);
+    // shooterVelocityHubMap.put(1.754, 57.0);
+    // shooterVelocityHubMap.put(2.23, 60.0);
+    // shooterVelocityHubMap.put(2.75, 64.0);
+    // shooterVelocityHubMap.put(3.24, 64.0);
+    // shooterVelocityHubMap.put(4.04, 69.0);
+    // shooterVelocityHubMap.put(4.325, 71.75);
+    // shooterVelocityHubMap.put(4.85, 72.75);
+    // shooterVelocityHubMap.put(5.47, 74.5);
+    shooterVelocityHubMap.put(1.628, 55.0);
+    shooterVelocityHubMap.put(2.233, 53.0);
+    shooterVelocityHubMap.put(2.696, 59.6);
+    shooterVelocityHubMap.put(3.200, 61.5);
+    shooterVelocityHubMap.put(4.06, 67.25);
+    shooterVelocityHubMap.put(4.61, 68.25);
+    shooterVelocityHubMap.put(5.124, 72.25);
+    shooterVelocityHubMap.put(5.77, 73.75);
 
     // Shuttling
     shooterVelocityShuttlingMap.put(5.246212, 70.0);

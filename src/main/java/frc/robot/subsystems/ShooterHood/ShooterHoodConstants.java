@@ -37,15 +37,23 @@ public final class ShooterHoodConstants {
 
   // distance, rotations
   static {
-    shooterHoodHubMap.put(5.47, -0.056);
-    shooterHoodHubMap.put(4.85, -0.042);
-    shooterHoodHubMap.put(4.325, -0.038);
-    shooterHoodHubMap.put(4.04, -0.036);
-    shooterHoodHubMap.put(3.24, -0.033);
-    shooterHoodHubMap.put(2.75, -0.029);
-    shooterHoodHubMap.put(2.23, -0.025);
-    shooterHoodHubMap.put(1.754, -0.014);
-    shooterHoodHubMap.put(1.16, -0.01);
+    // shooterHoodHubMap.put(5.47, -0.056);
+    // shooterHoodHubMap.put(4.85, -0.042);
+    // shooterHoodHubMap.put(4.325, -0.038);
+    // shooterHoodHubMap.put(4.04, -0.036);
+    // shooterHoodHubMap.put(3.24, -0.033);
+    // shooterHoodHubMap.put(2.75, -0.029);
+    // shooterHoodHubMap.put(2.23, -0.025);
+    // shooterHoodHubMap.put(1.754, -0.014);
+    // shooterHoodHubMap.put(1.16, -0.01);
+    shooterHoodHubMap.put(1.628, -0.015);
+    shooterHoodHubMap.put(2.233, -0.0325);
+    shooterHoodHubMap.put(2.696, -0.0325);
+    shooterHoodHubMap.put(3.200, -0.0425);
+    shooterHoodHubMap.put(4.06, -0.046);
+    shooterHoodHubMap.put(4.61, -0.047);
+    shooterHoodHubMap.put(5.124, -0.05);
+    shooterHoodHubMap.put(5.77, -0.056);
 
     // Shuttling
     shooterHoodShuttlingMap.put(5.246212, -0.07);

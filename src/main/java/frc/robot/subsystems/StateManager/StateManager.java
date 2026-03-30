@@ -6,7 +6,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
@@ -233,16 +232,15 @@ public class StateManager extends SubsystemBase {
     timer.startTeleop();
   }
 
-  // TODO finish/test controller rumble
   private void updateShiftRumble() {
-    double t = timer.getTimeToShift();
-    if (t < 3.0) {
-      rumble = true;
-      driverController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
-    } else {
-      rumble = false;
-      driverController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
-    }
+    // double t = timer.getTimeToShift();
+    // if (t < 3.0 && t > 0.0) {
+    //   rumble = true;
+    //   driverController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
+    // } else {
+    //   rumble = false;
+    //   driverController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
+    // }
   }
 
   private Translation2d[] toRedAlliance(Translation2d[] blueAllianceTranslation) {
