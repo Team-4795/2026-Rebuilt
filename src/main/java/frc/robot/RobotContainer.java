@@ -29,6 +29,7 @@ import frc.robot.subsystems.Shooter.ShooterIOReal;
 import frc.robot.subsystems.Shooter.ShooterIOSim;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.ShooterHood.ShooterHoodIO;
+import frc.robot.subsystems.ShooterHood.ShooterHoodIOReal;
 import frc.robot.subsystems.ShooterHood.ShooterHoodIOSim;
 import frc.robot.subsystems.StateManager.State;
 import frc.robot.subsystems.StateManager.StateManager;
@@ -104,7 +105,7 @@ public class RobotContainer {
         shooter = Shooter.initialize(new ShooterIOReal());
         indexer = Indexer.initialize(new IndexerIORealTalon());
         turret = Turret.initialize(new TurretIOReal());
-        shooterHood = ShooterHood.initialize(new ShooterHoodIOSim());
+        shooterHood = ShooterHood.initialize(new ShooterHoodIOReal());
         // drive =
         //     Drive.initialize(
         //         new GyroIOPigeon2(),
@@ -176,14 +177,14 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
-  private void configureTestingButtons() {
-    runIndexer.whileTrue(
-        Commands.parallel(
-            Commands.runOnce(() -> indexer.setRPSIndexer(40)),
-            Commands.runOnce(() -> indexer.setVoltageTower(-12))));
+  // private void configureTestingButtons() {
+  //     runIndexer.whileTrue(
+  //         Commands.parallel(
+  //             Commands.runOnce(() -> indexer.setRPSIndexer(40)),
+  //             Commands.runOnce(() -> indexer.setVoltageTower(-12))));
 
-    configure.onTrue(Commands.runOnce(() -> indexer.configure()));
-  }
+  //     configure.onTrue(Commands.runOnce(() -> indexer.configure()));
+  // }
 
   public void configureButtonBindings() {
     Trigger readyToShoot =
@@ -234,7 +235,7 @@ public class RobotContainer {
     intakeButton.whileTrue(AutoCommands.intake());
 
     // Run Indexer
-    runIndexer.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
+    // runIndexer.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
 
     // Auto Score (no SOTM)
     autoScore
@@ -287,6 +288,18 @@ public class RobotContainer {
     //     .povRight()
     //     .whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kReverse)));
 
+    // testing with everything
+    runIndexer
+        .whileTrue(
+            Commands.parallel(
+                Commands.runOnce((() -> indexer.setRPSTest())),
+                Commands.runOnce(() -> indexer.setVoltageTower(-12))))
+        .onFalse(
+            Commands.parallel(
+                Commands.runOnce((() -> indexer.setRPSIndexer(0))),
+                Commands.runOnce(() -> indexer.setVoltageTower(0))));
+
+    configure.onTrue(Commands.runOnce(() -> indexer.configure()));
   }
 
   /**

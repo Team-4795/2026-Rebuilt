@@ -46,7 +46,6 @@ public class StateManager extends SubsystemBase {
   private Zone shuttlingZoneFive;
 
   private Alliance alliance;
-  private Pose2d pose;
   private Translation2d turretPose;
 
   public static class OperationStates {
@@ -142,7 +141,6 @@ public class StateManager extends SubsystemBase {
     updateDecapitationZone();
     decapitationZone.logPoints("Decapitation Zone");
 
-    pose = Drive.getInstance().getPose();
     turretPose = Turret.getInstance().getTurretPose();
 
     OperationStates.inDecapitationZone = decapitationZone.contains(turretPose);
@@ -216,9 +214,7 @@ public class StateManager extends SubsystemBase {
     // dimensions of no auto score zone
     double boxXDim =
         0.5 + ShooterHoodConstants.boxXMultiplier * Math.abs(fieldRelative.vxMetersPerSecond);
-    double boxYDim =
-        FieldConstants.trenchWidth
-            + ShooterHoodConstants.boxYMultiplier * Math.abs(fieldRelative.vyMetersPerSecond);
+    double boxYDim = FieldConstants.trenchWidth;
 
     Translation2d topLeft = new Translation2d(closest.getX() - boxXDim, closest.getY() + boxYDim);
     Translation2d topRight = new Translation2d(closest.getX() + boxXDim, closest.getY() + boxYDim);

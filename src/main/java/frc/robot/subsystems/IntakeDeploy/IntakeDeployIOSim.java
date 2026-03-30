@@ -34,7 +34,7 @@ public class IntakeDeployIOSim implements IntakeDeployIO {
           DCMotor.getKrakenX60(1));
 
   public IntakeDeployIOSim() {
-    this.setGoal(IntakeDeployConstants.stowPosition);
+    // this.setGoal(IntakeDeployConstants.stowPosition);
   }
 
   @Override

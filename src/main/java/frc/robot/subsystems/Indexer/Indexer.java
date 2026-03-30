@@ -1,11 +1,14 @@
 package frc.robot.subsystems.Indexer;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.util.LoggedTunableNumber;
 import org.littletonrobotics.junction.Logger;
 
 public class Indexer extends SubsystemBase {
   private IndexerIO io;
   private IndexerIOInputsAutoLogged inputs = new IndexerIOInputsAutoLogged();
+
+  LoggedTunableNumber RPS = new LoggedTunableNumber("Indexer/RPS", 40);
 
   private static Indexer instance;
 
@@ -33,8 +36,12 @@ public class Indexer extends SubsystemBase {
     io.setVoltageIndexer(voltage);
   }
 
-  public void setRPSIndexer(double RPS) {
-    io.setRPSIndexer(RPS);
+  public void setRPSIndexer(double rps) {
+    io.setRPSIndexer(rps);
+  }
+
+  public void setRPSTest() {
+    io.setRPSIndexer(RPS.get());
   }
 
   public void configure() {
