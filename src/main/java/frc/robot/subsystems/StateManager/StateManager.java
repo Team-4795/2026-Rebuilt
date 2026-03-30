@@ -5,10 +5,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
+import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
@@ -18,6 +21,7 @@ import frc.robot.subsystems.Turret.TurretConstants;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.util.Zone;
 import org.littletonrobotics.junction.Logger;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 public class StateManager extends SubsystemBase {
   private static StateManager instance;
@@ -25,6 +29,8 @@ public class StateManager extends SubsystemBase {
 
   private MatchTimer timer;
   private boolean rumble;
+  private final CommandXboxController driverController = OIConstants.driverController;
+
 
   // Corners of zone as an array
   private Translation2d[] decapitationZoneTranslation = new Translation2d[4];
@@ -238,8 +244,12 @@ public class StateManager extends SubsystemBase {
     double t = timer.getTimeToShift();
     if (t > 2.0 && t < 3.0) {
       rumble = true;
+      driverController.getHID().setRumble(RumbleType.kLeftRumble, 1.0);
+      driverController.getHID().setRumble(RumbleType.kRightRumble, 1.0);
     } else {
       rumble = false;
+      driverController.getHID().setRumble(RumbleType.kLeftRumble, 0.0);
+      driverController.getHID().setRumble(RumbleType.kRightRumble, 0.0);
     }
   }
 
@@ -252,4 +262,5 @@ public class StateManager extends SubsystemBase {
     }
     return redAllianceTranslation;
   }
+  
 }
