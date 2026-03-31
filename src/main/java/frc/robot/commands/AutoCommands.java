@@ -39,7 +39,7 @@ public class AutoCommands {
   public static Command agitateIntake() {
     return Commands.parallel(
         Commands.repeatingSequence(
-            Commands.runOnce(() -> deploy.setGoal(0.2), deploy),
+            Commands.runOnce(() -> deploy.setGoal(0.04), deploy),
             Commands.waitSeconds(0.5),
             Commands.runOnce(() -> deploy.setGoal(0)),
             Commands.waitSeconds(0.5)),
