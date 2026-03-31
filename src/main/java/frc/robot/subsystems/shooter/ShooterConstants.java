@@ -6,13 +6,15 @@ public final class ShooterConstants {
   public static final int TOP_CAN_ID = 15;
   public static final int BOTTOM_CAN_ID = 16;
 
-  public static final int CURRENT_LIMIT = 160;
+  public static final int STATOR_CURRENT_LIMIT = 160;
+  public static final int SUPPLY_CURRENT_LIMIT = 120;
+  public static final int SUPPLY_CURRENT_LIMIT_LOWER = 60;
 
   public static final double minVel = -30.0;
   public static final double maxVel = 100.0;
 
   // Margin for ready to shoot command
-  public static final double marginOfError = 1.0;
+  public static final double marginOfError = 6.0;
 
   public static final double kP = 100000;
   public static final double kI = 0;

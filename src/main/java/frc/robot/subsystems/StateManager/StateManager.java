@@ -233,14 +233,14 @@ public class StateManager extends SubsystemBase {
   }
 
   private void updateShiftRumble() {
-    // double t = timer.getTimeToShift();
-    // if (t < 3.0 && t > 0.0) {
-    //   rumble = true;
-    //   driverController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
-    // } else {
-    //   rumble = false;
-    //   driverController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
-    // }
+    double t = timer.getTimeToShift();
+    if (t < 3.0 && t > 0.0) {
+      rumble = true;
+      // driverController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
+    } else {
+      rumble = false;
+      // driverController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
+    }
   }
 
   private Translation2d[] toRedAlliance(Translation2d[] blueAllianceTranslation) {

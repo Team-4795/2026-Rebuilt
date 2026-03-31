@@ -38,10 +38,6 @@ public class ShooterIOReal implements ShooterIO {
   LoggedTunableNumber KV = new LoggedTunableNumber("Shooter/KV_TOP", ShooterConstants.kV);
   LoggedTunableNumber KA = new LoggedTunableNumber("Shooter/KA", ShooterConstants.kA);
 
-  LoggedTunableNumber MM_ACCELERATION =
-      new LoggedTunableNumber("Shooter/Acceleration", ShooterConstants.MM_ACCELERATION);
-  LoggedTunableNumber MM_JERK = new LoggedTunableNumber("Shooter/Jerk", ShooterConstants.MM_JERK);
-
   public static LoggedTunableNumber shooterRPS =
       new LoggedTunableNumber("Auto Shoot/Shooter RPS", 60);
 
@@ -114,8 +110,8 @@ public class ShooterIOReal implements ShooterIO {
   @Override
   public boolean readyToShoot() {
     return (getGoal() != 0)
-        && (getTopRPS() > (getGoal() - 6))
-        && (getBottomRPS() > (getGoal() - 6));
+        && (getTopRPS() > (getGoal() - ShooterConstants.marginOfError))
+        && (getBottomRPS() > (getGoal() - ShooterConstants.marginOfError));
   }
 
   @Override
@@ -159,10 +155,15 @@ public class ShooterIOReal implements ShooterIO {
     talonFXConfig.Slot0.kI = KI.get();
     talonFXConfig.Slot0.kD = KD.get();
 
+    // Current Limits
     talonFXConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-    talonFXConfig.CurrentLimits.StatorCurrentLimit = ShooterConstants.CURRENT_LIMIT;
+    talonFXConfig.CurrentLimits.StatorCurrentLimit = ShooterConstants.STATOR_CURRENT_LIMIT;
     talonFXConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
-    talonFXConfig.CurrentLimits.SupplyCurrentLimit = 100;
+    talonFXConfig.CurrentLimits.SupplyCurrentLimit = ShooterConstants.SUPPLY_CURRENT_LIMIT;
+
+    // Change values
+    talonFXConfig.CurrentLimits.SupplyCurrentLowerTime = 1.5;
+    talonFXConfig.CurrentLimits.SupplyCurrentLowerLimit = ShooterConstants.SUPPLY_CURRENT_LIMIT_LOWER;
 
     talonFXConfig.Feedback.SensorToMechanismRatio = ShooterConstants.GEARING;
 
@@ -170,10 +171,6 @@ public class ShooterIOReal implements ShooterIO {
 
     talonFXConfig.TorqueCurrent.PeakForwardTorqueCurrent = 160;
     talonFXConfig.TorqueCurrent.PeakReverseTorqueCurrent = 0;
-
-    // // Motion Magic settings
-    // talonFXConfig.MotionMagic.MotionMagicAcceleration = MM_ACCELERATION.get();
-    // talonFXConfig.MotionMagic.MotionMagicJerk = MM_JERK.get();
 
     return talonFXConfig;
   }

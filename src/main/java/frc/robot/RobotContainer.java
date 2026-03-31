@@ -237,7 +237,7 @@ public class RobotContainer {
     intakeButton.whileTrue(AutoCommands.intake());
 
     // Run Indexer
-    // runIndexer.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
+    runIndexer.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
 
     // Auto Score (no SOTM)
     autoScore
@@ -277,7 +277,7 @@ public class RobotContainer {
 
     // add manual setpoints here
 
-    //     m_operatorController
+    // m_operatorController
     //     .povUp()
     //     .whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kForward)));
     // m_operatorController
@@ -291,17 +291,17 @@ public class RobotContainer {
     //     .whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kReverse)));
 
     // testing with everything
-    runIndexer
-        .whileTrue(
-            Commands.parallel(
-                Commands.runOnce((() -> indexer.setRPSTest())),
-                Commands.runOnce(() -> indexer.setVoltageTower(-12))))
-        .onFalse(
-            Commands.parallel(
-                Commands.runOnce((() -> indexer.setRPSIndexer(0))),
-                Commands.runOnce(() -> indexer.setVoltageTower(0))));
+    // runIndexer
+    //     .whileTrue(
+    //         Commands.parallel(
+    //             Commands.runOnce((() -> indexer.setRPSTest())),
+    //             Commands.runOnce(() -> indexer.setVoltageTower(-12))))
+    //     .onFalse(
+    //         Commands.parallel(
+    //             Commands.runOnce((() -> indexer.setRPSIndexer(0))),
+    //             Commands.runOnce(() -> indexer.setVoltageTower(0))));
 
-    configure.onTrue(Commands.runOnce(() -> indexer.configure()));
+    // configure.onTrue(Commands.runOnce(() -> indexer.configure()));
   }
 
   /**
