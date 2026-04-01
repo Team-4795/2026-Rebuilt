@@ -163,7 +163,8 @@ public class ShooterIOReal implements ShooterIO {
 
     // Change values
     talonFXConfig.CurrentLimits.SupplyCurrentLowerTime = 1.5;
-    talonFXConfig.CurrentLimits.SupplyCurrentLowerLimit = ShooterConstants.SUPPLY_CURRENT_LIMIT_LOWER;
+    talonFXConfig.CurrentLimits.SupplyCurrentLowerLimit =
+        ShooterConstants.SUPPLY_CURRENT_LIMIT_LOWER;
 
     talonFXConfig.Feedback.SensorToMechanismRatio = ShooterConstants.GEARING;
 

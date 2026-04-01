@@ -23,12 +23,6 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "SOTM"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
                   "name": "Intake"
                 }
               }
@@ -42,7 +36,7 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -85,12 +79,6 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "SOTM"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
                   "name": "Intake"
                 }
               }
@@ -104,7 +92,7 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
