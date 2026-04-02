@@ -4,7 +4,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 
 public class TurretConstants {
-  public static final double margin = 10; // degrees
+  public static final double margin = 4; // degrees
   public static final double minAngle = 0 + margin;
   public static final double maxAngle = 360 - margin;
 

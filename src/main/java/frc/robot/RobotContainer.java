@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.AlwaysAim;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.Indexer.Indexer;
@@ -76,21 +75,21 @@ public class RobotContainer {
 
   // Official Bindings
   private final Trigger sotm = m_driverController.rightTrigger();
-  private final Trigger autoTrench = m_driverController.leftBumper();
-  private final Trigger runIndexer = m_driverController.rightBumper();
   private final Trigger intakeButton = m_driverController.leftTrigger();
+  private final Trigger runIndexer = m_driverController.rightBumper();
+  private final Trigger autoTrench = m_driverController.leftBumper();
   private final Trigger autoScore = m_driverController.a(); // No SOTM, stop w/ x
-  private final Trigger toggleVision = m_driverController.x();
   private final Trigger zeroDrive = m_driverController.y();
+  private final Trigger reverseIntake = m_driverController.povLeft();
+  private final Trigger reverseIndexer = m_driverController.povRight();
 
   private final Trigger zeroButton = m_operatorController.a(); // Zero sequence
+  private final Trigger toggleVision = m_operatorController.x();
   private final Trigger lockTurret = m_operatorController.b();
   private final Trigger depoCorner = m_operatorController.povLeft();
   private final Trigger feederCorner = m_operatorController.povRight();
   private final Trigger agitateIntake = m_operatorController.povUp();
   private final Trigger deployIntake = m_operatorController.povDown();
-  private final Trigger reverseIntake = m_operatorController.leftBumper();
-  private final Trigger reverseIndexer = m_operatorController.rightBumper();
 
   // Testing Bindings
   private final Trigger configure = m_driverController.povDown();
@@ -210,7 +209,7 @@ public class RobotContainer {
             () -> -m_driverController.getRightX()));
 
     // Always aim at target
-    turret.setDefaultCommand(new AlwaysAim(drive, turret, stateManager));
+    // turret.setDefaultCommand(new AlwaysAim(drive, turret, stateManager));
 
     // SOTM
     sotm.whileTrue(
@@ -221,13 +220,13 @@ public class RobotContainer {
                     drive,
                     () ->
                         -m_driverController.getLeftY()
-                            * (stateManager.getState() == State.SHOOTING ? 0.33 : 0.6),
+                            * (stateManager.getState() == State.SHOOTING ? 0.4 : 0.6),
                     () ->
                         -m_driverController.getLeftX()
-                            * (stateManager.getState() == State.SHOOTING ? 0.33 : 0.6),
+                            * (stateManager.getState() == State.SHOOTING ? 0.4 : 0.6),
                     () ->
                         -m_driverController.getRightX()
-                            * (stateManager.getState() == State.SHOOTING ? 0.33 : 0.6))))
+                            * (stateManager.getState() == State.SHOOTING ? 0.4 : 0.6))))
         .onFalse(AutoCommands.afterShoot());
 
     // Auto trench
@@ -252,7 +251,7 @@ public class RobotContainer {
     zeroDrive.onTrue(Commands.runOnce(() -> drive.zeroHeading()));
 
     // Zero Sequence
-    zeroButton.whileTrue(AutoCommands.zeroSequence());
+    // zeroButton.whileTrue(AutoCommands.zeroSequence());
 
     // Lock turret
     lockTurret.onTrue(Commands.runOnce(() -> turret.lockTurret(), turret));
@@ -301,7 +300,7 @@ public class RobotContainer {
     //             Commands.runOnce((() -> indexer.setRPSIndexer(0))),
     //             Commands.runOnce(() -> indexer.setVoltageTower(0))));
 
-    // configure.onTrue(Commands.runOnce(() -> indexer.configure()));
+    configure.onTrue(Commands.runOnce(() -> turret.configure()));
   }
 
   /**

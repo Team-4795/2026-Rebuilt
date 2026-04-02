@@ -47,9 +47,10 @@ public class ShootOnTheMove extends Command {
   ChassisSpeeds fieldRelative;
   double iterativeDistance = 0;
   double distance;
-  double dampener;
 
   public static LoggedTunableNumber shooterRPS = new LoggedTunableNumber("SOTM/Shooter RPS", 60);
+  public static LoggedTunableNumber hoodAngle = new LoggedTunableNumber("SOTM/Hood Angle", 0);
+  public static LoggedTunableNumber dampener = new LoggedTunableNumber("SOTM/dampener", 0.7);
 
   public ShootOnTheMove(
       Drive drive, Turret turret, Shooter shooter, ShooterHood hood, StateManager manager) {
@@ -68,8 +69,6 @@ public class ShootOnTheMove extends Command {
 
   @Override
   public void execute() {
-    dampener = 1;
-
     robotPose = drive.getPose();
     targetPose = stateManager.getTargetPose();
     turretPose =
@@ -86,8 +85,8 @@ public class ShootOnTheMove extends Command {
       for (int i = 0; i < 20; i++) {
         tAir = Constants.InterpolatingTree.tAirMap.get(iterativeDistance);
 
-        velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * dampener;
-        velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * dampener;
+        velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * dampener.getAsDouble();
+        velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * dampener.getAsDouble();
 
         omegaXOffset =
             -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
@@ -105,8 +104,8 @@ public class ShootOnTheMove extends Command {
     } else {
       tAir = 1.5;
 
-      velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * dampener;
-      velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * dampener;
+      velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * dampener.getAsDouble();
+      velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * dampener.getAsDouble();
 
       omegaXOffset =
           -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
@@ -140,6 +139,8 @@ public class ShootOnTheMove extends Command {
     } else if (!OperationStates.inDecapitationZone) {
       shooter.setVelocityRPS(ShooterConstants.shooterVelocityShuttlingMap.get(distance));
       hood.setGoal(ShooterHoodConstants.shooterHoodShuttlingMap.get(distance));
+      // shooter.setVelocityRPS(shooterRPS.getAsDouble());
+      // hood.setGoal(hoodAngle.getAsDouble());
     }
 
     Logger.recordOutput("Shoot on move At Hub/Hub Pose", hub);

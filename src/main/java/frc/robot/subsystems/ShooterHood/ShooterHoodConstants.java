@@ -56,10 +56,15 @@ public final class ShooterHoodConstants {
     shooterHoodHubMap.put(5.77, -0.056);
 
     // Shuttling
-    shooterHoodShuttlingMap.put(5.246212, -0.07);
-    shooterHoodShuttlingMap.put(6.4790482, -0.08);
-    shooterHoodShuttlingMap.put(7.329184, -0.085);
-    // guessed
-    shooterHoodShuttlingMap.put(10.0, -0.103);
+    // shooterHoodShuttlingMap.put(5.246212, -0.07);
+    // shooterHoodShuttlingMap.put(6.4790482, -0.08);
+    // shooterHoodShuttlingMap.put(7.329184, -0.085);
+    // shooterHoodShuttlingMap.put(10.0, -0.103);
+
+    shooterHoodShuttlingMap.put(3.082, -0.08);
+    shooterHoodShuttlingMap.put(4.232, -0.074);
+    shooterHoodShuttlingMap.put(5.222, -0.07);
+    shooterHoodShuttlingMap.put(5.97, -0.075);
+    shooterHoodShuttlingMap.put(7.14, -0.075);
   }
 }

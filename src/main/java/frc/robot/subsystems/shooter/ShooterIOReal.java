@@ -158,19 +158,19 @@ public class ShooterIOReal implements ShooterIO {
     // Current Limits
     talonFXConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     talonFXConfig.CurrentLimits.StatorCurrentLimit = ShooterConstants.STATOR_CURRENT_LIMIT;
-    talonFXConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
-    talonFXConfig.CurrentLimits.SupplyCurrentLimit = ShooterConstants.SUPPLY_CURRENT_LIMIT;
+    talonFXConfig.CurrentLimits.SupplyCurrentLimitEnable = false;
+    // talonFXConfig.CurrentLimits.SupplyCurrentLimit = ShooterConstants.SUPPLY_CURRENT_LIMIT;
 
     // Change values
-    talonFXConfig.CurrentLimits.SupplyCurrentLowerTime = 1.5;
-    talonFXConfig.CurrentLimits.SupplyCurrentLowerLimit =
-        ShooterConstants.SUPPLY_CURRENT_LIMIT_LOWER;
+    // talonFXConfig.CurrentLimits.SupplyCurrentLowerTime = 1.5;
+    // talonFXConfig.CurrentLimits.SupplyCurrentLowerLimit =
+    // ShooterConstants.SUPPLY_CURRENT_LIMIT_LOWER;
 
     talonFXConfig.Feedback.SensorToMechanismRatio = ShooterConstants.GEARING;
 
     talonFXConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
-    talonFXConfig.TorqueCurrent.PeakForwardTorqueCurrent = 160;
+    talonFXConfig.TorqueCurrent.PeakForwardTorqueCurrent = 120;
     talonFXConfig.TorqueCurrent.PeakReverseTorqueCurrent = 0;
 
     return talonFXConfig;
