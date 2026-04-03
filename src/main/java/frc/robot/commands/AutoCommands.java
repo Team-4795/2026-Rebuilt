@@ -64,6 +64,10 @@ public class AutoCommands {
     return new ShootOnTheMove(drive, turret, shooter, hood, manager);
   }
 
+  public static Command autonomousSOTM() {
+    return new AutonomousSOTM(drive, turret, shooter, hood, manager);
+  }
+
   public static Command autoScore() {
     return new AimAtTarget(drive, turret, shooter, hood, manager);
   }
@@ -179,5 +183,9 @@ public class AutoCommands {
         Commands.run(() -> turret.setGoal(TurretConstants.leftCornerSetpoint), turret),
         Commands.run(() -> shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(5.2))),
         Commands.run(() -> hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(5.2))));
+  }
+
+  public static Command stopShooter(){
+    return Commands.runOnce(() -> shooter.setVelocityRPS(0), shooter);
   }
 }

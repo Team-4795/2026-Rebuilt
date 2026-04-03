@@ -197,9 +197,6 @@ public class RobotContainer {
     // Auto shoot
     readyToShoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
 
-    // Anti decapitation
-    inDecapitationZone.whileTrue(Commands.run(() -> shooterHood.setGoal(0), shooterHood));
-
     // Joystick drive
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(

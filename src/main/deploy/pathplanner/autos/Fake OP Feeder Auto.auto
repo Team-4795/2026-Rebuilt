@@ -5,7 +5,7 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
@@ -36,19 +36,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "OP Feeder Auto P3"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "SOTM"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shoot"
+                  "pathName": " OP Feeder Auto P3"
                 }
               }
             ]
@@ -93,18 +81,6 @@
                 "type": "path",
                 "data": {
                   "pathName": "OP Feeder Auto P6"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "SOTM"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shoot"
                 }
               }
             ]
