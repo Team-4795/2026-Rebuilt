@@ -53,11 +53,11 @@ public class AutoCommands {
   // }
 
   public static Command intake() {
-    return Commands.run(() -> intake.setIntakeVoltage(6), intake);
+    return Commands.run(() -> intake.setIntakeVoltage(12), intake);
   }
 
   public static Command reverseIntake() {
-    return Commands.run(() -> intake.setIntakeVoltage(-6), intake);
+    return Commands.run(() -> intake.setIntakeVoltage(-12), intake);
   }
 
   public static Command shootOnTheMove() {
@@ -68,7 +68,7 @@ public class AutoCommands {
     return new AutonomousSOTM(drive, turret, shooter, hood, manager);
   }
 
-  public static Command autoScore() {
+  public static Command autoScore() { 
     return new AimAtTarget(drive, turret, shooter, hood, manager);
   }
 
@@ -78,13 +78,13 @@ public class AutoCommands {
 
   public static Command shoot() {
     return Commands.parallel(
-        Commands.runOnce(() -> indexer.setVoltageIndexer(-8)),
+        Commands.runOnce(() -> indexer.setVoltageIndexer(-12)),
         Commands.runOnce(() -> indexer.setVoltageTower(-12)));
   }
 
   public static Command reverseIndexer() {
     return Commands.parallel(
-        Commands.runOnce(() -> indexer.setVoltageIndexer(10)),
+        Commands.runOnce(() -> indexer.setVoltageIndexer(12)),
         Commands.runOnce(() -> indexer.setVoltageTower(12)));
   }
 

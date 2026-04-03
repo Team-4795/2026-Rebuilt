@@ -61,6 +61,10 @@ public class Module {
     turnDisconnectedAlert.set(!inputs.turnConnected);
   }
 
+  public void configure() {
+    io.configure();
+  }
+
   /** Runs the module with the specified setpoint state. Mutates the state to optimize it. */
   public void runSetpoint(SwerveModuleState state) {
     // Optimize velocity setpoint

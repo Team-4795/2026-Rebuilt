@@ -11,7 +11,7 @@ public class IntakeIOReal implements IntakeIO {
 
   public IntakeIOReal() {
     // Intake motor config
-    intakeMotor2.setInverted(true);
+    intakeMotor2.setInverted(false);
     intakeMotorA.setInverted(false);
   }
 

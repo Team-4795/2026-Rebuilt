@@ -7,15 +7,15 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class IntakeIOTalon implements IntakeIO {
   TalonFX motor1 = new TalonFX(62);
-  TalonFX motor2 = new TalonFX(63);
+  TalonFX motor2 = new TalonFX(61);
 
   TalonFXConfiguration config = new TalonFXConfiguration();
 
   public IntakeIOTalon() {
     config.CurrentLimits.StatorCurrentLimitEnable = true;
     config.CurrentLimits.SupplyCurrentLimitEnable = true;
-    config.CurrentLimits.StatorCurrentLimit = 80;
-    config.CurrentLimits.SupplyCurrentLimit = 80;
+    config.CurrentLimits.StatorCurrentLimit = 50;
+    config.CurrentLimits.SupplyCurrentLimit = 30;
 
     config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
@@ -23,7 +23,7 @@ public class IntakeIOTalon implements IntakeIO {
 
     motor1.getConfigurator().apply(config);
 
-    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
     motor2.getConfigurator().apply(config);
   }

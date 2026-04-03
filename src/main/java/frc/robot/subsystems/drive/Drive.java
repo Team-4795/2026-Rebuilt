@@ -202,6 +202,13 @@ public class Drive extends SubsystemBase {
     gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
   }
 
+  public void configure() {
+    modules[0].configure();
+    modules[1].configure();
+    modules[2].configure();
+    modules[3].configure();
+  }
+
   /**
    * Runs the drive at the desired velocity.
    *

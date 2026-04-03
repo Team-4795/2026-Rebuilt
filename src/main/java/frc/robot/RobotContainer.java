@@ -78,10 +78,10 @@ public class RobotContainer {
   private final Trigger intakeButton = m_driverController.leftTrigger();
   private final Trigger runIndexer = m_driverController.rightBumper();
   private final Trigger autoTrench = m_driverController.leftBumper();
-  private final Trigger autoScore = m_driverController.a(); // No SOTM, stop w/ x
+  private final Trigger autoScore = m_driverController.x(); // No SOTM, stop w/ x
   private final Trigger zeroDrive = m_driverController.y();
-  private final Trigger reverseIntake = m_driverController.povLeft();
-  private final Trigger reverseIndexer = m_driverController.povRight();
+  private final Trigger reverseIntake = m_driverController.a();
+  private final Trigger reverseIndexer = m_driverController.b();
 
   private final Trigger zeroButton = m_operatorController.a(); // Zero sequence
   private final Trigger toggleVision = m_operatorController.x();
@@ -121,7 +121,7 @@ public class RobotContainer {
         //         new ModuleIOSim(),
         //         new ModuleIOSim(),
         //         new ModuleIOSim());
-        vision = Vision.initialize(new VisionIOReal(0), new VisionIOReal(1));
+        vision = Vision.initialize(new VisionIOReal(0), new VisionIOReal(1), new VisionIOReal(2));
         break;
 
       case SIM:
@@ -192,10 +192,12 @@ public class RobotContainer {
         new Trigger(
             () -> shooter.readyToShoot() && shooterHood.readyToShoot() && turret.readyToShoot());
 
-    Trigger inDecapitationZone = new Trigger(() -> OperationStates.inDecapitationZone);
-
     // Auto shoot
     readyToShoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
+
+    // Anti decapitation
+    // Trigger inDecapitationZone = new Trigger(() -> OperationStates.inDecapitationZone);
+    // inDecapitationZone.whileTrue(Commands.run(() -> shooterHood.setGoal(0), shooterHood));
 
     // Joystick drive
     drive.setDefaultCommand(
@@ -217,13 +219,13 @@ public class RobotContainer {
                     drive,
                     () ->
                         -m_driverController.getLeftY()
-                            * (stateManager.getState() == State.SHOOTING ? 0.4 : 0.6),
+                            * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.6),
                     () ->
                         -m_driverController.getLeftX()
-                            * (stateManager.getState() == State.SHOOTING ? 0.4 : 0.6),
+                            * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.6),
                     () ->
                         -m_driverController.getRightX()
-                            * (stateManager.getState() == State.SHOOTING ? 0.4 : 0.6))))
+                            * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.6))))
         .onFalse(AutoCommands.afterShoot());
 
     // Auto trench

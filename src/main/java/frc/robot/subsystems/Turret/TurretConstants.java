@@ -11,10 +11,10 @@ public class TurretConstants {
   // Margin for ready to shoot command
   public static final double marginOfError = 0.01;
 
-  public static final double kP = 12;
+  public static final double kP = 20;
   public static final double kI = 0;
   public static final double kD = 0;
-  public static final double kV = 6;
+  public static final double kV = 6.5;
   public static final double kA = 0;
   public static final double kS = 0.3;
 
