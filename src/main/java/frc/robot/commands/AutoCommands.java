@@ -36,6 +36,10 @@ public class AutoCommands {
     return Commands.runOnce(() -> deploy.setGoal(IntakeDeployConstants.intakePosition));
   }
 
+  public static Command liftIntake() {
+    return Commands.runOnce(() -> deploy.setGoal(0.04));
+  }
+
   public static Command agitateIntake() {
     return Commands.parallel(
         Commands.repeatingSequence(
@@ -182,7 +186,7 @@ public class AutoCommands {
   // this sucks man
   public static Command unjam() {
     return Commands.repeatingSequence(
-            Commands.waitSeconds(3),
+            Commands.waitSeconds(1.5),
             Commands.runOnce(() -> indexer.setVoltageIndexer(12), indexer),
             Commands.waitSeconds(1),
             Commands.runOnce(() -> indexer.setVoltageIndexer(-12), indexer))

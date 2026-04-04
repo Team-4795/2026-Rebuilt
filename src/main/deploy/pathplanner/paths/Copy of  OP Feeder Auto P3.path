@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.0941530249110327,
-        "y": 0.49004982206405723
+        "x": -0.14368920521945405,
+        "y": -0.26329774614472123
       },
       "isLocked": false,
       "linkedName": null
@@ -20,8 +20,8 @@
         "y": 1.0600830367734273
       },
       "prevControl": {
-        "x": 6.010113879003559,
-        "y": 0.12403321470937045
+        "x": 5.999810201660737,
+        "y": 0.5436417556346373
       },
       "nextControl": null,
       "isLocked": false,
@@ -50,10 +50,10 @@
     {
       "name": "Constraints Zone",
       "minWaypointRelativePos": 0.0,
-      "maxWaypointRelativePos": 0.5473145780051151,
+      "maxWaypointRelativePos": 0.5916760404949359,
       "constraints": {
-        "maxVelocity": 0.8,
-        "maxAcceleration": 2.0,
+        "maxVelocity": 0.5,
+        "maxAcceleration": 1.0,
         "maxAngularVelocity": 100.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -66,7 +66,7 @@
     {
       "name": "SOTM",
       "waypointRelativePos": 0.0,
-      "endWaypointRelativePos": 0.5626598465473164,
+      "endWaypointRelativePos": 0.6096737907761501,
       "command": {
         "type": "named",
         "data": {
@@ -75,13 +75,24 @@
       }
     },
     {
-      "name": "Agitate Intake",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": 0.53,
+      "name": "Deploy Intake",
+      "waypointRelativePos": 0.058492688413949515,
+      "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "Agitate Intake"
+          "name": "Deploy Intake"
+        }
+      }
+    },
+    {
+      "name": "Deploy Intake",
+      "waypointRelativePos": 0.587176602924636,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Deploy Intake"
         }
       }
     },
@@ -95,17 +106,11 @@
           "name": "Stop Shoot"
         }
       }
-    },
-    {
-      "name": "Deploy Intake",
-      "waypointRelativePos": 0.7579403272377255,
-      "endWaypointRelativePos": null,
-      "command": null
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 4.8,
+    "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

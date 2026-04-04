@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.4271530249110325,
-        "y": 0.43604982206405696
+        "x": -0.0038196915776973484,
+        "y": -0.026595492289442912
       },
       "isLocked": false,
       "linkedName": null
@@ -50,10 +50,10 @@
     {
       "name": "Constraints Zone",
       "minWaypointRelativePos": 0.0,
-      "maxWaypointRelativePos": 0.5473145780051151,
+      "maxWaypointRelativePos": 0.5714285714285725,
       "constraints": {
         "maxVelocity": 0.8,
-        "maxAcceleration": 2.0,
+        "maxAcceleration": 4.0,
         "maxAngularVelocity": 100.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -75,13 +75,13 @@
       }
     },
     {
-      "name": "Agitate Intake",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": 0.53,
+      "name": "Deploy Intake",
+      "waypointRelativePos": 0.07649043869516524,
+      "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "Agitate Intake"
+          "name": "Deploy Intake"
         }
       }
     },
@@ -104,8 +104,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 4.8,
+    "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

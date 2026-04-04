@@ -20,5 +20,6 @@ public class NamedCommandManager {
     NamedCommands.registerCommand("Stop Shooter", AutoCommands.stopShooter());
     NamedCommands.registerCommand("rev shooter", AutoCommands.setShooterRPS(60));
     NamedCommands.registerCommand("Agitate Intake", AutoCommands.agitateIntakeAuto());
+    NamedCommands.registerCommand("Lift Intake", AutoCommands.liftIntake());
   }
 }

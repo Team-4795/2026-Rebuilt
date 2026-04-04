@@ -67,5 +67,7 @@ public final class ShooterHoodConstants {
     shooterHoodShuttlingMap.put(5.97, -0.075);
     shooterHoodShuttlingMap.put(7.14, -0.075);
     shooterHoodShuttlingMap.put(7.329184, -0.085);
+    shooterHoodShuttlingMap.put(10.0, -0.09);
+    shooterHoodShuttlingMap.put(12.0, -0.95);
   }
 }

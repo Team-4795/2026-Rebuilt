@@ -219,13 +219,13 @@ public class RobotContainer {
                     drive,
                     () ->
                         -m_driverController.getLeftY()
-                            * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.6),
+                            * (stateManager.getState() == State.SHOOTING ? 0.6 : 0.8),
                     () ->
                         -m_driverController.getLeftX()
-                            * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.6),
+                            * (stateManager.getState() == State.SHOOTING ? 0.6 : 0.8),
                     () ->
                         -m_driverController.getRightX()
-                            * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.6))))
+                            * (stateManager.getState() == State.SHOOTING ? 0.6 : 0.8))))
         .onFalse(AutoCommands.afterShoot());
 
     // Auto trench
