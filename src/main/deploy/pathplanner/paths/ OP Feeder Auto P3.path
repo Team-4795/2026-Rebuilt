@@ -75,6 +75,17 @@
       }
     },
     {
+      "name": "Agitate Intake",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": 0.53,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Agitate Intake"
+        }
+      }
+    },
+    {
       "name": "Stop Shoot",
       "waypointRelativePos": 0.5116696588868944,
       "endWaypointRelativePos": null,
@@ -84,6 +95,12 @@
           "name": "Stop Shoot"
         }
       }
+    },
+    {
+      "name": "Deploy Intake",
+      "waypointRelativePos": 0.7059672762271343,
+      "endWaypointRelativePos": null,
+      "command": null
     }
   ],
   "globalConstraints": {

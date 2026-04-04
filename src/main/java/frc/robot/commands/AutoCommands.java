@@ -39,11 +39,20 @@ public class AutoCommands {
   public static Command agitateIntake() {
     return Commands.parallel(
         Commands.repeatingSequence(
-            Commands.runOnce(() -> deploy.setGoal(0.04), deploy),
+            Commands.runOnce(() -> deploy.setGoal(0.04)),
             Commands.waitSeconds(0.5),
-            Commands.runOnce(() -> deploy.setGoal(0)),
+            deployIntake(),
             Commands.waitSeconds(0.5)),
         intake());
+  }
+
+  // this is bs
+  public static Command agitateIntakeAuto() {
+    return Commands.repeatingSequence(
+        Commands.runOnce(() -> deploy.setGoal(0.04)),
+        Commands.waitSeconds(0.5),
+        deployIntake(),
+        Commands.waitSeconds(0.5));
   }
 
   // public static Command autoAgitate() {
@@ -173,10 +182,11 @@ public class AutoCommands {
   // this sucks man
   public static Command unjam() {
     return Commands.repeatingSequence(
-        Commands.waitSeconds(3),
-        Commands.runOnce(() -> indexer.setVoltageIndexer(12), indexer),
-        Commands.waitSeconds(1),
-        Commands.runOnce(() -> indexer.setVoltageIndexer(-12), indexer)).onlyIf(() -> !indexer.didCurrentSpike());
+            Commands.waitSeconds(3),
+            Commands.runOnce(() -> indexer.setVoltageIndexer(12), indexer),
+            Commands.waitSeconds(1),
+            Commands.runOnce(() -> indexer.setVoltageIndexer(-12), indexer))
+        .onlyIf(() -> !indexer.didCurrentSpike());
   }
 
   // Corner Setpoints
