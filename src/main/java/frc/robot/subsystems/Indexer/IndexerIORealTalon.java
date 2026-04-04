@@ -57,6 +57,7 @@ public class IndexerIORealTalon implements IndexerIO {
 
     config.closedLoop.feedForward.sva(KS.getAsDouble(), KV.getAsDouble(), KA.getAsDouble());
     config.closedLoop.pid(KP.getAsDouble(), KI.getAsDouble(), KD.getAsDouble());
+    config.openLoopRampRate(0.5);
 
     indexerMotor.setCANTimeout(20);
 
