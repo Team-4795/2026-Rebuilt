@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.113352081658443,
-        "y": 3.0703562929362596
+        "x": 7.012568181818182,
+        "y": 2.7672613636363645
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.901,
-        "y": 2.4049822064056934
+        "x": 2.745545454545454,
+        "y": 2.354988636363637
       },
       "prevControl": {
-        "x": 2.1801340450771045,
-        "y": 2.071447212336892
+        "x": 3.012670454545454,
+        "y": 2.2328473390488526
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,11 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.37300177619893454,
-      "rotationDegrees": 177.70265624793294
+      "rotationDegrees": 157.669242880287
+    },
+    {
+      "waypointRelativePos": 0.5518867924528307,
+      "rotationDegrees": 157.67
     }
   ],
   "constraintZones": [
@@ -50,7 +54,19 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "rev shooter",
+      "waypointRelativePos": 0.21184919210053868,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "rev shooter"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 4.0,
     "maxAcceleration": 4.0,

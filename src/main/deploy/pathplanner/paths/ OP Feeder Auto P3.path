@@ -66,7 +66,7 @@
     {
       "name": "SOTM",
       "waypointRelativePos": 0.0,
-      "endWaypointRelativePos": 0.5677749360613782,
+      "endWaypointRelativePos": 0.5044883303411132,
       "command": {
         "type": "named",
         "data": {
@@ -75,13 +75,24 @@
       }
     },
     {
-      "name": "Stop Shooter",
-      "waypointRelativePos": 0.5694799658994012,
+      "name": "Stop Shoot",
+      "waypointRelativePos": 0.5116696588868944,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "Stop Shooter"
+          "name": "Stop Shoot"
+        }
+      }
+    },
+    {
+      "name": "Hood Zero",
+      "waypointRelativePos": 0.5152603231597847,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Zero Hood Angle"
         }
       }
     }
@@ -95,7 +106,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 3.0,
     "rotation": 90.95484125387208
   },
   "reversed": false,

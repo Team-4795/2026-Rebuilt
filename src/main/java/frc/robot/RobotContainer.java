@@ -33,7 +33,6 @@ import frc.robot.subsystems.ShooterHood.ShooterHoodIOReal;
 import frc.robot.subsystems.ShooterHood.ShooterHoodIOSim;
 import frc.robot.subsystems.StateManager.State;
 import frc.robot.subsystems.StateManager.StateManager;
-import frc.robot.subsystems.StateManager.StateManager.OperationStates;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretIO;
 import frc.robot.subsystems.Turret.TurretIOReal;

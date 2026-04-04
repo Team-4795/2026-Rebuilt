@@ -75,13 +75,13 @@
       }
     },
     {
-      "name": "Stop Shooter",
-      "waypointRelativePos": 0.5916453537936909,
+      "name": "Stop Shoot",
+      "waypointRelativePos": 0.7073608617594249,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "Stop Shooter"
+          "name": "Stop Shoot"
         }
       }
     }

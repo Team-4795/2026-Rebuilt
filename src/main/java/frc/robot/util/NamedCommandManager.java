@@ -18,5 +18,6 @@ public class NamedCommandManager {
     NamedCommands.registerCommand("SOTM", AutoCommands.autonomousSOTM());
     NamedCommands.registerCommand("Stop Shoot", AutoCommands.stopShoot().withTimeout(0.1));
     NamedCommands.registerCommand("Stop Shooter", AutoCommands.stopShooter());
+    NamedCommands.registerCommand("rev shooter", AutoCommands.setShooterRPS(60));
   }
 }
