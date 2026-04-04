@@ -170,6 +170,15 @@ public class AutoCommands {
         Commands.sequence(Commands.waitSeconds(0.8), Commands.runOnce(() -> hood.setGoal(0))));
   }
 
+  // this sucks man
+  public static Command unjam() {
+    return Commands.repeatingSequence(
+        Commands.waitSeconds(3),
+        Commands.runOnce(() -> indexer.setVoltageIndexer(12), indexer),
+        Commands.waitSeconds(1),
+        Commands.runOnce(() -> indexer.setVoltageIndexer(-12), indexer)).onlyIf(() -> !indexer.didCurrentSpike());
+  }
+
   // Corner Setpoints
   public static Command feederCornerAlign() {
     return Commands.parallel(

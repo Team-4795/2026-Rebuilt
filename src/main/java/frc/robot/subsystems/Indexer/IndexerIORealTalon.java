@@ -104,6 +104,11 @@ public class IndexerIORealTalon implements IndexerIO {
   // }
 
   @Override
+  public double getCurrentTower() {
+    return towerMotor.getStatorCurrent().getValueAsDouble();
+  }
+
+  @Override
   public void configure() {
     config.closedLoop.feedForward.sva(KS.getAsDouble(), KV.getAsDouble(), KA.getAsDouble());
     config.closedLoop.pid(KP.getAsDouble(), KI.getAsDouble(), KD.getAsDouble());

@@ -6,6 +6,8 @@ public class IndexerConstants {
   public static final int towerCanID = 13;
   public static final int indexerCanID = 12;
 
+  public static final double towerCurrentThreshold = 20.0;
+
   // tune all of these
   public static final double maxV = 60.0;
   public static final double maxA = 80.0;

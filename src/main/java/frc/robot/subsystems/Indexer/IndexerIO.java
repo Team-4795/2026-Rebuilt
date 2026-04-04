@@ -24,6 +24,10 @@ public interface IndexerIO {
 
   public default void setRPSIndexer(double goalRPS) {}
 
+  public default double getCurrentTower() {
+    return 0;
+  }
+
   public default void updateMotionProfile() {}
 
   public default void configure() {}

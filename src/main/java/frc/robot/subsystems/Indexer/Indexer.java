@@ -44,6 +44,17 @@ public class Indexer extends SubsystemBase {
     io.setRPSIndexer(RPS.get());
   }
 
+  public double getCurrentTower() {
+    return io.getCurrentTower();
+  }
+
+  public boolean didCurrentSpike() {
+    // return true;
+    if (io.getCurrentTower() < IndexerConstants.towerCurrentThreshold) {
+      return false;
+    } else return true;
+  }
+
   public void configure() {
     io.configure();
   }
