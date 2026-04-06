@@ -91,6 +91,10 @@ public final class Constants {
         VisionConstants.FIELD_LAYOUT.getTagPose(23).get().getTranslation().toTranslation2d();
     public static Translation2d blueRightTrench =
         VisionConstants.FIELD_LAYOUT.getTagPose(28).get().getTranslation().toTranslation2d();
+    public static Translation2d blueTowerCorner1 = new Translation2d(0, 4.243);
+    public static Translation2d blueTowerCorner2 = new Translation2d(1.111, 4.243);
+    public static Translation2d blueTowerCorner3 = new Translation2d(1.111, 3.238);
+    public static Translation2d blueTowerCorner4 = new Translation2d(0, 3.238);
 
     public static ArrayList<Translation2d> trenchList = new ArrayList<Translation2d>();
 
@@ -99,6 +103,7 @@ public final class Constants {
     public static Translation2d[] shuttleZoneThree = new Translation2d[4];
     public static Translation2d[] shuttleZoneFour = new Translation2d[4];
     public static Translation2d[] shuttleZoneFive = new Translation2d[4];
+    public static Translation2d[] towerZone = new Translation2d[4];
 
     public static Translation2d shuttleTargetOne =
         new Translation2d(blueLeftTrench.getX() - 2, fieldWidth * 0.75);
@@ -144,6 +149,12 @@ public final class Constants {
       shuttleZoneFive[2] = new Translation2d(fieldLength, centerField.getY() + shuttlingDeadzone);
       shuttleZoneFive[3] =
           new Translation2d(redLeftTrench.getX(), centerField.getY() + shuttlingDeadzone);
+
+      // Zone Six
+      towerZone[0] = blueTowerCorner1;
+      towerZone[1] = blueTowerCorner2;
+      towerZone[2] = blueTowerCorner3;
+      towerZone[3] = blueTowerCorner4;
     }
   }
 }

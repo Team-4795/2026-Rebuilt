@@ -37,6 +37,7 @@ public class StateManager extends SubsystemBase {
   private Translation2d[] shuttlingZoneThreeTranslation = Constants.FieldConstants.shuttleZoneThree;
   private Translation2d[] shuttlingZoneFourTranslation = Constants.FieldConstants.shuttleZoneFour;
   private Translation2d[] shuttlingZoneFiveTranslation = Constants.FieldConstants.shuttleZoneFive;
+  private Translation2d[] towerZoneTranslation = Constants.FieldConstants.towerZone;
 
   private Zone decapitationZone;
   private Zone shuttlingZoneOne;
@@ -44,6 +45,7 @@ public class StateManager extends SubsystemBase {
   private Zone shuttlingZoneThree;
   private Zone shuttlingZoneFour;
   private Zone shuttlingZoneFive;
+  private Zone towerZone;
 
   private Alliance alliance;
   private Translation2d turretPose;
@@ -77,12 +79,14 @@ public class StateManager extends SubsystemBase {
     this.shuttlingZoneThree = new Zone(shuttlingZoneThreeTranslation);
     this.shuttlingZoneFour = new Zone(shuttlingZoneFourTranslation);
     this.shuttlingZoneFive = new Zone(shuttlingZoneFiveTranslation);
+    this.towerZone = new Zone(towerZoneTranslation);
 
     shuttlingZoneOne.logPoints("Shuttling Zone 1");
     shuttlingZoneTwo.logPoints("Shuttling Zone 2");
     shuttlingZoneThree.logPoints("Shuttling Zone 3");
     shuttlingZoneFour.logPoints("Shuttling Zone 4");
     shuttlingZoneFive.logPoints("Shuttling Zone 5");
+    towerZone.logPoints("Tower Zone");
 
     this.state = State.SHOOTING;
 
@@ -129,12 +133,14 @@ public class StateManager extends SubsystemBase {
         shuttlingZoneThree.updateZone(toRedAlliance(shuttlingZoneThreeTranslation));
         shuttlingZoneFour.updateZone(toRedAlliance(shuttlingZoneFourTranslation));
         shuttlingZoneFive.updateZone(toRedAlliance(shuttlingZoneFiveTranslation));
+        towerZone.updateZone(toRedAlliance(towerZoneTranslation));
 
         shuttlingZoneOne.logPoints("Shuttling Zone 1");
         shuttlingZoneTwo.logPoints("Shuttling Zone 2");
         shuttlingZoneThree.logPoints("Shuttling Zone 3");
         shuttlingZoneFour.logPoints("Shuttling Zone 4");
         shuttlingZoneFive.logPoints("Shuttling Zone 5");
+        towerZone.logPoints("Tower Zone");
       }
     }
 
