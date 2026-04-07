@@ -17,8 +17,8 @@ import frc.robot.subsystems.Indexer.IndexerIORealTalon;
 import frc.robot.subsystems.Indexer.IndexerIOSim;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakeIO;
-import frc.robot.subsystems.Intake.IntakeIOReal;
 import frc.robot.subsystems.Intake.IntakeIOSim;
+import frc.robot.subsystems.Intake.IntakeIOTalon;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployIO;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOReal;
@@ -100,7 +100,7 @@ public class RobotContainer {
     Constants.FieldConstants.initConstants();
     switch (Constants.currentMode) {
       case REAL:
-        intake = Intake.initialize(new IntakeIOReal());
+        intake = Intake.initialize(new IntakeIOTalon());
         deploy = IntakeDeploy.initialize(new IntakeDeployIOReal());
         shooter = Shooter.initialize(new ShooterIOReal());
         indexer = Indexer.initialize(new IndexerIORealTalon());
