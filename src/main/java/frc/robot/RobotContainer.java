@@ -33,6 +33,7 @@ import frc.robot.subsystems.ShooterHood.ShooterHoodIOReal;
 import frc.robot.subsystems.ShooterHood.ShooterHoodIOSim;
 import frc.robot.subsystems.StateManager.State;
 import frc.robot.subsystems.StateManager.StateManager;
+import frc.robot.subsystems.StateManager.StateManager.OperationStates;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretIO;
 import frc.robot.subsystems.Turret.TurretIOReal;
@@ -189,7 +190,11 @@ public class RobotContainer {
   public void configureButtonBindings() {
     Trigger readyToShoot =
         new Trigger(
-            () -> shooter.readyToShoot() && shooterHood.readyToShoot() && turret.readyToShoot());
+            () ->
+                shooter.readyToShoot()
+                    && shooterHood.readyToShoot()
+                    && turret.readyToShoot()
+                    && !OperationStates.behindTower);
 
     // Auto shoot
     readyToShoot.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
@@ -214,7 +219,7 @@ public class RobotContainer {
             Commands.parallel(
                 AutoCommands.shootOnTheMove(),
                 AutoCommands.intake(),
-                AutoCommands.unjam(),
+                AutoCommands.unjam().onlyWhile(readyToShoot),
                 DriveCommands.joystickDrive(
                     drive,
                     () ->

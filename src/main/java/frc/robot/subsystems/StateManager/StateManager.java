@@ -57,6 +57,7 @@ public class StateManager extends SubsystemBase {
     public static boolean inShuttlingZone3 = false;
     public static boolean inShuttlingZone4 = false;
     public static boolean inShuttlingZone5 = false;
+    public static boolean behindTower = false;
   }
 
   public static StateManager initalize() {
@@ -111,12 +112,16 @@ public class StateManager extends SubsystemBase {
   }
 
   public boolean canTurretMove() {
-    return (TurretConstants.canMove
+    return TurretConstants.canMove
         && getState() != State.SHUTTLING_DEAD_ZONE
-        && IntakeDeploy.getInstance().getPosition() < 0.25);
+        && IntakeDeploy.getInstance().getPosition() < 0.25;
   }
 
   public boolean canHoodMove() {
+    return !OperationStates.inDecapitationZone;
+  }
+
+  public boolean canShooterRev() {
     return !OperationStates.inDecapitationZone;
   }
 
@@ -155,6 +160,7 @@ public class StateManager extends SubsystemBase {
     OperationStates.inShuttlingZone3 = shuttlingZoneThree.contains(turretPose);
     OperationStates.inShuttlingZone4 = shuttlingZoneFour.contains(turretPose);
     OperationStates.inShuttlingZone5 = shuttlingZoneFive.contains(turretPose);
+    OperationStates.behindTower = towerZone.contains(turretPose);
 
     // Set State
     if (OperationStates.inShuttlingZone1 || OperationStates.inShuttlingZone3) {
@@ -184,6 +190,7 @@ public class StateManager extends SubsystemBase {
         "State Manager/Operation States/In Zone 4", OperationStates.inShuttlingZone4);
     Logger.recordOutput(
         "State Manager/Operation States/In Zone 5", OperationStates.inShuttlingZone5);
+    Logger.recordOutput("State Manager/Operation States/Behind Tower", OperationStates.behindTower);
 
     Logger.recordOutput("State Manager/State", state);
     Logger.recordOutput("State Manager/State Target Pose", getTargetPose());
@@ -243,7 +250,7 @@ public class StateManager extends SubsystemBase {
     double t = timer.getTimeToShift();
     if (t < 3.0 && t > 0.0) {
       rumble = true;
-      driverController.getHID().setRumble(RumbleType.kBothRumble, 1.0);
+      driverController.getHID().setRumble(RumbleType.kBothRumble, 0.8);
     } else {
       rumble = false;
       driverController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
