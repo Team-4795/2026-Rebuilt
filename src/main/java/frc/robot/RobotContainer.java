@@ -211,21 +211,21 @@ public class RobotContainer {
 
     // SOTM
     sotm.whileTrue(
-            Commands.parallel(
-                AutoCommands.shootOnTheMove(),
-                AutoCommands.intake(),
-                AutoCommands.unjam(),
-                DriveCommands.joystickDrive(
-                    drive,
-                    () ->
-                        -m_driverController.getLeftY()
-                            * (stateManager.getState() == State.SHOOTING ? 0.6 : 0.8),
-                    () ->
-                        -m_driverController.getLeftX()
-                            * (stateManager.getState() == State.SHOOTING ? 0.6 : 0.8),
-                    () ->
-                        -m_driverController.getRightX()
-                            * (stateManager.getState() == State.SHOOTING ? 0.6 : 0.8))))
+        Commands.parallel(
+            AutoCommands.shootOnTheMove(),
+            AutoCommands.intake(),
+            AutoCommands.unjam().onlyWhile(readyToShoot),
+            DriveCommands.joystickDrive(
+                drive,
+                () ->
+                    -m_driverController.getLeftY()
+                        * (stateManager.getState() == State.SHOOTING ? 0.6 : 0.8),
+                () ->
+                    -m_driverController.getLeftX()
+                        * (stateManager.getState() == State.SHOOTING ? 0.6 : 0.8),
+                () ->
+                    -m_driverController.getRightX()
+                        * (stateManager.getState() == State.SHOOTING ? 0.6 : 0.8))))
         .onFalse(AutoCommands.afterShoot());
 
     // Auto trench

@@ -38,9 +38,6 @@ public class ShooterIOReal implements ShooterIO {
   LoggedTunableNumber KV = new LoggedTunableNumber("Shooter/KV_TOP", ShooterConstants.kV);
   LoggedTunableNumber KA = new LoggedTunableNumber("Shooter/KA", ShooterConstants.kA);
 
-  public static LoggedTunableNumber shooterRPS =
-      new LoggedTunableNumber("Auto Shoot/Shooter RPS", 60);
-
   private final VelocityTorqueCurrentFOC m_request = new VelocityTorqueCurrentFOC(0);
 
   private double volts = 0.0;

@@ -177,13 +177,12 @@ public class AutoCommands {
     return Commands.parallel(
         stopShoot(),
         Commands.sequence(
-            Commands.waitSeconds(0.8), // change ples
+            Commands.waitSeconds(0.8),
             Commands.runOnce(() -> shooter.setVelocityRPS(0)),
             Commands.runOnce(() -> shooter.resetShooter())),
         Commands.sequence(Commands.waitSeconds(0.8), Commands.runOnce(() -> hood.setGoal(0))));
   }
 
-  // this sucks man
   public static Command unjam() {
     return Commands.repeatingSequence(
             Commands.waitSeconds(1.5),
