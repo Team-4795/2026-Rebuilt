@@ -49,7 +49,6 @@ public class StateManager extends SubsystemBase {
 
   private Alliance alliance;
   private Translation2d turretPose;
-  private Pose2d robotPose;
 
   public static class OperationStates {
     public static boolean inDecapitationZone = false;
@@ -115,16 +114,15 @@ public class StateManager extends SubsystemBase {
   public boolean canTurretMove() {
     return TurretConstants.canMove
         && getState() != State.SHUTTLING_DEAD_ZONE
-        && !OperationStates.behindTower
         && IntakeDeploy.getInstance().getPosition() < 0.25;
   }
 
   public boolean canHoodMove() {
-    return !OperationStates.inDecapitationZone && !OperationStates.behindTower;
+    return !OperationStates.inDecapitationZone;
   }
 
   public boolean canShooterRev() {
-    return !OperationStates.inDecapitationZone && !OperationStates.behindTower;
+    return !OperationStates.inDecapitationZone;
   }
 
   @Override
@@ -155,7 +153,6 @@ public class StateManager extends SubsystemBase {
     decapitationZone.logPoints("Decapitation Zone");
 
     turretPose = Turret.getInstance().getTurretPose();
-    robotPose = Drive.getInstance().getPose();
 
     OperationStates.inDecapitationZone = decapitationZone.contains(turretPose);
     OperationStates.inShuttlingZone1 = shuttlingZoneOne.contains(turretPose);
@@ -163,7 +160,7 @@ public class StateManager extends SubsystemBase {
     OperationStates.inShuttlingZone3 = shuttlingZoneThree.contains(turretPose);
     OperationStates.inShuttlingZone4 = shuttlingZoneFour.contains(turretPose);
     OperationStates.inShuttlingZone5 = shuttlingZoneFive.contains(turretPose);
-    OperationStates.behindTower = towerZone.contains(robotPose);
+    OperationStates.behindTower = towerZone.contains(turretPose);
 
     // Set State
     if (OperationStates.inShuttlingZone1 || OperationStates.inShuttlingZone3) {
