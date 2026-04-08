@@ -12,9 +12,15 @@ public interface IntakeIO {
     public double voltageB = 0.0;
     public double angularVelocityRPSB = 0.0;
     public double currentAmpsB = 0.0;
+
+    public double goalRPS = 0.0;
   }
 
   public default void setIntakeVoltage(double volts) {}
+
+  public default void setGoalRPS(double rps) {}
+
+  public default void configure() {}
 
   public default void updateInputs(IntakeIOInputs inputs) {}
 }

@@ -1,9 +1,11 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployConstants;
 import frc.robot.subsystems.Shooter.Shooter;
@@ -190,6 +192,11 @@ public class AutoCommands {
             Commands.waitSeconds(1),
             Commands.runOnce(() -> indexer.setVoltageIndexer(-12), indexer))
         .onlyIf(() -> !indexer.didCurrentSpike());
+  }
+
+  public static Command intakeWithScaling() {
+    // bs numbers please change them
+    return Commands.run(() -> intake.setGoalRPS(MathUtil.clamp((0.3 + 20 * drive.getSpeed()) * IntakeConstants.maxRPS, 0.0, IntakeConstants.maxRPS)), intake);
   }
 
   // Corner Setpoints

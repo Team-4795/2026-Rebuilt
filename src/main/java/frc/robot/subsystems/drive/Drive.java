@@ -397,4 +397,9 @@ public class Drive extends SubsystemBase {
     double distance = robotPose.getDistance(target);
     return distance;
   }
+
+  public double getSpeed() {
+    ChassisSpeeds speeds = getChassisSpeeds();
+    return Math.hypot(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
+  }
 }
