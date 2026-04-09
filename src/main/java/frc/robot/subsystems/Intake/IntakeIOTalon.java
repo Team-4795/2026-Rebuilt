@@ -8,7 +8,7 @@ import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import frc.robot.util.LoggedTunableNumber;
@@ -24,6 +24,8 @@ public class IntakeIOTalon implements IntakeIO {
   LoggedTunableNumber KS = new LoggedTunableNumber("Intake/KS", IntakeConstants.kS);
   LoggedTunableNumber KV = new LoggedTunableNumber("Intake/KV", IntakeConstants.kV);
   LoggedTunableNumber KA = new LoggedTunableNumber("Intake/KA", IntakeConstants.kA);
+
+  // LoggedTunableNumber rps = new Logge
 
   TalonFXConfiguration config = new TalonFXConfiguration();
 
@@ -41,8 +43,10 @@ public class IntakeIOTalon implements IntakeIO {
 
     config.CurrentLimits.StatorCurrentLimitEnable = true;
     config.CurrentLimits.SupplyCurrentLimitEnable = true;
-    config.CurrentLimits.StatorCurrentLimit = 80;
-    config.CurrentLimits.SupplyCurrentLimit = 60;
+    config.CurrentLimits.StatorCurrentLimit = 100;
+    config.CurrentLimits.SupplyCurrentLimit = 70;
+
+    config.Feedback.SensorToMechanismRatio = IntakeConstants.GEARING;
 
     config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
@@ -60,9 +64,11 @@ public class IntakeIOTalon implements IntakeIO {
 
   @Override
   public void setGoalRPS(double rps) {
+    rps = MathUtil.clamp(rps, 0, IntakeConstants.maxRPS);
+    this.goalRPS = rps;
+
     motor1.setControl(control.withVelocity(rps));
-    motor1.setControl(control.withVelocity(rps));
-    goalRPS = rps;
+    motor2.setControl(control.withVelocity(rps));
   }
 
   @Override
@@ -73,7 +79,7 @@ public class IntakeIOTalon implements IntakeIO {
     config.Slot0.kP = KP.get();
     config.Slot0.kI = KI.get();
     config.Slot0.kD = KD.get();
-    
+
     config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
     motor1.getConfigurator().apply(config);
@@ -84,7 +90,9 @@ public class IntakeIOTalon implements IntakeIO {
   }
 
   @Override
-  public void updateInputs(IntakeIOInputs inputs){
+  public void updateInputs(IntakeIOInputs inputs) {
+    BaseStatusSignal.refreshAll(rps1, rps2, current1, current2);
+
     inputs.angularVelocityRPSA = rps1.getValueAsDouble();
     inputs.angularVelocityRPSB = rps2.getValueAsDouble();
     inputs.currentAmpsA = current1.getValueAsDouble();

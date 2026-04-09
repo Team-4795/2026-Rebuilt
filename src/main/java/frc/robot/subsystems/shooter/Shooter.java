@@ -33,8 +33,7 @@ public class Shooter extends SubsystemBase {
   public void setVelocityRPS(double velocityRPS) {
     if (StateManager.getInstance().canShooterRev()) {
       io.setVelocityRPS(velocityRPS);
-    }
-    else {
+    } else {
       io.setVelocityRPS(0);
     }
   }

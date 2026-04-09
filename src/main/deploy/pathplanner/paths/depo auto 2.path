@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.495338078291816,
-        "y": 4.890355871886121
+        "x": 7.8611506524317925,
+        "y": 4.911874258600237
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.45162723491832,
-        "y": 6.321885992368048
+        "x": 7.817439809058296,
+        "y": 6.343404379082164
       },
       "isLocked": false,
       "linkedName": "depo stop 1"
@@ -209,7 +209,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0.0,
-    "rotation": -73.00917670801381
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }

@@ -78,7 +78,8 @@ public class RobotContainer {
   private final Trigger intakeButton = m_driverController.leftTrigger();
   private final Trigger runIndexer = m_driverController.rightBumper();
   private final Trigger autoTrench = m_driverController.leftBumper();
-  private final Trigger autoScore = m_driverController.x(); // No SOTM, stop w/ x
+  private final Trigger autoScore = m_driverController.x(); // No SOTM, st
+
   private final Trigger zeroDrive = m_driverController.y();
   private final Trigger reverseIntake = m_driverController.a();
   private final Trigger reverseIndexer = m_driverController.b();
@@ -218,7 +219,7 @@ public class RobotContainer {
     sotm.whileTrue(
             Commands.parallel(
                 AutoCommands.shootOnTheMove(),
-                AutoCommands.intake(),
+                AutoCommands.intakeWithScaling(),
                 AutoCommands.unjam().onlyWhile(readyToShoot),
                 DriveCommands.joystickDrive(
                     drive,
@@ -237,7 +238,12 @@ public class RobotContainer {
     autoTrench.whileTrue(AutoCommands.underTrenchAssist());
 
     // Intake
-    intakeButton.whileTrue(AutoCommands.intake());
+    intakeButton.whileTrue(AutoCommands.intakeWithScaling());
+
+    m_operatorController
+        .leftTrigger()
+        .whileTrue(AutoCommands.intakeWithScaling())
+        .onFalse(Commands.run(() -> intake.setGoalRPS(0), intake));
 
     // Run Indexer
     runIndexer.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
@@ -304,7 +310,7 @@ public class RobotContainer {
     //             Commands.runOnce((() -> indexer.setRPSIndexer(0))),
     //             Commands.runOnce(() -> indexer.setVoltageTower(0))));
 
-    configure.onTrue(Commands.runOnce(() -> turret.configure()));
+    configure.onTrue(Commands.runOnce(() -> intake.configure()));
   }
 
   /**

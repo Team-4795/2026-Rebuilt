@@ -30,12 +30,12 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.35993918662105595,
+      "waypointRelativePos": 0.29307282415630526,
       "rotationDegrees": -178.70755545448907
     },
     {
-      "waypointRelativePos": 0.6533637400228193,
-      "rotationDegrees": -179.01065373165196
+      "waypointRelativePos": 0.6962699822380106,
+      "rotationDegrees": -179.01065373165198
     }
   ],
   "constraintZones": [
@@ -56,6 +56,17 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
+      "name": "Set Turret OP",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Set Turret OP"
+        }
+      }
+    },
+    {
       "name": "rev shooter",
       "waypointRelativePos": 0.21184919210053868,
       "endWaypointRelativePos": null,
@@ -63,17 +74,6 @@
         "type": "named",
         "data": {
           "name": "rev shooter"
-        }
-      }
-    },
-    {
-      "name": "Lift Intake",
-      "waypointRelativePos": 0.5489313835770523,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Lift Intake"
         }
       }
     }

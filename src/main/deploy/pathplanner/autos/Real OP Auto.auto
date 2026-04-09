@@ -55,9 +55,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "OP Feeder Auto P5"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "OP Feeder Auto P5"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
           }
         },
         {

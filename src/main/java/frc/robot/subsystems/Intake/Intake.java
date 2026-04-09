@@ -3,7 +3,6 @@ package frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.LoggedTunableNumber;
-
 import org.littletonrobotics.junction.Logger;
 
 public class Intake extends SubsystemBase {
@@ -39,13 +38,17 @@ public class Intake extends SubsystemBase {
     io.setGoalRPS(rps);
   }
 
-  public void setFixedGoalRPS(){
+  public void setFixedGoalRPS() {
     io.setGoalRPS(RPS.getAsDouble());
-  }  
+  }
 
   @Override
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Intake", inputs);
+  }
+
+  public void configure() {
+    io.configure();
   }
 }

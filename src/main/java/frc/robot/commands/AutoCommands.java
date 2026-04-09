@@ -196,7 +196,16 @@ public class AutoCommands {
 
   public static Command intakeWithScaling() {
     // bs numbers please change them
-    return Commands.run(() -> intake.setGoalRPS(MathUtil.clamp((0.3 + 20 * drive.getSpeed()) * IntakeConstants.maxRPS, 0.0, IntakeConstants.maxRPS)), intake);
+    return Commands.startEnd(
+        () ->
+            intake.setGoalRPS(
+                MathUtil.clamp(30 + 7.5 * drive.getSpeed(), 0.0, IntakeConstants.maxRPS)),
+        () -> intake.setGoalRPS(0),
+        intake);
+  }
+
+  public static Command setTurretOPAuto() {
+    return Commands.runOnce(() -> turret.setGoal(0.581), turret);
   }
 
   // Corner Setpoints

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.889124999999999,
-        "y": 2.7260340909090917
+        "x": 5.7200711743772255,
+        "y": 2.3081494661921704
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.049614916963226,
-        "y": 2.553645004313599
+        "x": 4.353653618030843,
+        "y": 2.1360023724792403
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.568,
-        "y": 2.4587781731909844
+        "x": 3.234697508896798,
+        "y": 2.049928825622776
       },
       "prevControl": {
-        "x": 3.6008825622775813,
-        "y": 2.4587781731909844
+        "x": 4.267580071174379,
+        "y": 2.049928825622776
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.3113207547169811,
-      "rotationDegrees": -125.54438843481299
+      "rotationDegrees": 178.52777134716797
     },
     {
       "waypointRelativePos": 0.8880994671403181,
@@ -42,15 +42,21 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Lift Intake",
-      "waypointRelativePos": 0.2114735658042734,
+      "name": "Set Turret OP",
+      "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "Lift Intake"
+          "name": "Set Turret OP"
         }
       }
+    },
+    {
+      "name": "rev shooter",
+      "waypointRelativePos": 0.16647919010123818,
+      "endWaypointRelativePos": null,
+      "command": null
     }
   ],
   "globalConstraints": {
@@ -69,7 +75,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -135.78482460299188
+    "rotation": 176.97050174709227
   },
   "useDefaultConstraints": true
 }
