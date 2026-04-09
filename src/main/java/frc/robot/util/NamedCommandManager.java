@@ -22,5 +22,6 @@ public class NamedCommandManager {
     NamedCommands.registerCommand("Agitate Intake", AutoCommands.agitateIntakeAuto());
     NamedCommands.registerCommand("Lift Intake", AutoCommands.liftIntake());
     NamedCommands.registerCommand("Set Turret OP", AutoCommands.setTurretOPAuto());
+    NamedCommands.registerCommand("Scaled Intake", AutoCommands.intakeWithScaling());
   }
 }

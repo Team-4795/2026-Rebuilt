@@ -16,6 +16,7 @@ public class IntakeIOSim implements IntakeIO {
           LinearSystemId.createDCMotorSystem(
               DCMotor.getKrakenX44(1), 0.001, IntakeConstants.GEARING),
           DCMotor.getKrakenX44(1));
+  double goal = 0;
 
   @Override
   public void setIntakeVoltage(double v) {
@@ -35,5 +36,14 @@ public class IntakeIOSim implements IntakeIO {
     inputs.angularVelocityRPSB = motorB.getAngularVelocityRPM() / 60.0;
     inputs.currentAmpsB = motorB.getCurrentDrawAmps();
     inputs.voltageB = motorB.getInputVoltage();
+
+    inputs.goalRPS = goal;
+  }
+
+  @Override
+  public void setGoalRPS(double rps) {
+    goal = rps;
+    motorA.setAngularVelocity(rps * 2 * Math.PI);
+    motorB.setAngularVelocity(rps * 2 * Math.PI);
   }
 }

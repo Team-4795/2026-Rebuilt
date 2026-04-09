@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1049822064056944,
-        "y": -0.0050771055753271455
+        "x": -0.0038196915776973484,
+        "y": -0.026595492289442912
       },
       "isLocked": false,
       "linkedName": null
@@ -50,9 +50,9 @@
     {
       "name": "Constraints Zone",
       "minWaypointRelativePos": 0.0,
-      "maxWaypointRelativePos": 0.5421822272215983,
+      "maxWaypointRelativePos": 0.5714285714285725,
       "constraints": {
-        "maxVelocity": 0.45,
+        "maxVelocity": 0.8,
         "maxAcceleration": 4.0,
         "maxAngularVelocity": 100.0,
         "maxAngularAcceleration": 720.0,
@@ -68,20 +68,22 @@
       "waypointRelativePos": 0.0,
       "endWaypointRelativePos": 0.5260323159784562,
       "command": {
-        "type": "named",
+        "type": "parallel",
         "data": {
-          "name": "SOTM"
-        }
-      }
-    },
-    {
-      "name": "Deploy Intake",
-      "waypointRelativePos": 0.07649043869516524,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Deploy Intake"
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "SOTM"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Scaled Intake"
+              }
+            }
+          ]
         }
       }
     },
@@ -95,12 +97,6 @@
           "name": "Stop Shoot"
         }
       }
-    },
-    {
-      "name": "Deploy Intake",
-      "waypointRelativePos": 0.7059672762271343,
-      "endWaypointRelativePos": null,
-      "command": null
     }
   ],
   "globalConstraints": {
