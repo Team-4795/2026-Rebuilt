@@ -84,6 +84,7 @@ public class RobotContainer {
   private final Trigger reverseIntake = m_driverController.a();
   private final Trigger reverseIndexer = m_driverController.b();
 
+  
   private final Trigger zeroButton = m_operatorController.a(); // Zero sequence
   private final Trigger toggleVision = m_operatorController.x();
   private final Trigger lockTurret = m_operatorController.b();
@@ -219,30 +220,29 @@ public class RobotContainer {
     sotm.whileTrue(
             Commands.parallel(
                 AutoCommands.shootOnTheMove(),
-                AutoCommands.intakeWithScaling(),
-                AutoCommands.unjam().onlyWhile(readyToShoot),
+                AutoCommands.intake(),
                 DriveCommands.joystickDrive(
                     drive,
                     () ->
                         -m_driverController.getLeftY()
-                            * (stateManager.getState() == State.SHOOTING ? 0.6 : 0.8),
+                            * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.7),
                     () ->
                         -m_driverController.getLeftX()
-                            * (stateManager.getState() == State.SHOOTING ? 0.6 : 0.8),
+                            * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.7),
                     () ->
                         -m_driverController.getRightX()
-                            * (stateManager.getState() == State.SHOOTING ? 0.6 : 0.8))))
+                            * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.7))))
         .onFalse(AutoCommands.afterShoot());
 
     // Auto trench
     autoTrench.whileTrue(AutoCommands.underTrenchAssist());
 
     // Intake
-    intakeButton.whileTrue(AutoCommands.intakeWithScaling());
+    intakeButton.whileTrue(AutoCommands.intake());
 
     m_operatorController
         .leftTrigger()
-        .whileTrue(AutoCommands.intakeWithScaling())
+        .whileTrue(AutoCommands.intake())
         .onFalse(Commands.run(() -> intake.setGoalRPS(0), intake));
 
     // Run Indexer
@@ -310,7 +310,7 @@ public class RobotContainer {
     //             Commands.runOnce((() -> indexer.setRPSIndexer(0))),
     //             Commands.runOnce(() -> indexer.setVoltageTower(0))));
 
-    configure.onTrue(Commands.runOnce(() -> intake.configure()));
+    configure.onTrue(Commands.runOnce(() -> shooter.configure()));
   }
 
   /**

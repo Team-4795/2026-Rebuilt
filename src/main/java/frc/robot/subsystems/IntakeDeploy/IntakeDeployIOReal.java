@@ -79,9 +79,9 @@ public class IntakeDeployIOReal implements IntakeDeployIO {
         deployConfigB, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     zero();
-
-    goal.position = encoderA.getPosition();
-    goal.velocity = 0;
+    setGoal(IntakeDeployConstants.stowPosition);
+    // goal.position = encoderA.getPosition();
+    // goal.velocity = 0;
   }
 
   @Override

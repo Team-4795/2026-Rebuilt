@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": -0.0038196915776973484,
-        "y": -0.026595492289442912
+        "x": 1.3519981060606054,
+        "y": -0.10915719696969761
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.462,
-        "y": 1.0600830367734273
+        "x": 6.036,
+        "y": 0.588
       },
       "prevControl": {
-        "x": 6.010113879003559,
-        "y": 0.12403321470937045
+        "x": 5.313446969696969,
+        "y": 0.6216761363636364
       },
       "nextControl": null,
       "isLocked": false,
@@ -40,17 +40,13 @@
     {
       "waypointRelativePos": 0.7177304964539014,
       "rotationDegrees": 0.0
-    },
-    {
-      "waypointRelativePos": 0.9502664298401424,
-      "rotationDegrees": 90.94188983566171
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
       "minWaypointRelativePos": 0.0,
-      "maxWaypointRelativePos": 0.5714285714285725,
+      "maxWaypointRelativePos": 0.7587382779198627,
       "constraints": {
         "maxVelocity": 0.8,
         "maxAcceleration": 4.0,
@@ -66,7 +62,7 @@
     {
       "name": "SOTM",
       "waypointRelativePos": 0.0,
-      "endWaypointRelativePos": 0.5260323159784562,
+      "endWaypointRelativePos": 0.692242114237,
       "command": {
         "type": "parallel",
         "data": {

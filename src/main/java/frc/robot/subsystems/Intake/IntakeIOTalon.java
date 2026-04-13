@@ -36,6 +36,8 @@ public class IntakeIOTalon implements IntakeIO {
   private final StatusSignal<Current> current1 = motor1.getTorqueCurrent();
   private final StatusSignal<Current> current2 = motor2.getTorqueCurrent();
 
+  private boolean hasCurrentLimitChanged = false;
+
   private double goalRPS = 0.0;
 
   public IntakeIOTalon() {
@@ -43,8 +45,8 @@ public class IntakeIOTalon implements IntakeIO {
 
     config.CurrentLimits.StatorCurrentLimitEnable = true;
     config.CurrentLimits.SupplyCurrentLimitEnable = true;
-    config.CurrentLimits.StatorCurrentLimit = 100;
-    config.CurrentLimits.SupplyCurrentLimit = 70;
+    config.CurrentLimits.StatorCurrentLimit = 80;
+    config.CurrentLimits.SupplyCurrentLimit = 60;
 
     config.Feedback.SensorToMechanismRatio = IntakeConstants.GEARING;
 
@@ -55,9 +57,6 @@ public class IntakeIOTalon implements IntakeIO {
 
   @Override
   public void setIntakeVoltage(double volts) {
-    // motor1.setVoltage(volts);
-    // motor2.setVoltage(volts);
-
     motor1.setControl(new VoltageOut(volts).withEnableFOC(true));
     motor2.setControl(new VoltageOut(volts).withEnableFOC(true));
   }
@@ -90,6 +89,24 @@ public class IntakeIOTalon implements IntakeIO {
   }
 
   @Override
+  public void setTeleopCurrentLimits() {
+    hasCurrentLimitChanged = true;
+
+    config.CurrentLimits.StatorCurrentLimitEnable = true;
+    config.CurrentLimits.SupplyCurrentLimitEnable = true;
+    config.CurrentLimits.StatorCurrentLimit = 90;
+    config.CurrentLimits.SupplyCurrentLimit = 70;
+
+    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+
+    motor1.getConfigurator().apply(config);
+
+    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+
+    motor2.getConfigurator().apply(config);
+  }
+
+  @Override
   public void updateInputs(IntakeIOInputs inputs) {
     BaseStatusSignal.refreshAll(rps1, rps2, current1, current2);
 
@@ -98,5 +115,6 @@ public class IntakeIOTalon implements IntakeIO {
     inputs.currentAmpsA = current1.getValueAsDouble();
     inputs.currentAmpsB = current2.getValueAsDouble();
     inputs.goalRPS = goalRPS;
+    inputs.hasCurrentLimitChanged = this.hasCurrentLimitChanged;
   }
 }
