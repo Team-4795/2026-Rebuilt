@@ -2,6 +2,7 @@ package frc.robot.util;
 
 import com.pathplanner.lib.auto.NamedCommands;
 import frc.robot.commands.AutoCommands;
+import frc.robot.lib.BLine.FollowPath;
 
 public class NamedCommandManager {
   public static void registerNamedCommands() {
@@ -23,5 +24,11 @@ public class NamedCommandManager {
     NamedCommands.registerCommand("Lift Intake", AutoCommands.liftIntake());
     NamedCommands.registerCommand("Set Turret OP", AutoCommands.setTurretOPAuto());
     NamedCommands.registerCommand("Scaled Intake", AutoCommands.intakeWithScaling());
+
+    FollowPath.registerEventTrigger("SOTM", AutoCommands.shootOnTheMove());
+    FollowPath.registerEventTrigger("Stop Shooter", AutoCommands.stopShooter());
+    FollowPath.registerEventTrigger("Retract Intake", AutoCommands.retractIntake());
+    FollowPath.registerEventTrigger("Deploy Intake", AutoCommands.deployIntake());
+    FollowPath.registerEventTrigger("Intake", AutoCommands.intake());
   }
 }

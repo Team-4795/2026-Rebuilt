@@ -4,13 +4,13 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
+import frc.robot.lib.BLine.Path;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerIO;
 import frc.robot.subsystems.Indexer.IndexerIORealTalon;
@@ -164,7 +164,8 @@ public class RobotContainer {
 
     // Register named commands
     NamedCommandManager.registerNamedCommands();
-    autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
+    // autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
+    autoChooser = new LoggedDashboardChooser<>("Auto Chooser");
 
     // Configure the trigger bindings
     configureButtonBindings();
@@ -319,7 +320,10 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return autoChooser.get();
+    // return autoChooser.get();
+    return Commands.sequence(
+        drive.pathBuilder.build(new Path("Rembrandts P1")),
+        drive.pathBuilder.build(new Path("Rembrandts P2")));
   }
 
   public Command stopMechanisms() {
