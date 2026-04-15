@@ -84,7 +84,6 @@ public class RobotContainer {
   private final Trigger reverseIntake = m_driverController.a();
   private final Trigger reverseIndexer = m_driverController.b();
 
-  
   private final Trigger zeroButton = m_operatorController.a(); // Zero sequence
   private final Trigger toggleVision = m_operatorController.x();
   private final Trigger lockTurret = m_operatorController.b();
