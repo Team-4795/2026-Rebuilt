@@ -1,0 +1,44 @@
+{
+  "path_elements": [
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 7.745979983319433,
+        "y_meters": 2.165125104253545,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 1.5337144567718501,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.029290910934265592,
+      "lib_key": "Set Turret OP"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.16037810987593087,
+      "lib_key": "rev shooter"
+    },
+    {
+      "type": "rotation",
+      "rotation_radians": 3.0928047427723664,
+      "t_ratio": 0.37753329096406935,
+      "profiled_rotation": true
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 2.7600592415702003,
+        "y_meters": 2.369929107589657,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": -3.123062951428255,
+        "profiled_rotation": true
+      }
+    }
+  ]
+}

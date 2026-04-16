@@ -1,0 +1,45 @@
+{
+  "path_elements": [
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 4.1472810675563005,
+        "y_meters": 0.4242910758965852,
+        "intermediate_handoff_radius_meters": 0.65
+      },
+      "rotation_target": {
+        "rotation_radians": 1.5954382986209996,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.4694864549743501,
+      "lib_key": "Deploy Intake"
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 7.633988374716724,
+        "y_meters": 0.5266930775646337,
+        "intermediate_handoff_radius_meters": 2.3000000000000003
+      },
+      "rotation_target": {
+        "rotation_radians": 1.5591725055813972,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 7.709652286845728,
+        "y_meters": 2.150496246872401,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 1.618855107838852,
+        "profiled_rotation": true
+      }
+    }
+  ]
+}
