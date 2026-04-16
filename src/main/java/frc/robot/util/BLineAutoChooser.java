@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.lib.BLine.FollowPath;
 import frc.robot.lib.BLine.Path;
 import frc.robot.subsystems.drive.Drive;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +104,7 @@ public class BLineAutoChooser extends FollowPath.Builder {
       PIDController translationController,
       PIDController rotationController,
       PIDController crossTrackController) {
-        super(
+    super(
         driveSubsystem,
         poseSupplier,
         robotRelativeSpeedsSupplier,
@@ -113,8 +112,8 @@ public class BLineAutoChooser extends FollowPath.Builder {
         translationController,
         rotationController,
         crossTrackController);
-        this.drive = (Drive) driveSubsystem;
-
+    this.drive = (Drive) driveSubsystem;
+    createAutos();
   }
 
   /**
@@ -177,7 +176,7 @@ public class BLineAutoChooser extends FollowPath.Builder {
    * creates and registers a path composed of multiple other paths :)
    *
    * @param name The name of the auto
-   * @param paths The name of the paths to string together or some
+   * @param paths The name of the paths to string together
    */
   public void createPathSequence(String name, String... pathNames) {
     Path[] paths = new Path[pathNames.length];
@@ -204,6 +203,13 @@ public class BLineAutoChooser extends FollowPath.Builder {
     chooser.addOption(name, auto);
   }
 
+  public void createPathSequence(String name, Command... commands) {
+    withPoseReset(pose -> {});
+    Command auto = new SequentialCommandGroup(commands);
+    chooser.addOption(name, auto);
+    withPoseReset(drive::setPose);
+  }
+
   /**
    * Get a list of all auto names in the project
    *
@@ -222,5 +228,21 @@ public class BLineAutoChooser extends FollowPath.Builder {
         .filter(name -> name.endsWith(".json"))
         .map(name -> name.substring(0, name.lastIndexOf(".")))
         .collect(Collectors.toList());
+  }
+
+  public FollowPath buildWithPoseReset(Path path, Consumer<Pose2d> poseResetConsumer) {
+    this.withPoseReset(poseResetConsumer);
+    return this.build(path);
+  }
+
+  // create your autos here
+  public void createAutos() {
+    createPathSequence("Rembrandts Back Bump", "Rembrandts P1", "Rembrandts P2 Bump"); // unfinished
+    createPathSequence("Rembrandts Back Trench", "Rembrandts P1", "Rembrandts P2 Trench");
+    createPathSequence(
+        "testing",
+        buildWithPoseReset(new Path("Rembrandts P1"), drive::setPose),
+        Commands.waitSeconds(5),
+        buildWithPoseReset(new Path("Rembrandts P2 Bump"), pose -> {}));
   }
 }

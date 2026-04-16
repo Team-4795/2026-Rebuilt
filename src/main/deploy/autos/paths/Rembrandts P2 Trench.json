@@ -1,0 +1,106 @@
+{
+  "path_elements": [
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 7.828255033557047,
+        "y_meters": 4.757356450410142,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": -1.5886756279887495,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "rotation",
+      "rotation_radians": 3.1350363954905776,
+      "t_ratio": 0.42974370696654957,
+      "profiled_rotation": true
+    },
+    {
+      "type": "translation",
+      "x_meters": 7.360655178643764,
+      "y_meters": 7.034662305562877,
+      "intermediate_handoff_radius_meters": 1.3000000000000005
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 5.456972552998631,
+        "y_meters": 7.386394481730053,
+        "intermediate_handoff_radius_meters": 1.2000000000000002
+      },
+      "rotation_target": {
+        "rotation_radians": 3.141592653589793,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 3.6219615116646704,
+        "y_meters": 7.386394481730052,
+        "intermediate_handoff_radius_meters": 1.0
+      },
+      "rotation_target": {
+        "rotation_radians": -3.141592653589793,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "translation",
+      "x_meters": 2.061626085543237,
+      "y_meters": 6.732404921700225,
+      "intermediate_handoff_radius_meters": 0.9000000000000001
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.13413394999090963,
+      "lib_key": "SOTM"
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 0.9275245243417758,
+        "y_meters": 5.960697240865027,
+        "intermediate_handoff_radius_meters": 0.35
+      },
+      "rotation_target": {
+        "rotation_radians": -3.141592653589793,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.0,
+      "lib_key": "Stop Shooter"
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 0.2512156551611948,
+        "y_meters": 5.973777032065622,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": -3.115140326785338,
+        "profiled_rotation": true
+      }
+    }
+  ],
+  "constraints": {
+    "max_velocity_meters_per_sec": [
+      {
+        "value": 4.5,
+        "start_ordinal": 6,
+        "end_ordinal": 6
+      },
+      {
+        "value": 0.4,
+        "start_ordinal": 5,
+        "end_ordinal": 5
+      }
+    ]
+  }
+}
