@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoCommands;
 import frc.robot.commands.DriveCommands;
-import frc.robot.lib.BLine.Path;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Indexer.IndexerIO;
 import frc.robot.subsystems.Indexer.IndexerIORealTalon;
@@ -47,6 +46,7 @@ import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOReal;
 import frc.robot.subsystems.vision.VisionIOSim;
+import frc.robot.util.BLineAutoChooser;
 import frc.robot.util.NamedCommandManager;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -96,6 +96,7 @@ public class RobotContainer {
   private final Trigger configure = m_driverController.povDown();
 
   private LoggedDashboardChooser<Command> autoChooser;
+  private BLineAutoChooser bLineChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -165,7 +166,11 @@ public class RobotContainer {
     // Register named commands
     NamedCommandManager.registerNamedCommands();
     // autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
-    autoChooser = new LoggedDashboardChooser<>("Auto Chooser");
+    bLineChooser = drive.getAutoChooser();
+
+    // ok this is hellish
+    createPathSequences();
+    autoChooser = new LoggedDashboardChooser<>("Auto Chooser", bLineChooser.buildAutoChooser());
 
     // Configure the trigger bindings
     configureButtonBindings();
@@ -313,17 +318,22 @@ public class RobotContainer {
     configure.onTrue(Commands.runOnce(() -> shooter.configure()));
   }
 
+  // edit stuff in this to link paths together
+  public void createPathSequences(){
+    bLineChooser.createPathSequence("Rembrandts Back Bump", "Rembrandts P1", "Rembrandts P2");
+    bLineChooser.createPathSequence("aaaaaaaaaaaaa", "example_a", "example_b");
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.x`
    *
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    // return autoChooser.get();
-    return Commands.sequence(
-        drive.pathBuilder.build(new Path("Rembrandts P1")),
-        drive.pathBuilder.build(new Path("Rembrandts P2")));
+    return autoChooser.get();
+    // return Commands.sequence(
+    //     drive.pathBuilder.build(new Path("Rembrandts P1")),
+    //     drive.pathBuilder.build(new Path("Rembrandts P2")));
   }
 
   public Command stopMechanisms() {

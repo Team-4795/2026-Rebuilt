@@ -46,9 +46,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.Constants.Mode;
-import frc.robot.lib.BLine.FollowPath;
 import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.Turret.TurretConstants;
+import frc.robot.util.BLineAutoChooser;
 import frc.robot.util.LocalADStarAK;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -79,7 +79,7 @@ public class Drive extends SubsystemBase {
   private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
 
-  public FollowPath.Builder pathBuilder;
+  public BLineAutoChooser autoChooser;
 
   public static Drive getInstance() {
     return instance;
@@ -132,17 +132,19 @@ public class Drive extends SubsystemBase {
           Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
         });
 
-    pathBuilder =
-        new FollowPath.Builder(
-                this,
-                this::getPose,
-                this::getChassisSpeeds,
-                this::runVelocity,
-                new PIDController(2, 0.0, DriveConstants.driveKd),
-                new PIDController(2, 0.0, DriveConstants.turnKd),
-                new PIDController(2.0, 0.0, 0.0))
-            .withDefaultShouldFlip()
-            .withPoseReset(this::setPose);
+    // holy balls what am i doing
+    autoChooser =
+        (BLineAutoChooser)
+            new BLineAutoChooser(
+                    this,
+                    this::getPose,
+                    this::getChassisSpeeds,
+                    this::runVelocity,
+                    new PIDController(2, 0.0, DriveConstants.driveKd),
+                    new PIDController(2, 0.0, DriveConstants.turnKd),
+                    new PIDController(2.0, 0.0, 0.0))
+                .withDefaultShouldFlip()
+                .withPoseReset(this::setPose);
 
     // Configure SysId
     sysId =
@@ -417,5 +419,9 @@ public class Drive extends SubsystemBase {
   public double getSpeed() {
     ChassisSpeeds speeds = getChassisSpeeds();
     return Math.hypot(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
+  }
+
+  public BLineAutoChooser getAutoChooser() {
+    return autoChooser;
   }
 }
