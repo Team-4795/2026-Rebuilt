@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.lib.BLine.FollowPath;
 import frc.robot.lib.BLine.Path;
+import frc.robot.subsystems.drive.Drive;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +20,13 @@ import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/** Utility class used to build auto routines */
+/**
+ * Utility class used to build auto routines. does everything followpath builder does AND MORE!!!
+ */
 public class BLineAutoChooser extends FollowPath.Builder {
   private List<Path> options = new ArrayList<>();
   private SendableChooser<Command> chooser = new SendableChooser<>();
+  private Drive drive;
 
   /**
    * Create and populate a sendable chooser with all PathPlannerAutos in the project
@@ -41,6 +46,7 @@ public class BLineAutoChooser extends FollowPath.Builder {
 
   /**
    * holy shit i cant believe that worked my brains too small for ts - cathy
+   *
    * <p>please do not be mean to it it will crumble to dust under any pressure
    *
    * <p>Builder class for constructing {@link FollowPath} commands with a fluent API.
@@ -99,7 +105,7 @@ public class BLineAutoChooser extends FollowPath.Builder {
       PIDController translationController,
       PIDController rotationController,
       PIDController crossTrackController) {
-    super(
+        super(
         driveSubsystem,
         poseSupplier,
         robotRelativeSpeedsSupplier,
@@ -107,6 +113,8 @@ public class BLineAutoChooser extends FollowPath.Builder {
         translationController,
         rotationController,
         crossTrackController);
+        this.drive = (Drive) driveSubsystem;
+
   }
 
   /**
@@ -141,7 +149,9 @@ public class BLineAutoChooser extends FollowPath.Builder {
 
     List<String> autoNames = getAllAutoNames();
 
-    Path defaultOption = null;
+    Path defaultOption =
+        null; // i would love a proper default option but paths dont store their names anywhere so i
+    // aint doing that
 
     for (String autoName : autoNames) {
       Path auto = new Path(autoName);
@@ -154,18 +164,11 @@ public class BLineAutoChooser extends FollowPath.Builder {
       }
     }
 
-    // if (defaultOption == null) {
-    //   chooser.setDefaultOption("None", Commands.none());
-    // } else {
     chooser.setDefaultOption("None", Commands.none());
-    // chooser.setDefaultOption(defaultOption.getName(), defaultOption);
     chooser.addOption("None", Commands.none());
 
     optionsModifier.apply(options.stream());
     // .forEach(auto -> chooser.addOption(auto.toString(), this.build(auto)));
-    // for (String n : names){
-    //   chooser.addOption(n, this.build());
-    // }
 
     return chooser;
   }
@@ -193,8 +196,10 @@ public class BLineAutoChooser extends FollowPath.Builder {
   public void createPathSequence(String name, Path... paths) {
     Command[] commands = new Command[paths.length];
     for (int i = 0; i < paths.length; i++) {
+      if (i > 0) withPoseReset(pose -> {});
       commands[i] = build(paths[i]);
     }
+    withPoseReset(drive::setPose);
     Command auto = new SequentialCommandGroup(commands);
     chooser.addOption(name, auto);
   }

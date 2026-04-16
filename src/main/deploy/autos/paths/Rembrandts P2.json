@@ -44,13 +44,13 @@
     },
     {
       "type": "translation",
-      "x_meters": 2.702535854372469,
-      "y_meters": 5.895298284862044,
+      "x_meters": 2.362461283156958,
+      "y_meters": 5.777580164056675,
       "intermediate_handoff_radius_meters": 0.7500000000000001
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.030347074912296126,
+      "t_ratio": 0.0303470749122958,
       "lib_key": "SOTM"
     },
     {
@@ -67,7 +67,7 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.023071680612281115,
+      "t_ratio": 0.0,
       "lib_key": "Stop Shooter"
     },
     {

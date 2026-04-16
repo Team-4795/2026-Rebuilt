@@ -319,9 +319,9 @@ public class RobotContainer {
   }
 
   // edit stuff in this to link paths together
-  public void createPathSequences(){
-    bLineChooser.createPathSequence("Rembrandts Back Bump", "Rembrandts P1", "Rembrandts P2");
-    bLineChooser.createPathSequence("aaaaaaaaaaaaa", "example_a", "example_b");
+  public void createPathSequences() {
+    bLineChooser.createPathSequence(
+        "Rembrandts Back Bump", "Rembrandts P1", "Rembrandts P2"); // unfinished
   }
 
   /**
@@ -331,6 +331,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autoChooser.get();
+
     // return Commands.sequence(
     //     drive.pathBuilder.build(new Path("Rembrandts P1")),
     //     drive.pathBuilder.build(new Path("Rembrandts P2")));
