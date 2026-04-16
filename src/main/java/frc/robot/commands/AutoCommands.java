@@ -52,7 +52,6 @@ public class AutoCommands {
         intake());
   }
 
-  // this is bs
   public static Command agitateIntakeAuto() {
     return Commands.repeatingSequence(
         Commands.runOnce(() -> deploy.setGoal(0.04)),
@@ -92,15 +91,20 @@ public class AutoCommands {
   // }
 
   public static Command shoot() {
-    return Commands.parallel(
-        Commands.runOnce(() -> indexer.setVoltageIndexer(-12)),
-        Commands.runOnce(() -> indexer.setVoltageTower(-12)));
+    return Commands.either(
+        Commands.parallel(
+            Commands.runOnce(() -> indexer.setVoltageIndexer(-11)),
+            Commands.runOnce(() -> indexer.setVoltageTower(-9))),
+        Commands.parallel(
+            Commands.runOnce(() -> indexer.setVoltageIndexer(-9)),
+            Commands.runOnce(() -> indexer.setVoltageTower(-8))),
+        () -> manager.getState() == State.SHOOTING);
   }
 
   public static Command reverseIndexer() {
     return Commands.parallel(
-        Commands.runOnce(() -> indexer.setVoltageIndexer(12)),
-        Commands.runOnce(() -> indexer.setVoltageTower(12)));
+        Commands.runOnce(() -> indexer.setVoltageIndexer(11)),
+        Commands.runOnce(() -> indexer.setVoltageTower(9)));
   }
 
   public static Command stopShoot() {
@@ -178,20 +182,22 @@ public class AutoCommands {
   public static Command afterShoot() {
     return Commands.parallel(
         stopShoot(),
-        Commands.sequence(
-            Commands.waitSeconds(0.8),
-            Commands.runOnce(() -> shooter.setVelocityRPS(0)),
-            Commands.runOnce(() -> shooter.resetShooter())),
-        Commands.sequence(Commands.waitSeconds(0.8), Commands.runOnce(() -> hood.setGoal(0))));
+        Commands.runOnce(() -> shooter.setVelocityRPS(0)),
+        Commands.runOnce(() -> hood.setGoal(0)),
+        Commands.runOnce(() -> shooter.resetShooter()));
   }
 
   public static Command unjam() {
     return Commands.repeatingSequence(
             Commands.waitSeconds(1.5),
+            Commands.runOnce(() -> indexer.setVoltageIndexer(0), indexer),
+            Commands.waitSeconds(0.25),
             Commands.runOnce(() -> indexer.setVoltageIndexer(12), indexer),
             Commands.waitSeconds(1),
+            Commands.runOnce(() -> indexer.setVoltageIndexer(0), indexer),
+            Commands.waitSeconds(0.25),
             Commands.runOnce(() -> indexer.setVoltageIndexer(-12), indexer))
-        .onlyIf(() -> !indexer.didCurrentSpike());
+        .onlyWhile(() -> !indexer.didCurrentSpike());
   }
 
   public static Command intakeWithScaling() {
@@ -199,7 +205,7 @@ public class AutoCommands {
     return Commands.startEnd(
         () ->
             intake.setGoalRPS(
-                MathUtil.clamp(30 + 7.5 * drive.getSpeed(), 0.0, IntakeConstants.maxRPS)),
+                MathUtil.clamp(45 + 7.5 * drive.getSpeed(), 0.0, IntakeConstants.maxRPS)),
         () -> intake.setGoalRPS(0),
         intake);
   }

@@ -42,6 +42,10 @@ public class Intake extends SubsystemBase {
     io.setGoalRPS(RPS.getAsDouble());
   }
 
+  public void setTeleopCurrentLimits() {
+    io.setTeleopCurrentLimits();
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);

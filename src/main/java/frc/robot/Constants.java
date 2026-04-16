@@ -22,6 +22,7 @@ import java.util.ArrayList;
  */
 public final class Constants {
   public static final Mode simMode = Mode.SIM;
+  public static final Mode replayMode = Mode.REPLAY;
   public static final boolean tuningMode = true;
 
   public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;

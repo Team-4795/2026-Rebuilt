@@ -6,7 +6,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
@@ -226,7 +225,7 @@ public class StateManager extends SubsystemBase {
 
     // dimensions of no auto score zone
     double boxXDim =
-        0.5 + ShooterHoodConstants.boxXMultiplier * Math.abs(fieldRelative.vxMetersPerSecond);
+        0.75 + ShooterHoodConstants.boxXMultiplier * Math.abs(fieldRelative.vxMetersPerSecond);
     double boxYDim = FieldConstants.trenchWidth;
 
     Translation2d topLeft = new Translation2d(closest.getX() - boxXDim, closest.getY() + boxYDim);
@@ -250,10 +249,10 @@ public class StateManager extends SubsystemBase {
     double t = timer.getTimeToShift();
     if (t < 3.0 && t > 0.0) {
       rumble = true;
-      driverController.getHID().setRumble(RumbleType.kBothRumble, 0.8);
+      // driverController.getHID().setRumble(RumbleType.kBothRumble, 0.8);
     } else {
       rumble = false;
-      driverController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
+      // driverController.getHID().setRumble(RumbleType.kBothRumble, 0.0);
     }
   }
 
