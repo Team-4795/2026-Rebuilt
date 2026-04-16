@@ -321,7 +321,9 @@ public class RobotContainer {
   // edit stuff in this to link paths together
   public void createPathSequences() {
     bLineChooser.createPathSequence(
-        "Rembrandts Back Bump", "Rembrandts P1", "Rembrandts P2"); // unfinished
+        "Rembrandts Back Bump", "Rembrandts P1", "Rembrandts P2 Bump"); // unfinished
+    bLineChooser.createPathSequence(
+        "Rembrandts Back Trench", "Rembrandts P1", "Rembrandts P2 Trench");
   }
 
   /**

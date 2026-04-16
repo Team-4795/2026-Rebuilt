@@ -1,6 +1,7 @@
 package frc.robot.util;
 
 import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.AutoCommands;
 import frc.robot.lib.BLine.FollowPath;
 
@@ -30,5 +31,6 @@ public class NamedCommandManager {
     FollowPath.registerEventTrigger("Retract Intake", AutoCommands.retractIntake());
     FollowPath.registerEventTrigger("Deploy Intake", AutoCommands.deployIntake());
     FollowPath.registerEventTrigger("Intake", AutoCommands.intake());
+    FollowPath.registerEventTrigger("Wait 5 Sec", Commands.waitSeconds(5));
   }
 }
