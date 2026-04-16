@@ -35,10 +35,10 @@ public class DriveConstants {
       };
 
   // Zeroed rotation values for each module, see setup instructions
-  public static final Rotation2d frontLeftZeroRotation = new Rotation2d(-1.526958); // -1.490081
-  public static final Rotation2d frontRightZeroRotation = new Rotation2d(0.047886); // 0.078611
-  public static final Rotation2d backLeftZeroRotation = new Rotation2d(0.055533); // 0.05
-  public static final Rotation2d backRightZeroRotation = new Rotation2d(1.477178); // 1.489941
+  public static final Rotation2d frontLeftZeroRotation = new Rotation2d(-1.521); // -1.490081
+  public static final Rotation2d frontRightZeroRotation = new Rotation2d(0.08); // 0.078611
+  public static final Rotation2d backLeftZeroRotation = new Rotation2d(0.049); // 0.05
+  public static final Rotation2d backRightZeroRotation = new Rotation2d(1.465); // 1.489941
 
   // Device CAN IDs
   public static final int pigeonCanId = 10;
@@ -54,7 +54,7 @@ public class DriveConstants {
   public static final int backRightTurnCanId = 9;
 
   // Drive motor configuration
-  public static final int driveMotorCurrentLimit = 55;
+  public static final int driveMotorCurrentLimit = 60;
   public static final double wheelRadiusMeters = Units.inchesToMeters(1.45);
   public static final double driveMotorReduction =
       5.50; // MAXSwerve with 13 pinion teeth and 22 spur teeth

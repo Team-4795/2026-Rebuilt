@@ -121,7 +121,6 @@ public class Robot extends LoggedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    // Intake.getInstance().setTeleopCurrentLimits();
     robotContainer.stopMechanisms();
     robotContainer.startTimer();
   }

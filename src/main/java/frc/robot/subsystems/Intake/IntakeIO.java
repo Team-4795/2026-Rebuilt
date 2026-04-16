@@ -14,8 +14,6 @@ public interface IntakeIO {
     public double currentAmpsB = 0.0;
 
     public double goalRPS = 0.0;
-
-    public boolean hasCurrentLimitChanged = false;
   }
 
   public default void setIntakeVoltage(double volts) {}
@@ -23,8 +21,6 @@ public interface IntakeIO {
   public default void setGoalRPS(double rps) {}
 
   public default void configure() {}
-
-  public default void setTeleopCurrentLimits() {}
 
   public default void updateInputs(IntakeIOInputs inputs) {}
 }
