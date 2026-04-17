@@ -113,7 +113,6 @@ public class BLineAutoChooser extends FollowPath.Builder {
         rotationController,
         crossTrackController);
     this.drive = (Drive) driveSubsystem;
-    createAutos();
   }
 
   /**
@@ -237,8 +236,13 @@ public class BLineAutoChooser extends FollowPath.Builder {
 
   // create your autos here
   public void createAutos() {
-    createPathSequence("Rembrandts Back Bump", "Rembrandts P1", "Rembrandts P2 Bump"); // unfinished
-    createPathSequence("Rembrandts Back Trench", "Rembrandts P1", "Rembrandts P2 Trench");
+    createPathSequence(
+        "Rembrandts Back Bump",
+        "Rembrandts P1",
+        "Rembrandts P2 Bump",
+        "Rembrandts P3"); // unfinished
+    createPathSequence(
+        "Rembrandts Back Trench", "Rembrandts P1", "Rembrandts P2 Trench", "Rembrandts P3");
     createPathSequence(
         "testing",
         buildWithPoseReset(new Path("Rembrandts P1"), drive::setPose),

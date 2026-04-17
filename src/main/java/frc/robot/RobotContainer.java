@@ -166,10 +166,10 @@ public class RobotContainer {
     // Register named commands
     NamedCommandManager.registerNamedCommands();
     // autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
-    bLineChooser = drive.getAutoChooser();
+    bLineChooser = drive.getAutoChooser(); // bline
+    bLineChooser.createAutos();
 
     // ok this is hellish
-    createPathSequences();
     autoChooser = new LoggedDashboardChooser<>("Auto Chooser", bLineChooser.buildAutoChooser());
 
     // Configure the trigger bindings
@@ -316,14 +316,6 @@ public class RobotContainer {
     //             Commands.runOnce(() -> indexer.setVoltageTower(0))));
 
     configure.onTrue(Commands.runOnce(() -> shooter.configure()));
-  }
-
-  // edit stuff in this to link paths together
-  public void createPathSequences() {
-    bLineChooser.createPathSequence(
-        "Rembrandts Back Bump", "Rembrandts P1", "Rembrandts P2 Bump"); // unfinished
-    bLineChooser.createPathSequence(
-        "Rembrandts Back Trench", "Rembrandts P1", "Rembrandts P2 Trench");
   }
 
   /**

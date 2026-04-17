@@ -1,7 +1,6 @@
 package frc.robot.util;
 
 import com.pathplanner.lib.auto.NamedCommands;
-import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.AutoCommands;
 import frc.robot.lib.BLine.FollowPath;
 
@@ -26,11 +25,14 @@ public class NamedCommandManager {
     NamedCommands.registerCommand("Set Turret OP", AutoCommands.setTurretOPAuto());
     NamedCommands.registerCommand("Scaled Intake", AutoCommands.intakeWithScaling());
 
+    // bline event triggers
     FollowPath.registerEventTrigger("SOTM", AutoCommands.shootOnTheMove());
     FollowPath.registerEventTrigger("Stop Shooter", AutoCommands.stopShooter());
+    FollowPath.registerEventTrigger("Run Indexer", AutoCommands.shoot());
+    FollowPath.registerEventTrigger("Stop Indexer", AutoCommands.stopShoot().withTimeout(0.1));
     FollowPath.registerEventTrigger("Retract Intake", AutoCommands.retractIntake());
+    FollowPath.registerEventTrigger("Lift Intake", AutoCommands.liftIntake());
     FollowPath.registerEventTrigger("Deploy Intake", AutoCommands.deployIntake());
     FollowPath.registerEventTrigger("Intake", AutoCommands.intake());
-    FollowPath.registerEventTrigger("Wait 5 Sec", Commands.waitSeconds(5));
   }
 }
