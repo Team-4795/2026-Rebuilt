@@ -232,4 +232,12 @@ public class AutoCommands {
   public static Command stopShooter() {
     return Commands.runOnce(() -> shooter.setVelocityRPS(0), shooter);
   }
+
+  public static Command autonomousStopSOTM() {
+    return Commands.parallel(
+        stopShoot(),
+        Commands.run(() -> shooter.setVelocityRPS(0)),
+        Commands.run(() -> hood.setGoal(0)),
+        Commands.run(() -> shooter.resetShooter()));
+  }
 }

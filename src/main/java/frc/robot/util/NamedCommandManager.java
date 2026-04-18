@@ -27,6 +27,7 @@ public class NamedCommandManager {
 
     // bline event triggers
     FollowPath.registerEventTrigger("SOTM", AutoCommands.shootOnTheMove());
+    FollowPath.registerEventTrigger("Stop SOTM", AutoCommands.autonomousStopSOTM());
     FollowPath.registerEventTrigger("Stop Shooter", AutoCommands.stopShooter());
     FollowPath.registerEventTrigger("Run Indexer", AutoCommands.shoot());
     FollowPath.registerEventTrigger("Stop Indexer", AutoCommands.stopShoot().withTimeout(0.1));
