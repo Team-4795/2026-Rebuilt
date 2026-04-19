@@ -46,6 +46,8 @@ public class TurretIOReal implements TurretIO {
   public double goal;
 
   public TurretIOReal() {
+    BaseStatusSignal.setUpdateFrequencyForAll(50, position, current, voltage, velocity);
+
     turretConfig.Slot0.kA = TurretConstants.kA;
     turretConfig.Slot0.kV = TurretConstants.kV;
     turretConfig.Slot0.kS = TurretConstants.kS;
@@ -60,7 +62,7 @@ public class TurretIOReal implements TurretIO {
 
     turretConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-    turretConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    turretConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
     turretConfig.Feedback.SensorToMechanismRatio = TurretConstants.gearing;
 
@@ -104,6 +106,7 @@ public class TurretIOReal implements TurretIO {
     turretMotor.setControl(control.withPosition(this.goal));
 
     // if (!readyToShoot()) {
+
     //   turretMotor.setControl(control.withPosition(this.goal));
     // } else {
     //   turretMotor.setControl(new NeutralOut());
@@ -140,6 +143,18 @@ public class TurretIOReal implements TurretIO {
   @Override
   public boolean readyToShoot() {
     return (Math.abs(getPosition() - getGoal()) < TurretConstants.marginOfError);
+  }
+
+  @Override
+  public void setCoast() {
+    turretConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    configure();
+  }
+
+  @Override
+  public void setBrake() {
+    turretConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    configure();
   }
 
   @Override

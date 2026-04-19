@@ -225,7 +225,7 @@ public class RobotContainer {
     sotm.whileTrue(
             Commands.parallel(
                 AutoCommands.shootOnTheMove(),
-                AutoCommands.intake(),
+                AutoCommands.intakeWithScaling(),
                 DriveCommands.joystickDrive(
                     drive,
                     () ->
@@ -315,7 +315,7 @@ public class RobotContainer {
     //             Commands.runOnce((() -> indexer.setRPSIndexer(0))),
     //             Commands.runOnce(() -> indexer.setVoltageTower(0))));
 
-    configure.onTrue(Commands.runOnce(() -> shooter.configure()));
+    configure.onTrue(Commands.runOnce(() -> turret.configure()));
   }
 
   /**
@@ -340,5 +340,13 @@ public class RobotContainer {
 
   public void startTimer() {
     stateManager.startMatchTimer();
+  }
+
+  public void onEnable() {
+    turret.setBrake();
+  }
+
+  public void onDisable() {
+    turret.setCoast();
   }
 }

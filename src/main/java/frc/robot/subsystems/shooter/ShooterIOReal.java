@@ -47,7 +47,7 @@ public class ShooterIOReal implements ShooterIO {
     topConfig = config();
     bottomConfig = config();
 
-    BaseStatusSignal.setUpdateFrequencyForAll(20, topRPS, bottomRPS, topCurrent, bottomCurrent);
+    BaseStatusSignal.setUpdateFrequencyForAll(50, topRPS, bottomRPS, topCurrent, bottomCurrent);
 
     bottomShooterMotor.clearStickyFaults();
     topShooterMotor.clearStickyFaults();
@@ -81,8 +81,11 @@ public class ShooterIOReal implements ShooterIO {
 
     if (this.goalVelocityRPS == 0) {
       topShooterMotor.setControl(new NeutralOut());
-    } else {
-      topShooterMotor.setControl(m_request.withVelocity(velocityRPS));
+    }
+    // } else if (StateManager.getInstance().getState() == State.SHOOTING) {
+    //   topShooterMotor.setControl(m_request.withVelocity(velocityRPS).withSlot(0));
+    else {
+      topShooterMotor.setControl(m_request.withVelocity(velocityRPS).withSlot(0));
     }
   }
 
@@ -154,6 +157,13 @@ public class ShooterIOReal implements ShooterIO {
     talonFXConfig.Slot0.kP = 12;
     talonFXConfig.Slot0.kI = 0;
     talonFXConfig.Slot0.kD = 0;
+
+    talonFXConfig.Slot1.kS = KS.get();
+    talonFXConfig.Slot1.kV = KV.get();
+    talonFXConfig.Slot1.kA = KA.get();
+    talonFXConfig.Slot1.kP = KP.get();
+    talonFXConfig.Slot1.kI = KI.get();
+    talonFXConfig.Slot1.kD = KD.get();
 
     // Current Limits
     talonFXConfig.CurrentLimits.StatorCurrentLimitEnable = true;

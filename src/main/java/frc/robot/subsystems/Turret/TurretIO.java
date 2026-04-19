@@ -34,5 +34,9 @@ public interface TurretIO {
     return false;
   }
 
+  public default void setBrake() {}
+
+  public default void setCoast() {}
+
   public default void configure() {}
 }

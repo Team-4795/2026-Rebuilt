@@ -89,6 +89,14 @@ public class Turret extends SubsystemBase {
     return turretPose;
   }
 
+  public void setBrake() {
+    io.setBrake();
+  }
+
+  public void setCoast() {
+    io.setCoast();
+  }
+
   public void configure() {
     io.configure();
   }

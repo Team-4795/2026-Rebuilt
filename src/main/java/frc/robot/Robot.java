@@ -90,6 +90,7 @@ public class Robot extends LoggedRobot {
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
+    robotContainer.onDisable();
     Logger.recordOutput("Field Elements/Red Hub", Constants.FieldConstants.redHub);
     Logger.recordOutput("Field Elements/Red Left Trench", Constants.FieldConstants.redLeftTrench);
     Logger.recordOutput("Field Elements/Red Right Trench", Constants.FieldConstants.redRightTrench);
@@ -107,6 +108,7 @@ public class Robot extends LoggedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    robotContainer.onEnable();
     m_autonomousCommand = robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
@@ -122,6 +124,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void teleopInit() {
     // Intake.getInstance().setTeleopCurrentLimits();
+    robotContainer.onEnable();
     robotContainer.stopMechanisms();
     robotContainer.startTimer();
   }
@@ -132,7 +135,9 @@ public class Robot extends LoggedRobot {
 
   /** This function is called once when test mode is enabled. */
   @Override
-  public void testInit() {}
+  public void testInit() {
+    robotContainer.onEnable();
+  }
 
   /** This function is called periodically during test mode. */
   @Override
