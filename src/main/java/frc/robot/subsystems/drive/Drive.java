@@ -132,7 +132,7 @@ public class Drive extends SubsystemBase {
           Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
         });
 
-    // holy balls what am i doing
+    // auto chooser and builder for bline
     autoChooser =
         (BLineAutoChooser)
             new BLineAutoChooser(

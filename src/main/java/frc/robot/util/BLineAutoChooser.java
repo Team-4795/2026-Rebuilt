@@ -35,18 +35,14 @@ public class BLineAutoChooser extends FollowPath.Builder {
    *     Commands.none()
    * @return SendableChooser populated with all autos
    */
-  public SendableChooser<Command> buildAutoChooser(String defaultAutoName) {
-    return buildAutoChooserWithOptionsModifier(defaultAutoName, (stream) -> stream);
-  }
-
   public SendableChooser<Command> buildAutoChooser() {
-    return buildAutoChooser("");
+    return buildAutoChooserWithOptionsModifier((stream) -> stream);
   }
 
   /**
    * holy shit i cant believe that worked my brains too small for ts - cathy
    *
-   * <p>please do not be mean to it it will crumble to dust under any pressure
+   * <p>please do not be mean to it; it will crumble to dust under any pressure
    *
    * <p>Builder class for constructing {@link FollowPath} commands with a fluent API.
    *
@@ -129,7 +125,7 @@ public class BLineAutoChooser extends FollowPath.Builder {
   // }
 
   /**
-   * Create and populate a sendable chooser with all PathPlannerAutos in the project
+   * Create and populate a sendable chooser with BLine autos
    *
    * @param defaultAutoName The name of the auto that should be the default option. If this is an
    *     empty string, or if an auto with the given name does not exist, the default option will be
@@ -138,30 +134,16 @@ public class BLineAutoChooser extends FollowPath.Builder {
    *     into the AutoChooser
    * @return SendableChooser populated with all autos
    */
-  public SendableChooser<Command> buildAutoChooserWithOptionsModifier(
-      String defaultAutoName, Function<Stream<Path>, Stream<Path>> optionsModifier) {
-    // if (!AutoBuilder.isConfigured()) {
-    //   throw new RuntimeException(
-    //       "AutoBuilder was not configured before attempting to build an auto chooser");
-    // }
+  public SendableChooser<Command> buildAutoChooserWithOptionsModifier(Function<Stream<Path>, Stream<Path>> optionsModifier) {
 
     List<String> autoNames = getAllAutoNames();
-
-    Path defaultOption =
-        null; // i would love a proper default option but paths dont store their names anywhere so i
-    // aint doing that
 
     for (String autoName : autoNames) {
       Path auto = new Path(autoName);
 
-      if (!defaultAutoName.isEmpty() && defaultAutoName.equals(autoName)) {
-        defaultOption = auto;
-      } else {
         options.add(auto);
         chooser.addOption(autoName, this.build(auto));
-      }
     }
-
     chooser.setDefaultOption("None", Commands.none());
     chooser.addOption("None", Commands.none());
 
@@ -193,20 +175,24 @@ public class BLineAutoChooser extends FollowPath.Builder {
    */
   public void createPathSequence(String name, Path... paths) {
     Command[] commands = new Command[paths.length];
-    for (int i = 0; i < paths.length; i++) {
-      if (i > 0) withPoseReset(pose -> {});
+    withPoseReset(drive::setPose);
+    commands[0] = build(paths[0]);
+    withPoseReset(pose -> {});
+    for (int i = 1; i < paths.length; i++) {
       commands[i] = build(paths[i]);
     }
-    withPoseReset(drive::setPose);
     Command auto = new SequentialCommandGroup(commands);
     chooser.addOption(name, auto);
   }
-
-  public void createPathSequence(String name, Command... commands) {
-    withPoseReset(pose -> {});
+  /**
+   * i think this might be the only way to run wait commands in bline
+   *
+   * @param name name of auto
+   * @param commands uhhh commands to put together, does paths very jankily
+   */
+  public void createCommandPathSequence(String name, Command... commands) {
     Command auto = new SequentialCommandGroup(commands);
     chooser.addOption(name, auto);
-    withPoseReset(drive::setPose);
   }
 
   /**
@@ -236,14 +222,14 @@ public class BLineAutoChooser extends FollowPath.Builder {
 
   // create your autos here
   public void createAutos() {
+    // rembrandts autos
     createPathSequence(
-        "Rembrandts Back Bump",
-        "Rembrandts P1",
-        "Rembrandts P2 Bump",
-        "Rembrandts P3"); // unfinished
+        "Rembrandts Back Bump", "Rembrandts P1", "Rembrandts P2 Bump", "Rembrandts P3");
     createPathSequence(
         "Rembrandts Back Trench", "Rembrandts P1", "Rembrandts P2 Trench", "Rembrandts P3");
-    createPathSequence(
+
+    // testin wait command
+    createCommandPathSequence(
         "testing",
         buildWithPoseReset(new Path("Rembrandts P1"), drive::setPose),
         Commands.waitSeconds(5),
