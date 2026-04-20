@@ -226,6 +226,7 @@ public class RobotContainer {
             Commands.parallel(
                 AutoCommands.shootOnTheMove(),
                 AutoCommands.intakeWithScaling(),
+                AutoCommands.unjam(),
                 DriveCommands.joystickDrive(
                     drive,
                     () ->
