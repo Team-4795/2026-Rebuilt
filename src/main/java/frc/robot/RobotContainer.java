@@ -123,7 +123,8 @@ public class RobotContainer {
         //         new ModuleIOSim(),
         //         new ModuleIOSim(),
         //         new ModuleIOSim());
-        vision = Vision.initialize(new VisionIOReal(0), new VisionIOReal(1), new VisionIOReal(2));
+        vision = Vision
+        .initialize(new VisionIOReal(0), new VisionIOReal(1), new VisionIOReal(2));
         break;
 
       case SIM:
@@ -316,7 +317,7 @@ public class RobotContainer {
     //             Commands.runOnce((() -> indexer.setRPSIndexer(0))),
     //             Commands.runOnce(() -> indexer.setVoltageTower(0))));
 
-    configure.onTrue(Commands.runOnce(() -> turret.configure()));
+    configure.onTrue(Commands.runOnce(() -> shooterHood.configure()));
   }
 
   /**

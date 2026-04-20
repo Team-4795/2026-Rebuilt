@@ -7,11 +7,11 @@ public final class ShooterHoodConstants {
 
   public static final int CURRENT_LIMIT = 80;
 
-  public static final double kP = 40;
+  public static final double kP = 1280;
   public static final double kI = 0;
   public static final double kD = 0;
-  public static final double kS = 0.5;
-  public static final double kV = 13.2;
+  public static final double kS = 0;
+  public static final double kV = 0;
   public static final double kA = 0;
 
   public static final int GEARING = 140; // might not be right
