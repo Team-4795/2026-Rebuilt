@@ -62,14 +62,20 @@ public final class Constants {
       tAirMap.put(5.77, 1.51);
     }
 
-    // Old values
-    // tAirMap.put(2.20, 1.3);
-    // tAirMap.put(2.59, 1.26);
-    // tAirMap.put(3.03, 1.3);
-    // tAirMap.put(3.39, 1.4);
-    // tAirMap.put(3.88, 1.5);
-    // tAirMap.put(4.39, 1.6);
-    // tAirMap.put(5.0, 1.66);
+    public static final InterpolatingDoubleTreeMap tAirMapShuttling =
+        new InterpolatingDoubleTreeMap();
+
+    // Distance, tAir
+    static {
+      tAirMapShuttling.put(1.628, 1.16);
+      tAirMapShuttling.put(2.233, 1.16);
+      tAirMapShuttling.put(2.696, 1.28);
+      tAirMapShuttling.put(3.200, 1.35);
+      tAirMapShuttling.put(4.06, 1.43);
+      tAirMapShuttling.put(4.61, 1.55);
+      tAirMapShuttling.put(5.124, 1.57);
+      tAirMapShuttling.put(5.77, 1.51);
+    }
   }
 
   public static class FieldConstants {

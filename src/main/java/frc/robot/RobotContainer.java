@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -123,8 +124,7 @@ public class RobotContainer {
         //         new ModuleIOSim(),
         //         new ModuleIOSim(),
         //         new ModuleIOSim());
-        vision = Vision
-        .initialize(new VisionIOReal(0), new VisionIOReal(1), new VisionIOReal(2));
+        vision = Vision.initialize(new VisionIOReal(0), new VisionIOReal(1), new VisionIOReal(2));
         break;
 
       case SIM:
@@ -166,12 +166,12 @@ public class RobotContainer {
 
     // Register named commands
     NamedCommandManager.registerNamedCommands();
-    // autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
-    bLineChooser = drive.getAutoChooser(); // bline
-    bLineChooser.createAutos();
+    autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
+    // bLineChooser = drive.getAutoChooser(); // bline
+    // bLineChooser.createAutos();
 
     // ok this is hellish
-    autoChooser = new LoggedDashboardChooser<>("Auto Chooser", bLineChooser.buildAutoChooser());
+    // autoChooser = new LoggedDashboardChooser<>("Auto Chooser", bLineChooser.buildAutoChooser());
 
     // Configure the trigger bindings
     configureButtonBindings();

@@ -76,7 +76,17 @@ public class Vision extends SubsystemBase {
 
         // ADD TAGS TO CONSIDER
         for (int tag : inputs[i].tags) {
+          // Exclude tower and feeder tags
+          if (tag >= 13 && tag <= 16) continue;
+          if (tag >= 29 && tag <= 32) continue;
+
           VisionConstants.FIELD_LAYOUT.getTagPose(tag).ifPresent(tagPoses::add);
+
+          // Hub only if you see non hub tags (practice field only)
+          if (tag == 1 || tag == 12 || tag == 6 || tag == 7 || tag == 15 || tag == 16 || tag == 13
+              || tag == 14 || tag == 22 || tag == 23 || tag == 17 || tag == 28 || tag == 29
+              || tag == 30 || tag == 31 || tag == 32) VisionConstants.hubOnlyMode = true;
+          else VisionConstants.hubOnlyMode = false;
         }
         if (tagPoses.isEmpty()) continue;
 

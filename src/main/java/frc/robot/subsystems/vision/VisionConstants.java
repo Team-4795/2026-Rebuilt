@@ -9,6 +9,8 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 
 public class VisionConstants {
+  public static boolean hubOnlyMode = true;
+
   // all placeholders
   public static final double BORDER_MARGIN = 0.5;
   public static final double Z_MARGIN = 0.35;

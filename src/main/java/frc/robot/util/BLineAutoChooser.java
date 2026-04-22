@@ -134,15 +134,16 @@ public class BLineAutoChooser extends FollowPath.Builder {
    *     into the AutoChooser
    * @return SendableChooser populated with all autos
    */
-  public SendableChooser<Command> buildAutoChooserWithOptionsModifier(Function<Stream<Path>, Stream<Path>> optionsModifier) {
+  public SendableChooser<Command> buildAutoChooserWithOptionsModifier(
+      Function<Stream<Path>, Stream<Path>> optionsModifier) {
 
     List<String> autoNames = getAllAutoNames();
 
     for (String autoName : autoNames) {
       Path auto = new Path(autoName);
 
-        options.add(auto);
-        chooser.addOption(autoName, this.build(auto));
+      options.add(auto);
+      chooser.addOption(autoName, this.build(auto));
     }
     chooser.setDefaultOption("None", Commands.none());
     chooser.addOption("None", Commands.none());

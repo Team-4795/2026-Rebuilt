@@ -49,7 +49,8 @@ public class ShootOnTheMove extends Command {
 
   public static LoggedTunableNumber shooterRPS = new LoggedTunableNumber("SOTM/Shooter RPS", 60);
   public static LoggedTunableNumber hoodAngle = new LoggedTunableNumber("SOTM/Hood Angle", 0);
-  public static LoggedTunableNumber dampener = new LoggedTunableNumber("SOTM/dampener", 0.7);
+  public static LoggedTunableNumber xDampener = new LoggedTunableNumber("SOTM/X Dampener", 0.7);
+  public static LoggedTunableNumber yDampener = new LoggedTunableNumber("SOTM/Y Dampener", 0.7);
 
   public ShootOnTheMove(
       Drive drive, Turret turret, Shooter shooter, ShooterHood hood, StateManager manager) {
@@ -84,8 +85,8 @@ public class ShootOnTheMove extends Command {
       for (int i = 0; i < 20; i++) {
         tAir = Constants.InterpolatingTree.tAirMap.get(iterativeDistance);
 
-        velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * dampener.getAsDouble();
-        velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * dampener.getAsDouble();
+        velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * xDampener.getAsDouble();
+        velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * yDampener.getAsDouble();
 
         omegaXOffset =
             -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
@@ -103,8 +104,8 @@ public class ShootOnTheMove extends Command {
     } else {
       tAir = 1.5;
 
-      velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * dampener.getAsDouble();
-      velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * dampener.getAsDouble();
+      velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * xDampener.getAsDouble();
+      velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * yDampener.getAsDouble();
 
       omegaXOffset =
           -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
