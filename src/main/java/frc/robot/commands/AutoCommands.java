@@ -48,8 +48,7 @@ public class AutoCommands {
             Commands.runOnce(() -> deploy.setGoal(0.04)),
             Commands.waitSeconds(0.5),
             deployIntake(),
-            Commands.waitSeconds(0.5)),
-        intake());
+            Commands.waitSeconds(0.5)));
   }
 
   public static Command agitateIntakeAuto() {
@@ -94,10 +93,10 @@ public class AutoCommands {
     return Commands.either(
         Commands.parallel(
             Commands.runOnce(() -> indexer.setVoltageIndexer(-11)),
-            Commands.runOnce(() -> indexer.setVoltageTower(-9))),
+            Commands.runOnce(() -> indexer.setVoltageTower(-12))),
         Commands.parallel(
             Commands.runOnce(() -> indexer.setVoltageIndexer(-9)),
-            Commands.runOnce(() -> indexer.setVoltageTower(-8))),
+            Commands.runOnce(() -> indexer.setVoltageTower(-12))),
         () -> manager.getState() == State.SHOOTING);
   }
 

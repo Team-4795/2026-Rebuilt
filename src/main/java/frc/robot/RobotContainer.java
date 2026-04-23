@@ -232,10 +232,10 @@ public class RobotContainer {
                     drive,
                     () ->
                         -m_driverController.getLeftY()
-                            * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.7),
+                            * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.9),
                     () ->
                         -m_driverController.getLeftX()
-                            * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.7),
+                            * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.9),
                     () ->
                         -m_driverController.getRightX()
                             * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.7))))

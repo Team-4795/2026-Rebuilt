@@ -58,8 +58,8 @@ public final class ShooterConstants {
     shooterVelocityShuttlingMap.put(5.97, 70.0);
     shooterVelocityShuttlingMap.put(7.14, 78.0);
     shooterVelocityShuttlingMap.put(7.329184, 78.0);
-    shooterVelocityShuttlingMap.put(10.0, 100.0);
-    shooterVelocityShuttlingMap.put(12.0, 120.0);
-    shooterVelocityShuttlingMap.put(14.0, 130.0);
+    shooterVelocityShuttlingMap.put(10.64, 91.0);
+    shooterVelocityShuttlingMap.put(13.76, 107.0);
+    shooterVelocityShuttlingMap.put(17.76, 123.0);
   }
 }

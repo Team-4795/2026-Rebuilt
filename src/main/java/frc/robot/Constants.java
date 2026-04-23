@@ -67,14 +67,11 @@ public final class Constants {
 
     // Distance, tAir
     static {
-      tAirMapShuttling.put(1.628, 1.16);
-      tAirMapShuttling.put(2.233, 1.16);
-      tAirMapShuttling.put(2.696, 1.28);
-      tAirMapShuttling.put(3.200, 1.35);
-      tAirMapShuttling.put(4.06, 1.43);
-      tAirMapShuttling.put(4.61, 1.55);
-      tAirMapShuttling.put(5.124, 1.57);
-      tAirMapShuttling.put(5.77, 1.51);
+      tAirMapShuttling.put(4.22, 1.23);
+      tAirMapShuttling.put(5.85, 1.44);
+      tAirMapShuttling.put(7.42, 1.57);
+      tAirMapShuttling.put(10.64, 1.74);
+      tAirMapShuttling.put(13.76, 1.53);
     }
   }
 

@@ -102,21 +102,25 @@ public class ShootOnTheMove extends Command {
         iterativeDistance = offsettedTarget.getTranslation().getDistance(turretPose);
       }
     } else {
-      tAir = 1.5;
+      for (int i = 0; i < 20; i++) {
+        tAir = Constants.InterpolatingTree.tAirMap.get(iterativeDistance);
 
-      velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * xDampener.getAsDouble();
-      velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * yDampener.getAsDouble();
+        velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * xDampener.getAsDouble();
+        velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * yDampener.getAsDouble();
 
-      omegaXOffset =
-          -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
-      omegaYOffset =
-          velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX() * tAir;
+        omegaXOffset =
+            -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
+        omegaYOffset =
+            velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX() * tAir;
 
-      offsettedTarget =
-          new Pose2d(
-              targetPose.getX() - velocityXOffset - omegaXOffset,
-              targetPose.getY() - velocityYOffset - omegaYOffset,
-              Rotation2d.kZero);
+        offsettedTarget =
+            new Pose2d(
+                targetPose.getX() - velocityXOffset - omegaXOffset,
+                targetPose.getY() - velocityYOffset - omegaYOffset,
+                Rotation2d.kZero);
+
+        iterativeDistance = offsettedTarget.getTranslation().getDistance(turretPose);
+      }
     }
 
     distance = offsettedTarget.getTranslation().getDistance(turretPose);
