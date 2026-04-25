@@ -140,9 +140,9 @@ public class Drive extends SubsystemBase {
                     this::getPose,
                     this::getChassisSpeeds,
                     this::runVelocity,
-                    new PIDController(2, 0.0, DriveConstants.driveKd),
-                    new PIDController(2, 0.0, DriveConstants.turnKd),
-                    new PIDController(2.0, 0.0, 0.0))
+                    new PIDController(4.0, 0.0, DriveConstants.driveKd),
+                    new PIDController(4.5, 0.0, DriveConstants.turnKd),
+                    new PIDController(2, 0.0, 0.0))
                 .withDefaultShouldFlip()
                 .withPoseReset(this::setPose);
 

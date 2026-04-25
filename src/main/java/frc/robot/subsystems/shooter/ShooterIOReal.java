@@ -47,7 +47,7 @@ public class ShooterIOReal implements ShooterIO {
     topConfig = config();
     bottomConfig = config();
 
-    BaseStatusSignal.setUpdateFrequencyForAll(100, topRPS, bottomRPS, topCurrent, bottomCurrent);
+    BaseStatusSignal.setUpdateFrequencyForAll(200, topRPS, bottomRPS, topCurrent, bottomCurrent);
     bottomShooterMotor.optimizeBusUtilization(0.0, 1.0);
     topShooterMotor.optimizeBusUtilization(0.0, 1.0);
 

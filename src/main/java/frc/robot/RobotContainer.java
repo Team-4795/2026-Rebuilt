@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -80,7 +79,8 @@ public class RobotContainer {
   private final Trigger intakeButton = m_driverController.leftTrigger();
   private final Trigger runIndexer = m_driverController.rightBumper();
   private final Trigger autoTrench = m_driverController.leftBumper();
-  private final Trigger autoScore = m_driverController.x(); // No SOTM, st
+  private final Trigger autoScore = m_driverController.x(); // No SOTM
+  private final Trigger deployIntake = m_driverController.povDown();
 
   private final Trigger zeroDrive = m_driverController.y();
   private final Trigger reverseIntake = m_driverController.a();
@@ -91,8 +91,7 @@ public class RobotContainer {
   private final Trigger lockTurret = m_operatorController.b();
   private final Trigger depoCorner = m_operatorController.povLeft();
   private final Trigger feederCorner = m_operatorController.povRight();
-  private final Trigger agitateIntake = m_operatorController.povUp();
-  private final Trigger deployIntake = m_operatorController.povDown();
+  private final Trigger agitateIntake = m_driverController.povUp();
 
   // Testing Bindings
   private final Trigger configure = m_driverController.povDown();
@@ -167,12 +166,12 @@ public class RobotContainer {
 
     // Register named commands
     NamedCommandManager.registerNamedCommands();
-    autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
-    // bLineChooser = drive.getAutoChooser(); // bline
-    // bLineChooser.createAutos();
+    // autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
+    bLineChooser = drive.getAutoChooser(); // bline
+    bLineChooser.createAutos();
 
     // ok this is hellish
-    // autoChooser = new LoggedDashboardChooser<>("Auto Chooser", bLineChooser.buildAutoChooser());
+    autoChooser = new LoggedDashboardChooser<>("Auto Chooser", bLineChooser.buildAutoChooser());
 
     // Configure the trigger bindings
     configureButtonBindings();

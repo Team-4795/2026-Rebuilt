@@ -45,7 +45,7 @@ public final class ShooterConstants {
     shooterVelocityHubMap.put(2.233, 55.0);
     shooterVelocityHubMap.put(2.696, 59.6);
     shooterVelocityHubMap.put(3.200, 61.5);
-    shooterVelocityHubMap.put(4.06, 67.25);
+    shooterVelocityHubMap.put(4.06, 65.25);
     shooterVelocityHubMap.put(4.61, 68.75);
     shooterVelocityHubMap.put(5.124, 74.25);
     shooterVelocityHubMap.put(5.77, 75.75);

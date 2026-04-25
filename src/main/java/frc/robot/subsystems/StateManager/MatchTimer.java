@@ -17,8 +17,8 @@ public class MatchTimer {
   private boolean wonAuto = false;
 
   public MatchTimer() {
-    // mAlliance = DriverStation.getAlliance().orElse(null);
-    mAlliance = Alliance.Red; // because sim is funky with alliances
+    mAlliance = DriverStation.getAlliance().orElse(null);
+    // mAlliance = Alliance.Red; // because sim is funky with alliances
     timer = new Timer();
   }
 
