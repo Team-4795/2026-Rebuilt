@@ -228,6 +228,7 @@ public class BLineAutoChooser extends FollowPath.Builder {
         "Rembrandts Back Bump", "Rembrandts P1", "Rembrandts P2 Bump", "Rembrandts P3");
     createPathSequence(
         "Rembrandts Back Trench", "Rembrandts P1", "Rembrandts P2 Trench", "Rembrandts P3");
+    createPathSequence("OP Auto", "OP Auto P1", "OP Auto P2", "OP Auto P3", "OP Auto P4");
 
     // testin wait command
     createCommandPathSequence(

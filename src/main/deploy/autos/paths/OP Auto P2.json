@@ -13,30 +13,54 @@
       }
     },
     {
-      "type": "event_trigger",
-      "t_ratio": 0.029290910934265592,
-      "lib_key": "Set Turret OP"
-    },
-    {
-      "type": "event_trigger",
-      "t_ratio": 0.16037810987593087,
-      "lib_key": "rev shooter"
-    },
-    {
       "type": "rotation",
       "rotation_radians": 3.0928047427723664,
-      "t_ratio": 0.37753329096406935,
+      "t_ratio": 0.4149639938230327,
       "profiled_rotation": true
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.6102607512685132,
+      "lib_key": "Rev Shooter"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.8513574176052202,
+      "lib_key": "Set Turret OP"
     },
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 2.7600592415702003,
-        "y_meters": 2.369929107589657,
+        "x_meters": 5.528131141692076,
+        "y_meters": 2.386663428835827,
         "intermediate_handoff_radius_meters": 0.2
       },
       "rotation_target": {
-        "rotation_radians": -3.123062951428255,
+        "rotation_radians": 3.141592653589793,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 3.6408009355557294,
+        "y_meters": 2.386663428835826,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 3.141592653589793,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 2.4461442527558837,
+        "y_meters": 2.3699291075896562,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 3.141592653589793,
         "profiled_rotation": true
       }
     }

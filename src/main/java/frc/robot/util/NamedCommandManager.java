@@ -35,5 +35,6 @@ public class NamedCommandManager {
     FollowPath.registerEventTrigger("Lift Intake", AutoCommands.liftIntake());
     FollowPath.registerEventTrigger("Deploy Intake", AutoCommands.deployIntake());
     FollowPath.registerEventTrigger("Intake", AutoCommands.intake());
+    FollowPath.registerEventTrigger("Set Turret OP", AutoCommands.setTurretOPAuto());
   }
 }
