@@ -230,6 +230,15 @@ public class BLineAutoChooser extends FollowPath.Builder {
         "Rembrandts Back Trench", "Rembrandts P1", "Rembrandts P2 Trench", "Rembrandts P3");
     createPathSequence("OP Auto", "OP Auto P1", "OP Auto P2", "OP Auto P3", "OP Auto P4");
 
+    // follower autos
+    createCommandPathSequence(
+        "Depot Side Follower",
+        Commands.waitSeconds(3),
+        buildWithPoseReset(new Path("PATH Depot Side CLeanup"), drive::setPose));
+    createCommandPathSequence(
+        "Feeder Side Follower",
+        Commands.waitSeconds(3),
+        buildWithPoseReset(new Path("PATH Feeder Side CLeanup"), drive::setPose));
     // testin wait command
     createCommandPathSequence(
         "testing",
