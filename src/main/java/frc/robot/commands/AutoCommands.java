@@ -54,9 +54,9 @@ public class AutoCommands {
   public static Command agitateIntakeAuto() {
     return Commands.repeatingSequence(
         Commands.runOnce(() -> deploy.setGoal(0.04)),
-        Commands.waitSeconds(0.5),
+        Commands.waitSeconds(1),
         deployIntake(),
-        Commands.waitSeconds(0.5));
+        Commands.waitSeconds(1));
   }
 
   // public static Command autoAgitate() {

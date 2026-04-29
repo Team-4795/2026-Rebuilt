@@ -50,6 +50,8 @@ import frc.robot.util.BLineAutoChooser;
 import frc.robot.util.NamedCommandManager;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -165,12 +167,12 @@ public class RobotContainer {
 
     // Register named commands
     NamedCommandManager.registerNamedCommands();
-    // autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
-    bLineChooser = drive.getAutoChooser(); // bline
-    bLineChooser.createAutos();
+    autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
+    // bLineChooser = drive.getAutoChooser(); // bline
+    // bLineChooser.createAutos();
 
     // ok this is hellish
-    autoChooser = new LoggedDashboardChooser<>("Auto Chooser", bLineChooser.buildAutoChooser());
+    // autoChooser = new LoggedDashboardChooser<>("Auto Chooser", bLineChooser.buildAutoChooser());
 
     // Configure the trigger bindings
     configureButtonBindings();

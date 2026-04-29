@@ -3,76 +3,64 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6422386363636363,
-        "y": 0.5822159090909098
-      },
-      "prevControl": null,
-      "nextControl": {
-        "x": 4.642238636363635,
-        "y": 0.5822159090909098
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 6.357650602409638,
-        "y": 0.5822159090909098
-      },
-      "prevControl": {
-        "x": 5.357650602409638,
-        "y": 0.5822159090909099
-      },
-      "nextControl": {
-        "x": 7.357650602409638,
-        "y": 0.5822159090909098
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 8.194685646500595,
-        "y": 1.113879003558718
-      },
-      "prevControl": {
-        "x": 8.10294222720251,
-        "y": 0.7193823005769546
-      },
-      "nextControl": {
-        "x": 8.297753828318777,
-        "y": 1.5570721853768996
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
         "x": 8.197852272727271,
         "y": 2.8187954545454543
       },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.043488636363636,
+        "y": 2.6435795454545463
+      },
+      "isLocked": false,
+      "linkedName": "Feeder Follower Mid"
+    },
+    {
+      "anchor": {
+        "x": 4.982125,
+        "y": 2.499284090909091
+      },
       "prevControl": {
-        "x": 8.156625,
-        "y": 2.0354772727272734
+        "x": 5.301606795677425,
+        "y": 2.503630782006743
+      },
+      "nextControl": {
+        "x": 3.4670227272727274,
+        "y": 2.4786704545454556
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.024306818181818,
+        "y": 2.3081494661921704
+      },
+      "prevControl": {
+        "x": 1.6839431818181818,
+        "y": 2.318456284373989
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Feeder Follower Mid"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 2.0566037735849134,
-      "rotationDegrees": 90.0
+      "waypointRelativePos": 0.55,
+      "rotationDegrees": 177.01726497962733
+    },
+    {
+      "waypointRelativePos": 1.5,
+      "rotationDegrees": 177.8156477389973
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 1.8312655086848635,
-      "maxWaypointRelativePos": 3.0,
+      "minWaypointRelativePos": 1.15,
+      "maxWaypointRelativePos": 1.45,
       "constraints": {
-        "maxVelocity": 0.75,
+        "maxVelocity": 3.0,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -92,14 +80,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 87.95459151111261
+    "velocity": 0.0,
+    "rotation": 87.45686939667709
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 89.99304979175348
+    "rotation": 87.95459151111261
   },
   "useDefaultConstraints": true
 }

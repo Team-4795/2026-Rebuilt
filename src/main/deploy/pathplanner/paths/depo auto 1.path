@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.321376037959669,
-        "y": 7.558635824436536
+        "x": 3.6010113636363634,
+        "y": 7.621772727272727
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.504460227272728,
-        "y": 7.514763257575758
+        "x": 4.784095552949422,
+        "y": 7.57790016041195
       },
       "isLocked": false,
       "linkedName": null
@@ -49,15 +49,15 @@
     {
       "anchor": {
         "x": 7.804924242424242,
-        "y": 5.03159090909091
+        "y": 5.065681818181818
       },
       "prevControl": {
         "x": 7.813229166666668,
-        "y": 5.712594696969696
+        "y": 5.746685606060604
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "depo stop 1"
+      "linkedName": "Use this Depo Follower Mic"
     }
   ],
   "rotationTargets": [
@@ -105,7 +105,7 @@
   },
   "goalEndState": {
     "velocity": 1.0,
-    "rotation": -91.97493401088187
+    "rotation": -91.94148639091422
   },
   "reversed": false,
   "folder": null,
