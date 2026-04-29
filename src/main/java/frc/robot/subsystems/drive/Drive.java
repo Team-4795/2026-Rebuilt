@@ -50,6 +50,7 @@ import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.Turret.TurretConstants;
 import frc.robot.util.BLineAutoChooser;
 import frc.robot.util.LocalADStarAK;
+import frc.robot.util.SwerveDrivePhysicsSim;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -60,6 +61,7 @@ public class Drive extends SubsystemBase {
   private final GyroIO gyroIO;
   private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
   private final Module[] modules = new Module[4]; // FL, FR, BL, BR
+  private final SwerveDrivePhysicsSim predictionSim;
   private final SysIdRoutine sysId;
   private final Alert gyroDisconnectedAlert =
       new Alert("Disconnected gyro, using kinematics as fallback.", AlertType.kError);
@@ -99,6 +101,7 @@ public class Drive extends SubsystemBase {
       ModuleIO blModuleIO,
       ModuleIO brModuleIO) {
     this.gyroIO = gyroIO;
+    this.predictionSim = Constants.currentMode == Mode.REAL ? new SwerveDrivePhysicsSim() : null;
     modules[0] = new Module(flModuleIO, 0);
     modules[1] = new Module(frModuleIO, 1);
     modules[2] = new Module(blModuleIO, 2);
@@ -230,6 +233,19 @@ public class Drive extends SubsystemBase {
           "Odometry/TrueErrorDeg",
           truePose.getRotation().minus(estimatedPose.getRotation()).getDegrees());
     }
+
+    if (predictionSim != null) {
+      predictionSim.updateToNow();
+      Pose2d predictedPose = predictionSim.getTruePose();
+      Pose2d estimatedPose = getPose();
+      Logger.recordOutput("Odometry/PredictedRobot", predictedPose);
+      Logger.recordOutput(
+          "Odometry/PredictedErrorMeters",
+          predictedPose.getTranslation().getDistance(estimatedPose.getTranslation()));
+      Logger.recordOutput(
+          "Odometry/PredictedErrorDeg",
+          predictedPose.getRotation().minus(estimatedPose.getRotation()).getDegrees());
+    }
   }
 
   public void configure() {
@@ -257,6 +273,11 @@ public class Drive extends SubsystemBase {
     // Send setpoints to modules
     for (int i = 0; i < 4; i++) {
       modules[i].runSetpoint(setpointStates[i]);
+      if (predictionSim != null) {
+        predictionSim.setDriveVelocitySetpoint(
+            i, setpointStates[i].speedMetersPerSecond / wheelRadiusMeters);
+        predictionSim.setTurnPositionSetpoint(i, setpointStates[i].angle);
+      }
     }
 
     // Log optimized setpoints (runSetpoint mutates each state)
@@ -267,6 +288,10 @@ public class Drive extends SubsystemBase {
   public void runCharacterization(double output) {
     for (int i = 0; i < 4; i++) {
       modules[i].runCharacterization(output);
+      if (predictionSim != null) {
+        predictionSim.setDriveOpenLoop(i, output);
+        predictionSim.setTurnPositionSetpoint(i, new Rotation2d());
+      }
     }
   }
 
@@ -361,6 +386,16 @@ public class Drive extends SubsystemBase {
   /** Resets the current odometry pose. */
   public void setPose(Pose2d pose) {
     poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);
+    if (predictionSim != null) {
+      predictionSim.setTruePose(pose);
+    }
+  }
+
+  /** Resets predicted model pose to current estimated robot pose. */
+  public void resetPredictionToEstimatedPose() {
+    if (predictionSim != null) {
+      predictionSim.setTruePose(getPose());
+    }
   }
 
   /** Adds a new timestamped vision measurement. */

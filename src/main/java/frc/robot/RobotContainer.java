@@ -352,6 +352,10 @@ public class RobotContainer {
     turret.setBrake();
   }
 
+  public void onAutonomousInit() {
+    drive.resetPredictionToEstimatedPose();
+  }
+
   public void onDisable() {
     turret.setCoast();
   }

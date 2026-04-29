@@ -125,6 +125,17 @@ public class SwerveDrivePhysicsSim {
         state.xMeters, state.yMeters, new Rotation2d(state.headingRad - headingOffsetRad));
   }
 
+  public synchronized void setTruePose(Pose2d pose) {
+    state.xMeters = pose.getX();
+    state.yMeters = pose.getY();
+    state.headingRad = pose.getRotation().getRadians() + headingOffsetRad;
+    state.vxRobotMetersPerSec = 0.0;
+    state.vyRobotMetersPerSec = 0.0;
+    state.omegaRadPerSec = 0.0;
+    lastTimestampSec = Timer.getFPGATimestamp();
+    sampleTimestampSec = lastTimestampSec;
+  }
+
   private void integrateRk4(double dt) {
     SimDerivative k1 = derivative(state);
     SimState s2 = state.plus(k1, dt * 0.5);
