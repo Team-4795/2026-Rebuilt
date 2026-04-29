@@ -31,7 +31,7 @@ public class VisionIOReal implements VisionIO {
       visionEst = estimator.estimateCoprocMultiTagPose(result); // Multitag estimation
       inputs.latency = result.metadata.getLatencyMillis();
 
-      if (visionEst.isEmpty() || VisionConstants.hubOnlyMode) {
+      if (visionEst.isEmpty()) {
         visionEst =
             estimator.estimateLowestAmbiguityPose(result); // Singletag if only one tag is in view
       }
