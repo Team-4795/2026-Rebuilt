@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -39,7 +40,9 @@ import frc.robot.subsystems.Turret.TurretIOReal;
 import frc.robot.subsystems.Turret.TurretIOSim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
+import frc.robot.subsystems.drive.GyroIOPhysicsSim;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
+import frc.robot.subsystems.drive.ModuleIOPhysicsSim;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSparkFlex;
 import frc.robot.subsystems.vision.Vision;
@@ -48,9 +51,8 @@ import frc.robot.subsystems.vision.VisionIOReal;
 import frc.robot.subsystems.vision.VisionIOSim;
 import frc.robot.util.BLineAutoChooser;
 import frc.robot.util.NamedCommandManager;
+import frc.robot.util.SwerveDrivePhysicsSim;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
-
-import com.pathplanner.lib.auto.AutoBuilder;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -129,6 +131,7 @@ public class RobotContainer {
         break;
 
       case SIM:
+        SwerveDrivePhysicsSim swerveSim = new SwerveDrivePhysicsSim();
         intake = Intake.initialize(new IntakeIOSim());
         deploy = IntakeDeploy.initialize(new IntakeDeployIOSim());
         shooter = Shooter.initialize(new ShooterIOSim());
@@ -137,11 +140,11 @@ public class RobotContainer {
         shooterHood = ShooterHood.initialize(new ShooterHoodIOSim());
         drive =
             Drive.initialize(
-                new GyroIO() {},
-                new ModuleIOSim(),
-                new ModuleIOSim(),
-                new ModuleIOSim(),
-                new ModuleIOSim());
+                new GyroIOPhysicsSim(swerveSim),
+                new ModuleIOPhysicsSim(swerveSim, 0),
+                new ModuleIOPhysicsSim(swerveSim, 1),
+                new ModuleIOPhysicsSim(swerveSim, 2),
+                new ModuleIOPhysicsSim(swerveSim, 3));
         vision = Vision.initialize(new VisionIOSim());
         break;
 

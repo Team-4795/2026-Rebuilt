@@ -218,6 +218,18 @@ public class Drive extends SubsystemBase {
 
     // Update gyro alert
     gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
+
+    if (gyroIO instanceof GyroIOPhysicsSim physicsGyro) {
+      Pose2d truePose = physicsGyro.getTruePose();
+      Pose2d estimatedPose = getPose();
+      Logger.recordOutput("Odometry/TrueRobot", truePose);
+      Logger.recordOutput(
+          "Odometry/TrueErrorMeters",
+          truePose.getTranslation().getDistance(estimatedPose.getTranslation()));
+      Logger.recordOutput(
+          "Odometry/TrueErrorDeg",
+          truePose.getRotation().minus(estimatedPose.getRotation()).getDegrees());
+    }
   }
 
   public void configure() {
