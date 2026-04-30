@@ -10,6 +10,7 @@ import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterConstants;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
 import frc.robot.subsystems.ShooterHood.ShooterHoodConstants;
+import frc.robot.subsystems.StateManager.State;
 import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretConstants;
@@ -110,9 +111,15 @@ public class AutonomousSOTM extends Command {
     desiredRot = (((turretAngle % 1.0) + 1.0) % 1.0);
 
     turret.setGoal(desiredRot);
-    shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(distance));
-    hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(distance));
 
+    if (stateManager.getState() == State.SHOOTING) {
+      shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(distance));
+      hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(distance));
+
+    } else {
+      shooter.setVelocityRPS(ShooterConstants.shooterVelocityShuttlingMap.get(distance));
+      hood.setGoal(ShooterHoodConstants.shooterHoodShuttlingMap.get(distance));
+    }
     Logger.recordOutput("Shoot on move At Hub/Hub Pose", hub);
     Logger.recordOutput("Shoot on move At Hub/Desired Hub", offsettedTarget);
 

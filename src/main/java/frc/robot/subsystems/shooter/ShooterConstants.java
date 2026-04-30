@@ -41,12 +41,13 @@ public final class ShooterConstants {
   // Distance, RPM
   static {
     // Shooting
-    shooterVelocityHubMap.put(1.628, 55.0);
-    shooterVelocityHubMap.put(2.233, 55.0);
-    shooterVelocityHubMap.put(2.696, 59.6);
-    shooterVelocityHubMap.put(3.200, 61.5);
-    shooterVelocityHubMap.put(4.06, 65.25);
-    shooterVelocityHubMap.put(4.61, 68.75);
+    shooterVelocityHubMap.put(1.628, 54.0);
+    shooterVelocityHubMap.put(2.233, 54.0);
+    shooterVelocityHubMap.put(2.696, 58.6);
+    shooterVelocityHubMap.put(3.200, 60.5);
+    shooterVelocityHubMap.put(3.67, 62.5);
+    shooterVelocityHubMap.put(4.06, 64.75);
+    shooterVelocityHubMap.put(4.61, 68.25);
     shooterVelocityHubMap.put(5.124, 74.25);
     shooterVelocityHubMap.put(5.77, 75.75);
     shooterVelocityHubMap.put(6.2, 77.0);

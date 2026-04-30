@@ -50,7 +50,7 @@ public class ShootOnTheMove extends Command {
   public static LoggedTunableNumber shooterRPS = new LoggedTunableNumber("SOTM/Shooter RPS", 60);
   public static LoggedTunableNumber hoodAngle = new LoggedTunableNumber("SOTM/Hood Angle", 0);
   public static LoggedTunableNumber xDampener = new LoggedTunableNumber("SOTM/X Dampener", 0.7);
-  public static LoggedTunableNumber yDampener = new LoggedTunableNumber("SOTM/Y Dampener", 0.7);
+  public static LoggedTunableNumber yDampener = new LoggedTunableNumber("SOTM/Y Dampener", 0.85);
 
   public ShootOnTheMove(
       Drive drive, Turret turret, Shooter shooter, ShooterHood hood, StateManager manager) {
