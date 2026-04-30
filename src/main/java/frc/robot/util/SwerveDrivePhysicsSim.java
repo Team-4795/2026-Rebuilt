@@ -28,11 +28,11 @@ public class SwerveDrivePhysicsSim {
   private static final double INTERNAL_STEP_SEC = 1.0 / 200.0;
   private static final double MIN_UPDATE_STEP_SEC = 1e-4;
   private static final double DRIVE_WHEEL_MOI = 0.025;
-  private static final double TURN_MOI = 0.004;
+  private static final double TURN_MOI = 0.002;
   private static final double KINETIC_FRICTION_RATIO = 0.85;
   private static final double STATIC_BLEND_VEL = 0.04;
-  private static final double LONGITUDINAL_STIFFNESS_N_PER_MPS = 350.0;
-  private static final double LATERAL_STIFFNESS_N_PER_MPS = 520.0;
+  private static final double LONGITUDINAL_STIFFNESS_N_PER_MPS = 800.0;
+  private static final double LATERAL_STIFFNESS_N_PER_MPS = 800.0;
 
   private final DCMotor driveMotor =
       frc.robot.subsystems.drive.DriveConstants.driveGearbox.withReduction(driveMotorReduction);
@@ -44,7 +44,7 @@ public class SwerveDrivePhysicsSim {
   private final SimState state = new SimState();
 
   private double headingOffsetRad = 0.0;
-  private double lastTimestampSec = Timer.getFPGATimestamp();
+  private double lastTimestampSec = Timer.getTimestamp();
   private double sampleTimestampSec = lastTimestampSec;
 
   public SwerveDrivePhysicsSim() {
@@ -54,7 +54,7 @@ public class SwerveDrivePhysicsSim {
   }
 
   public synchronized void updateToNow() {
-    double now = Timer.getFPGATimestamp();
+    double now = Timer.getTimestamp();
     double dt = now - lastTimestampSec;
     if (dt <= MIN_UPDATE_STEP_SEC) {
       return;
@@ -132,7 +132,7 @@ public class SwerveDrivePhysicsSim {
     state.vxRobotMetersPerSec = 0.0;
     state.vyRobotMetersPerSec = 0.0;
     state.omegaRadPerSec = 0.0;
-    lastTimestampSec = Timer.getFPGATimestamp();
+    lastTimestampSec = Timer.getTimestamp();
     sampleTimestampSec = lastTimestampSec;
   }
 

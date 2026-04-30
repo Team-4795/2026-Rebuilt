@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * (log replay from a file).
  */
 public final class Constants {
-  public static final Mode simMode = Mode.SIM;
+  public static final Mode simMode = Mode.REPLAY;
   public static final Mode replayMode = Mode.REPLAY;
   public static final boolean tuningMode = true;
 

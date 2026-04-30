@@ -42,8 +42,8 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPhysicsSim;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
+import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOPhysicsSim;
-import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSparkFlex;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
@@ -148,6 +148,23 @@ public class RobotContainer {
         vision = Vision.initialize(new VisionIOSim());
         break;
 
+      case REPLAY:
+        intake = Intake.initialize(new IntakeIO() {});
+        deploy = IntakeDeploy.initialize(new IntakeDeployIO() {});
+        shooter = Shooter.initialize(new ShooterIO() {});
+        indexer = Indexer.initialize(new IndexerIO() {});
+        turret = Turret.initialize(new TurretIO() {});
+        shooterHood = ShooterHood.initialize(new ShooterHoodIO() {});
+        drive =
+            Drive.initialize(
+                new GyroIO() {},
+                new ModuleIO() {},
+                new ModuleIO() {},
+                new ModuleIO() {},
+                new ModuleIO() {});
+        vision = Vision.initialize(new VisionIO[] {});
+        break;
+
       default:
         intake = Intake.initialize(new IntakeIO() {});
         deploy = IntakeDeploy.initialize(new IntakeDeployIO() {});
@@ -158,10 +175,10 @@ public class RobotContainer {
         drive =
             Drive.initialize(
                 new GyroIO() {},
-                new ModuleIOSim(),
-                new ModuleIOSim(),
-                new ModuleIOSim(),
-                new ModuleIOSim());
+                new ModuleIO() {},
+                new ModuleIO() {},
+                new ModuleIO() {},
+                new ModuleIO() {});
         vision = Vision.initialize(new VisionIO[] {});
         break;
     }

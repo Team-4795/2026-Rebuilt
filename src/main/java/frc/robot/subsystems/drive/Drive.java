@@ -101,7 +101,10 @@ public class Drive extends SubsystemBase {
       ModuleIO blModuleIO,
       ModuleIO brModuleIO) {
     this.gyroIO = gyroIO;
-    this.predictionSim = Constants.currentMode == Mode.REAL ? new SwerveDrivePhysicsSim() : null;
+    this.predictionSim =
+        Constants.currentMode == Mode.REAL || Constants.currentMode == Mode.REPLAY
+            ? new SwerveDrivePhysicsSim()
+            : null;
     modules[0] = new Module(flModuleIO, 0);
     modules[1] = new Module(frModuleIO, 1);
     modules[2] = new Module(blModuleIO, 2);
@@ -238,6 +241,8 @@ public class Drive extends SubsystemBase {
       predictionSim.updateToNow();
       Pose2d predictedPose = predictionSim.getTruePose();
       Pose2d estimatedPose = getPose();
+      SwerveModuleState[] predictedStates = getPredictedModuleStates();
+      SwerveModulePosition[] predictedPositions = getPredictedModulePositions();
       Logger.recordOutput("Odometry/PredictedRobot", predictedPose);
       Logger.recordOutput(
           "Odometry/PredictedErrorMeters",
@@ -245,6 +250,8 @@ public class Drive extends SubsystemBase {
       Logger.recordOutput(
           "Odometry/PredictedErrorDeg",
           predictedPose.getRotation().minus(estimatedPose.getRotation()).getDegrees());
+      Logger.recordOutput("SwerveStates/Predicted", predictedStates);
+      Logger.recordOutput("SwervePositions/Predicted", predictedPositions);
     }
   }
 
@@ -339,6 +346,22 @@ public class Drive extends SubsystemBase {
     return states;
   }
 
+  /** Returns predicted module states from the shadow simulation model. */
+  private SwerveModuleState[] getPredictedModuleStates() {
+    if (predictionSim == null) {
+      return new SwerveModuleState[] {};
+    }
+
+    SwerveModuleState[] states = new SwerveModuleState[4];
+    for (int i = 0; i < 4; i++) {
+      var sample = predictionSim.getModuleSample(i);
+      states[i] =
+          new SwerveModuleState(
+              sample.driveVelocityRadPerSec() * wheelRadiusMeters, sample.turnPosition());
+    }
+    return states;
+  }
+
   /** Returns the module positions (turn angles and drive positions) for all of the modules. */
   private SwerveModulePosition[] getModulePositions() {
     SwerveModulePosition[] states = new SwerveModulePosition[4];
@@ -346,6 +369,22 @@ public class Drive extends SubsystemBase {
       states[i] = modules[i].getPosition();
     }
     return states;
+  }
+
+  /** Returns predicted module positions from the shadow simulation model. */
+  private SwerveModulePosition[] getPredictedModulePositions() {
+    if (predictionSim == null) {
+      return new SwerveModulePosition[] {};
+    }
+
+    SwerveModulePosition[] positions = new SwerveModulePosition[4];
+    for (int i = 0; i < 4; i++) {
+      var sample = predictionSim.getModuleSample(i);
+      positions[i] =
+          new SwerveModulePosition(
+              sample.drivePositionRad() * wheelRadiusMeters, sample.turnPosition());
+    }
+    return positions;
   }
 
   /** Returns the measured chassis speeds of the robot. */
