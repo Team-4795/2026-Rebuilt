@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 7.804924242424242,
-        "y": 5.065681818181818
+        "y": 4.981761363636363
       },
       "prevControl": null,
       "nextControl": {
         "x": 7.280545454545454,
-        "y": 5.6563409090909085
+        "y": 5.572420454545454
       },
       "isLocked": false,
       "linkedName": "Use this Depo Follower Mic"
