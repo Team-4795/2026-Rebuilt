@@ -215,8 +215,8 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> m_driverController.getLeftY(),
-            () -> m_driverController.getLeftX(),
+            () -> -m_driverController.getLeftY(),
+            () -> -m_driverController.getLeftX(),
             () -> -m_driverController.getRightX()));
 
     // Always aim at target
@@ -231,10 +231,10 @@ public class RobotContainer {
                 DriveCommands.joystickDrive(
                     drive,
                     () ->
-                        m_driverController.getLeftY()
+                        -m_driverController.getLeftY()
                             * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.9),
                     () ->
-                        m_driverController.getLeftX()
+                        -m_driverController.getLeftX()
                             * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.9),
                     () ->
                         -m_driverController.getRightX()
