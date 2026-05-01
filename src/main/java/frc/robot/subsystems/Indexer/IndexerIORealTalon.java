@@ -53,7 +53,7 @@ public class IndexerIORealTalon implements IndexerIO {
     // Indexer SparkFlex config
     indexerMotor.clearFaults();
     config.smartCurrentLimit(50);
-    config.idleMode(IdleMode.kCoast);
+    config.idleMode(IdleMode.kBrake);
 
     config.closedLoop.feedForward.sva(KS.getAsDouble(), KV.getAsDouble(), KA.getAsDouble());
     config.closedLoop.pid(KP.getAsDouble(), KI.getAsDouble(), KD.getAsDouble());

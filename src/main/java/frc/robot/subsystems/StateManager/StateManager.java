@@ -7,10 +7,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 import frc.robot.Constants.FieldConstants;
-import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
@@ -27,16 +25,20 @@ public class StateManager extends SubsystemBase {
 
   private MatchTimer timer;
   private boolean rumble;
-  private final CommandXboxController driverController = OIConstants.driverController;
 
   // Corners of zone as an array
-  private Translation2d[] decapitationZoneTranslation = new Translation2d[4];
-  private Translation2d[] shuttlingZoneOneTranslation = Constants.FieldConstants.shuttleZoneOne;
-  private Translation2d[] shuttlingZoneTwoTranslation = Constants.FieldConstants.shuttleZoneTwo;
-  private Translation2d[] shuttlingZoneThreeTranslation = Constants.FieldConstants.shuttleZoneThree;
-  private Translation2d[] shuttlingZoneFourTranslation = Constants.FieldConstants.shuttleZoneFour;
-  private Translation2d[] shuttlingZoneFiveTranslation = Constants.FieldConstants.shuttleZoneFive;
-  private Translation2d[] towerZoneTranslation = Constants.FieldConstants.towerZone;
+  private final Translation2d[] decapitationZoneTranslation = new Translation2d[4];
+  private final Translation2d[] shuttlingZoneOneTranslation =
+      Constants.FieldConstants.shuttleZoneOne;
+  private final Translation2d[] shuttlingZoneTwoTranslation =
+      Constants.FieldConstants.shuttleZoneTwo;
+  private final Translation2d[] shuttlingZoneThreeTranslation =
+      Constants.FieldConstants.shuttleZoneThree;
+  private final Translation2d[] shuttlingZoneFourTranslation =
+      Constants.FieldConstants.shuttleZoneFour;
+  private final Translation2d[] shuttlingZoneFiveTranslation =
+      Constants.FieldConstants.shuttleZoneFive;
+  private final Translation2d[] towerZoneTranslation = Constants.FieldConstants.towerZone;
 
   private Zone decapitationZone;
   private Zone shuttlingZoneOne;
@@ -46,7 +48,9 @@ public class StateManager extends SubsystemBase {
   private Zone shuttlingZoneFive;
   private Zone towerZone;
 
-  private Alliance alliance;
+  // Hard code alliance
+  public static Alliance alliance = Alliance.Red;
+  public static boolean hasToggledAlliance = false;
   private Translation2d turretPose;
 
   public static class OperationStates {
@@ -124,28 +128,55 @@ public class StateManager extends SubsystemBase {
     return !OperationStates.inDecapitationZone;
   }
 
+  public static void toggleAlliance() {
+    hasToggledAlliance = true;
+
+    if (alliance.equals(Alliance.Red)) {
+      alliance = Alliance.Blue;
+    } else if (alliance.equals(Alliance.Blue)) {
+      alliance = Alliance.Red;
+    }
+  }
+
   @Override
   public void periodic() {
-    // Make shuttling zones red alliance if needed
-    if (alliance == null && DriverStation.getAlliance().isPresent()) {
+    // Update alliance
+    if (DriverStation.getAlliance().isPresent() && !hasToggledAlliance) {
       alliance = DriverStation.getAlliance().get();
       timer.setAlliance(alliance);
+    }
 
-      if (alliance.equals(Alliance.Red)) {
-        shuttlingZoneOne.updateZone(toRedAlliance(shuttlingZoneOneTranslation));
-        shuttlingZoneTwo.updateZone(toRedAlliance(shuttlingZoneTwoTranslation));
-        shuttlingZoneThree.updateZone(toRedAlliance(shuttlingZoneThreeTranslation));
-        shuttlingZoneFour.updateZone(toRedAlliance(shuttlingZoneFourTranslation));
-        shuttlingZoneFive.updateZone(toRedAlliance(shuttlingZoneFiveTranslation));
-        towerZone.updateZone(toRedAlliance(towerZoneTranslation));
+    // Set shuttling zones for blue
+    if (alliance.equals(Alliance.Blue)) {
+      shuttlingZoneOne.updateZone(shuttlingZoneOneTranslation);
+      shuttlingZoneTwo.updateZone(shuttlingZoneTwoTranslation);
+      shuttlingZoneThree.updateZone(shuttlingZoneThreeTranslation);
+      shuttlingZoneFour.updateZone(shuttlingZoneFourTranslation);
+      shuttlingZoneFive.updateZone(shuttlingZoneFiveTranslation);
+      towerZone.updateZone(towerZoneTranslation);
 
-        shuttlingZoneOne.logPoints("Shuttling Zone 1");
-        shuttlingZoneTwo.logPoints("Shuttling Zone 2");
-        shuttlingZoneThree.logPoints("Shuttling Zone 3");
-        shuttlingZoneFour.logPoints("Shuttling Zone 4");
-        shuttlingZoneFive.logPoints("Shuttling Zone 5");
-        towerZone.logPoints("Tower Zone");
-      }
+      shuttlingZoneOne.logPoints("Shuttling Zone 1");
+      shuttlingZoneTwo.logPoints("Shuttling Zone 2");
+      shuttlingZoneThree.logPoints("Shuttling Zone 3");
+      shuttlingZoneFour.logPoints("Shuttling Zone 4");
+      shuttlingZoneFive.logPoints("Shuttling Zone 5");
+      towerZone.logPoints("Tower Zone");
+    }
+    // Set shuttling zones for red
+    else if (alliance.equals(Alliance.Red)) {
+      shuttlingZoneOne.updateZone(toRedAlliance(shuttlingZoneOneTranslation));
+      shuttlingZoneTwo.updateZone(toRedAlliance(shuttlingZoneTwoTranslation));
+      shuttlingZoneThree.updateZone(toRedAlliance(shuttlingZoneThreeTranslation));
+      shuttlingZoneFour.updateZone(toRedAlliance(shuttlingZoneFourTranslation));
+      shuttlingZoneFive.updateZone(toRedAlliance(shuttlingZoneFiveTranslation));
+      towerZone.updateZone(toRedAlliance(towerZoneTranslation));
+
+      shuttlingZoneOne.logPoints("Shuttling Zone 1");
+      shuttlingZoneTwo.logPoints("Shuttling Zone 2");
+      shuttlingZoneThree.logPoints("Shuttling Zone 3");
+      shuttlingZoneFour.logPoints("Shuttling Zone 4");
+      shuttlingZoneFive.logPoints("Shuttling Zone 5");
+      towerZone.logPoints("Tower Zone");
     }
 
     updateDecapitationZone();
@@ -208,7 +239,7 @@ public class StateManager extends SubsystemBase {
     Logger.recordOutput("State Manager/Timer/Time Until Our Shift", timer.getTimeToOurShift());
     Logger.recordOutput("State Manager/Timer/Rumble Controller", rumble);
 
-    Logger.recordOutput("State Manager/Alliance", timer.getOurAlliance());
+    Logger.recordOutput("State Manager/Alliance", alliance);
   }
 
   // Update zone based off the closest trench and robot velocity

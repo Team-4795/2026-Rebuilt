@@ -85,13 +85,14 @@ public class RobotContainer {
   private final Trigger zeroDrive = m_driverController.y();
   private final Trigger reverseIntake = m_driverController.a();
   private final Trigger reverseIndexer = m_driverController.b();
+  private final Trigger agitateIntake = m_driverController.povUp();
 
-  private final Trigger zeroButton = m_operatorController.a(); // Zero sequence
+  // private final Trigger zeroButton = m_operatorController.a(); // Zero sequence
   private final Trigger toggleVision = m_operatorController.x();
   private final Trigger lockTurret = m_operatorController.b();
   private final Trigger depoCorner = m_operatorController.povLeft();
   private final Trigger feederCorner = m_operatorController.povRight();
-  private final Trigger agitateIntake = m_driverController.povUp();
+  private final Trigger toggleAlliance = m_operatorController.y();
 
   // Testing Bindings
   private final Trigger configure = m_driverController.povDown();
@@ -238,7 +239,7 @@ public class RobotContainer {
                             * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.9),
                     () ->
                         -m_driverController.getRightX()
-                            * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.7))))
+                            * (stateManager.getState() == State.SHOOTING ? 0.4 : 0.7))))
         .onFalse(AutoCommands.afterShoot());
 
     // Auto trench
@@ -266,6 +267,9 @@ public class RobotContainer {
 
     // Zero drive
     zeroDrive.onTrue(Commands.runOnce(() -> drive.zeroHeading()));
+
+    // Toggle alliance
+    toggleAlliance.onTrue(Commands.runOnce(() -> StateManager.toggleAlliance()));
 
     // Zero Sequence
     // zeroButton.whileTrue(AutoCommands.zeroSequence());

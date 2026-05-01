@@ -43,13 +43,13 @@ public final class ShooterConstants {
     // Shooting
     shooterVelocityHubMap.put(1.628, 54.0);
     shooterVelocityHubMap.put(2.233, 54.0);
-    shooterVelocityHubMap.put(2.696, 58.6);
+    shooterVelocityHubMap.put(2.696, 57.6);
     shooterVelocityHubMap.put(3.200, 60.5);
-    shooterVelocityHubMap.put(3.67, 62.5);
+    shooterVelocityHubMap.put(3.67, 62.15);
     shooterVelocityHubMap.put(4.06, 64.75);
     shooterVelocityHubMap.put(4.61, 68.25);
-    shooterVelocityHubMap.put(5.124, 74.25);
-    shooterVelocityHubMap.put(5.77, 75.75);
+    shooterVelocityHubMap.put(5.124, 73.25);
+    shooterVelocityHubMap.put(5.77, 75.25);
     shooterVelocityHubMap.put(6.2, 77.0);
 
     // Shuttling
@@ -59,8 +59,8 @@ public final class ShooterConstants {
     shooterVelocityShuttlingMap.put(5.97, 70.0);
     shooterVelocityShuttlingMap.put(7.14, 78.0);
     shooterVelocityShuttlingMap.put(7.329184, 78.0);
-    shooterVelocityShuttlingMap.put(10.64, 91.0);
-    shooterVelocityShuttlingMap.put(13.76, 107.0);
+    shooterVelocityShuttlingMap.put(10.64, 100.0);
+    shooterVelocityShuttlingMap.put(13.76, 110.0);
     shooterVelocityShuttlingMap.put(17.76, 123.0);
   }
 }
