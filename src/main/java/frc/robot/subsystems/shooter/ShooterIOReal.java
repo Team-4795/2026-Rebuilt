@@ -139,11 +139,12 @@ public class ShooterIOReal implements ShooterIO {
     inputs.bottomShooterVelocityRPS = bottomRPS.getValueAsDouble();
     inputs.bottomShooterCurrent = bottomCurrent.getValueAsDouble();
     inputs.bottomShooterVolts = volts;
+    // inputs.bottomShooterSupplyCurrent = bottomShooterMotor.getSupplyCurrent().getValueAsDouble();
 
     inputs.topShooterVelocityRPS = topRPS.getValueAsDouble();
     inputs.topShooterCurrent = topCurrent.getValueAsDouble();
     inputs.topShooterVolts = volts;
-
+    // inputs.topShooterSupplyCurrent = topShooterMotor.getSupplyCurrent().getValueAsDouble();
     // Logger.recordOutput("Shooter/Top Connected?", topShooterMotor.isConnected());
     // Logger.recordOutput("Shooter/Bottom Connected?", bottomShooterMotor.isConnected());
   }
@@ -156,7 +157,7 @@ public class ShooterIOReal implements ShooterIO {
     talonFXConfig.Slot0.kS = 0;
     talonFXConfig.Slot0.kV = 0;
     talonFXConfig.Slot0.kA = 0;
-    talonFXConfig.Slot0.kP = 50;
+    talonFXConfig.Slot0.kP = 999;
     talonFXConfig.Slot0.kI = 0;
     talonFXConfig.Slot0.kD = 0;
 

@@ -166,5 +166,6 @@ public class TurretIOReal implements TurretIO {
     inputs.current = current.getValueAsDouble();
     inputs.volts = voltage.getValueAsDouble();
     inputs.velocity = velocity.getValueAsDouble();
+    inputs.supplyVoltage = turretMotor.getSupplyCurrent().getValueAsDouble();
   }
 }

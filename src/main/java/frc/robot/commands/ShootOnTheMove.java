@@ -138,7 +138,6 @@ public class ShootOnTheMove extends Command {
     if (stateManager.getState() == State.SHOOTING) {
       shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(distance));
       hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(distance));
-
     } else {
       shooter.setVelocityRPS(ShooterConstants.shooterVelocityShuttlingMap.get(distance));
       hood.setGoal(ShooterHoodConstants.shooterHoodShuttlingMap.get(distance));

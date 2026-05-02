@@ -7,7 +7,7 @@ public final class ShooterConstants {
   public static final int BOTTOM_CAN_ID = 16;
 
   public static final int STATOR_CURRENT_LIMIT = 120;
-  public static final int SUPPLY_CURRENT_LIMIT = 80;
+  public static final int SUPPLY_CURRENT_LIMIT = 70;
   // public static final int SUPPLY_CURRENT_LIMIT_LOWER = 60;
 
   public static final double minVel = -30.0;

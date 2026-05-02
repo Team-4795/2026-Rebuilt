@@ -95,8 +95,8 @@ public class AutoCommands {
             Commands.runOnce(() -> indexer.setVoltageIndexer(-11)),
             Commands.runOnce(() -> indexer.setVoltageTower(-12))),
         Commands.parallel(
-            Commands.runOnce(() -> indexer.setVoltageIndexer(-9)),
-            Commands.runOnce(() -> indexer.setVoltageTower(-12))),
+            Commands.runOnce(() -> indexer.setVoltageIndexer(-8)),
+            Commands.runOnce(() -> indexer.setVoltageTower(-11))),
         () -> manager.getState() == State.SHOOTING);
   }
 
@@ -188,7 +188,7 @@ public class AutoCommands {
 
   public static Command unjam() {
     return Commands.repeatingSequence(
-            Commands.waitSeconds(1.5),
+            Commands.waitSeconds(3.5),
             Commands.runOnce(() -> indexer.setVoltageIndexer(0), indexer),
             Commands.waitSeconds(0.25),
             Commands.runOnce(() -> indexer.setVoltageIndexer(12), indexer),

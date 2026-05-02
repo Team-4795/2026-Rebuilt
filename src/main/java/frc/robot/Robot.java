@@ -71,7 +71,7 @@ public class Robot extends LoggedRobot {
 
     robotContainer = new RobotContainer();
 
-    RobotController.setBrownoutVoltage(6.0);
+    RobotController.setBrownoutVoltage(5.7);
   }
 
   /** This function is called periodically during all modes. */

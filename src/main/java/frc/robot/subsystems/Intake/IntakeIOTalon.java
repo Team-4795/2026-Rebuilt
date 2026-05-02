@@ -45,8 +45,8 @@ public class IntakeIOTalon implements IntakeIO {
 
     config.CurrentLimits.StatorCurrentLimitEnable = true;
     config.CurrentLimits.SupplyCurrentLimitEnable = true;
-    config.CurrentLimits.StatorCurrentLimit = 80;
-    config.CurrentLimits.SupplyCurrentLimit = 60;
+    config.CurrentLimits.StatorCurrentLimit = 70;
+    config.CurrentLimits.SupplyCurrentLimit = 50;
 
     config.Feedback.SensorToMechanismRatio = IntakeConstants.GEARING;
 
@@ -114,6 +114,8 @@ public class IntakeIOTalon implements IntakeIO {
     inputs.angularVelocityRPSB = rps2.getValueAsDouble();
     inputs.currentAmpsA = current1.getValueAsDouble();
     inputs.currentAmpsB = current2.getValueAsDouble();
+    inputs.supplyCurrentA = motor1.getSupplyCurrent().getValueAsDouble();
+    inputs.supplyCurrentB = motor2.getSupplyCurrent().getValueAsDouble();
     inputs.goalRPS = goalRPS;
     inputs.hasCurrentLimitChanged = this.hasCurrentLimitChanged;
   }

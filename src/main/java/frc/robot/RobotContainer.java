@@ -263,7 +263,7 @@ public class RobotContainer {
         .onFalse(AutoCommands.afterShoot());
 
     // Toggle vision
-    toggleVision.whileTrue(Commands.runOnce(() -> vision.toggleShouldUpdate()));
+    // toggleVision.whileTrue(Commands.runOnce(() -> vision.toggleShouldUpdate()));
 
     // Zero drive
     zeroDrive.onTrue(Commands.runOnce(() -> drive.zeroHeading()));

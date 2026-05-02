@@ -7,7 +7,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 7.0
+            "waitTime": 5.5
           }
         },
         {
@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "depo auto 1"
+                  "pathName": "depo auto 1 rembrandts"
                 }
               },
               {

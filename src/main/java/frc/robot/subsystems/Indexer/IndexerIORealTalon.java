@@ -46,14 +46,14 @@ public class IndexerIORealTalon implements IndexerIO {
     fxConfig.CurrentLimits.StatorCurrentLimit = 40;
     fxConfig.CurrentLimits.SupplyCurrentLimit = 40;
 
-    fxConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    fxConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
     fxConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
     // Indexer SparkFlex config
     indexerMotor.clearFaults();
     config.smartCurrentLimit(50);
-    config.idleMode(IdleMode.kBrake);
+    config.idleMode(IdleMode.kCoast);
 
     config.closedLoop.feedForward.sva(KS.getAsDouble(), KV.getAsDouble(), KA.getAsDouble());
     config.closedLoop.pid(KP.getAsDouble(), KI.getAsDouble(), KD.getAsDouble());
@@ -71,6 +71,7 @@ public class IndexerIORealTalon implements IndexerIO {
     inputs.towerVolts = this.towerVolts;
     inputs.towerAngularVelocityRPS = towerMotor.getVelocity().getValueAsDouble() / 60.0;
     inputs.towerCurrentAmps = towerMotor.getStatorCurrent().getValueAsDouble();
+    inputs.towerSupplyCurrent = towerMotor.getSupplyCurrent().getValueAsDouble();
 
     inputs.indexerVolts = this.indexerVolts;
     inputs.indexerAngularVelocityRPS = indexerEncoder.getVelocity() / 60.0;

@@ -8,10 +8,12 @@ public interface IndexerIO {
     public double towerVolts = 0.0;
     public double towerAngularVelocityRPS = 0.0;
     public double towerCurrentAmps = 0.0;
+    public double towerSupplyCurrent = 0;
 
     public double indexerVolts = 0.0;
     public double indexerAngularVelocityRPS = 0.0;
     public double indexerCurrentAmps = 0.0;
+    public double indexerSupplyCurrent = 0;
 
     public double indexerGoalRPS = 0.0;
   }

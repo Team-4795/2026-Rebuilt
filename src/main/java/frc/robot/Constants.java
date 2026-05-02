@@ -59,7 +59,7 @@ public final class Constants {
       tAirMap.put(4.06, 1.43);
       tAirMap.put(4.61, 1.55);
       tAirMap.put(5.124, 1.57);
-      tAirMap.put(5.77, 1.51);
+      tAirMap.put(5.77, 1.57);
     }
 
     public static final InterpolatingDoubleTreeMap tAirMapShuttling =
