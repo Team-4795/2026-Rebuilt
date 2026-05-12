@@ -18,6 +18,9 @@ public interface IntakeDeployIO {
 
     public double setpointPosition = 0;
     public double setpointVelocity = 0;
+
+    public double currentA = 0;
+    public double currentB = 0;
   }
 
   public default void setGoal(double goal) {}
@@ -27,6 +30,10 @@ public interface IntakeDeployIO {
   public default void setVoltage(double volts) {}
 
   public default void zero() {}
+
+  public default double getPosition() {
+    return 0.0;
+  }
 
   public default void updateInputs(IntakeDeployIOInputs inputs) {}
 }

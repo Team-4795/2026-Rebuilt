@@ -11,10 +11,12 @@ public interface ShooterIO {
     public double topShooterVelocityRPS = 0.0;
     public double topShooterCurrent = 0.0;
     public double topShooterVolts = 0.0;
+    public double topShooterSupplyCurrent = 0;
 
     public double bottomShooterVelocityRPS = 0.0;
     public double bottomShooterCurrent = 0.0;
     public double bottomShooterVolts = 0.0;
+    public double bottomShooterSupplyCurrent = 0;
   }
 
   public default void updateInputs(ShooterIOInputs inputs) {}
@@ -23,8 +25,14 @@ public interface ShooterIO {
     return 0.0;
   }
 
+  public default void resetShooter() {}
+
   public default double getBottomRPS() {
     return 0.0;
+  }
+
+  public default boolean shootNow() {
+    return false;
   }
 
   public default double getGoal() {

@@ -25,6 +25,7 @@ import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -47,6 +48,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.Mode;
 import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.Turret.TurretConstants;
+import frc.robot.util.BLineAutoChooser;
 import frc.robot.util.LocalADStarAK;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -76,6 +78,8 @@ public class Drive extends SubsystemBase {
 
   private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
+
+  public BLineAutoChooser autoChooser;
 
   public static Drive getInstance() {
     return instance;
@@ -127,6 +131,20 @@ public class Drive extends SubsystemBase {
         (targetPose) -> {
           Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
         });
+
+    // auto chooser and builder for bline
+    autoChooser =
+        (BLineAutoChooser)
+            new BLineAutoChooser(
+                    this,
+                    this::getPose,
+                    this::getChassisSpeeds,
+                    this::runVelocity,
+                    new PIDController(4.0, 0.0, DriveConstants.driveKd),
+                    new PIDController(4.5, 0.0, DriveConstants.turnKd),
+                    new PIDController(2, 0.0, 0.0))
+                .withDefaultShouldFlip()
+                .withPoseReset(this::setPose);
 
     // Configure SysId
     sysId =
@@ -200,6 +218,13 @@ public class Drive extends SubsystemBase {
 
     // Update gyro alert
     gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
+  }
+
+  public void configure() {
+    modules[0].configure();
+    modules[1].configure();
+    modules[2].configure();
+    modules[3].configure();
   }
 
   /**
@@ -389,5 +414,14 @@ public class Drive extends SubsystemBase {
     Translation2d target = StateManager.getInstance().getTargetPose().getTranslation();
     double distance = robotPose.getDistance(target);
     return distance;
+  }
+
+  public double getSpeed() {
+    ChassisSpeeds speeds = getChassisSpeeds();
+    return Math.hypot(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
+  }
+
+  public BLineAutoChooser getAutoChooser() {
+    return autoChooser;
   }
 }

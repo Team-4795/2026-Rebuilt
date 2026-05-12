@@ -1,0 +1,109 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.804924242424242,
+        "y": 4.981761363636363
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.761213399050746,
+        "y": 6.41329148411829
+      },
+      "isLocked": false,
+      "linkedName": "Use this Depo Follower Mic"
+    },
+    {
+      "anchor": {
+        "x": 6.7510481927710835,
+        "y": 7.51001204819277
+      },
+      "prevControl": {
+        "x": 7.811036144578313,
+        "y": 7.499084337349398
+      },
+      "nextControl": {
+        "x": 5.6910602409638535,
+        "y": 7.520939759036143
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.1449036144578315,
+        "y": 7.51001204819277
+      },
+      "prevControl": {
+        "x": 4.387498104660125,
+        "y": 7.564037895592866
+      },
+      "nextControl": {
+        "x": 2.6422289156626504,
+        "y": 7.488156626506025
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.137681818181818,
+        "y": 7.384715909090909
+      },
+      "prevControl": {
+        "x": 2.3332727272727283,
+        "y": 7.477477272727273
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.9336099585062241,
+      "rotationDegrees": -178.98846283687666
+    },
+    {
+      "waypointRelativePos": 1.9195020746888125,
+      "rotationDegrees": -179.51757982684475
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 1.2549371633752242,
+      "constraints": {
+        "maxVelocity": 2.5,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.8,
+    "maxAcceleration": 4.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -178.75463573323165
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -91.94148639091422
+  },
+  "useDefaultConstraints": true
+}

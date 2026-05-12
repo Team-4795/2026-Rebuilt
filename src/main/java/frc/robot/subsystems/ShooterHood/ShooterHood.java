@@ -1,7 +1,7 @@
 package frc.robot.subsystems.ShooterHood;
 
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.StateManager.StateManager;
 import org.littletonrobotics.junction.Logger;
 
 public class ShooterHood extends SubsystemBase {
@@ -25,11 +25,15 @@ public class ShooterHood extends SubsystemBase {
     io = shooterHoodIO;
     io.updateInputs(inputs);
 
-    setDefaultCommand(Commands.run(() -> setGoal(0), this));
+    // setDefaultCommand(Commands.run(() -> setGoal(0), this)); // be careful gng
   }
 
   public void setGoal(double goal) {
-    io.setGoal(goal);
+    if (StateManager.getInstance().canHoodMove()) {
+      io.setGoal(goal);
+    } else {
+      io.setGoal(0);
+    }
   }
 
   public void zero() {
@@ -46,6 +50,10 @@ public class ShooterHood extends SubsystemBase {
 
   public void configure() {
     io.configure();
+  }
+
+  public double getGoal() {
+    return io.getGoal();
   }
 
   @Override

@@ -12,8 +12,8 @@ public class IntakeDeployConstants {
   public static final double deployMaxAngle = 0.15;
   public static final double deployMinAngle = 0.35;
 
-  public static final double stowPosition = -0.24;
-  public static final double deployOffset = 0.327884;
+  public static final double intakePosition = -0.2; // actually
+  public static final double stowPosition = 0.327884;
 
   public static final double MAX_VELOCITY = 3;
   public static final double MAX_ACCELERATION = 3;

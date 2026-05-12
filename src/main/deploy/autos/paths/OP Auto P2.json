@@ -1,0 +1,68 @@
+{
+  "path_elements": [
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 7.745979983319433,
+        "y_meters": 2.165125104253545,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 1.5337144567718501,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "rotation",
+      "rotation_radians": 3.0928047427723664,
+      "t_ratio": 0.4149639938230327,
+      "profiled_rotation": true
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.6102607512685132,
+      "lib_key": "Rev Shooter"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.8513574176052202,
+      "lib_key": "Set Turret OP"
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 5.528131141692076,
+        "y_meters": 2.386663428835827,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 3.141592653589793,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 3.6408009355557294,
+        "y_meters": 2.386663428835826,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 3.141592653589793,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 2.4461442527558837,
+        "y_meters": 2.3699291075896562,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 3.141592653589793,
+        "profiled_rotation": true
+      }
+    }
+  ]
+}

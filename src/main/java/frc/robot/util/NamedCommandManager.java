@@ -2,6 +2,7 @@ package frc.robot.util;
 
 import com.pathplanner.lib.auto.NamedCommands;
 import frc.robot.commands.AutoCommands;
+import frc.robot.lib.BLine.FollowPath;
 
 public class NamedCommandManager {
   public static void registerNamedCommands() {
@@ -15,6 +16,25 @@ public class NamedCommandManager {
     NamedCommands.registerCommand("Retract Intake", AutoCommands.retractIntake());
     NamedCommands.registerCommand("Deploy Intake", AutoCommands.deployIntake());
     NamedCommands.registerCommand("Zero Hood Angle", AutoCommands.setHoodAngle(0));
-    NamedCommands.registerCommand("Everything", AutoCommands.pleaseNoTouch());
+    NamedCommands.registerCommand("SOTM", AutoCommands.autonomousSOTM());
+    NamedCommands.registerCommand("Stop Shoot", AutoCommands.stopShoot().withTimeout(0.1));
+    NamedCommands.registerCommand("Stop Shooter", AutoCommands.stopShooter());
+    NamedCommands.registerCommand("rev shooter", AutoCommands.setShooterRPS(70));
+    NamedCommands.registerCommand("Agitate Intake", AutoCommands.agitateIntakeAuto());
+    NamedCommands.registerCommand("Lift Intake", AutoCommands.liftIntake());
+    NamedCommands.registerCommand("Set Turret OP", AutoCommands.setTurretOPAuto());
+    NamedCommands.registerCommand("Scaled Intake", AutoCommands.intakeWithScaling());
+
+    // bline event triggers
+    FollowPath.registerEventTrigger("SOTM", AutoCommands.shootOnTheMove());
+    FollowPath.registerEventTrigger("Stop SOTM", AutoCommands.autonomousStopSOTM());
+    FollowPath.registerEventTrigger("Stop Shooter", AutoCommands.stopShooter());
+    FollowPath.registerEventTrigger("Run Indexer", AutoCommands.shoot());
+    FollowPath.registerEventTrigger("Stop Indexer", AutoCommands.stopShoot().withTimeout(0.1));
+    FollowPath.registerEventTrigger("Retract Intake", AutoCommands.retractIntake());
+    FollowPath.registerEventTrigger("Lift Intake", AutoCommands.liftIntake());
+    FollowPath.registerEventTrigger("Deploy Intake", AutoCommands.deployIntake());
+    FollowPath.registerEventTrigger("Intake", AutoCommands.intake());
+    FollowPath.registerEventTrigger("Set Turret OP", AutoCommands.setTurretOPAuto());
   }
 }

@@ -15,6 +15,7 @@ import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretConstants;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.util.LoggedTunableNumber;
 import org.littletonrobotics.junction.Logger;
 
 public class ShootOnTheMove extends Command {
@@ -45,6 +46,11 @@ public class ShootOnTheMove extends Command {
   ChassisSpeeds fieldRelative;
   double iterativeDistance = 0;
   double distance;
+
+  public static LoggedTunableNumber shooterRPS = new LoggedTunableNumber("SOTM/Shooter RPS", 60);
+  public static LoggedTunableNumber hoodAngle = new LoggedTunableNumber("SOTM/Hood Angle", 0);
+  public static LoggedTunableNumber xDampener = new LoggedTunableNumber("SOTM/X Dampener", 0.7);
+  public static LoggedTunableNumber yDampener = new LoggedTunableNumber("SOTM/Y Dampener", 0.85);
 
   public ShootOnTheMove(
       Drive drive, Turret turret, Shooter shooter, ShooterHood hood, StateManager manager) {
@@ -79,8 +85,8 @@ public class ShootOnTheMove extends Command {
       for (int i = 0; i < 20; i++) {
         tAir = Constants.InterpolatingTree.tAirMap.get(iterativeDistance);
 
-        velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * 0.85;
-        velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * 0.85;
+        velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * xDampener.getAsDouble();
+        velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * yDampener.getAsDouble();
 
         omegaXOffset =
             -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
@@ -91,26 +97,30 @@ public class ShootOnTheMove extends Command {
             new Pose2d(
                 targetPose.getX() - velocityXOffset - omegaXOffset,
                 targetPose.getY() - velocityYOffset - omegaYOffset,
-                new Rotation2d());
+                Rotation2d.kZero);
 
         iterativeDistance = offsettedTarget.getTranslation().getDistance(turretPose);
       }
     } else {
-      tAir = 1.5;
+      for (int i = 0; i < 20; i++) {
+        tAir = Constants.InterpolatingTree.tAirMap.get(iterativeDistance);
 
-      velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * 0.85;
-      velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * 0.85;
+        velocityXOffset = fieldRelative.vxMetersPerSecond * tAir * xDampener.getAsDouble();
+        velocityYOffset = fieldRelative.vyMetersPerSecond * tAir * yDampener.getAsDouble();
 
-      omegaXOffset =
-          -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
-      omegaYOffset =
-          velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX() * tAir;
+        omegaXOffset =
+            -velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getY() * tAir;
+        omegaYOffset =
+            velocityOmega * turretOffsetPose.rotateBy(robotPose.getRotation()).getX() * tAir;
 
-      offsettedTarget =
-          new Pose2d(
-              targetPose.getX() - velocityXOffset - omegaXOffset,
-              targetPose.getY() - velocityYOffset - omegaYOffset,
-              new Rotation2d());
+        offsettedTarget =
+            new Pose2d(
+                targetPose.getX() - velocityXOffset - omegaXOffset,
+                targetPose.getY() - velocityYOffset - omegaYOffset,
+                Rotation2d.kZero);
+
+        iterativeDistance = offsettedTarget.getTranslation().getDistance(turretPose);
+      }
     }
 
     distance = offsettedTarget.getTranslation().getDistance(turretPose);
@@ -131,6 +141,9 @@ public class ShootOnTheMove extends Command {
     } else {
       shooter.setVelocityRPS(ShooterConstants.shooterVelocityShuttlingMap.get(distance));
       hood.setGoal(ShooterHoodConstants.shooterHoodShuttlingMap.get(distance));
+
+      // shooter.setVelocityRPS(shooterRPS.getAsDouble());
+      // hood.setGoal(hoodAngle.getAsDouble());
     }
 
     Logger.recordOutput("Shoot on move At Hub/Hub Pose", hub);
@@ -154,7 +167,5 @@ public class ShootOnTheMove extends Command {
   }
 
   @Override
-  public void end(boolean interrupted) {
-    shooter.setVelocityRPS(0);
-  }
+  public void end(boolean interrupted) {}
 }

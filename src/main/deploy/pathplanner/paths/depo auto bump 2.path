@@ -1,0 +1,89 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.2074053030303027,
+        "y": 5.571410984848485
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.2606439393939395,
+        "y": 5.911912878787877
+      },
+      "isLocked": false,
+      "linkedName": "depo bump end"
+    },
+    {
+      "anchor": {
+        "x": 0.5464204545454545,
+        "y": 5.9534375
+      },
+      "prevControl": {
+        "x": 1.1913831820071747,
+        "y": 5.880146280970258
+      },
+      "nextControl": {
+        "x": 0.18100378787878801,
+        "y": 5.994962121212121
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.5014867424242424,
+        "y": 4.898712121212121
+      },
+      "prevControl": {
+        "x": 0.5879450757575759,
+        "y": 5.392855113636364
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0014184397163204,
+      "rotationDegrees": -179.4673789949188
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.14848143982002762,
+      "maxWaypointRelativePos": 1.8447694038245284,
+      "constraints": {
+        "maxVelocity": 0.75,
+        "maxAcceleration": 1.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.4,
+    "maxAcceleration": 4.4,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0.0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": false
+}

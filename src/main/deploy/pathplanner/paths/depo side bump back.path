@@ -1,0 +1,95 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.804924242424242,
+        "y": 4.981761363636363
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.280545454545454,
+        "y": 5.572420454545454
+      },
+      "isLocked": false,
+      "linkedName": "Use this Depo Follower Mic"
+    },
+    {
+      "anchor": {
+        "x": 5.827284090909091,
+        "y": 5.663477272727273
+      },
+      "prevControl": {
+        "x": 6.8872720427163205,
+        "y": 5.652549561883901
+      },
+      "nextControl": {
+        "x": 4.767296139101861,
+        "y": 5.674404983570645
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.6113181818181816,
+        "y": 5.663477272727273
+      },
+      "prevControl": {
+        "x": 4.854396185278799,
+        "y": 5.70491320617596
+      },
+      "nextControl": {
+        "x": 1.7560909090909091,
+        "y": 5.601636363636365
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.003454545454545,
+        "y": 3.9216250000000006
+      },
+      "prevControl": {
+        "x": 2.1271363636363634,
+        "y": 4.591568181818182
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.8113207547169812,
+      "rotationDegrees": 179.16295175435548
+    },
+    {
+      "waypointRelativePos": 1.9195020746888125,
+      "rotationDegrees": 178.52689177496592
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 4.8,
+    "maxAcceleration": 4.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -90.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -91.94148639091422
+  },
+  "useDefaultConstraints": true
+}

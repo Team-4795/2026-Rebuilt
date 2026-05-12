@@ -34,6 +34,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.util.LoggedTunableNumber;
 import java.util.Queue;
 import java.util.function.DoubleSupplier;
 
@@ -62,6 +63,14 @@ public class ModuleIOSparkFlex implements ModuleIO {
   // Connection debouncers
   private final Debouncer driveConnectedDebounce = new Debouncer(0.5);
   private final Debouncer turnConnectedDebounce = new Debouncer(0.5);
+
+  SparkMaxConfig driveConfig = new SparkMaxConfig();
+
+  LoggedTunableNumber KP = new LoggedTunableNumber("Drive/KP", DriveConstants.driveKp);
+  LoggedTunableNumber KD = new LoggedTunableNumber("Drive/KD", DriveConstants.driveKd);
+
+  LoggedTunableNumber KS = new LoggedTunableNumber("Drive/KS", DriveConstants.driveKs);
+  LoggedTunableNumber KV = new LoggedTunableNumber("Drive/KV_TOP", DriveConstants.driveKv);
 
   public ModuleIOSparkFlex(int module) {
     zeroRotation =
@@ -98,7 +107,6 @@ public class ModuleIOSparkFlex implements ModuleIO {
     turnController = turnSpark.getClosedLoopController();
 
     // Configure drive motor
-    var driveConfig = new SparkMaxConfig();
     driveConfig
         .idleMode(IdleMode.kBrake)
         .smartCurrentLimit(driveMotorCurrentLimit)
@@ -112,9 +120,9 @@ public class ModuleIOSparkFlex implements ModuleIO {
     driveConfig
         .closedLoop
         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-        .pid(driveKp, 0.0, driveKd)
+        .pid(driveKp, 0.0, 0.0)
         .feedForward
-        .kV(0);
+        .kV(driveKv);
 
     driveConfig
         .signals
@@ -246,5 +254,18 @@ public class ModuleIOSparkFlex implements ModuleIO {
         MathUtil.inputModulus(
             rotation.plus(zeroRotation).getRadians(), turnPIDMinInput, turnPIDMaxInput);
     turnController.setSetpoint(setpoint, ControlType.kPosition);
+  }
+
+  @Override
+  public void configure() {
+    driveConfig
+        .closedLoop
+        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        .pid(KP.get(), 0.0, KD.get())
+        .feedForward
+        .kV(KV.get());
+
+    driveSpark.configure(
+        driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 }

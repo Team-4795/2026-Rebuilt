@@ -33,6 +33,10 @@ public class IntakeDeployIOSim implements IntakeDeployIO {
               DCMotor.getKrakenX60(1), 0.001, IntakeDeployConstants.GEARING_DEPLOY),
           DCMotor.getKrakenX60(1));
 
+  public IntakeDeployIOSim() {
+    // this.setGoal(IntakeDeployConstants.stowPosition);
+  }
+
   @Override
   public void setVoltage(double v) {
     motorDeployA.setInputVoltage(v);
@@ -51,12 +55,17 @@ public class IntakeDeployIOSim implements IntakeDeployIO {
   }
 
   @Override
+  public double getPosition() {
+    return motorDeployA.getAngularPositionRotations();
+  }
+
+  @Override
   public void updateMotionProfile() {
     setpoint = profile.calculate(0.02, setpoint, goal);
     double ffvolts =
         ffmodel.calculate(
             Units.rotationsToRadians(
-                motorDeployA.getAngularPositionRotations() - IntakeDeployConstants.deployOffset),
+                motorDeployA.getAngularPositionRotations() - IntakeDeployConstants.stowPosition),
             Units.rotationsPerMinuteToRadiansPerSecond(setpoint.velocity * 60.0));
     double pidvolts =
         controller.calculate(motorDeployA.getAngularPositionRotations(), setpoint.position);

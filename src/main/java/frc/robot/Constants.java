@@ -22,6 +22,7 @@ import java.util.ArrayList;
  */
 public final class Constants {
   public static final Mode simMode = Mode.SIM;
+  public static final Mode replayMode = Mode.REPLAY;
   public static final boolean tuningMode = true;
 
   public static final Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
@@ -51,12 +52,26 @@ public final class Constants {
 
     // Distance, tAir
     static {
-      tAirMap.put(2.20, 1.3);
-      tAirMap.put(2.59, 1.26);
-      tAirMap.put(3.03, 1.16);
-      tAirMap.put(3.39, 1.2);
-      tAirMap.put(3.88, 1.1);
-      tAirMap.put(4.39, 1.21);
+      tAirMap.put(1.628, 1.16);
+      tAirMap.put(2.233, 1.16);
+      tAirMap.put(2.696, 1.28);
+      tAirMap.put(3.200, 1.35);
+      tAirMap.put(4.06, 1.43);
+      tAirMap.put(4.61, 1.55);
+      tAirMap.put(5.124, 1.57);
+      tAirMap.put(5.77, 1.57);
+    }
+
+    public static final InterpolatingDoubleTreeMap tAirMapShuttling =
+        new InterpolatingDoubleTreeMap();
+
+    // Distance, tAir
+    static {
+      tAirMapShuttling.put(4.22, 1.23);
+      tAirMapShuttling.put(5.85, 1.44);
+      tAirMapShuttling.put(7.42, 1.57);
+      tAirMapShuttling.put(10.64, 1.74);
+      tAirMapShuttling.put(13.76, 1.53);
     }
   }
 
@@ -80,6 +95,10 @@ public final class Constants {
         VisionConstants.FIELD_LAYOUT.getTagPose(23).get().getTranslation().toTranslation2d();
     public static Translation2d blueRightTrench =
         VisionConstants.FIELD_LAYOUT.getTagPose(28).get().getTranslation().toTranslation2d();
+    public static Translation2d blueTowerCorner1 = new Translation2d(0, 4.243);
+    public static Translation2d blueTowerCorner2 = new Translation2d(1.111, 4.243);
+    public static Translation2d blueTowerCorner3 = new Translation2d(1.111, 3.238);
+    public static Translation2d blueTowerCorner4 = new Translation2d(0, 3.238);
 
     public static ArrayList<Translation2d> trenchList = new ArrayList<Translation2d>();
 
@@ -88,11 +107,12 @@ public final class Constants {
     public static Translation2d[] shuttleZoneThree = new Translation2d[4];
     public static Translation2d[] shuttleZoneFour = new Translation2d[4];
     public static Translation2d[] shuttleZoneFive = new Translation2d[4];
+    public static Translation2d[] towerZone = new Translation2d[4];
 
     public static Translation2d shuttleTargetOne =
-        new Translation2d(blueLeftTrench.getX() / 2.0, fieldWidth * 0.75);
+        new Translation2d(blueLeftTrench.getX() - 2, fieldWidth * 0.75);
     public static Translation2d shuttleTargetTwo =
-        new Translation2d(blueLeftTrench.getX() / 2.0, fieldWidth * 0.25);
+        new Translation2d(blueLeftTrench.getX() - 2, fieldWidth * 0.25);
 
     public static void initConstants() {
       double shuttlingDeadzone = 0.5;
@@ -133,6 +153,12 @@ public final class Constants {
       shuttleZoneFive[2] = new Translation2d(fieldLength, centerField.getY() + shuttlingDeadzone);
       shuttleZoneFive[3] =
           new Translation2d(redLeftTrench.getX(), centerField.getY() + shuttlingDeadzone);
+
+      // Zone Six
+      towerZone[0] = blueTowerCorner1;
+      towerZone[1] = blueTowerCorner2;
+      towerZone[2] = blueTowerCorner3;
+      towerZone[3] = blueTowerCorner4;
     }
   }
 
