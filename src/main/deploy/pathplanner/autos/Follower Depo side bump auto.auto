@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
           "type": "race",
           "data": {
             "commands": [
@@ -19,31 +25,6 @@
                 "data": {
                   "name": "Intake"
                 }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.6
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Deploy Intake"
-                      }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 1000.0
-                      }
-                    }
-                  ]
-                }
               }
             ]
           }
@@ -55,7 +36,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "depo side auto 2"
+                  "pathName": "depo side bump back"
                 }
               },
               {
@@ -65,6 +46,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
           }
         },
         {
@@ -88,7 +75,7 @@
                           {
                             "type": "wait",
                             "data": {
-                              "waitTime": 2.0
+                              "waitTime": 1.5
                             }
                           },
                           {
@@ -103,7 +90,26 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Everything"
+                        "name": "SOTM"
+                      }
+                    },
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 3.0
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Agitate Intake"
+                            }
+                          }
+                        ]
                       }
                     }
                   ]

@@ -99,7 +99,7 @@ public class Vision extends SubsystemBase {
         Logger.recordOutput("Vision/" + VisionConstants.CAM_NAMES[i] + "/xy std dev", xyStdDev);
         Logger.recordOutput("Vision/" + VisionConstants.CAM_NAMES[i] + "/Robot Pose", robotPose);
 
-        if (inputs[i].poseAmbiguity < 0.1 && shouldUpdate[i]) {
+        if (shouldUpdate[i]) {
           Drive.getInstance()
               .addVisionMeasurement(robotPose.toPose2d(), inputs[i].timestamp[p], stddevs);
         }

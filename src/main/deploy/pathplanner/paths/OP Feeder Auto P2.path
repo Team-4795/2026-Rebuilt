@@ -1,0 +1,100 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.721281138790035,
+        "y": 3.3840688018979836
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.850849320608217,
+        "y": 2.9283301655343483
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.745545454545454,
+        "y": 2.354988636363637
+      },
+      "prevControl": {
+        "x": 3.012670454545454,
+        "y": 2.2328473390488526
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.29307282415630526,
+      "rotationDegrees": -178.70755545448907
+    },
+    {
+      "waypointRelativePos": 0.6962699822380106,
+      "rotationDegrees": -179.01065373165198
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0,
+      "constraints": {
+        "maxVelocity": 4.0,
+        "maxAcceleration": 4.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Set Turret OP",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Set Turret OP"
+        }
+      }
+    },
+    {
+      "name": "rev shooter",
+      "waypointRelativePos": 0.21184919210053868,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "rev shooter"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.8,
+    "maxAcceleration": 4.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0.0,
+    "rotation": 177.83892051177367
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 88.34048877747612
+  },
+  "useDefaultConstraints": true
+}

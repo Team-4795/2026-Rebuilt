@@ -1,5 +1,6 @@
 package frc.robot.subsystems.Indexer;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
@@ -27,11 +28,14 @@ public class IndexerIOSim implements IndexerIO {
 
     inputs.indexerVolts = this.indexerVolts;
     inputs.indexerAngularVelocityRPS = indexerMotor.getAngularVelocityRPM() / 60.0;
+
+    inputs.towerCurrentAmps = towerMotor.getCurrentDrawAmps();
+    inputs.indexerCurrentAmps = indexerMotor.getCurrentDrawAmps();
   }
 
   @Override
   public void setVoltageTower(double voltage) {
-    towerMotor.setInputVoltage(voltage);
+    towerMotor.setInputVoltage(MathUtil.clamp(voltage, -12, 12));
     this.towerVolts = voltage;
   }
 
@@ -39,5 +43,10 @@ public class IndexerIOSim implements IndexerIO {
   public void setVoltageIndexer(double voltage) {
     indexerMotor.setInputVoltage(voltage);
     this.indexerVolts = voltage;
+  }
+
+  @Override
+  public double getCurrentTower() {
+    return towerMotor.getCurrentDrawAmps();
   }
 }

@@ -1,0 +1,81 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.637,
+        "y": 2.432
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.270582443653617,
+        "y": 2.25985290628707
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.234697508896798,
+        "y": 2.049928825622776
+      },
+      "prevControl": {
+        "x": 4.183977272727272,
+        "y": 2.33249053030303
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.3113207547169811,
+      "rotationDegrees": 178.52777134716797
+    },
+    {
+      "waypointRelativePos": 0.8880994671403181,
+      "rotationDegrees": 178.94998968350177
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Set Turret OP",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Set Turret OP"
+        }
+      }
+    },
+    {
+      "name": "rev shooter",
+      "waypointRelativePos": 0.16647919010123818,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.8,
+    "maxAcceleration": 4.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 176.97050174709227
+  },
+  "useDefaultConstraints": true
+}

@@ -8,9 +8,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.StateManager.StateManager;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -69,6 +70,8 @@ public class Robot extends LoggedRobot {
     Logger.start();
 
     robotContainer = new RobotContainer();
+
+    RobotController.setBrownoutVoltage(5.7);
   }
 
   /** This function is called periodically during all modes. */
@@ -92,6 +95,7 @@ public class Robot extends LoggedRobot {
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {
+    robotContainer.onDisable();
     Logger.recordOutput("Field Elements/Red Hub", Constants.FieldConstants.redHub);
     Logger.recordOutput("Field Elements/Red Left Trench", Constants.FieldConstants.redLeftTrench);
     Logger.recordOutput("Field Elements/Red Right Trench", Constants.FieldConstants.redRightTrench);
@@ -109,6 +113,11 @@ public class Robot extends LoggedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    if (DriverStation.getAlliance().get() != null) {
+      StateManager.alliance = DriverStation.getAlliance().get();
+    }
+
+    robotContainer.onEnable();
     m_autonomousCommand = robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
@@ -123,73 +132,21 @@ public class Robot extends LoggedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    // Intake.getInstance().setTeleopCurrentLimits();
+    robotContainer.onEnable();
     robotContainer.stopMechanisms();
+    robotContainer.startTimer();
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {
-    String gameData;
-    double timeLeftinMatch;
-    Alliance ourAlliance;
-    boolean isActive;
-
-    gameData = DriverStation.getGameSpecificMessage();
-    timeLeftinMatch = DriverStation.getMatchTime();
-    ourAlliance = DriverStation.getAlliance().orElse(null);
-    isActive = false;
-
-    if (gameData != null && gameData.length() > 0) {
-      switch (gameData.charAt(0)) {
-          // Blue is inactive first
-        case 'B':
-          isActive = (ourAlliance != null && ourAlliance == Alliance.Red);
-          break;
-
-          // Red is inactive first
-        case 'R':
-          isActive = (ourAlliance != null && ourAlliance == Alliance.Blue);
-          break;
-
-        default:
-          break;
-      }
-    }
-
-    // Transition Shift
-    if (timeLeftinMatch <= 140 && timeLeftinMatch > 130) {
-      Logger.recordOutput("isActive?", true);
-    }
-
-    // Shift One
-    else if (timeLeftinMatch <= 130 && timeLeftinMatch > 105) {
-      Logger.recordOutput("isActive?", isActive);
-    }
-
-    // Shift Two
-    else if (timeLeftinMatch <= 105 && timeLeftinMatch > 80) {
-      Logger.recordOutput("isActive?", !isActive);
-    }
-
-    // Shift Three
-    else if (timeLeftinMatch <= 80 && timeLeftinMatch > 55) {
-      Logger.recordOutput("isActive?", isActive);
-    }
-
-    // Shift Four
-    else if (timeLeftinMatch <= 55 && timeLeftinMatch > 30) {
-      Logger.recordOutput("isActive?", !isActive);
-    }
-
-    // Endgame
-    else if (timeLeftinMatch <= 30) {
-      Logger.recordOutput("isActive?", true);
-    }
-  }
+  public void teleopPeriodic() {}
 
   /** This function is called once when test mode is enabled. */
   @Override
-  public void testInit() {}
+  public void testInit() {
+    robotContainer.onEnable();
+  }
 
   /** This function is called periodically during test mode. */
   @Override

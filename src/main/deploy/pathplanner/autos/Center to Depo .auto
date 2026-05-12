@@ -5,44 +5,25 @@
     "data": {
       "commands": [
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
           "type": "race",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Feeder Auto 1"
+                  "pathName": "Center to Depo"
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "Intake"
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.6
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Deploy Intake"
-                      }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 100.0
-                      }
-                    }
-                  ]
                 }
               }
             ]
@@ -55,7 +36,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Copy of Feeder Auto 2"
+                  "pathName": "Center to Depo 2"
                 }
               },
               {
@@ -65,6 +46,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
           }
         },
         {
@@ -88,7 +75,7 @@
                           {
                             "type": "wait",
                             "data": {
-                              "waitTime": 2.0
+                              "waitTime": 1.5
                             }
                           },
                           {
@@ -103,16 +90,29 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Everything"
+                        "name": "SOTM"
+                      }
+                    },
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 3.0
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Agitate Intake"
+                            }
+                          }
+                        ]
                       }
                     }
                   ]
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
                 }
               }
             ]

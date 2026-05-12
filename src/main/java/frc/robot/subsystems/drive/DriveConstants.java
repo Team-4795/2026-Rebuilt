@@ -21,7 +21,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 
 public class DriveConstants {
-  public static final double maxSpeedMetersPerSec = 4.5;
+  public static final double maxSpeedMetersPerSec = 4.92;
   public static final double odometryFrequency = 100.0; // Hz
   public static final double trackWidth = Units.inchesToMeters(25.5);
   public static final double wheelBase = Units.inchesToMeters(21.75);
@@ -35,10 +35,10 @@ public class DriveConstants {
       };
 
   // Zeroed rotation values for each module, see setup instructions
-  public static final Rotation2d frontLeftZeroRotation = new Rotation2d(-1.490081);
-  public static final Rotation2d frontRightZeroRotation = new Rotation2d(0.078611);
-  public static final Rotation2d backLeftZeroRotation = new Rotation2d(0.055); // -0.582658
-  public static final Rotation2d backRightZeroRotation = new Rotation2d(1.489941);
+  public static final Rotation2d frontLeftZeroRotation = new Rotation2d(-1.526958); // -1.490081
+  public static final Rotation2d frontRightZeroRotation = new Rotation2d(2.942); // 0.047886
+  public static final Rotation2d backLeftZeroRotation = new Rotation2d(0.055533); // 0.05
+  public static final Rotation2d backRightZeroRotation = new Rotation2d(1.477178); // 1.489941
 
   // Device CAN IDs
   public static final int pigeonCanId = 10;
@@ -55,9 +55,9 @@ public class DriveConstants {
 
   // Drive motor configuration
   public static final int driveMotorCurrentLimit = 50;
-  public static final double wheelRadiusMeters = Units.inchesToMeters(1.5);
+  public static final double wheelRadiusMeters = Units.inchesToMeters(1.45);
   public static final double driveMotorReduction =
-      5.08; // MAXSwerve with 13 pinion teeth and 22 spur teeth
+      5.50; // MAXSwerve with 13 pinion teeth and 22 spur teeth
   public static final DCMotor driveGearbox = DCMotor.getNeoVortex(1);
 
   // Drive encoder configuration
@@ -67,12 +67,12 @@ public class DriveConstants {
       (2 * Math.PI) / 60.0 / driveMotorReduction; // Rotor RPM -> Wheel Rad/Sec
 
   // Drive PID configuration
-  //   public static final double driveKp = 0.03;
-  public static final double driveKp = 0.02;
+  public static final double driveKp = 0.025;
 
   public static final double driveKd = 0.0;
   public static final double driveKs = 0.0;
-  public static final double driveKv = 0.2;
+  public static final double driveKv = 0.03;
+
   public static final double driveSimP = 0.05;
   public static final double driveSimD = 0.0;
   public static final double driveSimKs = 0.0;

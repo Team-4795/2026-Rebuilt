@@ -35,15 +35,8 @@ public class ShooterIOReal implements ShooterIO {
   LoggedTunableNumber KD = new LoggedTunableNumber("Shooter/KD", ShooterConstants.kD);
 
   LoggedTunableNumber KS = new LoggedTunableNumber("Shooter/KS", ShooterConstants.kS);
-  LoggedTunableNumber KV = new LoggedTunableNumber("Shooter/KV_TOP", ShooterConstants.kV);
+  LoggedTunableNumber KV = new LoggedTunableNumber("Shooter/KV", ShooterConstants.kV);
   LoggedTunableNumber KA = new LoggedTunableNumber("Shooter/KA", ShooterConstants.kA);
-
-  LoggedTunableNumber MM_ACCELERATION =
-      new LoggedTunableNumber("Shooter/Acceleration", ShooterConstants.MM_ACCELERATION);
-  LoggedTunableNumber MM_JERK = new LoggedTunableNumber("Shooter/Jerk", ShooterConstants.MM_JERK);
-
-  public static LoggedTunableNumber shooterRPS =
-      new LoggedTunableNumber("Auto Shoot/Shooter RPS", 60);
 
   private final VelocityTorqueCurrentFOC m_request = new VelocityTorqueCurrentFOC(0);
 
@@ -51,10 +44,12 @@ public class ShooterIOReal implements ShooterIO {
   private double goalVelocityRPS = 0.0;
 
   public ShooterIOReal() {
-    topConfig = config(ShooterConstants.kV);
-    bottomConfig = config(ShooterConstants.kV);
+    topConfig = config();
+    bottomConfig = config();
 
-    BaseStatusSignal.setUpdateFrequencyForAll(20, topRPS, bottomRPS, topCurrent, bottomCurrent);
+    BaseStatusSignal.setUpdateFrequencyForAll(200, topRPS, bottomRPS, topCurrent, bottomCurrent);
+    bottomShooterMotor.optimizeBusUtilization(0.0, 1.0);
+    topShooterMotor.optimizeBusUtilization(0.0, 1.0);
 
     bottomShooterMotor.clearStickyFaults();
     topShooterMotor.clearStickyFaults();
@@ -88,15 +83,18 @@ public class ShooterIOReal implements ShooterIO {
 
     if (this.goalVelocityRPS == 0) {
       topShooterMotor.setControl(new NeutralOut());
-    } else {
-      topShooterMotor.setControl(m_request.withVelocity(velocityRPS));
+    }
+    // } else if (StateManager.getInstance().getState() == State.SHOOTING) {
+    //   topShooterMotor.setControl(m_request.withVelocity(velocityRPS).withSlot(0));
+    else {
+      topShooterMotor.setControl(m_request.withVelocity(velocityRPS).withSlot(0));
     }
   }
 
   @Override
   public void configure() {
-    topConfig = config(KV.get());
-    bottomConfig = config(KV.get());
+    topConfig = config();
+    bottomConfig = config();
 
     bottomConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     topConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
@@ -114,8 +112,8 @@ public class ShooterIOReal implements ShooterIO {
   @Override
   public boolean readyToShoot() {
     return (getGoal() != 0)
-        && (getTopRPS() > (getGoal() - 6))
-        && (getBottomRPS() > (getGoal() - 6));
+        && (getTopRPS() > (getGoal() - ShooterConstants.marginOfError))
+        && (getBottomRPS() > (getGoal() - ShooterConstants.marginOfError));
   }
 
   @Override
@@ -141,39 +139,52 @@ public class ShooterIOReal implements ShooterIO {
     inputs.bottomShooterVelocityRPS = bottomRPS.getValueAsDouble();
     inputs.bottomShooterCurrent = bottomCurrent.getValueAsDouble();
     inputs.bottomShooterVolts = volts;
+    // inputs.bottomShooterSupplyCurrent = bottomShooterMotor.getSupplyCurrent().getValueAsDouble();
 
     inputs.topShooterVelocityRPS = topRPS.getValueAsDouble();
     inputs.topShooterCurrent = topCurrent.getValueAsDouble();
     inputs.topShooterVolts = volts;
+    // inputs.topShooterSupplyCurrent = topShooterMotor.getSupplyCurrent().getValueAsDouble();
+    // Logger.recordOutput("Shooter/Top Connected?", topShooterMotor.isConnected());
+    // Logger.recordOutput("Shooter/Bottom Connected?", bottomShooterMotor.isConnected());
   }
 
-  public TalonFXConfiguration config(double kV) {
+  public TalonFXConfiguration config() {
     var talonFXConfig = new TalonFXConfiguration();
     talonFXConfig.Audio.BeepOnBoot = true;
 
-    // PID + FF settings
-    talonFXConfig.Slot0.kS = KS.get();
-    talonFXConfig.Slot0.kV = kV;
-    talonFXConfig.Slot0.kA = KA.get();
-    talonFXConfig.Slot0.kP = KP.get();
-    talonFXConfig.Slot0.kI = KI.get();
-    talonFXConfig.Slot0.kD = KD.get();
+    // Shooting PID + FF
+    talonFXConfig.Slot0.kS = 0;
+    talonFXConfig.Slot0.kV = 0;
+    talonFXConfig.Slot0.kA = 0;
+    talonFXConfig.Slot0.kP = 999;
+    talonFXConfig.Slot0.kI = 0;
+    talonFXConfig.Slot0.kD = 0;
 
+    talonFXConfig.Slot1.kS = KS.get();
+    talonFXConfig.Slot1.kV = KV.get();
+    talonFXConfig.Slot1.kA = KA.get();
+    talonFXConfig.Slot1.kP = KP.get();
+    talonFXConfig.Slot1.kI = KI.get();
+    talonFXConfig.Slot1.kD = KD.get();
+
+    // Current Limits
     talonFXConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-    talonFXConfig.CurrentLimits.StatorCurrentLimit = ShooterConstants.CURRENT_LIMIT;
+    talonFXConfig.CurrentLimits.StatorCurrentLimit = ShooterConstants.STATOR_CURRENT_LIMIT;
     talonFXConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
-    talonFXConfig.CurrentLimits.SupplyCurrentLimit = ShooterConstants.CURRENT_LIMIT;
+    talonFXConfig.CurrentLimits.SupplyCurrentLimit = ShooterConstants.SUPPLY_CURRENT_LIMIT;
+
+    // Change values
+    // talonFXConfig.CurrentLimits.SupplyCurrentLowerTime = 1.5;
+    // talonFXConfig.CurrentLimits.SupplyCurrentLowerLimit =
+    // ShooterConstants.SUPPLY_CURRENT_LIMIT_LOWER;
 
     talonFXConfig.Feedback.SensorToMechanismRatio = ShooterConstants.GEARING;
 
     talonFXConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
-    talonFXConfig.TorqueCurrent.PeakForwardTorqueCurrent = 80;
+    talonFXConfig.TorqueCurrent.PeakForwardTorqueCurrent = 120;
     talonFXConfig.TorqueCurrent.PeakReverseTorqueCurrent = 0;
-
-    // // Motion Magic settings
-    // talonFXConfig.MotionMagic.MotionMagicAcceleration = MM_ACCELERATION.get();
-    // talonFXConfig.MotionMagic.MotionMagicJerk = MM_JERK.get();
 
     return talonFXConfig;
   }

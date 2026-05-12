@@ -1,9 +1,11 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Indexer.Indexer;
 import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.Intake.IntakeConstants;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployConstants;
 import frc.robot.subsystems.Shooter.Shooter;
@@ -29,21 +31,32 @@ public class AutoCommands {
   private AutoCommands() {}
 
   public static Command retractIntake() {
-    return Commands.runOnce(() -> deploy.setGoal(IntakeDeployConstants.deployOffset - 0.05));
+    return Commands.runOnce(() -> deploy.setGoal(IntakeDeployConstants.stowPosition - 0.05));
   }
 
   public static Command deployIntake() {
-    return Commands.runOnce(() -> deploy.setGoal(IntakeDeployConstants.stowPosition));
+    return Commands.runOnce(() -> deploy.setGoal(IntakeDeployConstants.intakePosition));
+  }
+
+  public static Command liftIntake() {
+    return Commands.runOnce(() -> deploy.setGoal(0.04));
   }
 
   public static Command agitateIntake() {
     return Commands.parallel(
         Commands.repeatingSequence(
-            Commands.runOnce(() -> deploy.setGoal(0.2), deploy),
+            Commands.runOnce(() -> deploy.setGoal(0.04)),
             Commands.waitSeconds(0.5),
-            Commands.runOnce(() -> deploy.setGoal(0)),
-            Commands.waitSeconds(0.5)),
-        intake());
+            deployIntake(),
+            Commands.waitSeconds(0.5)));
+  }
+
+  public static Command agitateIntakeAuto() {
+    return Commands.repeatingSequence(
+        Commands.runOnce(() -> deploy.setGoal(0.04)),
+        Commands.waitSeconds(1),
+        deployIntake(),
+        Commands.waitSeconds(1));
   }
 
   // public static Command autoAgitate() {
@@ -53,7 +66,7 @@ public class AutoCommands {
   // }
 
   public static Command intake() {
-    return Commands.run(() -> intake.setIntakeVoltage(9), intake);
+    return Commands.run(() -> intake.setIntakeVoltage(12), intake);
   }
 
   public static Command reverseIntake() {
@@ -62,6 +75,10 @@ public class AutoCommands {
 
   public static Command shootOnTheMove() {
     return new ShootOnTheMove(drive, turret, shooter, hood, manager);
+  }
+
+  public static Command autonomousSOTM() {
+    return new AutonomousSOTM(drive, turret, shooter, hood, manager);
   }
 
   public static Command autoScore() {
@@ -73,21 +90,26 @@ public class AutoCommands {
   // }
 
   public static Command shoot() {
-    return Commands.parallel(
-        Commands.run(() -> indexer.setVoltageIndexer(-12)),
-        Commands.run(() -> indexer.setVoltageTower(-12)));
+    return Commands.either(
+        Commands.parallel(
+            Commands.runOnce(() -> indexer.setVoltageIndexer(-11)),
+            Commands.runOnce(() -> indexer.setVoltageTower(-12))),
+        Commands.parallel(
+            Commands.runOnce(() -> indexer.setVoltageIndexer(-8)),
+            Commands.runOnce(() -> indexer.setVoltageTower(-11))),
+        () -> manager.getState() == State.SHOOTING);
   }
 
   public static Command reverseIndexer() {
     return Commands.parallel(
-        Commands.run(() -> indexer.setVoltageIndexer(12)),
-        Commands.run(() -> indexer.setVoltageTower(12)));
+        Commands.runOnce(() -> indexer.setVoltageIndexer(11)),
+        Commands.runOnce(() -> indexer.setVoltageTower(9)));
   }
 
   public static Command stopShoot() {
     return Commands.parallel(
-        Commands.run(() -> indexer.setVoltageIndexer(0)),
-        Commands.run(() -> indexer.setVoltageTower(0)));
+        Commands.runOnce(() -> indexer.setVoltageIndexer(0)),
+        Commands.runOnce(() -> indexer.setVoltageTower(0)));
   }
 
   public static Command zeroSequence() { // if it doesn't work check the motor limits
@@ -155,6 +177,42 @@ public class AutoCommands {
         () -> manager.getState().equals(State.SHOOTING));
   }
 
+  // Keep shooter and hood aimed for a period after to not miss last shots
+  public static Command afterShoot() {
+    return Commands.parallel(
+        stopShoot(),
+        Commands.runOnce(() -> shooter.setVelocityRPS(0)),
+        Commands.runOnce(() -> hood.setGoal(0)),
+        Commands.runOnce(() -> shooter.resetShooter()));
+  }
+
+  public static Command unjam() {
+    return Commands.repeatingSequence(
+            Commands.waitSeconds(3.5),
+            Commands.runOnce(() -> indexer.setVoltageIndexer(0), indexer),
+            Commands.waitSeconds(0.25),
+            Commands.runOnce(() -> indexer.setVoltageIndexer(12), indexer),
+            Commands.waitSeconds(1),
+            Commands.runOnce(() -> indexer.setVoltageIndexer(0), indexer),
+            Commands.waitSeconds(0.25),
+            Commands.runOnce(() -> indexer.setVoltageIndexer(-12), indexer))
+        .onlyWhile(() -> !indexer.didCurrentSpike());
+  }
+
+  public static Command intakeWithScaling() {
+    // bs numbers please change them
+    return Commands.startEnd(
+        () ->
+            intake.setGoalRPS(
+                MathUtil.clamp(45 + 7.5 * drive.getSpeed(), 0.0, IntakeConstants.maxRPS)),
+        () -> intake.setGoalRPS(0),
+        intake);
+  }
+
+  public static Command setTurretOPAuto() {
+    return Commands.runOnce(() -> turret.setGoal(0.581), turret);
+  }
+
   // Corner Setpoints
   public static Command feederCornerAlign() {
     return Commands.parallel(
@@ -170,7 +228,15 @@ public class AutoCommands {
         Commands.run(() -> hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(5.2))));
   }
 
-  public static Command pleaseNoTouch() {
-    return new Everything(drive, turret, manager, shooter, hood);
+  public static Command stopShooter() {
+    return Commands.runOnce(() -> shooter.setVelocityRPS(0), shooter);
+  }
+
+  public static Command autonomousStopSOTM() {
+    return Commands.parallel(
+        stopShoot(),
+        Commands.run(() -> shooter.setVelocityRPS(0)),
+        Commands.run(() -> hood.setGoal(0)),
+        Commands.run(() -> shooter.resetShooter()));
   }
 }

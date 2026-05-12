@@ -1,0 +1,83 @@
+{
+  "path_elements": [
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 2.5408667115711014,
+        "y_meters": 2.245840179393838,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 3.1182784520067877,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.0,
+      "lib_key": "SOTM"
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 2.8317747949291565,
+        "y_meters": 1.0950149142431034,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": -2.4585300530899508,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 3.734160055136565,
+        "y_meters": 0.5836594409086917,
+        "intermediate_handoff_radius_meters": 0.35000000000000003
+      },
+      "rotation_target": {
+        "rotation_radians": 0.0,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.3732901916311383,
+      "lib_key": "Stop SOTM"
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 5.378259060684965,
+        "y_meters": 0.5830440882790775,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 0.0,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 6.823543130450893,
+        "y_meters": 0.6198006821493625,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 1.5707963267948966,
+        "profiled_rotation": true
+      }
+    }
+  ],
+  "constraints": {
+    "max_velocity_meters_per_sec": [
+      {
+        "value": 0.5,
+        "start_ordinal": 0,
+        "end_ordinal": 2
+      }
+    ]
+  }
+}

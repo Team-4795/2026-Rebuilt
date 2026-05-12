@@ -8,6 +8,15 @@ public class IntakeConstants {
 
   public static final int CURRENT_LIMIT = 40;
 
-  // fix later
-  public static final double GEARING = 13.0 / 14.0; // change later with proper gearing
+  public static final double GEARING = 1.5;
+
+  public static final double maxRPS = 66.66; // idk
+
+  public static final double kS = 0.0;
+  public static final double kV = 0.4;
+  public static final double kA = 0.0;
+
+  public static final double kP = 2.5;
+  public static final double kI = 0.0;
+  public static final double kD = 0.0;
 }

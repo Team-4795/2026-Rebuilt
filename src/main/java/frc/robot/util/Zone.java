@@ -46,17 +46,22 @@ public class Zone {
     Logger.recordOutput(
         "Zones/" + zoneName,
         new Pose2d[] {
-          new Pose2d(x, y, new Rotation2d()),
-          new Pose2d(x + w, y, new Rotation2d()),
-          new Pose2d(x + w, y + h, new Rotation2d()),
-          new Pose2d(x, y + h, new Rotation2d()),
-          new Pose2d(x, y, new Rotation2d()) // close shape
+          new Pose2d(x, y, Rotation2d.kZero),
+          new Pose2d(x + w, y, Rotation2d.kZero),
+          new Pose2d(x + w, y + h, Rotation2d.kZero),
+          new Pose2d(x, y + h, Rotation2d.kZero),
+          new Pose2d(x, y, Rotation2d.kZero) // close shape
         });
   }
 
   // Check whether robot is within the zone
-  public boolean contains(Pose2d robotPose) {
+  public boolean contains(Pose2d pose) {
     Rectangle2D rect = side.getBounds2D();
-    return rect.contains(robotPose.getX(), robotPose.getY());
+    return rect.contains(pose.getX(), pose.getY());
+  }
+
+  public boolean contains(Translation2d translation) {
+    Rectangle2D rect = side.getBounds2D();
+    return rect.contains(translation.getX(), translation.getY());
   }
 }

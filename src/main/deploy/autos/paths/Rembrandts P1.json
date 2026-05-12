@@ -1,0 +1,82 @@
+{
+  "path_elements": [
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 4.218232662192393,
+        "y_meters": 7.491032811334824,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": -1.5707963267948966,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.33425633811192834,
+      "lib_key": "Deploy Intake"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.666,
+      "lib_key": "Intake"
+    },
+    {
+      "type": "translation",
+      "x_meters": 6.224490875246925,
+      "y_meters": 7.441811778893548,
+      "intermediate_handoff_radius_meters": 0.4999999999999997
+    },
+    {
+      "type": "translation",
+      "x_meters": 7.12393381147454,
+      "y_meters": 6.982330953771445,
+      "intermediate_handoff_radius_meters": 0.49999999999999983
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 7.803654422605133,
+        "y_meters": 6.431569724086503,
+        "intermediate_handoff_radius_meters": 0.29999999999999966
+      },
+      "rotation_target": {
+        "rotation_radians": -1.5718435243460933,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "translation",
+      "x_meters": 7.81894123308812,
+      "y_meters": 5.837505592841163,
+      "intermediate_handoff_radius_meters": 0.2
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 7.82441476030661,
+        "y_meters": 4.795,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": -1.5707963267948966,
+        "profiled_rotation": true
+      }
+    }
+  ],
+  "constraints": {
+    "max_velocity_meters_per_sec": [
+      {
+        "value": 4.2,
+        "start_ordinal": 0,
+        "end_ordinal": 2
+      },
+      {
+        "value": 1.5,
+        "start_ordinal": 3,
+        "end_ordinal": 5
+      }
+    ]
+  }
+}

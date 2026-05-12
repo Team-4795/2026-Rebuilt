@@ -10,6 +10,7 @@ public interface TurretIO {
     public double current = 0;
     public double volts = 0;
     public double velocity = 0;
+    public double supplyVoltage = 0;
   }
 
   public default double getPosition() {
@@ -33,6 +34,10 @@ public interface TurretIO {
   public default boolean readyToShoot() {
     return false;
   }
+
+  public default void setBrake() {}
+
+  public default void setCoast() {}
 
   public default void configure() {}
 }

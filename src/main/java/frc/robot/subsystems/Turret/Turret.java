@@ -49,12 +49,25 @@ public class Turret extends SubsystemBase {
     return io.getPosition();
   }
 
+  public double getTurretGoal() {
+    return io.getGoal();
+  }
+
   public void zero() {
     io.zero();
   }
 
   public boolean readyToShoot() {
     return io.readyToShoot();
+  }
+
+  public Translation2d getTurretPose() {
+    Pose2d robotPose = Drive.getInstance().getPose();
+    Translation2d turretOffsetPose = TurretConstants.OFFSET;
+
+    Translation2d turretPose =
+        robotPose.getTranslation().plus(turretOffsetPose.rotateBy(robotPose.getRotation()));
+    return turretPose;
   }
 
   // Visualize the direction the turret aims in ascope
@@ -76,6 +89,14 @@ public class Turret extends SubsystemBase {
     return turretPose;
   }
 
+  public void setBrake() {
+    io.setBrake();
+  }
+
+  public void setCoast() {
+    io.setCoast();
+  }
+
   public void configure() {
     io.configure();
   }
@@ -85,6 +106,6 @@ public class Turret extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("Turret", inputs);
     Logger.recordOutput("Turret/Turret Visualization", visualizeTurret());
-    Logger.recordOutput("Turret/Can Move", TurretConstants.canMove);
+    Logger.recordOutput("Turret/Can Move", StateManager.getInstance().canTurretMove());
   }
 }

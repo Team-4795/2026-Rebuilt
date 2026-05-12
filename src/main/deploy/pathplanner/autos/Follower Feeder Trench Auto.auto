@@ -5,9 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "Deploy Intake"
+            "waitTime": 3.0
           }
         },
         {
@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Double Dip P1 "
+                  "pathName": "Feeder Auto 1"
                 }
               },
               {
@@ -25,78 +25,27 @@
                 "data": {
                   "name": "Intake"
                 }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Double Dip P2"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 6.0
-                }
               },
               {
-                "type": "parallel",
+                "type": "sequential",
                 "data": {
                   "commands": [
                     {
-                      "type": "sequential",
+                      "type": "wait",
                       "data": {
-                        "commands": [
-                          {
-                            "type": "wait",
-                            "data": {
-                              "waitTime": 1.5
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "Shoot"
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "type": "sequential",
-                      "data": {
-                        "commands": [
-                          {
-                            "type": "wait",
-                            "data": {
-                              "waitTime": 3.0
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "Retract Intake"
-                            }
-                          }
-                        ]
+                        "waitTime": 0.6
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "Align Hub"
+                        "name": "Deploy Intake"
                       }
                     },
                     {
-                      "type": "named",
+                      "type": "wait",
                       "data": {
-                        "name": "Shooter Hood Angle"
+                        "waitTime": 100.0
                       }
                     }
                   ]
@@ -106,25 +55,13 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Zero Hood Angle"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Deploy Intake"
-          }
-        },
-        {
           "type": "race",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Double Dip P3"
+                  "pathName": "Follower Feeder Auto 2 trench"
                 }
               },
               {
@@ -137,13 +74,19 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
           "type": "race",
           "data": {
             "commands": [
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 6.0
+                  "waitTime": 12.0
                 }
               },
               {
@@ -170,6 +113,12 @@
                       }
                     },
                     {
+                      "type": "named",
+                      "data": {
+                        "name": "SOTM"
+                      }
+                    },
+                    {
                       "type": "sequential",
                       "data": {
                         "commands": [
@@ -182,22 +131,10 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "Retract Intake"
+                              "name": "Agitate Intake"
                             }
                           }
                         ]
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Align Hub"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Shooter Hood Angle"
                       }
                     }
                   ]
@@ -209,7 +146,7 @@
       ]
     }
   },
-  "resetOdom": false,
+  "resetOdom": true,
   "folder": null,
   "choreoAuto": false
 }

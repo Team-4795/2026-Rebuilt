@@ -16,16 +16,16 @@ public class VisionConstants {
   public static final double XY_SINGLE_STDEV = 0.08;
   public static final double XY_MULTIPLE_STDEV = 0.04;
 
-  public static final String[] CAM_NAMES = {"Luma Right", "Back Cam", "Luma Left"};
+  public static final String[] CAM_NAMES = {"Right Cam", "Back Cam", "Left Cam"};
 
   public static final Transform3d[] CAM_POSES =
       new Transform3d[] {
-        // Luma Right
+        // Right Cam
         new Transform3d(
             new Translation3d(
-                Units.inchesToMeters(-3.25),
-                Units.inchesToMeters(-14),
-                Units.inchesToMeters(10.25)),
+                Units.inchesToMeters(-4.25),
+                Units.inchesToMeters(-13.75),
+                Units.inchesToMeters(9.25)),
             new Rotation3d(
                 Units.degreesToRadians(0),
                 Units.degreesToRadians(-20),
@@ -34,22 +34,20 @@ public class VisionConstants {
         // Back Cam
         new Transform3d(
             new Translation3d(
-                Units.inchesToMeters(-12.5), Units.inchesToMeters(-11.1), Units.inchesToMeters(9)),
+                Units.inchesToMeters(-12.5), Units.inchesToMeters(-11.1), Units.inchesToMeters(8)),
             new Rotation3d(
                 Units.degreesToRadians(0),
                 Units.degreesToRadians(-20),
                 Units.degreesToRadians(180))),
 
-        // Luma Left
+        // Left Cam
         new Transform3d(
-            new Translation3d( // Change Translation
-                Units.inchesToMeters(-10.5),
-                Units.inchesToMeters(14.5),
-                Units.inchesToMeters(10.5)),
-            new Rotation3d( // Rotation should be good. Only touch if 3d pose looks weird
-                Units.degreesToRadians(180),
-                Units.degreesToRadians(-20),
-                Units.degreesToRadians(90)))
+            new Translation3d(
+                Units.inchesToMeters(-11.188),
+                Units.inchesToMeters(13.5),
+                Units.inchesToMeters(9.75)),
+            new Rotation3d(
+                Units.degreesToRadians(0), Units.degreesToRadians(-20), Units.degreesToRadians(90)))
       };
 
   public static AprilTagFieldLayout FIELD_LAYOUT;
