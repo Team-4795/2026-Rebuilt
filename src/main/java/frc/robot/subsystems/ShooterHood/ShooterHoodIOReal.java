@@ -108,6 +108,11 @@ public class ShooterHoodIOReal implements ShooterHoodIO {
   }
 
   @Override
+  public void setoutreachAngle(double angle) {
+    ShooterHoodConstants.outreachAngle = angle; 
+  }
+
+  @Override
   public void configure() {
     motorConfig.Slot0.kA = KA.get();
     motorConfig.Slot0.kV = KV.get();

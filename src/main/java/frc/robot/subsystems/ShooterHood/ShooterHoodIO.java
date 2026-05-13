@@ -32,5 +32,9 @@ public interface ShooterHoodIO {
     return false;
   }
 
+  public default void setoutreachAngle(double angle) {
+
+  }
+
   public default void configure() {}
 }

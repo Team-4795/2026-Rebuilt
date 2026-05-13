@@ -50,6 +50,10 @@ public class Shooter extends SubsystemBase {
     io.resetShooter();
   }
 
+  public void setOutreachRPS(double rps) {
+    io.outreachRPS(rps);
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);

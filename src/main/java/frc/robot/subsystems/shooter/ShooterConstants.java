@@ -13,6 +13,8 @@ public final class ShooterConstants {
   public static final double minVel = -30.0;
   public static final double maxVel = 130.0;
 
+  public static double setRPS = 0; 
+
   // Margin for ready to shoot command
   public static final double marginOfError = 2.0;
 

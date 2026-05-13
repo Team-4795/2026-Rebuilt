@@ -56,6 +56,10 @@ public class ShooterHood extends SubsystemBase {
     return io.getGoal();
   }
 
+  public void setOutreachAngle(double angle) {
+    io.setoutreachAngle(angle);
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);

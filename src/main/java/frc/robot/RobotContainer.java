@@ -80,8 +80,8 @@ public class RobotContainer {
 
   // Robot demo bindings
   private final Trigger manualHood = m_driverController.x();
-  private final Trigger turretPos1 = m_driverController.povLeft();
-  private final Trigger turretPos2 = m_driverController.povUp();
+  private final Trigger manualTurretPositive = m_operatorController.leftTrigger();
+  private final Trigger manualTurretNegative = m_operatorController.rightTrigger();
   private final Trigger turretPos3 = m_driverController.povRight();
 
   // Official Bindings
@@ -100,9 +100,14 @@ public class RobotContainer {
   // private final Trigger zeroButton = m_operatorController.a(); // Zero sequence
   private final Trigger toggleVision = m_operatorController.x();
   private final Trigger lockTurret = m_operatorController.b();
-  private final Trigger depoCorner = m_operatorController.povLeft();
-  private final Trigger feederCorner = m_operatorController.povRight();
+  // private final Trigger depoCorner = m_operatorController.povLeft();
+  // private final Trigger feederCorner = m_operatorController.povRight();
   private final Trigger toggleAlliance = m_operatorController.y();
+  private final Trigger highestSetpoint = m_operatorController.povUp();
+    private final Trigger higherSetpoint = m_operatorController.povLeft();
+  private final Trigger midSetpoint = m_operatorController.povRight();
+  private final Trigger lowestSetpoint = m_operatorController.povDown();
+
 
   // Testing Bindings
   private final Trigger configure = m_driverController.povDown();
@@ -258,10 +263,10 @@ public class RobotContainer {
     // Intake
     intakeButton.whileTrue(AutoCommands.intake());
 
-    m_operatorController
-        .leftTrigger()
-        .whileTrue(AutoCommands.intake())
-        .onFalse(Commands.run(() -> intake.setGoalRPS(0), intake));
+    // m_operatorController
+    //     .leftTrigger()
+    //     .whileTrue(AutoCommands.intake())
+    //     .onFalse(Commands.run(() -> intake.setGoalRPS(0), intake));
 
     // Run Indexer
     runIndexer.whileTrue(AutoCommands.shoot()).onFalse(AutoCommands.stopShoot());
@@ -287,9 +292,8 @@ public class RobotContainer {
     // Lock turret
     lockTurret.onTrue(Commands.runOnce(() -> turret.lockTurret(), turret));
 
-    // Corner setpoints
-    depoCorner.whileTrue(AutoCommands.depoCornerAlign());
-    feederCorner.whileTrue(AutoCommands.feederCornerAlign());
+    // manual setpoints
+    
 
     // Deployable intake
     deployIntake.whileTrue(AutoCommands.deployIntake());
@@ -310,9 +314,8 @@ public class RobotContainer {
     // outreach thingy
     manualHood.whileTrue(AutoCommands.manualHood(ShooterHoodConstants.minAngle));
     // turret setpoints
-    turretPos1.whileTrue(AutoCommands.manualTurret(Units.degreesToRotations(TurretConstants.minAngle)));
-    turretPos2.whileTrue(AutoCommands.manualTurret(Units.degreesToRotations(180)));
-    turretPos3.whileTrue(AutoCommands.manualTurret(Units.degreesToRotations(TurretConstants.maxAngle)));
+    manualTurretPositive.whileTrue(Commands.run(() -> turret.setVoltage(2 * m_operatorController.getLeftTriggerAxis())));
+    manualTurretNegative.whileTrue(Commands.run(() -> turret.setVoltage(-2 * m_operatorController.getRightTriggerAxis())));
 
     // m_operatorController
     //     .povUp()
@@ -338,7 +341,7 @@ public class RobotContainer {
     //             Commands.runOnce((() -> indexer.setRPSIndexer(0))),
     //             Commands.runOnce(() -> indexer.setVoltageTower(0))));
 
-    configure.onTrue(Commands.runOnce(() -> shooterHood.configure()));
+    // configure.onTrue(Commands.runOnce(() -> shooterHood.configure()));
   }
 
   /**

@@ -53,6 +53,13 @@ public class AutoCommands {
             Commands.waitSeconds(0.5)));
   }
 
+  public static Command setOutreachSetpoints(double rps, double angle) {
+    return Commands.parallel(
+      Commands.runOnce(() -> shooter.setOutreachRPS(rps), shooter), 
+      Commands.runOnce(() -> hood.setOutreachAngle(angle), hood)
+    );
+  } 
+
   public static Command agitateIntakeAuto() {
     return Commands.repeatingSequence(
         Commands.runOnce(() -> deploy.setGoal(0.04)),

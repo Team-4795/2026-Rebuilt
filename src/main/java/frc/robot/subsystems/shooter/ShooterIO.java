@@ -25,6 +25,10 @@ public interface ShooterIO {
     return 0.0;
   }
 
+  public default void outreachRPS(double rps) {
+    
+  }
+
   public default void resetShooter() {}
 
   public default double getBottomRPS() {
