@@ -79,7 +79,8 @@ public class RobotContainer {
       Constants.OIConstants.operatorController;
 
   // Robot demo bindings
-  private final Trigger manualHood = m_driverController.x();
+  private final Trigger negativeManualHood = m_operatorController.leftBumper();
+  private final Trigger positiveManualHood = m_operatorController.rightBumper();
   private final Trigger manualTurretPositive = m_operatorController.leftTrigger();
   private final Trigger manualTurretNegative = m_operatorController.rightTrigger();
   private final Trigger turretPos3 = m_driverController.povRight();
@@ -312,36 +313,17 @@ public class RobotContainer {
     // add manual setpoints here
 
     // outreach thingy
-    manualHood.whileTrue(AutoCommands.manualHood(ShooterHoodConstants.minAngle));
+    negativeManualHood.whileTrue(Commands.run(()-> shooterHood.setVoltage(-0.3)));
+    positiveManualHood.whileTrue(Commands.run(()-> shooterHood.setVoltage(0.3)));
     // turret setpoints
     manualTurretPositive.whileTrue(Commands.run(() -> turret.setVoltage(2 * m_operatorController.getLeftTriggerAxis())));
     manualTurretNegative.whileTrue(Commands.run(() -> turret.setVoltage(-2 * m_operatorController.getRightTriggerAxis())));
 
-    // m_operatorController
-    //     .povUp()
-    //     .whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kForward)));
-    // m_operatorController
-    //     .povDown()
-    //     .whileTrue(Commands.run(() -> drive.sysIdDynamic(Direction.kReverse)));
-    // m_operatorController
-    //     .povLeft()
-    //     .whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kForward)));
-    // m_operatorController
-    //     .povRight()
-    //     .whileTrue(Commands.run(() -> drive.sysIdQuasistatic(Direction.kReverse)));
+    highestSetpoint.whileTrue(Commands.run(()-> AutoCommands.setOutreachSetpoints(50, -0.1)));
+    higherSetpoint.whileTrue(Commands.run(()-> AutoCommands.setOutreachSetpoints(40, -0.1)));
+    midSetpoint.whileTrue(Commands.run(()-> AutoCommands.setOutreachSetpoints(30, -0.1)));
+    lowestSetpoint.whileTrue(Commands.run(()-> AutoCommands.setOutreachSetpoints(13, -0.1)));
 
-    // testing with everything
-    // runIndexer
-    //     .whileTrue(
-    //         Commands.parallel(
-    //             Commands.runOnce((() -> indexer.setRPSTest())),
-    //             Commands.runOnce(() -> indexer.setVoltageTower(-12))))
-    //     .onFalse(
-    //         Commands.parallel(
-    //             Commands.runOnce((() -> indexer.setRPSIndexer(0))),
-    //             Commands.runOnce(() -> indexer.setVoltageTower(0))));
-
-    // configure.onTrue(Commands.runOnce(() -> shooterHood.configure()));
   }
 
   /**

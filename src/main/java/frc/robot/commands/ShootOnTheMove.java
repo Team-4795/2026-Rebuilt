@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.Constants.HoodConstants;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterConstants;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
@@ -135,16 +136,16 @@ public class ShootOnTheMove extends Command {
 
     turret.setGoal(desiredRot);
 
-    if (stateManager.getState() == State.SHOOTING) {
-      shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(distance));
-      hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(distance));
-    } else {
-      shooter.setVelocityRPS(ShooterConstants.shooterVelocityShuttlingMap.get(distance));
-      hood.setGoal(ShooterHoodConstants.shooterHoodShuttlingMap.get(distance));
+    // if (stateManager.getState() == State.SHOOTING) {
+    //   shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(distance));
+    //   hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(distance));
+    // } else {
+    //   shooter.setVelocityRPS(ShooterConstants.shooterVelocityShuttlingMap.get(distance));
+    //   hood.setGoal(ShooterHoodConstants.shooterHoodShuttlingMap.get(distance));
 
-      // shooter.setVelocityRPS(shooterRPS.getAsDouble());
-      // hood.setGoal(hoodAngle.getAsDouble());
-    }
+      shooter.setVelocityRPS(ShooterConstants.setRPS);
+      hood.setGoal(ShooterHoodConstants.outreachAngle); //remove this to not use goal on hood
+ //   }
 
     Logger.recordOutput("Shoot on move At Hub/Hub Pose", hub);
     Logger.recordOutput("Shoot on move At Hub/Desired Hub", offsettedTarget);
