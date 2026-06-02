@@ -5,8 +5,6 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -30,7 +28,6 @@ import frc.robot.subsystems.Shooter.ShooterIO;
 import frc.robot.subsystems.Shooter.ShooterIOReal;
 import frc.robot.subsystems.Shooter.ShooterIOSim;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
-import frc.robot.subsystems.ShooterHood.ShooterHoodConstants;
 import frc.robot.subsystems.ShooterHood.ShooterHoodIO;
 import frc.robot.subsystems.ShooterHood.ShooterHoodIOReal;
 import frc.robot.subsystems.ShooterHood.ShooterHoodIOSim;
@@ -38,7 +35,6 @@ import frc.robot.subsystems.StateManager.State;
 import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.StateManager.StateManager.OperationStates;
 import frc.robot.subsystems.Turret.Turret;
-import frc.robot.subsystems.Turret.TurretConstants;
 import frc.robot.subsystems.Turret.TurretIO;
 import frc.robot.subsystems.Turret.TurretIOReal;
 import frc.robot.subsystems.Turret.TurretIOSim;
@@ -105,10 +101,9 @@ public class RobotContainer {
   // private final Trigger feederCorner = m_operatorController.povRight();
   private final Trigger toggleAlliance = m_operatorController.y();
   private final Trigger highestSetpoint = m_operatorController.povUp();
-    private final Trigger higherSetpoint = m_operatorController.povLeft();
+  private final Trigger higherSetpoint = m_operatorController.povLeft();
   private final Trigger midSetpoint = m_operatorController.povRight();
   private final Trigger lowestSetpoint = m_operatorController.povDown();
-
 
   // Testing Bindings
   private final Trigger configure = m_driverController.povDown();
@@ -294,7 +289,6 @@ public class RobotContainer {
     lockTurret.onTrue(Commands.runOnce(() -> turret.lockTurret(), turret));
 
     // manual setpoints
-    
 
     // Deployable intake
     deployIntake.whileTrue(AutoCommands.deployIntake());
@@ -313,17 +307,26 @@ public class RobotContainer {
     // add manual setpoints here
 
     // outreach thingy
-    negativeManualHood.whileTrue(Commands.run(()-> shooterHood.setVoltage(-0.3)));
-    positiveManualHood.whileTrue(Commands.run(()-> shooterHood.setVoltage(0.3)));
+    negativeManualHood
+        .whileTrue(Commands.run(() -> shooterHood.setVoltage(-1.5)))
+        .onFalse(Commands.run(() -> shooterHood.setVoltage(0)));
+    positiveManualHood
+        .whileTrue(Commands.run(() -> shooterHood.setVoltage(1.5)))
+        .onFalse(Commands.run(() -> shooterHood.setVoltage(0)));
     // turret setpoints
-    manualTurretPositive.whileTrue(Commands.run(() -> turret.setVoltage(2 * m_operatorController.getLeftTriggerAxis())));
-    manualTurretNegative.whileTrue(Commands.run(() -> turret.setVoltage(-2 * m_operatorController.getRightTriggerAxis())));
+    manualTurretPositive
+        .whileTrue(
+            Commands.run(() -> turret.setVoltage(2 * m_operatorController.getLeftTriggerAxis())))
+        .onFalse(Commands.run(() -> turret.setVoltage(0)));
+    manualTurretNegative
+        .whileTrue(
+            Commands.run(() -> turret.setVoltage(-2 * m_operatorController.getRightTriggerAxis())))
+        .onFalse(Commands.run(() -> turret.setVoltage(0)));
 
-    highestSetpoint.whileTrue(Commands.run(()-> AutoCommands.setOutreachSetpoints(50, -0.1)));
-    higherSetpoint.whileTrue(Commands.run(()-> AutoCommands.setOutreachSetpoints(40, -0.1)));
-    midSetpoint.whileTrue(Commands.run(()-> AutoCommands.setOutreachSetpoints(30, -0.1)));
-    lowestSetpoint.whileTrue(Commands.run(()-> AutoCommands.setOutreachSetpoints(13, -0.1)));
-
+    highestSetpoint.onTrue(AutoCommands.setOutreachSetpoints(50));
+    higherSetpoint.onTrue(AutoCommands.setOutreachSetpoints(40));
+    midSetpoint.onTrue(AutoCommands.setOutreachSetpoints(30));
+    lowestSetpoint.onTrue(AutoCommands.setOutreachSetpoints(13));
   }
 
   /**

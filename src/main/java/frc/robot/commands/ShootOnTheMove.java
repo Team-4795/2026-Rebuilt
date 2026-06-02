@@ -6,7 +6,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.Constants.HoodConstants;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterConstants;
 import frc.robot.subsystems.ShooterHood.ShooterHood;
@@ -143,9 +142,9 @@ public class ShootOnTheMove extends Command {
     //   shooter.setVelocityRPS(ShooterConstants.shooterVelocityShuttlingMap.get(distance));
     //   hood.setGoal(ShooterHoodConstants.shooterHoodShuttlingMap.get(distance));
 
-      shooter.setVelocityRPS(ShooterConstants.setRPS);
-      hood.setGoal(ShooterHoodConstants.outreachAngle); //remove this to not use goal on hood
- //   }
+    shooter.setVelocityRPS(ShooterConstants.setRPS);
+    // hood.setGoal(ShooterHoodConstants.outreachAngle); // remove this to not use goal on hood
+    //   }
 
     Logger.recordOutput("Shoot on move At Hub/Hub Pose", hub);
     Logger.recordOutput("Shoot on move At Hub/Desired Hub", offsettedTarget);
@@ -160,6 +159,10 @@ public class ShootOnTheMove extends Command {
     Logger.recordOutput("Shoot on move At Hub/ LinearXOffset", velocityXOffset);
     Logger.recordOutput("Shoot on move At Hub/ LinearYOffset", velocityYOffset);
     Logger.recordOutput("Shoot on move At Hub/tAir", tAir);
+
+    Logger.recordOutput(
+        "Shoot on move At Hub/Hood Outreach Angle", ShooterHoodConstants.outreachAngle);
+    Logger.recordOutput("Shoot on move At Hub/Shooter Outreach RPS", ShooterConstants.setRPS);
   }
 
   @Override

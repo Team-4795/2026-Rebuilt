@@ -17,8 +17,6 @@ import frc.robot.subsystems.StateManager.StateManager;
 import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretConstants;
 import frc.robot.subsystems.drive.Drive;
-import java.util.function.DoubleSupplier;
-import org.littletonrobotics.junction.Logger;
 
 public class AutoCommands {
   private static Drive drive = Drive.getInstance();
@@ -53,12 +51,9 @@ public class AutoCommands {
             Commands.waitSeconds(0.5)));
   }
 
-  public static Command setOutreachSetpoints(double rps, double angle) {
-    return Commands.parallel(
-      Commands.runOnce(() -> shooter.setOutreachRPS(rps), shooter), 
-      Commands.runOnce(() -> hood.setOutreachAngle(angle), hood)
-    );
-  } 
+  public static Command setOutreachSetpoints(double rps) {
+    return Commands.parallel(Commands.runOnce(() -> shooter.setOutreachRPS(rps), shooter));
+  }
 
   public static Command agitateIntakeAuto() {
     return Commands.repeatingSequence(

@@ -90,9 +90,10 @@ public class ShooterIOReal implements ShooterIO {
       topShooterMotor.setControl(m_request.withVelocity(velocityRPS).withSlot(0));
     }
   }
+
   @Override
   public void outreachRPS(double rps) {
-    ShooterConstants.setRPS = rps; 
+    ShooterConstants.setRPS = rps;
   }
 
   @Override

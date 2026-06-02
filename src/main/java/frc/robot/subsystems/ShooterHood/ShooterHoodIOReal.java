@@ -103,13 +103,14 @@ public class ShooterHoodIOReal implements ShooterHoodIO {
 
   @Override
   public boolean readyToShoot() {
-    return (getGoal() != 0
-        && Math.abs(getPosition() - getGoal()) < ShooterHoodConstants.marginOfError);
+    // return (getGoal() != 0
+    //     && Math.abs(getPosition() - getGoal()) < ShooterHoodConstants.marginOfError);
+    return true; // for outreach use only
   }
 
   @Override
   public void setoutreachAngle(double angle) {
-    ShooterHoodConstants.outreachAngle = angle; 
+    ShooterHoodConstants.outreachAngle = angle;
   }
 
   @Override

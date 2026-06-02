@@ -30,7 +30,7 @@ public final class ShooterHoodConstants {
   // change when testing
   public static final double boxXMultiplier = 0.3;
 
-  public static double outreachAngle = 0; 
+  public static double outreachAngle = 0;
 
   public static final InterpolatingDoubleTreeMap shooterHoodHubMap =
       new InterpolatingDoubleTreeMap();
