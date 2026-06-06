@@ -254,7 +254,7 @@ public class RobotContainer {
         .onFalse(AutoCommands.afterShoot());
 
     // Auto trench
-    autoTrench.whileTrue(AutoCommands.underTrenchAssist());
+    // autoTrench.whileTrue(AutoCommands.underTrenchAssist());
 
     // Intake
     intakeButton.whileTrue(AutoCommands.intake());
@@ -323,7 +323,7 @@ public class RobotContainer {
             Commands.run(() -> turret.setVoltage(-2 * m_operatorController.getRightTriggerAxis())))
         .onFalse(Commands.run(() -> turret.setVoltage(0)));
 
-    highestSetpoint.onTrue(AutoCommands.setOutreachSetpoints(50));
+    highestSetpoint.onTrue(AutoCommands.setOutreachSetpoints(75));
     higherSetpoint.onTrue(AutoCommands.setOutreachSetpoints(40));
     midSetpoint.onTrue(AutoCommands.setOutreachSetpoints(30));
     lowestSetpoint.onTrue(AutoCommands.setOutreachSetpoints(13));

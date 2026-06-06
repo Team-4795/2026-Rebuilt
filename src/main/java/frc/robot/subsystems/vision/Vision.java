@@ -15,7 +15,7 @@ public class Vision extends SubsystemBase {
   private VisionIOInputsAutoLogged inputs[];
 
   // change to match number of cameras
-  private boolean[] shouldUpdate = new boolean[] {true, true, true};
+  private boolean[] shouldUpdate = new boolean[] {false, false, false};
 
   public static Vision instance;
 
