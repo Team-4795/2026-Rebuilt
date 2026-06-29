@@ -321,7 +321,7 @@ public class RobotContainer {
     //             Commands.runOnce((() -> indexer.setRPSIndexer(0))),
     //             Commands.runOnce(() -> indexer.setVoltageTower(0))));
 
-    configure.onTrue(Commands.runOnce(() -> shooterHood.configure()));
+    // configure.onTrue(Commands.runOnce(() -> shooterHood.configure()));
   }
 
   /**
