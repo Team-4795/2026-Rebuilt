@@ -77,6 +77,10 @@ public class AutoCommands {
     return new ShootOnTheMove(drive, turret, shooter, hood, manager);
   }
 
+  public static Command newSOTM() {
+    return new NewSOTM(drive, turret, shooter, hood, manager);
+  }
+
   public static Command autonomousSOTM() {
     return new AutonomousSOTM(drive, turret, shooter, hood, manager);
   }

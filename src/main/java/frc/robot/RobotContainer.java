@@ -76,6 +76,7 @@ public class RobotContainer {
 
   // Official Bindings
   private final Trigger sotm = m_driverController.rightTrigger();
+  private final Trigger newSOTM = m_driverController.y();
   private final Trigger intakeButton = m_driverController.leftTrigger();
   private final Trigger runIndexer = m_driverController.rightBumper();
   private final Trigger autoTrench = m_driverController.leftBumper();
@@ -227,6 +228,25 @@ public class RobotContainer {
     sotm.whileTrue(
             Commands.parallel(
                 AutoCommands.shootOnTheMove(),
+                AutoCommands.intakeWithScaling(),
+                AutoCommands.unjam(),
+                DriveCommands.joystickDrive(
+                    drive,
+                    () ->
+                        -m_driverController.getLeftY()
+                            * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.9),
+                    () ->
+                        -m_driverController.getLeftX()
+                            * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.9),
+                    () ->
+                        -m_driverController.getRightX()
+                            * (stateManager.getState() == State.SHOOTING ? 0.4 : 0.7))))
+        .onFalse(AutoCommands.afterShoot());
+
+    newSOTM
+        .whileTrue(
+            Commands.parallel(
+                AutoCommands.newSOTM(),
                 AutoCommands.intakeWithScaling(),
                 AutoCommands.unjam(),
                 DriveCommands.joystickDrive(
