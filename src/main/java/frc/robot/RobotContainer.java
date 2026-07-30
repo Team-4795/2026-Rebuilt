@@ -227,9 +227,9 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> -m_driverController.getLeftY(),
-            () -> -m_driverController.getLeftX(),
-            () -> -m_driverController.getRightX()));
+            () -> -m_driverController.getLeftY() * 0.3,
+            () -> -m_driverController.getLeftX() * 0.3,
+            () -> -m_driverController.getRightX() * 0.5));
 
     // Always aim at target
     // turret.setDefaultCommand(new AlwaysAim(drive, turret, stateManager));
