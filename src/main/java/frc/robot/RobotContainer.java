@@ -48,6 +48,7 @@ import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOReal;
 import frc.robot.subsystems.vision.VisionIOSim;
 import frc.robot.util.BLineAutoChooser;
+import frc.robot.util.LoggedTunableNumber;
 import frc.robot.util.NamedCommandManager;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
@@ -110,6 +111,9 @@ public class RobotContainer {
 
   private LoggedDashboardChooser<Command> autoChooser;
   private BLineAutoChooser bLineChooser;
+
+  private LoggedTunableNumber driveMultiplier =
+      new LoggedTunableNumber("Drive speed multiplier", 0.4);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -227,9 +231,9 @@ public class RobotContainer {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
-            () -> -m_driverController.getLeftY() * 0.3,
-            () -> -m_driverController.getLeftX() * 0.3,
-            () -> -m_driverController.getRightX() * 0.5));
+            () -> -m_driverController.getLeftY() * driveMultiplier.get(),
+            () -> -m_driverController.getLeftX() * driveMultiplier.get(),
+            () -> -m_driverController.getRightX() * driveMultiplier.get()));
 
     // Always aim at target
     // turret.setDefaultCommand(new AlwaysAim(drive, turret, stateManager));
@@ -244,13 +248,16 @@ public class RobotContainer {
                     drive,
                     () ->
                         -m_driverController.getLeftY()
-                            * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.9),
+                            * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.9)
+                            * driveMultiplier.get(),
                     () ->
                         -m_driverController.getLeftX()
-                            * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.9),
+                            * (stateManager.getState() == State.SHOOTING ? 0.5 : 0.9)
+                            * driveMultiplier.get(),
                     () ->
                         -m_driverController.getRightX()
-                            * (stateManager.getState() == State.SHOOTING ? 0.4 : 0.7))))
+                            * (stateManager.getState() == State.SHOOTING ? 0.4 : 0.7)
+                            * driveMultiplier.get())))
         .onFalse(AutoCommands.afterShoot());
 
     // Auto trench
