@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -182,7 +181,7 @@ public class RobotContainer {
 
     // Register named commands
     NamedCommandManager.registerNamedCommands();
-    autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
+    // autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
     // bLineChooser = drive.getAutoChooser(); // bline
     // bLineChooser.createAutos();
 
@@ -342,7 +341,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoChooser.get();
+    // return autoChooser.get();
+    return null;
 
     // return Commands.sequence(
     //     drive.pathBuilder.build(new Path("Rembrandts P1")),
