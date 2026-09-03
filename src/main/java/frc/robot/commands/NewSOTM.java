@@ -16,7 +16,6 @@ import frc.robot.subsystems.Turret.Turret;
 import frc.robot.subsystems.Turret.TurretConstants;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.util.LoggedTunableNumber;
-
 import org.littletonrobotics.junction.Logger;
 
 public class NewSOTM extends Command {
@@ -43,9 +42,11 @@ public class NewSOTM extends Command {
   private double turretGoalRots;
 
   // dampeners for velocity offsets, tune as needed
-  public static LoggedTunableNumber omegaDampener = new LoggedTunableNumber("New SOTM/Omega Dampener", 0.05);
+  public static LoggedTunableNumber omegaDampener =
+      new LoggedTunableNumber("New SOTM/Omega Dampener", 0.05);
   public static LoggedTunableNumber xDampener = new LoggedTunableNumber("New SOTM/X Dampener", 0.7);
-  public static LoggedTunableNumber yDampener = new LoggedTunableNumber("New SOTM/Y Dampener", 0.85);
+  public static LoggedTunableNumber yDampener =
+      new LoggedTunableNumber("New SOTM/Y Dampener", 0.85);
 
   public NewSOTM(
       Drive drive, Turret turret, Shooter shooter, ShooterHood hood, StateManager manager) {
@@ -67,7 +68,10 @@ public class NewSOTM extends Command {
         ChassisSpeeds.fromRobotRelativeSpeeds(drive.getChassisSpeeds(), drive.getRotation());
     robotPose = drive.getPose();
     turretPos =
-        robotPose.getTranslation().plus(TurretConstants.OFFSET).rotateAround(robotPose.getTranslation(), robotPose.getRotation());
+        robotPose
+            .getTranslation()
+            .plus(TurretConstants.OFFSET)
+            .rotateAround(robotPose.getTranslation(), robotPose.getRotation());
     distToTargetOriginal = turretPos.getDistance(targetPos);
 
     // get time in air from map
@@ -79,9 +83,15 @@ public class NewSOTM extends Command {
 
     // similar for rotation offset
     omegaXOffset =
-        robotSpeeds.omegaRadiansPerSecond * turretPos.rotateBy(robotPose.getRotation()).getX() * tAir * omegaDampener.getAsDouble();
+        robotSpeeds.omegaRadiansPerSecond
+            * turretPos.rotateBy(robotPose.getRotation()).getX()
+            * tAir
+            * omegaDampener.getAsDouble();
     omegaYOffset =
-        robotSpeeds.omegaRadiansPerSecond * turretPos.rotateBy(robotPose.getRotation()).getY() * tAir * omegaDampener.getAsDouble();
+        robotSpeeds.omegaRadiansPerSecond
+            * turretPos.rotateBy(robotPose.getRotation()).getY()
+            * tAir
+            * omegaDampener.getAsDouble();
 
     // translation2d representing target after offsets have been applied
     offsetTargetPos =
@@ -102,8 +112,9 @@ public class NewSOTM extends Command {
     turretGoalRots = (((turretGoalRots % 1.0) + 1.0) % 1.0); // prevents weird stuff with wrapping
 
     turret.setGoal(turretGoalRots); // set turret goal!!
-    
-    // different shooter hood/shooter maps depending on whether robot is shuttling or shooting at hub
+
+    // different shooter hood/shooter maps depending on whether robot is shuttling or shooting at
+    // hub
     if (stateManager.getState() == State.SHOOTING) {
       hood.setGoal(ShooterHoodConstants.shooterHoodHubMap.get(distToTargetOffset));
       shooter.setVelocityRPS(ShooterConstants.shooterVelocityHubMap.get(distToTargetOffset));

@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -40,9 +39,7 @@ import frc.robot.subsystems.Turret.TurretIOReal;
 import frc.robot.subsystems.Turret.TurretIOSim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
-import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIOSim;
-import frc.robot.subsystems.drive.ModuleIOSparkFlex;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOReal;
@@ -96,7 +93,8 @@ public class RobotContainer {
   private final Trigger toggleAlliance = m_operatorController.y();
 
   // Testing Bindings
-  private final Trigger configure = m_driverController.povDown();
+  
+  private final Trigger configure = m_driverController.povRight();
 
   private LoggedDashboardChooser<Command> autoChooser;
   private BLineAutoChooser bLineChooser;
@@ -112,20 +110,20 @@ public class RobotContainer {
         indexer = Indexer.initialize(new IndexerIORealTalon());
         turret = Turret.initialize(new TurretIOReal());
         shooterHood = ShooterHood.initialize(new ShooterHoodIOReal());
-        drive =
-            Drive.initialize(
-                new GyroIOPigeon2(),
-                new ModuleIOSparkFlex(0),
-                new ModuleIOSparkFlex(1),
-                new ModuleIOSparkFlex(2),
-                new ModuleIOSparkFlex(3));
         // drive =
         //     Drive.initialize(
-        //         new GyroIO() {},
-        //         new ModuleIOSim(),
-        //         new ModuleIOSim(),
-        //         new ModuleIOSim(),
-        //         new ModuleIOSim());
+        //         new GyroIOPigeon2(),
+        //         new ModuleIOSparkFlex(0),
+        //         new ModuleIOSparkFlex(1),
+        //         new ModuleIOSparkFlex(2),
+        //         new ModuleIOSparkFlex(3));
+        drive =
+            Drive.initialize(
+                new GyroIO() {},
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim(),
+                new ModuleIOSim());
         vision = Vision.initialize(new VisionIOReal(0), new VisionIOReal(1), new VisionIOReal(2));
         break;
 
@@ -168,7 +166,7 @@ public class RobotContainer {
 
     // Register named commands
     NamedCommandManager.registerNamedCommands();
-    autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
+    // autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
     // bLineChooser = drive.getAutoChooser(); // bline
     // bLineChooser.createAutos();
 
@@ -341,7 +339,7 @@ public class RobotContainer {
     //             Commands.runOnce((() -> indexer.setRPSIndexer(0))),
     //             Commands.runOnce(() -> indexer.setVoltageTower(0))));
 
-    // configure.onTrue(Commands.runOnce(() -> shooterHood.configure()));
+    configure.onTrue(Commands.runOnce(() -> turret.configure()));
   }
 
   /**
@@ -350,7 +348,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoChooser.get();
+    // return autoChooser.get();
+    return null;
 
     // return Commands.sequence(
     //     drive.pathBuilder.build(new Path("Rembrandts P1")),
