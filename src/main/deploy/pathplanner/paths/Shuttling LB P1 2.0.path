@@ -113,7 +113,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Everything",
+      "name": "SOTM",
       "waypointRelativePos": 1.4488330341113105,
       "endWaypointRelativePos": 2.617594254937161,
       "command": null
