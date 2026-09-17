@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -21,7 +20,6 @@ import frc.robot.subsystems.Intake.IntakeIOSim;
 import frc.robot.subsystems.Intake.IntakeIOTalon;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeploy;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployIO;
-import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOReal;
 import frc.robot.subsystems.IntakeDeploy.IntakeDeployIOSim;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.ShooterIO;
@@ -106,7 +104,7 @@ public class RobotContainer {
     switch (Constants.currentMode) {
       case REAL:
         intake = Intake.initialize(new IntakeIOTalon());
-        deploy = IntakeDeploy.initialize(new IntakeDeployIOReal());
+        deploy = IntakeDeploy.initialize(new IntakeDeployIOSim());
         shooter = Shooter.initialize(new ShooterIOReal());
         indexer = Indexer.initialize(new IndexerIORealTalon());
         turret = Turret.initialize(new TurretIOReal());
@@ -167,7 +165,7 @@ public class RobotContainer {
 
     // Register named commands
     NamedCommandManager.registerNamedCommands();
-    autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
+    // autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
     // bLineChooser = drive.getAutoChooser(); // bline
     // bLineChooser.createAutos();
 
@@ -349,8 +347,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoChooser.get();
-    // return null;
+    // return autoChooser.get();
+    return null;
 
     // return Commands.sequence(
     //     drive.pathBuilder.build(new Path("Rembrandts P1")),
