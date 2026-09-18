@@ -11,7 +11,7 @@
           }
         },
         {
-          "type": "race",
+          "type": "parallel",
           "data": {
             "commands": [
               {
@@ -30,7 +30,7 @@
           }
         },
         {
-          "type": "race",
+          "type": "parallel",
           "data": {
             "commands": [
               {
@@ -55,7 +55,7 @@
           }
         },
         {
-          "type": "race",
+          "type": "sequential",
           "data": {
             "commands": [
               {
@@ -65,42 +65,48 @@
                 }
               },
               {
-                "type": "parallel",
+                "type": "sequential",
                 "data": {
                   "commands": [
                     {
-                      "type": "sequential",
+                      "type": "parallel",
                       "data": {
                         "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "SOTM"
+                            }
+                          },
                           {
                             "type": "wait",
                             "data": {
                               "waitTime": 1.5
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "Shoot"
                             }
                           }
                         ]
                       }
                     },
                     {
-                      "type": "named",
-                      "data": {
-                        "name": "SOTM"
-                      }
-                    },
-                    {
-                      "type": "sequential",
+                      "type": "parallel",
                       "data": {
                         "commands": [
                           {
                             "type": "wait",
                             "data": {
-                              "waitTime": 3.0
+                              "waitTime": 5.0
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "SOTM"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "Shoot"
                             }
                           },
                           {

@@ -246,12 +246,6 @@
       }
     },
     {
-      "name": "Lift Intake",
-      "waypointRelativePos": 4.472440944881877,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
       "name": "Stop Shoot",
       "waypointRelativePos": 4.893435635123632,
       "endWaypointRelativePos": null,
@@ -261,12 +255,6 @@
           "name": "Stop Shoot"
         }
       }
-    },
-    {
-      "name": "Deploy Intake",
-      "waypointRelativePos": 5.118110236220516,
-      "endWaypointRelativePos": null,
-      "command": null
     }
   ],
   "globalConstraints": {
