@@ -45,6 +45,7 @@ import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOReal;
 import frc.robot.subsystems.vision.VisionIOSim;
 import frc.robot.util.BLineAutoChooser;
+import frc.robot.util.NamedCommandManager;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -164,7 +165,7 @@ public class RobotContainer {
     stateManager = StateManager.initalize();
 
     // Register named commands
-    // NamedCommandManager.registerNamedCommands();
+    NamedCommandManager.registerNamedCommands();
     autoChooser = new LoggedDashboardChooser<>("Auto Chooser", AutoBuilder.buildAutoChooser());
     // bLineChooser = drive.getAutoChooser(); // bline
     // bLineChooser.createAutos();
